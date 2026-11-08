@@ -1,4 +1,4 @@
-# Gutter
+# <picture><source media="(prefers-color-scheme: dark)" srcset="docs/brand/icon-dark.svg"><img src="docs/brand/icon.svg" width="32" height="32" align="top" alt="Gutter mark"></picture> Gutter
 
 **Understand a pull request before you review it.**
 
