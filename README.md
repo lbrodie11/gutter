@@ -98,12 +98,14 @@ Alongside the Markdown comment, Gutter writes a self-contained, offline HTML pag
 
 | Panel | Question it answers | Evidence source |
 |---|---|---|
-| **1 · Intent** | What is this change trying to do? | PR title/body, commit subjects |
-| **2 · What changed** | How big is it, and where? | `git diff` grouped into modules, churn as screentone |
-| **3 · What it touches** | Who depends on what changed? | Relative import scan for TS/JS; unresolved path aliases (`@/...`) mark the panel **partial**, and other languages are reported as **unchecked** — never silently as "no dependents" |
-| **4 · Likely forgotten** | Which files historically change with these files? | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) directional co-change history with 95% Wilson intervals and commit receipts |
-| **5 · Tests** | Did conventional test files move with the code? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` convention links |
-| **6 · Check these** | Where should I focus first? | Up to 4 deterministic questions, each required to cite evidence IDs from panels 3–5 |
+| **C-01 · Intent** | What is this change trying to do? | PR title/body, commit subjects |
+| **C-02 · What changed** | How big is it, and where? | `git diff` grouped into modules, churn as screentone |
+| **C-03 · What it touches** | Who depends on what changed? | Relative import scan for TS/JS; unresolved aliases or packages mark `dependents.coverage` as **`partial`** (with sample receipts), and other languages are reported as **`unchecked`** — never silently as "no dependents" |
+| **C-04 · Likely forgotten** | Which files historically change with these files? | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) directional co-change history with 95% Wilson intervals and commit receipts |
+| **C-05 · Tests** | Did conventional test files move with the code? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` convention links |
+| **C-06 · Check these** | Where should I focus first? | Up to 4 deterministic questions, each required to cite evidence IDs from panels C-03 to C-05 |
+
+Every generated HTML page is verified against 6 [FRAME/12](https://github.com/lbrodie11/frame12) design-grammar rules in `lintPage()` (`color-literal`, `gradient`, `font-literal`, `marker-misuse`, `illegal-gutter` restricting CSS `gap`/`row-gap`/`column-gap`/`grid-gap` to `0`/`12px`/`20px`/`32px` or `--f-gutter-*` tokens, and `cut-order` enforcing sequential `C-01`…`C-0N` panel labels).
 
 ---
 
@@ -176,7 +178,7 @@ In comics, the *gutter* is the space between panels where the reader connects tw
 ## Principles
 
 1. **Explain, don't judge.** Gutter asks questions ("Does it need a matching change?"), never verdicts. It never fails a build.
-2. **Evidence before narration.** Every surface renders from one deterministic document, [`gutter.json`](schema/gutter.schema.json). Every checklist item must cite evidence IDs that exist in that document; the renderers throw if any reference is missing.
+2. **Evidence before narration.** Every surface renders from one deterministic document, [`gutter.json`](schema/gutter.schema.json) (`schemaVersion: 1`). Every checklist item must cite evidence IDs that exist in that document; the renderers throw if any reference is missing. The contract evolves additively within `schemaVersion: 1`: **consumers must ignore unknown fields and tolerate unknown enum values** (for example, new `checklist.kind` or `dependents.coverage` values).
 3. **Honest uncertainty.** Counts with denominators, 95% Wilson intervals, per-repo backtests, `partial` / `unchecked` notices instead of silent false negatives, and a badge when evidence comes mostly from bot commits.
 4. **Nothing to say is success.** Small, unremarkable PRs get one quiet line or no comment at all.
 

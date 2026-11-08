@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
+import { isBuiltin } from 'node:module';
 import { join, posix } from 'node:path';
 import { git } from '../git.ts';
 import type { ChangeStructure, DependentsEntry, DependentsLayer } from '../contract.ts';
@@ -7,22 +8,82 @@ import type { ChangeStructure, DependentsEntry, DependentsLayer } from '../contr
  * Static dependents for TS/JS via relative-import scanning.
  *
  * Deliberately small and honest: it resolves relative specifiers only (no
- * tsconfig paths / package exports yet). Changed files in languages without
- * an analyzer are listed as `unchecked`, never as "no dependents".
+ * tsconfig paths / package exports yet). Non-relative specifiers that are
+ * aliases or repo-local / workspace packages mark `dependents.coverage` as
+ * `'partial'` with sample `<file> → <specifier>` receipts. Changed files in
+ * languages without an analyzer are listed as `unchecked`, never as "no
+ * dependents".
  */
 
 const SCRIPT_EXT = /\.(ts|tsx|mts|cts|js|jsx|mjs|cjs)$/;
 const RESOLVE_EXTS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs'];
-const SPECIFIER = /(?:import|export)(?:\s+|\s*(?=[{*]))[^'"`;]*?from\s*['"]([^'"]+)['"]|import\s*['"]([^'"]+)['"]|import\(\s*['"]([^'"]+)['"]\s*\)|require\(\s*['"]([^'"]+)['"]\s*\)/g;
+const STATIC_IMPORT_EXPORT =
+  /(?:^|[;{}\r\n])[ \t]*(?:import|export)(?:\s+|\s*(?=[{*'"]))(?:type(?:\s+|\s*(?=[{*])))?(?:(?:\*\s*as\s+[A-Za-z0-9_$]+|[A-Za-z0-9_$]+(?:\s*,\s*(?:\*\s*as\s+[A-Za-z0-9_$]+|\{[^{};'"`]*\}))?|\{[^{};'"`]*\}|\*)(?:\s+|(?<=[}*]))from\s*)?(['"])([^'"\r\n]+)\1/gm;
+const DYNAMIC_IMPORT_REQUIRE = /(?<![.\w$'"`])\b(?:import|require)\s*\(\s*(['"])([^'"\r\n]+)\1\s*\)/g;
 const ALIAS_SPECIFIER = /^(?:@\/|~~?\/|#|\$lib\/)/;
+const EXTERNAL_PROTOCOL = /^(?:node|bun|deno|npm|jsr|cloudflare|virtual|https?|data):|^\$(?:app|env|service-worker)(?:\/|$)/;
+const VALID_SPECIFIER =
+  /^(?:\.\.?\/[A-Za-z0-9._/@~$()[\]-]*|#[A-Za-z0-9._/@$()[\]-]+|(?:~|~~|\$[A-Za-z0-9_-]*)\/[A-Za-z0-9._/@$()[\]-]+|@[A-Za-z0-9._-]*\/[A-Za-z0-9._/@$()[\]-]+|[A-Za-z0-9._-]+:[A-Za-z0-9._/@$()[\]-]+|[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._/@$()[\]-]+)*)$/;
+const STRING_OR_COMMENT =
+  /'(?:\\[\s\S]|[^'\\\r\n])*'|"(?:\\[\s\S]|[^"\\\r\n])*"|`(?:\\[\s\S]|[^`\\])*`|(\/\*[\s\S]*?\*\/|\/\/[^\r\n]*)/g;
+const MAX_SPECIFIER_LEN = 160;
+const MAX_SAMPLE_LEN = 200;
 const MAX_FILE_BYTES = 512 * 1024;
 const MAX_FILES = 25_000;
+const MAX_UNRESOLVED_SAMPLES = 5;
+
+/** Check whether a raw string looks like a genuine module specifier (no control chars or code fragments). */
+export function isValidSpecifier(spec: string): boolean {
+  if (!spec || spec.length > MAX_SPECIFIER_LEN) return false;
+  if (/[\0-\x1f\r\n]/.test(spec)) return false;
+  if (spec.startsWith('./') || spec.startsWith('../') || spec === '.' || spec === '..') return true;
+  if (/\s/.test(spec)) return false;
+  return VALID_SPECIFIER.test(spec);
+}
+
+/** Strip block and line comments while preserving string literals (such as `'packages/*'`) and line structure. */
+function stripComments(source: string): string {
+  return source.replace(STRING_OR_COMMENT, (match, comment: string | undefined) =>
+    comment ? comment.replace(/[^\r\n]/g, ' ') : match,
+  );
+}
+
+/** True when `linePrefix` ends inside an unclosed single-line quote (`'` or `"`). */
+function isInsideQuote(linePrefix: string): boolean {
+  let quote: string | null = null;
+  for (let i = 0; i < linePrefix.length; i++) {
+    const ch = linePrefix[i]!;
+    if (ch === '\\') {
+      i++;
+      continue;
+    }
+    if (quote === null) {
+      if (ch === "'" || ch === '"' || ch === '`') quote = ch;
+    } else if (ch === quote) {
+      quote = null;
+    }
+  }
+  return quote !== null;
+}
 
 export function extractSpecifiers(source: string): string[] {
+  const cleaned = stripComments(source);
   const out: string[] = [];
-  for (const m of source.matchAll(SPECIFIER)) {
-    const spec = m[1] ?? m[2] ?? m[3] ?? m[4];
-    if (spec) out.push(spec);
+  for (const m of cleaned.matchAll(STATIC_IMPORT_EXPORT)) {
+    const spec = m[2];
+    const idx = m.index ?? 0;
+    const lineStart = cleaned.lastIndexOf('\n', idx) + 1;
+    const linePrefix = cleaned.slice(lineStart, idx);
+    if (isInsideQuote(linePrefix)) continue;
+    if (spec && isValidSpecifier(spec)) out.push(spec);
+  }
+  for (const m of cleaned.matchAll(DYNAMIC_IMPORT_REQUIRE)) {
+    const spec = m[2];
+    const idx = m.index ?? 0;
+    const lineStart = cleaned.lastIndexOf('\n', idx) + 1;
+    const linePrefix = cleaned.slice(lineStart, idx);
+    if (isInsideQuote(linePrefix)) continue;
+    if (spec && isValidSpecifier(spec)) out.push(spec);
   }
   return out;
 }
@@ -35,15 +96,18 @@ export function isAliasSpecifier(spec: string, customPrefixes: readonly string[]
 }
 
 /** Read custom path-alias prefixes from tsconfig/jsconfig `compilerOptions.paths`, if present. */
-export function readTsconfigAliasPrefixes(root: string): string[] {
+export function readTsconfigAliasPrefixes(root: string, trackedConfigs?: readonly string[]): string[] {
   const prefixes = new Set<string>();
-  for (const name of ['tsconfig.json', 'tsconfig.base.json', 'jsconfig.json']) {
+  const candidates = trackedConfigs
+    ? trackedConfigs.filter((f) => /(?:^|\/)(?:tsconfig(?:\.[^/]+)?|jsconfig)\.json$/.test(f))
+    : ['tsconfig.json', 'tsconfig.base.json', 'jsconfig.json'];
+  for (const name of candidates) {
     const abs = join(root, name);
     if (!existsSync(abs)) continue;
     try {
       const st = statSync(abs);
       if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
-      const raw = readFileSync(abs, 'utf8');
+      const raw = stripComments(readFileSync(abs, 'utf8'));
       const pathsBlock = /"paths"\s*:\s*\{([\s\S]*?)\}/.exec(raw)?.[1];
       if (!pathsBlock) continue;
       for (const m of pathsBlock.matchAll(/^\s*"([^"]+)"\s*:/gm)) {
@@ -55,6 +119,90 @@ export function readTsconfigAliasPrefixes(root: string): string[] {
     }
   }
   return [...prefixes];
+}
+
+/** Extract the npm package name (`react` or `@scope/pkg`) from a bare specifier, or undefined if not a valid package specifier. */
+export function extractPackageName(spec: string): string | undefined {
+  if (!spec || spec.startsWith('.') || spec.startsWith('/') || spec.startsWith('#') || spec.startsWith('~') || spec.startsWith('$')) {
+    return undefined;
+  }
+  if (spec.startsWith('@')) {
+    const m = /^(@[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+)(?:\/.*)?$/.exec(spec);
+    return m?.[1];
+  }
+  const m = /^([a-zA-Z0-9._-]+)(?:\/.*)?$/.exec(spec);
+  return m?.[1];
+}
+
+/**
+ * Classify a non-relative specifier as `'external'` (Node builtin, runtime protocol,
+ * or external package) or `'unresolved'` (path alias or workspace/local package).
+ */
+export function classifyNonRelativeSpecifier(
+  spec: string,
+  declaredPackages: ReadonlySet<string>,
+  aliasPrefixes: readonly string[] = [],
+  workspacePackages?: ReadonlySet<string>,
+): 'external' | 'unresolved' {
+  if (!isValidSpecifier(spec)) return 'external';
+  if (isAliasSpecifier(spec, aliasPrefixes)) return 'unresolved';
+  if (EXTERNAL_PROTOCOL.test(spec) || isBuiltin(spec)) return 'external';
+  const pkg = extractPackageName(spec);
+  if (pkg && workspacePackages?.has(pkg)) return 'unresolved';
+  if (pkg && declaredPackages.has(pkg)) return 'external';
+  if (workspacePackages) return 'external';
+  return 'unresolved';
+}
+
+interface RepoPackageInfo {
+  declaredExternal: Set<string>;
+  workspacePackages: Set<string>;
+}
+
+/** Collect declared external dependencies and repo-local/workspace package names across all tracked `package.json` files. */
+function readRepoPackageInfo(root: string, trackedAll: readonly string[]): RepoPackageInfo {
+  const declaredExternal = new Set<string>();
+  const workspacePackages = new Set<string>();
+  const pkgFiles = trackedAll.filter((rel) => rel === 'package.json' || rel.endsWith('/package.json'));
+  if (!pkgFiles.includes('package.json') && existsSync(join(root, 'package.json'))) {
+    pkgFiles.push('package.json');
+  }
+
+  const parsedFiles: Record<string, unknown>[] = [];
+  for (const rel of pkgFiles) {
+    const abs = join(root, rel);
+    if (!existsSync(abs)) continue;
+    try {
+      const st = statSync(abs);
+      if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
+      const parsed = JSON.parse(readFileSync(abs, 'utf8')) as Record<string, unknown>;
+      parsedFiles.push(parsed);
+      if (typeof parsed.name === 'string' && parsed.name.trim()) {
+        workspacePackages.add(parsed.name.trim());
+      }
+    } catch {
+      // Ignore unreadable or malformed package.json
+    }
+  }
+
+  for (const parsed of parsedFiles) {
+    for (const field of ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']) {
+      const section = parsed[field];
+      if (section && typeof section === 'object' && !Array.isArray(section)) {
+        for (const [name, range] of Object.entries(section as Record<string, unknown>)) {
+          if (typeof range === 'string' && /^(?:workspace|link|file):/.test(range.trim())) {
+            workspacePackages.add(name);
+            continue;
+          }
+          if (!workspacePackages.has(name)) {
+            declaredExternal.add(name);
+          }
+        }
+      }
+    }
+  }
+
+  return { declaredExternal, workspacePackages };
 }
 
 /** Resolve a relative specifier from `fromFile` against a set of known repo files. */
@@ -74,12 +222,14 @@ export function resolveRelative(fromFile: string, spec: string, known: Set<strin
 }
 
 export function buildDependents(root: string, changes: ChangeStructure): DependentsLayer {
-  const tracked = git(root, ['ls-files', '-z']).split('\0').filter((p) => SCRIPT_EXT.test(p));
+  const trackedAll = git(root, ['ls-files', '-z']).split('\0').filter(Boolean);
+  const tracked = trackedAll.filter((p) => SCRIPT_EXT.test(p));
   const known = new Set(tracked);
   const changedPaths = new Set(changes.files.map((f) => f.path));
   const deleted = new Set(changes.files.filter((f) => f.status === 'deleted').map((f) => f.path));
   const targets = changes.files.filter((f) => SCRIPT_EXT.test(f.path));
-  const aliasPrefixes = readTsconfigAliasPrefixes(root);
+  const aliasPrefixes = readTsconfigAliasPrefixes(root, trackedAll);
+  const { declaredExternal, workspacePackages } = readRepoPackageInfo(root, trackedAll);
 
   const importersOf = new Map<string, Set<string>>();
   for (const t of targets) importersOf.set(t.path, new Set());
@@ -90,7 +240,9 @@ export function buildDependents(root: string, changes: ChangeStructure): Depende
   }
 
   let scanned = 0;
-  let unresolvedAliases = 0;
+  let unresolvedCount = 0;
+  const unresolvedSamples = new Set<string>();
+
   if (importersOf.size > 0) {
     for (const file of tracked.slice(0, MAX_FILES)) {
       const abs = join(root, file);
@@ -100,13 +252,18 @@ export function buildDependents(root: string, changes: ChangeStructure): Depende
       scanned++;
       const src = readFileSync(abs, 'utf8');
       for (const spec of extractSpecifiers(src)) {
-        const hit = resolveRelative(file, spec, known, deleted);
-        if (!hit) {
-          if (isAliasSpecifier(spec, aliasPrefixes)) unresolvedAliases++;
+        if (spec.startsWith('.')) {
+          const hit = resolveRelative(file, spec, known, deleted);
+          if (hit && hit !== file) {
+            importersOf.get(hit)?.add(file);
+          }
           continue;
         }
-        if (hit === file) continue;
-        importersOf.get(hit)?.add(file);
+        if (classifyNonRelativeSpecifier(spec, declaredExternal, aliasPrefixes, workspacePackages) === 'unresolved') {
+          unresolvedCount++;
+          const sample = `${file} → ${spec}`;
+          unresolvedSamples.add(sample.length > MAX_SAMPLE_LEN ? `${sample.slice(0, MAX_SAMPLE_LEN - 1)}…` : sample);
+        }
       }
     }
   }
@@ -130,5 +287,17 @@ export function buildDependents(root: string, changes: ChangeStructure): Depende
     .filter((f) => !SCRIPT_EXT.test(f.path) && f.language !== null && !['markdown', 'json', 'yaml', 'toml'].includes(f.language))
     .map((f) => f.path);
 
-  return { analyzers: ['ts-js-relative-imports'], entries, unchecked, unresolvedAliases, scannedFiles: scanned };
+  const samples = [...unresolvedSamples].sort().slice(0, MAX_UNRESOLVED_SAMPLES);
+
+  return {
+    analyzers: ['ts-js-relative-imports'],
+    entries,
+    unchecked,
+    coverage: unresolvedCount > 0 ? 'partial' : 'full',
+    unresolved: {
+      count: unresolvedCount,
+      samples,
+    },
+    scannedFiles: scanned,
+  };
 }

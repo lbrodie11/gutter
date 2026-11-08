@@ -98,8 +98,18 @@
       }
     ],
     "unchecked": [],
-    "scannedFiles": 459,
-    "unresolvedAliases": 0
+    "coverage": "partial",
+    "unresolved": {
+      "count": 84,
+      "samples": [
+        "adapters/aws-lambda/src/conninfo.test.ts → hono",
+        "adapters/aws-lambda/src/conninfo.ts → hono",
+        "adapters/aws-lambda/src/conninfo.ts → hono/conninfo",
+        "adapters/aws-lambda/src/handler.test.ts → hono",
+        "adapters/aws-lambda/src/handler.test.ts → hono/body-limit"
+      ]
+    },
+    "scannedFiles": 459
   },
   "forgotten": {
     "status": "analyzed",
@@ -312,7 +322,7 @@
     }
   },
   "provenance": {
-    "generatedAt": "2026-11-07T01:14:40.347Z",
+    "generatedAt": "2026-11-08T05:15:56.077Z",
     "engines": [
       {
         "name": "gutter",

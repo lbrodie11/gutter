@@ -60,18 +60,27 @@ test('hostile PR text and file names never reach the page unescaped', () => {
   assert.equal(md.includes('@here'), false);
 });
 
-test('generated pages pass the FRAME/12 design-grammar lint', () => {
+test('generated pages pass the FRAME/12 design-grammar lint and use sequential C-01..C-06 cuts', () => {
   const r = new TempRepo().write({ 'src/a.ts': 'export const a = 1;\n', 'src/a.test.ts': "import './a';\n" }).commit('init').branch('f');
   repos.push(r);
   r.write({ 'src/a.ts': `export const a = 2;\n${lines(30)}` }).commit('change a');
   const page = renderComic(buildBrief({ cwd: r.dir, base: 'main', raDiff: raDiffFixture(), raBacktest: raBacktestFixture(0.6) }));
   assert.deepEqual(lintPage(page), []);
+  const cuts = [...page.matchAll(/\bdata-cut="([^"]*)"/g)].map((m) => m[1]);
+  assert.deepEqual(cuts, ['C-01', 'C-02', 'C-03', 'C-04', 'C-05', 'C-06']);
 });
 
-test('the lint catches grammar violations', () => {
-  const bad = '<style>.x{color:#ff0000;font-family:Comic Sans}.m{background:var(--f-marker)}.g{background:linear-gradient(red,blue)}</style>';
-  const problems = lintPage(bad).map((p) => p.split(':')[0]);
-  assert.deepEqual(problems.sort(), ['color-literal', 'font-literal', 'gradient', 'marker-misuse']);
+test('the lint catches grammar violations including illegal-gutter and cut-order', () => {
+  const bad = [
+    '<style>.x{color:#ff0000;font-family:Comic Sans;gap:14px}.m{background:var(--f-marker)}.g{background:linear-gradient(red,blue)}</style>',
+    '<section data-cut="C-01"><span class="num">C-01</span></section>',
+    '<section data-cut="C-03"><span class="num">3</span></section>',
+  ].join('\n');
+  const rules = new Set(lintPage(bad).map((p) => p.split(':')[0]));
+  assert.deepEqual(
+    [...rules].sort(),
+    ['color-literal', 'cut-order', 'font-literal', 'gradient', 'illegal-gutter', 'marker-misuse'],
+  );
 });
 
 test('a small, unremarkable change produces a one-line quiet comment', () => {
@@ -84,29 +93,62 @@ test('a small, unremarkable change produces a one-line quiet comment', () => {
   assert.ok(md.startsWith(COMMENT_MARKER));
   assert.match(md, /nothing to flag/);
   assert.ok(md.split('\n').length <= 5, md);
-  assert.match(renderComic(brief), /quiet-banner/);
+  const page = renderComic(brief);
+  assert.match(page, /quiet-banner/);
+  assert.deepEqual(lintPage(page), []);
 });
 
 test('panel 3 marks itself partial instead of claiming no dependents when alias imports exist', () => {
-  const aliasSpec = '@/components/x';
   const r = new TempRepo()
     .write({
-      'src/components/x.ts': 'export const x = 1;\n',
-      'src/components/x.test.ts': 'export const t = 1;\n',
-      'src/app/page.ts': `import '${aliasSpec}';\n`,
+      'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { '@/*': ['src/*'] } } }),
+      'src/a.ts': 'export const a = 1;\n',
+      'src/a.test.ts': 'export const t = 1;\n',
+      'src/b.ts': "import '@/a';\n",
     })
     .commit('init')
     .branch('next-app');
   repos.push(r);
   r.write({
-    'src/components/x.ts': `export const x = 2;\n${lines(20)}`,
-  }).commit('update x');
+    'src/a.ts': `export const a = 2;\n${lines(20)}`,
+  }).commit('update a');
   const brief = buildBrief({ cwd: r.dir, base: 'main', noHistory: true });
-  assert.equal(brief.dependents.unresolvedAliases, 1);
+  assert.equal(brief.dependents.coverage, 'partial');
+  assert.equal(brief.dependents.unresolved.count, 1);
+  assert.deepEqual(brief.dependents.unresolved.samples, ['src/b.ts → @/a']);
+
   const page = renderComic(brief);
-  assert.equal(page.includes('No file outside this change imports what it changed.'), false);
-  assert.match(page, /<span class="stamp">partial<\/span> No relative imports outside this change point at what it changed, but 1 path-alias import was not resolved\./);
+  assert.equal(page.includes('No file outside this change imports what it changed'), false);
+  assert.match(
+    page,
+    /<span class="stamp">partial<\/span> No importers found through relative imports\. 1 import uses aliases or packages Gutter can&#39;t resolve yet, so some importers may be missing\./,
+  );
   assert.deepEqual(lintPage(page), []);
+
   const md = renderMarkdown(brief);
-  assert.match(md, /Import scan is partial: 1 path-alias import/);
+  assert.equal(md.includes('No file outside this change imports what it changed'), false);
+  assert.match(
+    md,
+    /<sub>No importers found through relative imports\. 1 import uses aliases or packages Gutter can't resolve yet, so some importers may be missing\.<\/sub>/,
+  );
+
+  // Saved legacy schemaVersion: 1 briefs (`unresolvedAliases` without `coverage` or `unresolved`)
+  const { coverage: _c, unresolved: _u, ...legacyDepsBase } = brief.dependents;
+  const legacyFull = {
+    ...structuredClone(brief),
+    dependents: { ...legacyDepsBase, unresolvedAliases: 0 } as unknown as typeof brief.dependents,
+  };
+  const legacyFullHtml = renderComic(legacyFull);
+  const legacyFullMd = renderMarkdown(legacyFull);
+  assert.match(legacyFullHtml, /No file outside this change imports what it changed\./);
+  assert.equal(legacyFullMd.includes("aliases or packages Gutter can't resolve yet"), false);
+
+  const legacyPartial = {
+    ...structuredClone(brief),
+    dependents: { ...legacyDepsBase, unresolvedAliases: 2 } as unknown as typeof brief.dependents,
+  };
+  const legacyPartialHtml = renderComic(legacyPartial);
+  const legacyPartialMd = renderMarkdown(legacyPartial);
+  assert.match(legacyPartialHtml, /2 imports use aliases or packages Gutter can&#39;t resolve yet/);
+  assert.match(legacyPartialMd, /2 imports use aliases or packages Gutter can't resolve yet/);
 });

@@ -83,9 +83,11 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
 
   // What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted);
-  const aliases = brief.dependents.unresolvedAliases ?? 0;
+  const uCount = brief.dependents.unresolved?.count ?? 0;
+  const isPartial = brief.dependents.coverage === 'partial' || uCount > 0;
+  const partialSentence = `${plural(uCount, 'import')} ${uCount === 1 ? 'uses' : 'use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
   if (deps.length) {
-    out.push(`<details><summary><b>What it touches</b> · ${plural(deps.length, 'changed file')} with importers outside this PR${aliases > 0 ? ' (partial)' : ''}</summary>`, '');
+    out.push(`<details><summary><b>What it touches</b> · ${plural(deps.length, 'changed file')} with importers outside this PR${isPartial ? ' (partial)' : ''}</summary>`, '');
     for (const d of deps.slice(0, 8)) {
       const shown = d.untouchedImporters.length ? d.untouchedImporters : d.changedImporters;
       const list = shown.slice(0, 4).map(fileLink).join(', ');
@@ -94,8 +96,9 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
     }
     out.push('', '</details>', '');
   }
-  if (aliases > 0) {
-    out.push(`<sub>Import scan is partial: ${plural(aliases, 'path-alias import')} (e.g. \`@/…\`) not resolved; only relative imports were checked.</sub>`, '');
+  if (isPartial) {
+    const prefix = deps.length === 0 ? 'No importers found through relative imports. ' : '';
+    out.push(`<sub>${prefix}${partialSentence}</sub>`, '');
   }
   if (brief.dependents.unchecked.length) {
     out.push(`<sub>Imports not analyzed for ${plural(brief.dependents.unchecked.length, 'file')} (language not supported yet).</sub>`, '');
