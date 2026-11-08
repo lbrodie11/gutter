@@ -5,7 +5,7 @@ This guide covers how Gutter releases are built, tagged, published to npm, and l
 ## Overview
 
 - **npm package:** `gutter-brief` (CLI binary: `gutter`)
-- **GitHub Action:** `lbrodie11/gutter@v0` (composite action running `dist/action/main.js` on Node.js ≥ 20)
+- **GitHub Action:** `lbrodie11/gutter@v0` (composite action running `dist/action/main.js` on Node.js ≥ 22)
 - **Source branch (`main`):** `dist/` is gitignored on `main`.
 - **Release tags (`vX.Y.Z` and `v0`):** `.github/workflows/release.yml` builds `dist/`, commits `dist/` on a detached HEAD, moves `vX.Y.Z` and the floating major tag (`v0`) to that built commit, publishes `gutter-brief` to npm with OIDC provenance, and creates the GitHub Release from `CHANGELOG.md`.
 

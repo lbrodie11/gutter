@@ -22,9 +22,9 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0   # full history so Repo Archaeology can mine co-change
-      # Optional: GitHub-hosted runners already include Node.js >= 20, which runs
+      # Optional: GitHub-hosted runners already include Node.js >= 22, which runs
       # Gutter's prebuilt dist/ directly. Add actions/setup-node only if your
-      # runner lacks Node.js or you want to pin a specific version.
+      # runner lacks Node.js >= 22 or you want to pin a specific version.
       - uses: lbrodie11/gutter@v0
         # with:
         #   post: auto          # auto (skip quiet PRs) | always | never

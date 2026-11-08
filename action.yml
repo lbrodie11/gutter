@@ -86,13 +86,13 @@ runs:
           fi
         }
         if ! command -v node >/dev/null 2>&1; then
-          echo "::warning::Gutter needs Node.js >= 20 on PATH (none found). Add actions/setup-node or use a runner with Node.js >= 20."
+          echo "::warning::Gutter needs Node.js >= 22 on PATH (none found). Add actions/setup-node or use a runner with Node.js >= 22."
           set_out status error
           exit 0
         fi
         NODE_MAJOR=$(NODE_OPTIONS="" node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)
-        if [ "$NODE_MAJOR" -lt 20 ]; then
-          echo "::warning::Gutter needs Node.js >= 20 on PATH (found $(node -v 2>/dev/null || echo 'unknown'))."
+        if [ "$NODE_MAJOR" -lt 22 ]; then
+          echo "::warning::Gutter needs Node.js >= 22 on PATH (found $(node -v 2>/dev/null || echo 'unknown'))."
           set_out status error
           exit 0
         fi

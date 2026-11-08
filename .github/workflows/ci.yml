@@ -25,20 +25,10 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-
-  node20-smoke:
-    name: test (ubuntu-24.04, 20 built dist)
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
-      - name: Smoke test built CLI on Node 20
+      - name: Smoke test built CLI (dist/cli.js)
         shell: bash
         run: |
+          node dist/cli.js --version
           TMP_REPO=$(mktemp -d)
           cd "$TMP_REPO"
           git init -q -b main

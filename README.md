@@ -24,7 +24,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      # Optional: GitHub-hosted runners already include Node.js >= 20, which runs
+      # Optional: GitHub-hosted runners already include Node.js >= 22, which runs
       # Gutter's prebuilt dist/ directly. Add actions/setup-node only if you want
       # to pin a specific Node.js version.
       - uses: lbrodie11/gutter@v0
@@ -123,7 +123,7 @@ To help reviewers calibrate trust on *their specific repository*, Gutter runs Re
 
 ### Option 1 · Run locally from source (works today)
 
-Built `dist/` runs on **Node.js ≥ 20** (and `git`).
+Built `dist/` runs on **Node.js ≥ 22** (and `git`).
 
 ```bash
 # 1. Clone and build Gutter
@@ -195,12 +195,12 @@ repo-archaeology       ┘
 
 ```bash
 npm ci
-npm test          # node:test (requires Node.js >= 22.6 for native .ts type stripping)
+npm test          # node:test (runs .ts sources directly on Node.js >= 22.6)
 npm run typecheck
-npm run build     # compiles dist/ (built CLI and Action run on Node.js >= 20)
+npm run build     # compiles dist/ (built CLI and Action run on Node.js >= 22 without experimental flags)
 ```
 
-- **Runtime requirement (built `dist/`):** Node.js ≥ 20 (`engines.node: ">=20"`), zero runtime dependencies.
+- **Runtime requirement (built `dist/`):** Node.js ≥ 22 (`engines.node: ">=22"`), zero runtime dependencies.
 - **Development & test requirement:** Node.js ≥ 22.6 (TypeScript sources in `src/` and `test/` run directly via `--experimental-strip-types`).
 
 ## Documentation & Community
