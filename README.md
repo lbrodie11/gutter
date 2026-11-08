@@ -2,9 +2,33 @@
 
 **Understand a pull request before you review it.**
 
-An evidence-backed change briefing that shows what changed, what depends on it, and which historically related files deserve another look — with receipts.
+Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, and which historically related files deserve another look — with clickable commit receipts.
 
 `Experimental · v0.1.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+
+```yaml
+# .github/workflows/gutter.yml
+name: Gutter
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  brief:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      # Optional: GitHub-hosted runners already include Node.js >= 20, which runs
+      # Gutter's prebuilt dist/ directly. Add actions/setup-node only if you want
+      # to pin a specific Node.js version.
+      - uses: lbrodie11/gutter@v0
+```
 
 ---
 
@@ -97,11 +121,9 @@ To help reviewers calibrate trust on *their specific repository*, Gutter runs Re
 
 ## Quick start
 
-> **Release status (`v0.1.0` · experimental):** This repository is currently in pre-launch validation ([M0/M1 on the roadmap](docs/ROADMAP.md)). Its co-change engine [`repo-archaeology@0.3.0`](https://www.npmjs.com/package/repo-archaeology) is published on npm, and the `v0` / `v0.1.0` git tags are pushed. Until `gutter-brief` is published to npm and this repository is made public, run Gutter locally from a clone (Option 1) or reference the Action from workflows with access to this repository (Option 3).
-
 ### Option 1 · Run locally from source (works today)
 
-Requires **Node.js ≥ 22.6** and **git**.
+Built `dist/` runs on **Node.js ≥ 20** (and `git`).
 
 ```bash
 # 1. Clone and build Gutter
@@ -118,7 +140,7 @@ node /tmp/gutter/dist/cli.js brief --base main
 #   .gutter/gutter.html   the self-contained six-panel page
 ```
 
-### Option 2 · CLI (once `gutter-brief` is published to npm)
+### Option 2 · CLI (`gutter-brief` on npm, binary `gutter`)
 
 ```bash
 npx gutter-brief brief --base main
@@ -128,30 +150,7 @@ npx gutter-brief render .gutter/gutter.json --format html > page.html
 
 Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
 
-### Option 3 · GitHub Action
-
-```yaml
-# .github/workflows/gutter.yml
-name: Gutter
-on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-permissions:
-  contents: read
-  pull-requests: write
-jobs:
-  brief:
-    if: ${{ !github.event.pull_request.draft }}
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-      - uses: actions/setup-node@v6
-        with: { node-version: 22 }
-      - uses: lbrodie11/gutter@v0
-```
+### Option 3 · GitHub Action (`lbrodie11/gutter@v0`)
 
 | Input | Default | Behavior |
 |---|---|---|
@@ -192,9 +191,22 @@ repo-archaeology       ┘
 - **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty). When co-change history is enabled (the default), Gutter invokes [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) via `npx --yes repo-archaeology@^0.3.0` (or a pre-installed binary via `--ra-bin` / `GUTTER_RA_BIN`). Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
 - **Security:** Designed for `pull_request`, **never `pull_request_target`**. All PR-derived text is escaped per output format; links are built only from `http(s)` base URLs and hex SHAs; git is invoked strictly with argument vectors. See [SECURITY.md](SECURITY.md) for the full threat model.
 
+## Development
+
+```bash
+npm ci
+npm test          # node:test (requires Node.js >= 22.6 for native .ts type stripping)
+npm run typecheck
+npm run build     # compiles dist/ (built CLI and Action run on Node.js >= 20)
+```
+
+- **Runtime requirement (built `dist/`):** Node.js ≥ 20 (`engines.node: ">=20"`), zero runtime dependencies.
+- **Development & test requirement:** Node.js ≥ 22.6 (TypeScript sources in `src/` and `test/` run directly via `--experimental-strip-types`).
+
 ## Documentation & Community
 
 - [Architecture & Product Decisions (`docs/DECISIONS.md`)](docs/DECISIONS.md)
+- [Release Checklist & Marketplace Guide (`docs/RELEASING.md`)](docs/RELEASING.md)
 - [Validation Roadmap (`docs/ROADMAP.md`)](docs/ROADMAP.md)
 - [JSON Schema (`schema/gutter.schema.json`)](schema/gutter.schema.json)
 - [Contributing Guide (`CONTRIBUTING.md`)](CONTRIBUTING.md)

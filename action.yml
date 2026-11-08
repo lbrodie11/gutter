@@ -80,17 +80,32 @@ runs:
         INPUT_ARCHAEOLOGY_VERSION: ${{ inputs.archaeology-version }}
         INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
       run: |
-        if [ -f "$GITHUB_ACTION_PATH/dist/action/main.js" ]; then
-          NODE_OPTIONS="" node "$GITHUB_ACTION_PATH/dist/action/main.js"
-        elif NODE_OPTIONS="" node --experimental-strip-types -e "" >/dev/null 2>&1; then
-          NODE_OPTIONS="" node --experimental-strip-types "$GITHUB_ACTION_PATH/src/action/main.ts"
-        else
-          echo "::warning::Gutter needs Node.js >= 22.6 on PATH (found $(node -v 2>/dev/null || echo 'none'))."
+        set_out() {
+          if [ -n "${GITHUB_OUTPUT:-}" ]; then
+            echo "$1=$2" >> "$GITHUB_OUTPUT"
+          fi
+        }
+        if ! command -v node >/dev/null 2>&1; then
+          echo "::warning::Gutter needs Node.js >= 20 on PATH (none found). Add actions/setup-node or use a runner with Node.js >= 20."
+          set_out status error
+          exit 0
         fi
+        NODE_MAJOR=$(NODE_OPTIONS="" node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)
+        if [ "$NODE_MAJOR" -lt 20 ]; then
+          echo "::warning::Gutter needs Node.js >= 20 on PATH (found $(node -v 2>/dev/null || echo 'unknown'))."
+          set_out status error
+          exit 0
+        fi
+        if [ ! -f "$GITHUB_ACTION_PATH/dist/action/main.js" ]; then
+          echo "::warning::Gutter's built dist/action/main.js was not found in $GITHUB_ACTION_PATH. Reference a release tag (e.g. lbrodie11/gutter@v0) or run 'npm run build' first."
+          set_out status error
+          exit 0
+        fi
+        NODE_OPTIONS="" node "$GITHUB_ACTION_PATH/dist/action/main.js"
 
     - name: Upload the comic page
       if: ${{ inputs.upload-page == 'true' && steps.brief.outputs.status == 'analyzed' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
       with:
         name: gutter-brief
         path: |

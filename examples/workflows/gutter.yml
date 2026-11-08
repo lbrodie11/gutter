@@ -1,28 +1,33 @@
-# Copy to .github/workflows/gutter.yml in your repository.
+# Copy into .github/workflows/gutter.yml in your repository.
+#
+# Why pull_request and not pull_request_target:
+#   Gutter parses PR files as text and never executes code from the PR, but running
+#   under pull_request guarantees untrusted forks never get write tokens or secrets.
 name: Gutter
 
 on:
-  pull_request:          # never pull_request_target: Gutter must not run with write access on fork code
+  pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
-  pull-requests: write   # to post/update one sticky comment
-
-concurrency:
-  group: gutter-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  pull-requests: write
 
 jobs:
   brief:
     if: ${{ !github.event.pull_request.draft }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0   # co-change history needs the full log
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
+          fetch-depth: 0   # full history so Repo Archaeology can mine co-change
+      # Optional: GitHub-hosted runners already include Node.js >= 20, which runs
+      # Gutter's prebuilt dist/ directly. Add actions/setup-node only if your
+      # runner lacks Node.js or you want to pin a specific version.
       - uses: lbrodie11/gutter@v0
+        # with:
+        #   post: auto          # auto (skip quiet PRs) | always | never
+        #   history: 'true'     # Repo Archaeology co-change
+        #   calibrate: 'true'   # per-repo backtest in the footer
+        #   max-forgotten: '3'
