@@ -15,9 +15,11 @@ node dist/cli.js render docs/example/gutter.json --format html > docs/example/gu
 Requires `git`, Node.js ≥ 22, and `repo-archaeology@0.3.0`:
 
 ```bash
-# Run the reproduction script (clones honojs/hono at eb754bd5ef22c63f1634a4c374a86be086f85710,
+# Run the reproduction script (fetches honojs/hono at eb754bd5ef22c63f1634a4c374a86be086f85710,
 # creates branch feat/serve-static-cache-control with the 2-file cacheControl edit,
-# and runs `gutter brief` with repo-archaeology@0.3.0):
+# runs `gutter brief` with repo-archaeology@0.3.0, and rewrites change.headSha to
+# eb754bd5ef22c63f1634a4c374a86be086f85710 and change.commits[0].sha to "local-sim"
+# before re-rendering brief.md and gutter.html so GitHub blob links resolve upstream):
 bash docs/example/reproduce.sh /tmp/hono-repro
 ```
 

@@ -18,12 +18,14 @@ import type { ChangeStructure, DependentsEntry, DependentsLayer } from '../contr
 const SCRIPT_EXT = /\.(ts|tsx|mts|cts|js|jsx|mjs|cjs)$/;
 const RESOLVE_EXTS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs'];
 const STATIC_IMPORT_EXPORT =
-  /(?:^|[;\r\n])[ \t]*(?:import|export)\s+(?:type\s+)?(?:(?:\*\s+as\s+[A-Za-z0-9_$]+|[A-Za-z0-9_$]+(?:\s*,\s*(?:\*\s+as\s+[A-Za-z0-9_$]+|\{[^{};'"`]*\}))?|\{[^{};'"`]*\}|\*)\s+from\s*)?(['"])([^'"\r\n]+)\1/gm;
+  /(?:^|[;{}\r\n])[ \t]*(?:import|export)(?:\s+|\s*(?=[{*'"]))(?:type(?:\s+|\s*(?=[{*])))?(?:(?:\*\s*as\s+[A-Za-z0-9_$]+|[A-Za-z0-9_$]+(?:\s*,\s*(?:\*\s*as\s+[A-Za-z0-9_$]+|\{[^{};'"`]*\}))?|\{[^{};'"`]*\}|\*)(?:\s+|(?<=[}*]))from\s*)?(['"])([^'"\r\n]+)\1/gm;
 const DYNAMIC_IMPORT_REQUIRE = /(?<![.\w$'"`])\b(?:import|require)\s*\(\s*(['"])([^'"\r\n]+)\1\s*\)/g;
 const ALIAS_SPECIFIER = /^(?:@\/|~~?\/|#|\$lib\/)/;
 const EXTERNAL_PROTOCOL = /^(?:node|bun|deno|npm|jsr|cloudflare|virtual|https?|data):|^\$(?:app|env|service-worker)(?:\/|$)/;
 const VALID_SPECIFIER =
-  /^(?:\.\.?\/[A-Za-z0-9._/@~$-]*|#[A-Za-z0-9._/@$-]+|(?:~|~~|\$[A-Za-z0-9_-]*)\/[A-Za-z0-9._/@$-]+|@[A-Za-z0-9._-]*\/[A-Za-z0-9._/@$-]+|[A-Za-z0-9._-]+:[A-Za-z0-9._/@$-]+|[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._/@$-]+)*)$/;
+  /^(?:\.\.?\/[A-Za-z0-9._/@~$()[\]-]*|#[A-Za-z0-9._/@$()[\]-]+|(?:~|~~|\$[A-Za-z0-9_-]*)\/[A-Za-z0-9._/@$()[\]-]+|@[A-Za-z0-9._-]*\/[A-Za-z0-9._/@$()[\]-]+|[A-Za-z0-9._-]+:[A-Za-z0-9._/@$()[\]-]+|[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._/@$()[\]-]+)*)$/;
+const STRING_OR_COMMENT =
+  /'(?:\\[\s\S]|[^'\\\r\n])*'|"(?:\\[\s\S]|[^"\\\r\n])*"|`(?:\\[\s\S]|[^`\\])*`|(\/\*[\s\S]*?\*\/|\/\/[^\r\n]*)/g;
 const MAX_SPECIFIER_LEN = 160;
 const MAX_SAMPLE_LEN = 200;
 const MAX_FILE_BYTES = 512 * 1024;
@@ -34,14 +36,33 @@ const MAX_UNRESOLVED_SAMPLES = 5;
 export function isValidSpecifier(spec: string): boolean {
   if (!spec || spec.length > MAX_SPECIFIER_LEN) return false;
   if (/[\s\0-\x1f]/.test(spec)) return false;
+  if (spec.startsWith('./') || spec.startsWith('../') || spec === '.' || spec === '..') return true;
   return VALID_SPECIFIER.test(spec);
 }
 
-/** Strip block and line comments while keeping line structure intact. */
+/** Strip block and line comments while preserving string literals (such as `'packages/*'`) and line structure. */
 function stripComments(source: string): string {
-  return source
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\r\n]/g, ' '))
-    .replace(/(^|[^:\\])\/\/[^\r\n]*/gm, '$1');
+  return source.replace(STRING_OR_COMMENT, (match, comment: string | undefined) =>
+    comment ? comment.replace(/[^\r\n]/g, ' ') : match,
+  );
+}
+
+/** True when `linePrefix` ends inside an unclosed single-line quote (`'` or `"`). */
+function isInsideQuote(linePrefix: string): boolean {
+  let quote: string | null = null;
+  for (let i = 0; i < linePrefix.length; i++) {
+    const ch = linePrefix[i]!;
+    if (ch === '\\') {
+      i++;
+      continue;
+    }
+    if (quote === null) {
+      if (ch === "'" || ch === '"' || ch === '`') quote = ch;
+    } else if (ch === quote) {
+      quote = null;
+    }
+  }
+  return quote !== null;
 }
 
 export function extractSpecifiers(source: string): string[] {
@@ -52,7 +73,7 @@ export function extractSpecifiers(source: string): string[] {
     const idx = m.index ?? 0;
     const lineStart = cleaned.lastIndexOf('\n', idx) + 1;
     const linePrefix = cleaned.slice(lineStart, idx);
-    if (/['"`]/.test(linePrefix)) continue;
+    if (isInsideQuote(linePrefix)) continue;
     if (spec && isValidSpecifier(spec)) out.push(spec);
   }
   for (const m of cleaned.matchAll(DYNAMIC_IMPORT_REQUIRE)) {
@@ -60,8 +81,7 @@ export function extractSpecifiers(source: string): string[] {
     const idx = m.index ?? 0;
     const lineStart = cleaned.lastIndexOf('\n', idx) + 1;
     const linePrefix = cleaned.slice(lineStart, idx);
-    // Skip matches inside single-line quoted fixture strings (e.g. `'file.ts': "require('x')"`).
-    if (/['"`]/.test(linePrefix)) continue;
+    if (isInsideQuote(linePrefix)) continue;
     if (spec && isValidSpecifier(spec)) out.push(spec);
   }
   return out;

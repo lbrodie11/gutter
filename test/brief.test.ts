@@ -1,9 +1,13 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { buildBrief, assertEvidenceResolves } from '../src/brief.ts';
 import { buildDependents, classifyNonRelativeSpecifier, extractSpecifiers } from '../src/evidence/imports.ts';
 import type { GutterBrief } from '../src/contract.ts';
 import { TempRepo, lines, raBacktestFixture, raDiffFixture } from './helpers.ts';
+
+const GUTTER_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 let repo: TempRepo;
 let brief: GutterBrief;
@@ -183,20 +187,34 @@ test('builtin-prefixed tsconfig alias (stream/*) is detected as unresolved rathe
   }
 });
 
-test('extractSpecifiers ignores import words in strings, comments, and union literals', () => {
+test('extractSpecifiers handles inline dynamic imports, require chains, Next.js route paths, and ignores strings/comments', () => {
   const sample = [
     "// import 'commented-out'",
     "/* import 'block-commented' */",
+    "const workspaces = ['packages/*', 'apps/*'];",
     "type Kind = 'broken-import' | 'forgotten-companion';",
     "const msg = `${plural(n, 'import')} ${n === 1 ? 'uses' : 'use'} aliases`;",
     "const obj = { kind: 'broken-import', question: `from 'not-an-import'` };",
     "const inline = \"import 'node:fs'; import '@/fake'\";",
     "import { readFileSync } from 'node:fs';",
+    "import { x } from '../[id]/utils';",
+    "import Layout from './(marketing)/layout';",
+    "const route = { path: 'admin', component: () => import('./Admin') };",
+    "jest.mock('./api', () => require('./api.mock'));",
+    "const a = require('./a'), b = require('./b');",
   ].join('\n');
-  assert.deepEqual(extractSpecifiers(sample), ['node:fs']);
+  assert.deepEqual(extractSpecifiers(sample), [
+    'node:fs',
+    '../[id]/utils',
+    './(marketing)/layout',
+    './Admin',
+    './api.mock',
+    './a',
+    './b',
+  ]);
 
   // Dogfood check: scanning all tracked .ts files in Gutter itself finds zero unresolved imports
-  const selfDeps = buildDependents(process.cwd(), {
+  const selfDeps = buildDependents(GUTTER_ROOT, {
     files: [
       {
         path: 'src/contract.ts',
