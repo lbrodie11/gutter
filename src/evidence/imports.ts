@@ -91,21 +91,23 @@ export function buildDependents(root: string, changes: ChangeStructure): Depende
 
   let scanned = 0;
   let unresolvedAliases = 0;
-  for (const file of tracked.slice(0, MAX_FILES)) {
-    const abs = join(root, file);
-    if (!existsSync(abs)) continue;
-    const st = statSync(abs);
-    if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
-    scanned++;
-    const src = readFileSync(abs, 'utf8');
-    for (const spec of extractSpecifiers(src)) {
-      const hit = resolveRelative(file, spec, known, deleted);
-      if (!hit) {
-        if (isAliasSpecifier(spec, aliasPrefixes)) unresolvedAliases++;
-        continue;
+  if (importersOf.size > 0) {
+    for (const file of tracked.slice(0, MAX_FILES)) {
+      const abs = join(root, file);
+      if (!existsSync(abs)) continue;
+      const st = statSync(abs);
+      if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
+      scanned++;
+      const src = readFileSync(abs, 'utf8');
+      for (const spec of extractSpecifiers(src)) {
+        const hit = resolveRelative(file, spec, known, deleted);
+        if (!hit) {
+          if (isAliasSpecifier(spec, aliasPrefixes)) unresolvedAliases++;
+          continue;
+        }
+        if (hit === file) continue;
+        importersOf.get(hit)?.add(file);
       }
-      if (hit === file) continue;
-      importersOf.get(hit)?.add(file);
     }
   }
 

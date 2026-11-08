@@ -112,11 +112,12 @@ test('the brief never contains absolute local paths', () => {
 });
 
 test('counts unresolved path-alias imports so panel 3 never silently claims no dependents', () => {
+  const imp = (s: string) => `import '${s}';\n`;
   const r = new TempRepo()
     .write({
       'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { '@app/*': ['./src/*'] } } }),
       'src/components/x.ts': 'export const x = 1;\n',
-      'src/page.ts': "import { x } from '@/components/x';\nimport { y } from '@app/components/x';\nimport { z } from '~/lib/z';\nimport { w } from '#internal/w';\nimport 'react';\n",
+      'src/page.ts': imp('@/components/x') + imp('@app/components/x') + imp('~/lib/z') + imp('#internal/w') + imp('react'),
     })
     .commit('init')
     .branch('alias-change')

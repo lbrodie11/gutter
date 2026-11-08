@@ -88,11 +88,12 @@ test('a small, unremarkable change produces a one-line quiet comment', () => {
 });
 
 test('panel 3 marks itself partial instead of claiming no dependents when alias imports exist', () => {
+  const aliasSpec = '@/components/x';
   const r = new TempRepo()
     .write({
       'src/components/x.ts': 'export const x = 1;\n',
       'src/components/x.test.ts': 'export const t = 1;\n',
-      'src/app/page.ts': "import { x } from '@/components/x';\n",
+      'src/app/page.ts': `import '${aliasSpec}';\n`,
     })
     .commit('init')
     .branch('next-app');
