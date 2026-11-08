@@ -10,7 +10,7 @@ import { receiptsFor } from './receipts.ts';
  * grammar. Same evidence as the Markdown comment, laid out for a 60-second read.
  *
  * Reading order = review order:
- *   1 Intent → 2 What changed → 3 What it touches → 4 Likely forgotten → 5 Tests → 6 Check these
+ *   C-01 Intent → C-02 What changed → C-03 What it touches → C-04 Likely forgotten → C-05 Tests → C-06 Check these
  */
 
 export function renderComic(brief: GutterBrief): string {
@@ -35,19 +35,21 @@ export function renderComic(brief: GutterBrief): string {
 
   const panels: string[] = [];
   let cut = 0;
-  const panel = (n: number, title: string, body: string, opts: { area: string; hero?: boolean }) =>
-    `<section class="panel area-${opts.area}${opts.hero ? ' hero' : ''}" data-cut="${cut++}" aria-labelledby="p${n}">
-  <h2 id="p${n}" class="cap${opts.hero ? ' marker' : ''}"><span class="num">${n}</span> ${html(title)}</h2>
+  const panel = (n: number, title: string, body: string, opts: { area: string; hero?: boolean }) => {
+    const cutId = `C-${String(++cut).padStart(2, '0')}`;
+    return `<section class="panel area-${opts.area}${opts.hero ? ' hero' : ''}" data-cut="${cutId}" aria-labelledby="p${n}">
+  <h2 id="p${n}" class="cap${opts.hero ? ' marker' : ''}"><span class="num">${cutId}</span> ${html(title)}</h2>
   ${body}
 </section>`;
+  };
 
-  // 1 · Intent
+  // C-01 · Intent
   const commits = change.commits.slice(0, 5).map((c) => `<li>${commitLink(c.sha)} ${html(c.subject)}</li>`).join('');
   panels.push(panel(1, 'Intent', `
   <div class="balloon"><p class="said">${html(change.title)}</p>${change.intent ? `<p class="aside">${html(change.intent)}</p>` : ''}</div>
   ${commits ? `<ol class="commits" aria-label="Commits in this change">${commits}</ol>` : ''}`, { area: 'intent' }));
 
-  // 2 · What changed
+  // C-02 · What changed
   const maxChurn = Math.max(1, ...changes.modules.map((m) => m.additions + m.deletions));
   const rows = changes.modules.slice(0, 8).map((m) => {
     const churn = m.additions + m.deletions;
@@ -62,10 +64,12 @@ export function renderComic(brief: GutterBrief): string {
   <ul class="modules" aria-label="Churn by module, darker tone means more lines changed">${rows}</ul>
   ${changes.modules.length > 8 ? `<p class="small">${changes.modules.length - 8} more modules not shown.</p>` : ''}`, { area: 'changed' }));
 
-  // 3 · What it touches
+  // C-03 · What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted).slice(0, 6);
-  const aliases = brief.dependents.unresolvedAliases ?? 0;
+  const isPartial = brief.dependents.coverage === 'partial';
+  const uCount = brief.dependents.unresolved.count;
   const hasAnalyzedTargets = changes.files.some((f) => f.language === 'typescript' || f.language === 'javascript');
+  const partialSentence = `${uCount} import${uCount === 1 ? ' uses' : 's use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
   const depBody = deps.length
     ? `<ul class="deps">${deps.map((d) => {
         const shown = d.untouchedImporters.length ? d.untouchedImporters : d.changedImporters;
@@ -76,20 +80,20 @@ export function renderComic(brief: GutterBrief): string {
         <span class="small">${label}</span>
         <span class="importers">${shown.slice(0, 3).map((p) => fileLink(p)).join(' ')}${shown.length > 3 ? ` <span class="small">+${shown.length - 3}</span>` : ''}</span></li>`;
       }).join('')}</ul>`
-    : aliases > 0
-      ? `<p class="quiet-line"><span class="stamp">partial</span> No relative imports outside this change point at what it changed, but ${aliases} path-alias import${aliases === 1 ? ' was' : 's were'} not resolved.</p>`
+    : isPartial
+      ? `<p class="quiet-line"><span class="stamp">partial</span> No importers found through relative imports. ${html(partialSentence)}</p>`
       : !hasAnalyzedTargets && brief.dependents.unchecked.length > 0
         ? ''
         : `<p class="quiet-line">No file outside this change imports what it changed.</p>`;
-  const aliasNote = deps.length && aliases > 0
-    ? `<p class="small"><span class="stamp">partial</span> ${aliases} path-alias import${aliases === 1 ? '' : 's'} (e.g. <code class="path">@/…</code>) not resolved; only relative imports are shown.</p>`
+  const partialNote = deps.length && isPartial
+    ? `<p class="small"><span class="stamp">partial</span> ${html(partialSentence)}</p>`
     : '';
   const unchecked = brief.dependents.unchecked.length
     ? `<p class="small">Imports not analyzed for ${brief.dependents.unchecked.length} file${brief.dependents.unchecked.length === 1 ? '' : 's'} (language not supported yet).</p>`
     : '';
-  panels.push(panel(3, 'What it touches', depBody + aliasNote + unchecked, { area: 'touches' }));
+  panels.push(panel(3, 'What it touches', depBody + partialNote + unchecked, { area: 'touches' }));
 
-  // 4 · Likely forgotten (hero)
+  // C-04 · Likely forgotten (hero)
   const fg = brief.forgotten;
   const wires = fg.items.map((f) => {
     const receipts = f.evidence.slice(0, 3).map((e) => `<li>${commitLink(e.sha)} <span class="small">${html(e.date)}</span> ${html(e.subject)}${e.automated ? ' <span class="stamp">bot</span>' : ''}</li>`).join('');
@@ -113,7 +117,7 @@ export function renderComic(brief: GutterBrief): string {
     : `<div class="balloon thought"><p class="said">${html(fg.note ?? 'Nothing that usually changes with these files was left out.')}</p></div>`;
   panels.push(panel(4, 'Likely forgotten', fgBody, { area: 'forgotten', hero: fg.items.length > 0 }));
 
-  // 5 · Tests
+  // C-05 · Tests
   const t = brief.tests;
   const nChanged = t.filter((x) => x.status === 'test-changed').length;
   const untouched = t.filter((x) => x.status === 'test-untouched');
@@ -126,7 +130,7 @@ export function renderComic(brief: GutterBrief): string {
   </dl>
   ${untouched.length ? `<ul class="deps">${untouched.slice(0, 4).map((x) => `<li id="${html(x.id)}">${fileLink(x.source)} <span class="small">→</span> ${fileLink(x.candidates[0]!.path, 'dashed')}</li>`).join('')}</ul>` : ''}`, { area: 'tests' }));
 
-  // 6 · Check these — only link to evidence that is actually on the page
+  // C-06 · Check these — only link to evidence that is actually on the page
   const rendered = new Set([...panels.join('').matchAll(/ id="([^"]+)"/g)].map((m) => m[1]));
   const checks = brief.checklist.map((c) => {
     const receipts = c.evidence.flatMap((id) => receiptsFor(brief, id, 2)).map((r) => (r.kind === 'commit' ? commitLink(r.ref) : fileLink(r.ref))).join(' ');
@@ -240,8 +244,8 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .area-intent{grid-area:intent}.area-changed{grid-area:changed}.area-touches{grid-area:touches}.area-forgotten{grid-area:forgotten}.area-tests{grid-area:tests}.area-checks{grid-area:checks}
 .page.quiet .area-intent{grid-column:span 7}.page.quiet .area-changed{grid-column:span 5}
 }
-.cap{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px -16px;padding:5px 12px 5px 0;background:var(--f-ink);color:var(--f-sheet);font-family:var(--font-f-display);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
-.cap .num{display:inline-block;min-width:28px;text-align:center;border-right:1px solid currentColor;padding:0 6px}
+.cap{display:inline-flex;align-items:center;margin:0 0 14px -16px;padding:5px 12px 5px 0;background:var(--f-ink);color:var(--f-sheet);font-family:var(--font-f-display);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
+.cap .num{display:inline-block;min-width:28px;text-align:center;border-right:1px solid currentColor;padding:0 8px;margin-right:8px}
 .cap.marker{background:var(--f-marker);color:var(--f-marker-ink)}
 .hero{border-width:calc(var(--f-stroke) * 1.6)}
 .balloon{position:relative;border:var(--f-stroke) solid var(--f-rule);border-radius:22px;padding:12px 16px;margin:4px 0 18px;background:var(--f-panel)}
@@ -254,8 +258,8 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .commits li,.receipts li{overflow-wrap:anywhere}
 .sha{font-family:var(--font-f-mono);font-size:12px}
 .stat{margin:0 0 10px;font-family:var(--font-f-mono);font-size:13px}
-.modules{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.modules li{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) auto;align-items:center;gap:10px}
+.modules{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-pair)}
+.modules li{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) auto;align-items:center;gap:var(--f-gutter-pair)}
 .mod{font-family:var(--font-f-mono);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar{width:100%;height:14px;display:block}
 .bar-ink{fill:none;stroke:var(--f-rule);stroke-width:1.2;vector-effect:non-scaling-stroke}
@@ -263,15 +267,17 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .path{font-family:var(--font-f-mono);font-size:12px;padding:1px 5px;-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.9;border:1px solid var(--f-rule);background:var(--f-panel);overflow-wrap:anywhere}
 .path.dashed{border-style:dashed}
 .path.solid{border-width:2px}
-.deps{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.deps li{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
-.importers{display:flex;flex-wrap:wrap;gap:4px}
+.deps{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-pair)}
+.deps li{display:flex;flex-wrap:wrap;align-items:baseline}
+.deps li>*{margin:2px 6px 2px 0}
+.importers{display:inline-flex;flex-wrap:wrap}
+.importers>*{margin:1px 4px 1px 0}
 .stamp{font-family:var(--font-f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 5px;transform:rotate(-3deg);display:inline-block}
 .small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
 .quiet-line{margin:0;color:var(--f-ink-2)}
-.wires{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.wires{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-scene)}
 .wire-row+.wire-row{border-top:1px solid var(--f-grid);padding-top:14px}
-.wire{display:grid;grid-template-columns:auto minmax(28px,1fr) auto;align-items:center;gap:8px}
+.wire{display:grid;grid-template-columns:auto minmax(28px,1fr) auto;align-items:center;gap:var(--f-gutter-pair)}
 .wire > a,.wire > code{min-width:0}
 .ghost{width:100%;height:12px}
 .ghost line{stroke:var(--f-ink);stroke-width:2.5;stroke-dasharray:6 5;vector-effect:non-scaling-stroke}
@@ -283,34 +289,85 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .metrics div{border:1.5px solid var(--f-rule);padding:6px 8px}
 .metrics dt{font-family:var(--font-f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--f-ink-2)}
 .metrics dd{margin:0;font-family:var(--font-f-display);font-size:28px;line-height:1.1}
-.checks{margin:0;padding-left:22px;display:grid;gap:14px}
+.checks{margin:0;padding-left:22px;display:grid;gap:var(--f-gutter-pair)}
 @media (min-width:860px){.checks{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--f-gutter-change)}}
 .checks p{margin:0}
 .jump{font-size:12px}
-.colophon{margin-top:var(--f-gutter-scene);border-top:var(--f-stroke) solid var(--f-rule);padding-top:var(--f-gutter-pair);display:grid;gap:6px}
+.colophon{margin-top:var(--f-gutter-scene);border-top:var(--f-stroke) solid var(--f-rule);padding-top:var(--f-gutter-pair);display:grid;gap:0}
+.colophon>*+*{margin-top:6px}
 .cal p{margin:0 0 6px;font-size:13px}
 .gauge{width:min(320px,100%);height:10px;display:block}
 @media (max-width:520px){.sheet{padding:var(--f-gutter-pair)}.wordmark{font-size:26px}.wire{grid-template-columns:1fr}.ghost{transform:rotate(90deg);height:12px;width:28px;justify-self:start}}
 @media print{.desk{padding:0}.sheet{box-shadow:none}}
 `;
 
+const LEGAL_GUTTER_VALUES = new Set([
+  '0',
+  '0px',
+  '12px',
+  '20px',
+  '32px',
+  'var(--f-gutter-pair)',
+  'var(--f-gutter-scene)',
+  'var(--f-gutter-change)',
+]);
+
+function isLegalGutterValue(raw: string): boolean {
+  const cleaned = raw.trim().replace(/!important$/i, '').trim();
+  if (!cleaned) return true;
+  if (LEGAL_GUTTER_VALUES.has(cleaned)) return true;
+  const parts = cleaned.match(/var\([^)]+\)|\S+/g) ?? [];
+  return parts.length >= 1 && parts.length <= 2 && parts.every((p) => LEGAL_GUTTER_VALUES.has(p));
+}
+
 /**
- * Design-grammar lint for generated pages, mirroring check-frame12:
- * no color literals or font families outside the token block, no gradients,
- * marker yellow only as a background paired with marker ink.
+ * Design-grammar lint for generated pages, checking 6 FRAME/12 rules:
+ *  1. color-literal  — no hex/rgb/hsl color literals outside the token block
+ *  2. gradient       — no CSS gradients (use SVG screentone patterns)
+ *  3. font-literal   — font-family must reference var(--font-f-*)
+ *  4. marker-misuse  — --f-marker background must pair with --f-marker-ink text
+ *  5. illegal-gutter — gap/row-gap/column-gap/grid-gap must use 0, 12px/pair, 20px/scene, or 32px/change
+ *  6. cut-order      — data-cut attributes and .num captions must be C-01…C-0N in document order
  */
 export function lintPage(page: string): string[] {
   const problems: string[] = [];
   const outsideTokens = page.replace(new RegExp(`<style id="${TOKENS_ID}">[\\s\\S]*?</style>`), '');
   const styles = [...outsideTokens.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1] ?? '').join('\n');
-  for (const m of styles.matchAll(/#[0-9a-f]{3,8}\b/gi)) problems.push(`color-literal: ${m[0]}`);
-  for (const m of styles.matchAll(/\b(rgba?|hsla?)\(/gi)) problems.push(`color-literal: ${m[0]}`);
+  const inlineStyles = [...outsideTokens.matchAll(/\bstyle="([^"]*)"/gi)].map((m) => m[1] ?? '').join('\n');
+  const allStyles = `${styles}\n${inlineStyles}`;
+
+  for (const m of allStyles.matchAll(/#[0-9a-f]{3,8}\b/gi)) problems.push(`color-literal: ${m[0]}`);
+  for (const m of allStyles.matchAll(/\b(rgba?|hsla?|oklch|oklab)\(/gi)) problems.push(`color-literal: ${m[0]}`);
   if (/gradient\(/i.test(outsideTokens)) problems.push('gradient: gradients are forbidden; use screentone patterns');
-  for (const m of styles.matchAll(/font-family:\s*([^;}]+)/g)) {
+  for (const m of allStyles.matchAll(/font-family:\s*([^;}]+)/g)) {
     if (!/^var\(--font-f-/.test(m[1]!.trim())) problems.push(`font-literal: ${m[1]!.trim()}`);
   }
   for (const m of styles.matchAll(/\{[^}]*background:\s*var\(--f-marker\)[^}]*\}/g)) {
     if (!/color:\s*var\(--f-marker-ink\)/.test(m[0])) problems.push('marker-misuse: marker background without --f-marker-ink text');
   }
+  for (const m of allStyles.matchAll(/\b(?:gap|row-gap|column-gap|grid-gap)\s*:\s*([^;}"'\n]+)/gi)) {
+    const val = m[1]!.trim();
+    if (!isLegalGutterValue(val)) {
+      problems.push(`illegal-gutter: ${m[0].trim()}`);
+    }
+  }
+
+  const cuts = [...outsideTokens.matchAll(/\bdata-cut="([^"]*)"/g)].map((m) => m[1] ?? '');
+  const nums = [...outsideTokens.matchAll(/<span class="num">([^<]*)<\/span>/g)].map((m) => m[1] ?? '');
+  if (cuts.length === 0) {
+    problems.push('cut-order: no data-cut panels found');
+  } else {
+    const len = Math.max(cuts.length, nums.length);
+    for (let i = 0; i < len; i++) {
+      const expected = `C-${String(i + 1).padStart(2, '0')}`;
+      if (cuts[i] !== expected) {
+        problems.push(`cut-order: expected data-cut="${expected}" at panel ${i + 1}, got "${cuts[i] ?? ''}"`);
+      }
+      if (nums[i] !== expected) {
+        problems.push(`cut-order: expected .num caption "${expected}" at panel ${i + 1}, got "${nums[i] ?? ''}"`);
+      }
+    }
+  }
+
   return problems;
 }

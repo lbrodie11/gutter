@@ -40,5 +40,6 @@ node "$GUTTER_ROOT/dist/cli.js" brief \
   --title "feat(serve-static): add cacheControl option" \
   --intent "Adds a cacheControl option so static responses can set Cache-Control without custom middleware." \
   --repo-url "https://github.com/honojs/hono" \
+  --ra-spec "0.3.0" \
   --out "$WORK_DIR/.gutter" \
   --print md

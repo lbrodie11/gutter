@@ -24,7 +24,7 @@ The question: **is panel 4 right often enough to be worth a reviewer's attention
 ## M2 · Public beta: GitHub Marketplace Action (~3 weeks)
 
 - [x] Publish `repo-archaeology` ≥ 0.3.0 to npm (Gutter's Action depends on it).
-- [x] Tag `v0` and `v0.1.0` on the repository.
+- [ ] Tag `v0` and `v0.1.0` on the repository.
 - [ ] Publish `gutter-brief` to npm, make the repository public, and list the Action on GitHub Marketplace.
 - [ ] Launch assets: 5 before/after pages on recognizable OSS PRs, a 30-second on-twos screen recording, Show HN.
 - [ ] Feedback loop: 👍/👎 reactions on the sticky comment, read back into per-repo stats.
@@ -44,7 +44,10 @@ The question: **is panel 4 right often enough to be worth a reviewer's attention
 - Docs-drift panel: docs that historically change with a module but didn't.
 - Agent pre-flight skill: an agent produces its own Gutter page before opening the PR, and Gutter checks its claims.
 - Stacked-PR awareness; multi-repo coupling.
-- Optional narration constrained to `gutter.json`.
+
+## Not planned
+
+- **LLM narration or summaries:** Gutter stays deterministic (see [DECISIONS.md #4](DECISIONS.md)). Every line on every surface comes from `git diff`, static code analysis, or repository commit history.
 
 ## Upstream asks
 

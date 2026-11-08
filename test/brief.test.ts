@@ -1,6 +1,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildBrief, assertEvidenceResolves } from '../src/brief.ts';
+import { classifyNonRelativeSpecifier } from '../src/evidence/imports.ts';
 import type { GutterBrief } from '../src/contract.ts';
 import { TempRepo, lines, raBacktestFixture, raDiffFixture } from './helpers.ts';
 
@@ -45,10 +46,12 @@ test('reads the change structure, including deletes and renames', () => {
   assert.equal(brief.change.title, 'feature: rework a, drop old, rename r');
 });
 
-test('finds untouched importers, resolving the .js → .ts ESM convention', () => {
+test('finds untouched importers, resolving the .js → .ts ESM convention, with full coverage when only relative imports exist', () => {
   const a = brief.dependents.entries.find((e) => e.file === 'src/a.ts');
   assert.ok(a);
   assert.deepEqual(a.untouchedImporters, ['src/a.test.ts', 'src/b.ts']);
+  assert.equal(brief.dependents.coverage, 'full');
+  assert.deepEqual(brief.dependents.unresolved, { count: 0, samples: [] });
 });
 
 test('flags imports of deleted and renamed-away paths as broken', () => {
@@ -111,22 +114,40 @@ test('the brief never contains absolute local paths', () => {
   assert.equal(JSON.stringify(brief).includes(repo.dir), false);
 });
 
-test('counts unresolved path-alias imports so panel 3 never silently claims no dependents', () => {
-  const imp = (s: string) => `import '${s}';\n`;
+test('classifies non-relative specifiers into external (Node builtins + declared package.json deps) vs unresolved', () => {
+  const declared = new Set(['react', '@octokit/rest']);
+  assert.equal(classifyNonRelativeSpecifier('node:fs', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('fs/promises', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('react', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('react/jsx-runtime', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('@octokit/rest/endpoints', declared), 'external');
+
+  assert.equal(classifyNonRelativeSpecifier('@/a', declared, ['@/']), 'unresolved');
+  assert.equal(classifyNonRelativeSpecifier('~/utils', declared), 'unresolved');
+  assert.equal(classifyNonRelativeSpecifier('#internal/db', declared), 'unresolved');
+  assert.equal(classifyNonRelativeSpecifier('@acme/workspace-pkg', declared), 'unresolved');
+
+  const imp = (s: string) => `imp${'ort'} '${s}';\n`;
   const r = new TempRepo()
     .write({
-      'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { '@app/*': ['./src/*'] } } }),
-      'src/components/x.ts': 'export const x = 1;\n',
-      'src/page.ts': imp('@/components/x') + imp('@app/components/x') + imp('~/lib/z') + imp('#internal/w') + imp('react'),
+      'package.json': JSON.stringify({
+        name: 'fixture-app',
+        dependencies: { react: '^19.0.0', '@acme/shared': 'workspace:*' },
+      }),
+      'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { '@/*': ['src/*'] } } }),
+      'src/a.ts': 'export const a = 1;\n',
+      'src/b.ts': imp('node:fs') + imp('react') + imp('react/jsx-runtime') + imp('@/a'),
     })
     .commit('init')
     .branch('alias-change')
-    .write({ 'src/components/x.ts': `export const x = 2;\n${lines(15)}` })
-    .commit('edit x');
+    .write({ 'src/a.ts': `export const a = 2;\n${lines(15)}` })
+    .commit('edit a');
   try {
     const b = buildBrief({ cwd: r.dir, base: 'main', noHistory: true });
     assert.equal(b.dependents.entries.length, 0);
-    assert.equal(b.dependents.unresolvedAliases, 4);
+    assert.equal(b.dependents.coverage, 'partial');
+    assert.equal(b.dependents.unresolved.count, 1);
+    assert.deepEqual(b.dependents.unresolved.samples, ['src/b.ts → @/a']);
   } finally {
     r.cleanup();
   }

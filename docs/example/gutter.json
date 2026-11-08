@@ -98,8 +98,12 @@
       }
     ],
     "unchecked": [],
-    "scannedFiles": 459,
-    "unresolvedAliases": 0
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 459
   },
   "forgotten": {
     "status": "analyzed",

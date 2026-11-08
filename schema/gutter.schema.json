@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/lbrodie11/gutter/schema/gutter.schema.json",
   "title": "gutter.json (schemaVersion 1)",
-  "description": "Evidence model for one change. Additive fields keep schemaVersion 1; consumers must ignore unknown properties.",
+  "description": "Evidence model for one change. Additive fields and enum values keep schemaVersion 1; consumers must ignore unknown properties and tolerate unknown enum values (e.g. new checklist.kind values).",
   "type": "object",
   "required": ["schemaVersion", "tool", "change", "salience", "changes", "dependents", "forgotten", "tests", "checklist", "calibration", "provenance"],
   "properties": {
@@ -34,7 +34,7 @@
       "type": "object",
       "required": ["level", "reasons"],
       "properties": {
-        "level": { "enum": ["quiet", "brief", "full"] },
+        "level": { "enum": ["quiet", "brief", "full"], "description": "Consumers must tolerate unknown enum values." },
         "reasons": { "type": "array", "items": { "type": "string" } }
       }
     },
@@ -60,7 +60,7 @@
     },
     "dependents": {
       "type": "object",
-      "required": ["analyzers", "entries", "unchecked", "unresolvedAliases", "scannedFiles"],
+      "required": ["analyzers", "entries", "unchecked", "coverage", "unresolved", "scannedFiles"],
       "properties": {
         "analyzers": { "type": "array", "items": { "type": "string" } },
         "entries": {
@@ -78,7 +78,16 @@
           }
         },
         "unchecked": { "type": "array", "items": { "type": "string" }, "description": "Changed files with no analyzer for their language. Never reported as 'no dependents'." },
-        "unresolvedAliases": { "type": "integer", "minimum": 0, "description": "Internal-looking alias/subpath imports (e.g. @/..., ~/..., #...) seen while scanning that were not resolved." },
+        "coverage": { "enum": ["full", "partial"], "description": "'full' when all non-external imports were resolved; 'partial' when unresolved imports exist. Consumers must tolerate unknown enum values." },
+        "unresolved": {
+          "type": "object",
+          "required": ["count", "samples"],
+          "description": "Unresolved non-relative, non-external imports (<file> → <specifier>), with up to 5 sorted samples.",
+          "properties": {
+            "count": { "type": "integer", "minimum": 0 },
+            "samples": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
+          }
+        },
         "scannedFiles": { "type": "integer" }
       }
     },
@@ -86,7 +95,7 @@
       "type": "object",
       "required": ["status", "items", "total", "families", "commitsAnalyzed", "warnings"],
       "properties": {
-        "status": { "enum": ["analyzed", "insufficient-history", "unavailable"] },
+        "status": { "enum": ["analyzed", "insufficient-history", "unavailable"], "description": "Consumers must tolerate unknown enum values." },
         "note": { "type": "string" },
         "items": { "type": "array", "items": { "$ref": "#/$defs/ForgottenItem" } },
         "total": { "type": "integer" },
@@ -117,7 +126,7 @@
         "properties": {
           "id": { "$ref": "#/$defs/EvidenceId" },
           "source": { "type": "string" },
-          "status": { "enum": ["test-changed", "test-untouched", "no-test-found"] },
+          "status": { "enum": ["test-changed", "test-untouched", "no-test-found"], "description": "Consumers must tolerate unknown enum values." },
           "candidates": {
             "type": "array",
             "items": { "type": "object", "required": ["path", "changed"], "properties": { "path": { "type": "string" }, "changed": { "type": "boolean" } } }
@@ -133,7 +142,7 @@
         "required": ["id", "kind", "question", "evidence", "priority"],
         "properties": {
           "id": { "type": "string" },
-          "kind": { "enum": ["broken-import", "forgotten-companion", "family-drift", "untested-change", "wide-surface"] },
+          "kind": { "enum": ["broken-import", "forgotten-companion", "family-drift", "untested-change", "wide-surface"], "description": "Consumers must tolerate unknown enum values." },
           "question": { "type": "string", "description": "A question, never a verdict. Paths appear in backticks." },
           "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/EvidenceId" }, "description": "Must resolve to ids in dependents, forgotten, families or tests." },
           "priority": { "type": "integer" }
@@ -144,7 +153,7 @@
       "type": "object",
       "required": ["status", "note"],
       "properties": {
-        "status": { "enum": ["measured", "thin", "unavailable", "skipped"] },
+        "status": { "enum": ["measured", "thin", "unavailable", "skipped"], "description": "Consumers must tolerate unknown enum values." },
         "note": { "type": "string" },
         "precision": { "type": "number", "minimum": 0, "maximum": 1 },
         "hitRate": { "type": "number", "minimum": 0, "maximum": 1 },
@@ -175,7 +184,7 @@
       "properties": {
         "path": { "type": "string" },
         "oldPath": { "type": "string" },
-        "status": { "enum": ["added", "modified", "deleted", "renamed"] },
+        "status": { "enum": ["added", "modified", "deleted", "renamed"], "description": "Consumers must tolerate unknown enum values." },
         "additions": { "type": "integer" },
         "deletions": { "type": "integer" },
         "binary": { "type": "boolean" },
@@ -191,7 +200,7 @@
         "id": { "$ref": "#/$defs/EvidenceId" },
         "changed": { "type": "string" },
         "file": { "type": "string" },
-        "relationship": { "enum": ["ghost", "unknown", "indirect", "direct", "test"] },
+        "relationship": { "enum": ["ghost", "unknown", "indirect", "direct", "test"], "description": "Consumers must tolerate unknown enum values." },
         "why": { "type": "string" },
         "shared": { "type": "integer" },
         "changedTotal": { "type": "integer" },
