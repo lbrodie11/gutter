@@ -132,15 +132,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           export EXISTING_TAGS="$(git tag -l)"
-          if [ -n "$(git ls-tree -r HEAD dist/action/main.js dist/cli.js)" ]; then
-            echo "HEAD already contains built dist/; reusing existing release commit $(git rev-parse HEAD)."
-            RELEASE_SHA=$(git rev-parse HEAD)
-          else
-            git checkout --detach HEAD
-            git add -f dist
-            git commit -q -m "release: ${TAG} (with dist)"
-            RELEASE_SHA=$(git rev-parse HEAD)
-          fi
+          git checkout --detach HEAD
+          git add -f dist
+          git commit --allow-empty -q -m "release: ${TAG} (with dist)"
+          RELEASE_SHA=$(git rev-parse HEAD)
           git tag -f "$TAG" "$RELEASE_SHA"
 
           # Verify the tagged commit tree contains compiled entrypoints.

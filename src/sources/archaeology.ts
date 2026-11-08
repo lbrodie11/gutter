@@ -7,7 +7,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { posix, win32 } from 'node:path';
+import { win32 } from 'node:path';
 import type { Calibration, CommitRef, FamilyItem, ForgottenItem, ForgottenLayer } from '../contract.ts';
 import { wilsonInterval, pct } from '../stats/wilson.ts';
 import { isAutomatedAuthor } from '../evidence/automation.ts';
@@ -99,7 +99,6 @@ export function resolveRaCommand(runner: RaRunner, ctx: RaCommandContext = {}): 
       'Could not locate npx-cli.js for this Windows Node.js installation; set GUTTER_RA_BIN or pass --ra-bin pointing to repo-archaeology/dist/cli.js.',
     );
   }
-  void posix;
   return { file: 'npx', pre: ['--yes', `repo-archaeology@${spec}`] };
 }
 
