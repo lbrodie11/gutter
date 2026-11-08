@@ -1,0 +1,28 @@
+# Copy to .github/workflows/gutter.yml in your repository.
+name: Gutter
+
+on:
+  pull_request:          # never pull_request_target: Gutter must not run with write access on fork code
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write   # to post/update one sticky comment
+
+concurrency:
+  group: gutter-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  brief:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0   # co-change history needs the full log
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: lbrodie11/gutter@v0

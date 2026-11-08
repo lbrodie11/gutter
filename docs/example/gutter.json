@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "0.1.0"
+  },
+  "change": {
+    "base": "main",
+    "head": "HEAD",
+    "baseSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+    "headSha": "42c8e6dbcc6f612139627fc70ba0705c664155e5",
+    "title": "feat(serve-static): add cacheControl option",
+    "intent": "Adds a cacheControl option so static responses can set Cache-Control without custom middleware.",
+    "commits": [
+      {
+        "sha": "42c8e6dbcc6f612139627fc70ba0705c664155e5",
+        "subject": "feat(serve-static): add cacheControl option"
+      }
+    ],
+    "repoUrl": "https://github.com/honojs/hono",
+    "prNumber": 4242
+  },
+  "salience": {
+    "level": "full",
+    "reasons": [
+      "2 high-signal questions"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/adapter/bun/serve-static.ts",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/adapter",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/middleware/serve-static/index.ts",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/middleware",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/middleware",
+        "files": 1,
+        "additions": 8,
+        "deletions": 0
+      },
+      {
+        "name": "src/adapter",
+        "files": 1,
+        "additions": 2,
+        "deletions": 0
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 10,
+      "deletions": 0,
+      "modules": 2
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/middleware/serve-static/index.ts",
+        "file": "src/middleware/serve-static/index.ts",
+        "deleted": false,
+        "changedImporters": [
+          "src/adapter/bun/serve-static.ts"
+        ],
+        "untouchedImporters": [
+          "src/adapter/cloudflare-workers/serve-static.ts",
+          "src/adapter/deno/serve-static.ts",
+          "src/middleware/serve-static/index.test.ts"
+        ]
+      },
+      {
+        "id": "deps:src/adapter/bun/serve-static.ts",
+        "file": "src/adapter/bun/serve-static.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/adapter/bun/index.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "scannedFiles": 459,
+    "unresolvedAliases": 0
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "items": [
+      {
+        "id": "forgotten:0",
+        "changed": "src/middleware/serve-static/index.ts",
+        "file": "src/middleware/serve-static/index.test.ts",
+        "relationship": "test",
+        "why": "a test and the code it covers",
+        "shared": 17,
+        "changedTotal": 20,
+        "confidence": 0.85,
+        "interval": {
+          "low": 0.639581135259243,
+          "high": 0.9476312541037835
+        },
+        "lastTogether": "2026-10-16",
+        "evidence": [
+          {
+            "sha": "d54720da80134a180f5fe2dd98a7676cfc8f08b4",
+            "date": "2026-10-16",
+            "author": "otoneko.",
+            "subject": "fix(serve-static): respect q-values in Accept-Encoding for precompressed files (#5436)",
+            "automated": false
+          },
+          {
+            "sha": "588ec13fa68ea44fed1b5e1b503341db2bf09d70",
+            "date": "2026-10-13",
+            "author": "Taku Amano",
+            "subject": "fix(serve-static): only serve GET and HEAD requests (#5514)",
+            "automated": false
+          },
+          {
+            "sha": "8b05c774ef1555c70f5ba5e2991b7e77cc3635cc",
+            "date": "2026-09-29",
+            "author": "Taku Amano",
+            "subject": "Merge commit from fork",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:1",
+        "changed": "src/adapter/bun/serve-static.ts",
+        "file": "src/adapter/deno/serve-static.ts",
+        "relationship": "ghost",
+        "why": "possible parallel implementations: serve-static.ts appears in sibling folders",
+        "shared": 9,
+        "changedTotal": 11,
+        "confidence": 0.818,
+        "interval": {
+          "low": 0.523019438039156,
+          "high": 0.9486323102539149
+        },
+        "lastTogether": "2026-05-16",
+        "evidence": [
+          {
+            "sha": "26f8c33f23e6151873d165107f2dbcadf1204d15",
+            "date": "2026-05-16",
+            "author": "mixelburg",
+            "subject": "fix(serveStatic): make options parameter optional in all adapters (#4934)",
+            "automated": false
+          },
+          {
+            "sha": "1196f14b94e589e2ac44fa7f1c8785d70c1cf83e",
+            "date": "2025-08-07",
+            "author": "Yusuke Wada",
+            "subject": "feat(serve-static): use `join` to correct path resolution (#4291)",
+            "automated": false
+          },
+          {
+            "sha": "246a06aa1d35aa206dcf11186b3aa90badb2de72",
+            "date": "2024-09-24",
+            "author": "Yusuke Wada",
+            "subject": "feat(serve-static): support absolute root (#3420)",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:2",
+        "changed": "src/adapter/bun/serve-static.ts",
+        "file": "src/adapter/cloudflare-workers/serve-static.ts",
+        "relationship": "ghost",
+        "why": "possible parallel implementations: serve-static.ts appears in sibling folders",
+        "shared": 6,
+        "changedTotal": 11,
+        "confidence": 0.545,
+        "interval": {
+          "low": 0.28009153740932197,
+          "high": 0.7872872837754022
+        },
+        "lastTogether": "2026-05-16",
+        "evidence": [
+          {
+            "sha": "26f8c33f23e6151873d165107f2dbcadf1204d15",
+            "date": "2026-05-16",
+            "author": "mixelburg",
+            "subject": "fix(serveStatic): make options parameter optional in all adapters (#4934)",
+            "automated": false
+          },
+          {
+            "sha": "f8371ab356f79fcf762c66aa372448a8018bcfc7",
+            "date": "2024-02-24",
+            "author": "Yusuke Wada",
+            "subject": "fix(serve-static): support extensionless files and refactor (#2260)",
+            "automated": false
+          },
+          {
+            "sha": "d74d95d11c8d06ff7588a3a2e899e3843c4a7d1e",
+            "date": "2024-01-29",
+            "author": "ryu",
+            "subject": "feat(serve-static): `mimes` option for serve-static (#2094)",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      }
+    ],
+    "total": 6,
+    "families": [
+      {
+        "id": "family:0",
+        "label": "serve-static.ts across src/adapter/*",
+        "why": "3 parallel implementations of serve-static.ts in sibling folders (bun, cloudflare-workers, deno); all 3 pairwise links meet thresholds (9 supporting commits (2+ members via a qualifying pair), 6 touched all 3)",
+        "members": [
+          "src/adapter/bun/serve-static.ts",
+          "src/adapter/cloudflare-workers/serve-static.ts",
+          "src/adapter/deno/serve-static.ts"
+        ],
+        "changedMembers": [
+          "src/adapter/bun/serve-static.ts"
+        ],
+        "untouchedMembers": [
+          "src/adapter/cloudflare-workers/serve-static.ts",
+          "src/adapter/deno/serve-static.ts"
+        ]
+      }
+    ],
+    "commitsAnalyzed": 1868,
+    "warnings": [
+      "This is a shallow clone, so only part of the history is available. Run `git fetch --unshallow` for complete results."
+    ]
+  },
+  "tests": [
+    {
+      "id": "tests:src/adapter/bun/serve-static.ts",
+      "source": "src/adapter/bun/serve-static.ts",
+      "status": "no-test-found",
+      "candidates": []
+    },
+    {
+      "id": "tests:src/middleware/serve-static/index.ts",
+      "source": "src/middleware/serve-static/index.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/middleware/serve-static/index.test.ts",
+          "changed": false
+        }
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:companion:src/middleware/serve-static/index.test.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/middleware/serve-static/index.test.ts` changed alongside `src/middleware/serve-static/index.ts` in 17 of its 20 commits (95% CI 64%–95%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:0"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:companion:src/adapter/deno/serve-static.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/adapter/deno/serve-static.ts` changed alongside `src/adapter/bun/serve-static.ts` in 9 of its 11 commits (95% CI 52%–95%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:1"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:family:family:0",
+      "kind": "family-drift",
+      "question": "This changes 1 of 3 parallel implementations (serve-static.ts across src/adapter/*). Should `src/adapter/cloudflare-workers/serve-static.ts` (+1 more) follow?",
+      "evidence": [
+        "family:0"
+      ],
+      "priority": 3
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did.",
+    "precision": 0.5691868758915835,
+    "hitRate": 0.7286821705426356,
+    "lift": 6.836363636363636,
+    "testCommits": 375,
+    "fired": 516,
+    "window": {
+      "from": "2026-02-23",
+      "to": "2026-11-07"
+    }
+  },
+  "provenance": {
+    "generatedAt": "2026-11-07T01:14:40.347Z",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "0.1.0"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "0.3.0"
+      }
+    ],
+    "deterministic": true
+  }
+}

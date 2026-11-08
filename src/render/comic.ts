@@ -1,0 +1,316 @@
+import type { GutterBrief } from '../contract.ts';
+import { assertEvidenceResolves } from '../brief.ts';
+import { pct } from '../stats/wilson.ts';
+import { commitUrl, fileUrl, html, short } from './escape.ts';
+import { FRAME12_TOKENS, TOKENS_ID } from './frame12-tokens.ts';
+import { receiptsFor } from './receipts.ts';
+
+/**
+ * The comic page: one self-contained, offline HTML file in FRAME/12's panel
+ * grammar. Same evidence as the Markdown comment, laid out for a 60-second read.
+ *
+ * Reading order = review order:
+ *   1 Intent → 2 What changed → 3 What it touches → 4 Likely forgotten → 5 Tests → 6 Check these
+ */
+
+export function renderComic(brief: GutterBrief): string {
+  assertEvidenceResolves(brief);
+  const { change, changes, salience } = brief;
+  const fileLink = (p: string, cls = '') => {
+    const url = fileUrl(change.repoUrl, change.headSha, p);
+    const inner = `<code class="path${cls ? ` ${cls}` : ''}">${html(p)}</code>`;
+    return url ? `<a href="${html(url)}">${inner}</a>` : inner;
+  };
+  const commitLink = (sha: string) => {
+    const url = commitUrl(change.repoUrl, sha);
+    return url ? `<a class="sha" href="${html(url)}">${html(short(sha))}</a>` : `<span class="sha">${html(short(sha))}</span>`;
+  };
+
+  const issue = [
+    change.prNumber ? `PR #${change.prNumber}` : null,
+    `${html(change.base)} → ${html(change.head)}`,
+    change.headSha ? html(short(change.headSha)) : null,
+    html(brief.provenance.generatedAt.slice(0, 10)),
+  ].filter(Boolean).join(' · ');
+
+  const panels: string[] = [];
+  let cut = 0;
+  const panel = (n: number, title: string, body: string, opts: { area: string; hero?: boolean }) =>
+    `<section class="panel area-${opts.area}${opts.hero ? ' hero' : ''}" data-cut="${cut++}" aria-labelledby="p${n}">
+  <h2 id="p${n}" class="cap${opts.hero ? ' marker' : ''}"><span class="num">${n}</span> ${html(title)}</h2>
+  ${body}
+</section>`;
+
+  // 1 · Intent
+  const commits = change.commits.slice(0, 5).map((c) => `<li>${commitLink(c.sha)} ${html(c.subject)}</li>`).join('');
+  panels.push(panel(1, 'Intent', `
+  <div class="balloon"><p class="said">${html(change.title)}</p>${change.intent ? `<p class="aside">${html(change.intent)}</p>` : ''}</div>
+  ${commits ? `<ol class="commits" aria-label="Commits in this change">${commits}</ol>` : ''}`, { area: 'intent' }));
+
+  // 2 · What changed
+  const maxChurn = Math.max(1, ...changes.modules.map((m) => m.additions + m.deletions));
+  const rows = changes.modules.slice(0, 8).map((m) => {
+    const churn = m.additions + m.deletions;
+    const w = Math.max(4, Math.round((churn / maxChurn) * 100));
+    const tone = churn / maxChurn > 0.66 ? 'tone-3' : churn / maxChurn > 0.33 ? 'tone-2' : 'tone-1';
+    return `<li><span class="mod">${html(m.name)}</span>
+      <svg class="bar" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="${w}" height="10" fill="url(#${tone})"/><rect x="0.6" y="0.6" width="${Math.max(0, w - 1.2)}" height="8.8" class="bar-ink"/></svg>
+      <span class="num-sm">${m.files}f · +${m.additions}/−${m.deletions}</span></li>`;
+  }).join('');
+  panels.push(panel(2, 'What changed', `
+  <p class="stat"><b>${changes.totals.files}</b> files · <b>${changes.totals.modules}</b> modules · <b>+${changes.totals.additions}</b>/<b>−${changes.totals.deletions}</b></p>
+  <ul class="modules" aria-label="Churn by module, darker tone means more lines changed">${rows}</ul>
+  ${changes.modules.length > 8 ? `<p class="small">${changes.modules.length - 8} more modules not shown.</p>` : ''}`, { area: 'changed' }));
+
+  // 3 · What it touches
+  const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted).slice(0, 6);
+  const aliases = brief.dependents.unresolvedAliases ?? 0;
+  const hasAnalyzedTargets = changes.files.some((f) => f.language === 'typescript' || f.language === 'javascript');
+  const depBody = deps.length
+    ? `<ul class="deps">${deps.map((d) => {
+        const shown = d.untouchedImporters.length ? d.untouchedImporters : d.changedImporters;
+        const label = d.untouchedImporters.length
+          ? `imported by ${d.untouchedImporters.length} untouched file${d.untouchedImporters.length === 1 ? '' : 's'}`
+          : `still imported by ${shown.length} changed file${shown.length === 1 ? '' : 's'}`;
+        return `<li id="${html(d.id)}">${fileLink(d.file)}${d.deleted ? ' <span class="stamp">removed</span>' : ''}
+        <span class="small">${label}</span>
+        <span class="importers">${shown.slice(0, 3).map((p) => fileLink(p)).join(' ')}${shown.length > 3 ? ` <span class="small">+${shown.length - 3}</span>` : ''}</span></li>`;
+      }).join('')}</ul>`
+    : aliases > 0
+      ? `<p class="quiet-line"><span class="stamp">partial</span> No relative imports outside this change point at what it changed, but ${aliases} path-alias import${aliases === 1 ? ' was' : 's were'} not resolved.</p>`
+      : !hasAnalyzedTargets && brief.dependents.unchecked.length > 0
+        ? ''
+        : `<p class="quiet-line">No file outside this change imports what it changed.</p>`;
+  const aliasNote = deps.length && aliases > 0
+    ? `<p class="small"><span class="stamp">partial</span> ${aliases} path-alias import${aliases === 1 ? '' : 's'} (e.g. <code class="path">@/…</code>) not resolved; only relative imports are shown.</p>`
+    : '';
+  const unchecked = brief.dependents.unchecked.length
+    ? `<p class="small">Imports not analyzed for ${brief.dependents.unchecked.length} file${brief.dependents.unchecked.length === 1 ? '' : 's'} (language not supported yet).</p>`
+    : '';
+  panels.push(panel(3, 'What it touches', depBody + aliasNote + unchecked, { area: 'touches' }));
+
+  // 4 · Likely forgotten (hero)
+  const fg = brief.forgotten;
+  const wires = fg.items.map((f) => {
+    const receipts = f.evidence.slice(0, 3).map((e) => `<li>${commitLink(e.sha)} <span class="small">${html(e.date)}</span> ${html(e.subject)}${e.automated ? ' <span class="stamp">bot</span>' : ''}</li>`).join('');
+    return `<li class="wire-row" id="${html(f.id)}">
+      <div class="wire">
+        ${fileLink(f.changed, 'solid')}
+        <svg class="ghost" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="6"/></svg>
+        ${fileLink(f.file, 'dashed')}
+      </div>
+      <p class="evidence-line"><b>${f.shared} of ${f.changedTotal}</b> commits together · 95% CI ${pct(f.interval.low)}–${pct(f.interval.high)}${f.lastTogether ? ` · last ${html(f.lastTogether)}` : ''}${f.automationShare >= 0.5 ? ' · <span class="stamp">mostly bot commits</span>' : ''}</p>
+      <p class="small why">${html(f.why)}</p>
+      ${receipts ? `<ol class="receipts" aria-label="Commits where these files changed together">${receipts}</ol>` : ''}
+    </li>`;
+  }).join('');
+  const families = fg.families.filter((f) => f.changedMembers.length && f.untouchedMembers.length).map((f) =>
+    `<div class="family" id="${html(f.id)}"><p><b>Parallel implementations</b> · ${html(f.label)}</p>
+     <p class="small">Changed: ${f.changedMembers.map((p) => fileLink(p)).join(' ')}</p>
+     <p class="small">Untouched: ${f.untouchedMembers.slice(0, 5).map((p) => fileLink(p, 'dashed')).join(' ')}</p></div>`).join('');
+  const fgBody = wires || families
+    ? `${wires ? `<ul class="wires">${wires}</ul>` : ''}${families}${fg.total > fg.items.length ? `<p class="small">${fg.total - fg.items.length} weaker matches not shown.</p>` : ''}`
+    : `<div class="balloon thought"><p class="said">${html(fg.note ?? 'Nothing that usually changes with these files was left out.')}</p></div>`;
+  panels.push(panel(4, 'Likely forgotten', fgBody, { area: 'forgotten', hero: fg.items.length > 0 }));
+
+  // 5 · Tests
+  const t = brief.tests;
+  const nChanged = t.filter((x) => x.status === 'test-changed').length;
+  const untouched = t.filter((x) => x.status === 'test-untouched');
+  const nNone = t.filter((x) => x.status === 'no-test-found').length;
+  panels.push(panel(5, 'Tests', `
+  <dl class="metrics">
+    <div><dt>updated</dt><dd>${nChanged}</dd></div>
+    <div><dt>untouched</dt><dd>${untouched.length}</dd></div>
+    <div><dt>none found</dt><dd>${nNone}</dd></div>
+  </dl>
+  ${untouched.length ? `<ul class="deps">${untouched.slice(0, 4).map((x) => `<li id="${html(x.id)}">${fileLink(x.source)} <span class="small">→</span> ${fileLink(x.candidates[0]!.path, 'dashed')}</li>`).join('')}</ul>` : ''}`, { area: 'tests' }));
+
+  // 6 · Check these — only link to evidence that is actually on the page
+  const rendered = new Set([...panels.join('').matchAll(/ id="([^"]+)"/g)].map((m) => m[1]));
+  const checks = brief.checklist.map((c) => {
+    const receipts = c.evidence.flatMap((id) => receiptsFor(brief, id, 2)).map((r) => (r.kind === 'commit' ? commitLink(r.ref) : fileLink(r.ref))).join(' ');
+    const anchors = c.evidence.filter((id) => rendered.has(html(id))).map((id) => `<a class="jump" href="#${html(id)}">see evidence</a>`).join(' ');
+    return `<li><p>${questionHtml(c.question)}</p><p class="small">${receipts} ${anchors}</p></li>`;
+  }).join('');
+  panels.push(panel(6, 'Check these', checks
+    ? `<ol class="checks">${checks}</ol>`
+    : `<div class="balloon thought"><p class="said">Nothing here needs a second look beyond the diff itself.</p></div>`, { area: 'checks' }));
+
+  const cal = brief.calibration;
+  const gauge = cal.precision !== undefined
+    ? `<svg class="gauge" viewBox="0 0 100 8" preserveAspectRatio="none" role="img" aria-label="Measured precision ${pct(cal.precision)}"><rect x="0" y="0" width="${Math.round(cal.precision * 100)}" height="8" fill="url(#tone-2)"/><rect x="0.6" y="0.6" width="98.8" height="6.8" class="bar-ink"/></svg>`
+    : '';
+
+  const quiet = salience.level === 'quiet';
+  const bodyPanels = quiet ? [panels[0]!, panels[1]!] : panels;
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Gutter · ${html(change.title)}</title>
+<style id="${TOKENS_ID}">${FRAME12_TOKENS}</style>
+<style>${PAGE_CSS}</style>
+</head>
+<body>
+<svg width="0" height="0" class="defs" aria-hidden="true" focusable="false"><defs>
+  <pattern id="tone-1" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="2" cy="2" r="0.6" class="dot"/></pattern>
+  <pattern id="tone-2" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="2" cy="2" r="1.0" class="dot"/></pattern>
+  <pattern id="tone-3" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="2" cy="2" r="1.45" class="dot"/></pattern>
+</defs></svg>
+<main class="desk">
+<article class="sheet">
+  <header class="masthead">
+    <p class="wordmark">GUTTER<span class="slash">/</span><span class="kicker">change briefing</span></p>
+    <p class="issue">${issue}</p>
+  </header>
+  ${quiet ? `<p class="quiet-banner">Nothing to flag. ${html(salience.reasons.join(', '))}.</p>` : ''}
+  <div class="page${quiet ? ' quiet' : ''}">
+${bodyPanels.join('\n')}
+  </div>
+  <footer class="colophon">
+    <div class="cal"><p><b>How much to trust the history panel here:</b> ${html(cal.note)}</p>${gauge}</div>
+    <p class="small">No AI wrote this page: every line comes from git history and the code. ${brief.provenance.engines.map((e) => `${html(e.name)} ${html(e.version)}`).join(' + ')}.</p>
+  </footer>
+</article>
+</main>
+<script>${ON_TWOS_JS}</script>
+</body>
+</html>
+`;
+}
+
+function questionHtml(q: string): string {
+  return q
+    .split(/(`[^`]*`)/)
+    .map((part) => (part.startsWith('`') && part.endsWith('`') && part.length > 1 ? `<code class="path">${html(part.slice(1, -1))}</code>` : html(part)))
+    .join('');
+}
+
+/**
+ * Motion on twos: each panel "cut" steps through 5 poses held 83.33ms apart
+ * (12fps), spaced on a cubic ease-out chart so it lands with a wide first jump
+ * and tight settling holds. Content is fully visible without JS, and skipped
+ * entirely under prefers-reduced-motion.
+ */
+const ON_TWOS_JS = `(function(){
+  try { if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) { return; }
+  var cuts = Array.prototype.slice.call(document.querySelectorAll('[data-cut]'));
+  var POSE = 1000 / 12, POSES = 5, LAG = 2, start = null;
+  cuts.forEach(function (el) { el.style.opacity = '0'; el.style.transform = 'translateY(12px)'; });
+  function frame(ts) {
+    if (start === null) start = ts;
+    var pose = Math.floor((ts - start) / POSE), done = true;
+    cuts.forEach(function (el, i) {
+      var p = Math.min(Math.max((pose - i * LAG) / POSES, 0), 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.style.opacity = String(e);
+      el.style.transform = p < 1 ? 'translateY(' + (12 * (1 - e)).toFixed(1) + 'px)' : '';
+      if (p < 1) done = false;
+    });
+    if (!done) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();`;
+
+const PAGE_CSS = `
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--f-desk)}
+body{margin:0;background:var(--f-desk);color:var(--f-ink);font-family:var(--font-f-body);font-size:15px;line-height:1.5}
+.defs{position:absolute}
+.dot{fill:var(--f-tone)}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:2px}
+a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marker);outline-offset:2px}
+.desk{padding:var(--f-gutter-change) 16px}
+.sheet{max-width:1120px;margin:0 auto;background:var(--f-sheet);padding:var(--f-gutter-scene);box-shadow:var(--f-shadow-sheet)}
+.masthead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--f-gutter-pair);border-bottom:calc(var(--f-stroke) * 2) solid var(--f-rule);padding-bottom:var(--f-gutter-pair);margin-bottom:var(--f-gutter-scene)}
+.wordmark{margin:0;font-family:var(--font-f-display);font-size:34px;letter-spacing:.02em;line-height:1}
+.slash{color:var(--f-ink-2);margin:0 6px}
+.kicker{font-family:var(--font-f-mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.issue{margin:0;font-family:var(--font-f-mono);font-size:12px;color:var(--f-ink-2)}
+.quiet-banner{border:var(--f-stroke) solid var(--f-rule);padding:8px 12px;margin:0 0 var(--f-gutter-scene);font-family:var(--font-f-mono);font-size:13px}
+.page{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--f-gutter-scene)}
+.panel{grid-column:span 12;position:relative;background:var(--f-panel);border:var(--f-stroke) solid var(--f-rule);padding:0 16px 16px;min-width:0}
+.page.quiet .panel{grid-column:span 12}
+@media (min-width:860px){
+.page:not(.quiet){grid-template-areas:"intent intent intent intent intent intent intent changed changed changed changed changed" "touches touches touches touches touches forgotten forgotten forgotten forgotten forgotten forgotten forgotten" "tests tests tests tests tests forgotten forgotten forgotten forgotten forgotten forgotten forgotten" "checks checks checks checks checks checks checks checks checks checks checks checks"}
+.area-intent{grid-area:intent}.area-changed{grid-area:changed}.area-touches{grid-area:touches}.area-forgotten{grid-area:forgotten}.area-tests{grid-area:tests}.area-checks{grid-area:checks}
+.page.quiet .area-intent{grid-column:span 7}.page.quiet .area-changed{grid-column:span 5}
+}
+.cap{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px -16px;padding:5px 12px 5px 0;background:var(--f-ink);color:var(--f-sheet);font-family:var(--font-f-display);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
+.cap .num{display:inline-block;min-width:28px;text-align:center;border-right:1px solid currentColor;padding:0 6px}
+.cap.marker{background:var(--f-marker);color:var(--f-marker-ink)}
+.hero{border-width:calc(var(--f-stroke) * 1.6)}
+.balloon{position:relative;border:var(--f-stroke) solid var(--f-rule);border-radius:22px;padding:12px 16px;margin:4px 0 18px;background:var(--f-panel)}
+.balloon::after{content:"";position:absolute;left:28px;bottom:-12px;width:18px;height:18px;background:var(--f-panel);border-right:var(--f-stroke) solid var(--f-rule);border-bottom:var(--f-stroke) solid var(--f-rule);transform:skewX(32deg) rotate(45deg)}
+.balloon.thought{border-style:dashed}
+.balloon.thought::after{display:none}
+.said{margin:0;font-family:var(--font-f-display);font-size:19px;line-height:1.25;overflow-wrap:anywhere}
+.aside{margin:8px 0 0;color:var(--f-ink-2);font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.commits,.receipts{margin:0;padding-left:20px;font-size:13px}
+.commits li,.receipts li{overflow-wrap:anywhere}
+.sha{font-family:var(--font-f-mono);font-size:12px}
+.stat{margin:0 0 10px;font-family:var(--font-f-mono);font-size:13px}
+.modules{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.modules li{display:grid;grid-template-columns:minmax(0,9em) minmax(0,1fr) auto;align-items:center;gap:10px}
+.mod{font-family:var(--font-f-mono);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar{width:100%;height:14px;display:block}
+.bar-ink{fill:none;stroke:var(--f-rule);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.num-sm{font-family:var(--font-f-mono);font-size:11px;color:var(--f-ink-2);white-space:nowrap}
+.path{font-family:var(--font-f-mono);font-size:12px;padding:1px 5px;-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.9;border:1px solid var(--f-rule);background:var(--f-panel);overflow-wrap:anywhere}
+.path.dashed{border-style:dashed}
+.path.solid{border-width:2px}
+.deps{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.deps li{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
+.importers{display:flex;flex-wrap:wrap;gap:4px}
+.stamp{font-family:var(--font-f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 5px;transform:rotate(-3deg);display:inline-block}
+.small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
+.quiet-line{margin:0;color:var(--f-ink-2)}
+.wires{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.wire-row+.wire-row{border-top:1px solid var(--f-grid);padding-top:14px}
+.wire{display:grid;grid-template-columns:auto minmax(28px,1fr) auto;align-items:center;gap:8px}
+.wire > a,.wire > code{min-width:0}
+.ghost{width:100%;height:12px}
+.ghost line{stroke:var(--f-ink);stroke-width:2.5;stroke-dasharray:6 5;vector-effect:non-scaling-stroke}
+.evidence-line{margin:8px 0 2px;font-family:var(--font-f-mono);font-size:13px}
+.why{margin-bottom:6px}
+.family{margin-top:14px;padding-top:10px;border-top:1px solid var(--f-grid)}
+.family p{margin:0 0 4px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--f-gutter-pair);margin:0 0 12px}
+.metrics div{border:1.5px solid var(--f-rule);padding:6px 8px}
+.metrics dt{font-family:var(--font-f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--f-ink-2)}
+.metrics dd{margin:0;font-family:var(--font-f-display);font-size:28px;line-height:1.1}
+.checks{margin:0;padding-left:22px;display:grid;gap:14px}
+@media (min-width:860px){.checks{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--f-gutter-change)}}
+.checks p{margin:0}
+.jump{font-size:12px}
+.colophon{margin-top:var(--f-gutter-scene);border-top:var(--f-stroke) solid var(--f-rule);padding-top:var(--f-gutter-pair);display:grid;gap:6px}
+.cal p{margin:0 0 6px;font-size:13px}
+.gauge{width:min(320px,100%);height:10px;display:block}
+@media (max-width:520px){.sheet{padding:var(--f-gutter-pair)}.wordmark{font-size:26px}.wire{grid-template-columns:1fr}.ghost{transform:rotate(90deg);height:12px;width:28px;justify-self:start}}
+@media print{.desk{padding:0}.sheet{box-shadow:none}}
+`;
+
+/**
+ * Design-grammar lint for generated pages, mirroring check-frame12:
+ * no color literals or font families outside the token block, no gradients,
+ * marker yellow only as a background paired with marker ink.
+ */
+export function lintPage(page: string): string[] {
+  const problems: string[] = [];
+  const outsideTokens = page.replace(new RegExp(`<style id="${TOKENS_ID}">[\\s\\S]*?</style>`), '');
+  const styles = [...outsideTokens.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1] ?? '').join('\n');
+  for (const m of styles.matchAll(/#[0-9a-f]{3,8}\b/gi)) problems.push(`color-literal: ${m[0]}`);
+  for (const m of styles.matchAll(/\b(rgba?|hsla?)\(/gi)) problems.push(`color-literal: ${m[0]}`);
+  if (/gradient\(/i.test(outsideTokens)) problems.push('gradient: gradients are forbidden; use screentone patterns');
+  for (const m of styles.matchAll(/font-family:\s*([^;}]+)/g)) {
+    if (!/^var\(--font-f-/.test(m[1]!.trim())) problems.push(`font-literal: ${m[1]!.trim()}`);
+  }
+  for (const m of styles.matchAll(/\{[^}]*background:\s*var\(--f-marker\)[^}]*\}/g)) {
+    if (!/color:\s*var\(--f-marker-ink\)/.test(m[0])) problems.push('marker-misuse: marker background without --f-marker-ink text');
+  }
+  return problems;
+}

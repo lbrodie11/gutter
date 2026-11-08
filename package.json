@@ -1,0 +1,53 @@
+{
+  "name": "gutter-brief",
+  "version": "0.1.0",
+  "description": "A one-page, evidence-backed briefing for every pull request: what changed, what it touches, and what it probably forgot — with receipts.",
+  "type": "module",
+  "bin": {
+    "gutter": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "schema",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22.6"
+  },
+  "author": "Laqwan Brodie",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbrodie11/gutter.git"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "dev": "node --experimental-strip-types src/cli.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p test/tsconfig.json",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm test"
+  },
+  "keywords": [
+    "code-review",
+    "pull-request",
+    "co-change",
+    "github-action",
+    "change-comprehension",
+    "repo-archaeology",
+    "frame12"
+  ],
+  "peerDependencies": {
+    "repo-archaeology": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "repo-archaeology": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^6.0.0"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lbrodie11/gutter/schema/gutter.schema.json",
+  "title": "gutter.json (schemaVersion 1)",
+  "description": "Evidence model for one change. Additive fields keep schemaVersion 1; consumers must ignore unknown properties.",
+  "type": "object",
+  "required": ["schemaVersion", "tool", "change", "salience", "changes", "dependents", "forgotten", "tests", "checklist", "calibration", "provenance"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "tool": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": { "name": { "const": "gutter" }, "version": { "type": "string" } }
+    },
+    "change": {
+      "type": "object",
+      "required": ["base", "head", "title", "commits"],
+      "properties": {
+        "base": { "type": "string" },
+        "head": { "type": "string" },
+        "baseSha": { "type": "string" },
+        "headSha": { "type": "string" },
+        "title": { "type": "string", "description": "Untrusted text." },
+        "intent": { "type": "string", "description": "Untrusted text, trimmed to 600 chars." },
+        "commits": {
+          "type": "array",
+          "items": { "type": "object", "required": ["sha", "subject"], "properties": { "sha": { "type": "string" }, "subject": { "type": "string" } } }
+        },
+        "repoUrl": { "type": "string" },
+        "prNumber": { "type": "integer" }
+      }
+    },
+    "salience": {
+      "type": "object",
+      "required": ["level", "reasons"],
+      "properties": {
+        "level": { "enum": ["quiet", "brief", "full"] },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "changes": {
+      "type": "object",
+      "required": ["files", "modules", "totals"],
+      "properties": {
+        "files": { "type": "array", "items": { "$ref": "#/$defs/ChangedFile" } },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "files", "additions", "deletions"],
+            "properties": { "name": { "type": "string" }, "files": { "type": "integer" }, "additions": { "type": "integer" }, "deletions": { "type": "integer" } }
+          }
+        },
+        "totals": {
+          "type": "object",
+          "required": ["files", "additions", "deletions", "modules"],
+          "properties": { "files": { "type": "integer" }, "additions": { "type": "integer" }, "deletions": { "type": "integer" }, "modules": { "type": "integer" } }
+        }
+      }
+    },
+    "dependents": {
+      "type": "object",
+      "required": ["analyzers", "entries", "unchecked", "unresolvedAliases", "scannedFiles"],
+      "properties": {
+        "analyzers": { "type": "array", "items": { "type": "string" } },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "file", "deleted", "changedImporters", "untouchedImporters"],
+            "properties": {
+              "id": { "$ref": "#/$defs/EvidenceId" },
+              "file": { "type": "string" },
+              "deleted": { "type": "boolean" },
+              "changedImporters": { "type": "array", "items": { "type": "string" } },
+              "untouchedImporters": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "unchecked": { "type": "array", "items": { "type": "string" }, "description": "Changed files with no analyzer for their language. Never reported as 'no dependents'." },
+        "unresolvedAliases": { "type": "integer", "minimum": 0, "description": "Internal-looking alias/subpath imports (e.g. @/..., ~/..., #...) seen while scanning that were not resolved." },
+        "scannedFiles": { "type": "integer" }
+      }
+    },
+    "forgotten": {
+      "type": "object",
+      "required": ["status", "items", "total", "families", "commitsAnalyzed", "warnings"],
+      "properties": {
+        "status": { "enum": ["analyzed", "insufficient-history", "unavailable"] },
+        "note": { "type": "string" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/ForgottenItem" } },
+        "total": { "type": "integer" },
+        "families": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "why", "members", "changedMembers", "untouchedMembers"],
+            "properties": {
+              "id": { "$ref": "#/$defs/EvidenceId" },
+              "label": { "type": "string" },
+              "why": { "type": "string" },
+              "members": { "type": "array", "items": { "type": "string" } },
+              "changedMembers": { "type": "array", "items": { "type": "string" } },
+              "untouchedMembers": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "commitsAnalyzed": { "type": "integer" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source", "status", "candidates"],
+        "properties": {
+          "id": { "$ref": "#/$defs/EvidenceId" },
+          "source": { "type": "string" },
+          "status": { "enum": ["test-changed", "test-untouched", "no-test-found"] },
+          "candidates": {
+            "type": "array",
+            "items": { "type": "object", "required": ["path", "changed"], "properties": { "path": { "type": "string" }, "changed": { "type": "boolean" } } }
+          }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "question", "evidence", "priority"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "enum": ["broken-import", "forgotten-companion", "family-drift", "untested-change", "wide-surface"] },
+          "question": { "type": "string", "description": "A question, never a verdict. Paths appear in backticks." },
+          "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/EvidenceId" }, "description": "Must resolve to ids in dependents, forgotten, families or tests." },
+          "priority": { "type": "integer" }
+        }
+      }
+    },
+    "calibration": {
+      "type": "object",
+      "required": ["status", "note"],
+      "properties": {
+        "status": { "enum": ["measured", "thin", "unavailable", "skipped"] },
+        "note": { "type": "string" },
+        "precision": { "type": "number", "minimum": 0, "maximum": 1 },
+        "hitRate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "lift": { "type": "number", "minimum": 0 },
+        "testCommits": { "type": "integer" },
+        "fired": { "type": "integer" },
+        "window": { "type": "object", "required": ["from", "to"], "properties": { "from": { "type": "string" }, "to": { "type": "string" } } }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["generatedAt", "engines", "deterministic"],
+      "properties": {
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "engines": {
+          "type": "array",
+          "items": { "type": "object", "required": ["name", "version"], "properties": { "name": { "type": "string" }, "version": { "type": "string" } } }
+        },
+        "deterministic": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "EvidenceId": { "type": "string", "pattern": "^(deps|forgotten|family|tests):" },
+    "ChangedFile": {
+      "type": "object",
+      "required": ["path", "status", "additions", "deletions", "binary", "module", "isTest", "language"],
+      "properties": {
+        "path": { "type": "string" },
+        "oldPath": { "type": "string" },
+        "status": { "enum": ["added", "modified", "deleted", "renamed"] },
+        "additions": { "type": "integer" },
+        "deletions": { "type": "integer" },
+        "binary": { "type": "boolean" },
+        "module": { "type": "string" },
+        "isTest": { "type": "boolean" },
+        "language": { "type": ["string", "null"] }
+      }
+    },
+    "ForgottenItem": {
+      "type": "object",
+      "required": ["id", "changed", "file", "relationship", "why", "shared", "changedTotal", "confidence", "interval", "evidence", "automationShare", "alsoLinkedFrom"],
+      "properties": {
+        "id": { "$ref": "#/$defs/EvidenceId" },
+        "changed": { "type": "string" },
+        "file": { "type": "string" },
+        "relationship": { "enum": ["ghost", "unknown", "indirect", "direct", "test"] },
+        "why": { "type": "string" },
+        "shared": { "type": "integer" },
+        "changedTotal": { "type": "integer" },
+        "confidence": { "type": "number" },
+        "interval": { "type": "object", "required": ["low", "high"], "properties": { "low": { "type": "number" }, "high": { "type": "number" } } },
+        "lastTogether": { "type": "string" },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["sha", "date", "author", "subject", "automated"],
+            "properties": { "sha": { "type": "string" }, "date": { "type": "string" }, "author": { "type": "string" }, "subject": { "type": "string" }, "automated": { "type": "boolean" } }
+          }
+        },
+        "automationShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "alsoLinkedFrom": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

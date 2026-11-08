@@ -1,0 +1,99 @@
+name: 'Gutter: PR change briefing'
+description: 'A one-page, evidence-backed briefing on every pull request: what changed, what it touches, and what it probably forgot.'
+author: 'Laqwan Brodie'
+
+branding:
+  icon: 'book-open'
+  color: 'yellow'
+
+inputs:
+  github-token:
+    description: 'Token used to post the sticky PR comment. Needs pull-requests: write.'
+    required: false
+    default: ${{ github.token }}
+  base:
+    description: 'Base commit SHA or ref (defaults to the pull request base SHA).'
+    required: false
+    default: ''
+  post:
+    description: 'When to comment: auto (skip quiet PRs, update existing), always, or never (summary + artifact only).'
+    required: false
+    default: 'auto'
+  history:
+    description: 'Use Repo Archaeology co-change history ("true"/"false").'
+    required: false
+    default: 'true'
+  calibrate:
+    description: 'Measure warning accuracy on this repo with a backtest ("true"/"false").'
+    required: false
+    default: 'true'
+  max-forgotten:
+    description: 'Maximum likely-forgotten files to show.'
+    required: false
+    default: '3'
+  archaeology-version:
+    description: 'npm version spec of repo-archaeology to run.'
+    required: false
+    default: '^0.3.0'
+  working-directory:
+    description: 'Directory inside GITHUB_WORKSPACE to analyze.'
+    required: false
+    default: '.'
+  upload-page:
+    description: 'Upload gutter.html and gutter.json as a workflow artifact ("true"/"false").'
+    required: false
+    default: 'true'
+
+outputs:
+  status:
+    description: 'analyzed, skipped, or error.'
+    value: ${{ steps.brief.outputs.status }}
+  salience:
+    description: 'quiet, brief, or full.'
+    value: ${{ steps.brief.outputs.salience }}
+  question-count:
+    description: 'Number of reviewer questions raised.'
+    value: ${{ steps.brief.outputs.question-count }}
+  forgotten-count:
+    description: 'Number of likely-forgotten files shown.'
+    value: ${{ steps.brief.outputs.forgotten-count }}
+  json-path:
+    description: 'Path to gutter.json on the runner.'
+    value: ${{ steps.brief.outputs.json-path }}
+  html-path:
+    description: 'Path to the comic page on the runner.'
+    value: ${{ steps.brief.outputs.html-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - id: brief
+      name: Brief this pull request
+      shell: bash
+      env:
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_BASE: ${{ inputs.base }}
+        INPUT_POST: ${{ inputs.post }}
+        INPUT_HISTORY: ${{ inputs.history }}
+        INPUT_CALIBRATE: ${{ inputs.calibrate }}
+        INPUT_MAX_FORGOTTEN: ${{ inputs.max-forgotten }}
+        INPUT_ARCHAEOLOGY_VERSION: ${{ inputs.archaeology-version }}
+        INPUT_WORKING_DIRECTORY: ${{ inputs.working-directory }}
+      run: |
+        if [ -f "$GITHUB_ACTION_PATH/dist/action/main.js" ]; then
+          NODE_OPTIONS="" node "$GITHUB_ACTION_PATH/dist/action/main.js"
+        elif NODE_OPTIONS="" node --experimental-strip-types -e "" >/dev/null 2>&1; then
+          NODE_OPTIONS="" node --experimental-strip-types "$GITHUB_ACTION_PATH/src/action/main.ts"
+        else
+          echo "::warning::Gutter needs Node.js >= 22.6 on PATH (found $(node -v 2>/dev/null || echo 'none'))."
+        fi
+
+    - name: Upload the comic page
+      if: ${{ inputs.upload-page == 'true' && steps.brief.outputs.status == 'analyzed' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: gutter-brief
+        path: |
+          ${{ runner.temp }}/gutter/gutter.html
+          ${{ runner.temp }}/gutter/gutter.json
+        retention-days: 14
