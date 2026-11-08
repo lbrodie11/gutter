@@ -187,6 +187,7 @@ export function classifyCommit(commit, repoId = '') {
   if (
     author.includes('k8s-publishing-bot') ||
     author.includes('publishing-bot') ||
+    author.includes('kubernetes publisher') ||
     subj.includes('sync-openapi') ||
     subj.startsWith('automated sync')
   ) {
@@ -449,6 +450,7 @@ export function evaluateWalkForward({
   minShared = DEFAULT_MIN_SHARED,
   minWilsonLow = DEFAULT_MIN_WILSON_LOW,
   minLift = DEFAULT_MIN_LIFT,
+  maxSamplePredictions = 15,
 }) {
   const deltaSec = deltaHours * 3600;
   const rightCensorCutoff = endSec - deltaSec;
@@ -746,7 +748,7 @@ export function evaluateWalkForward({
       if (current.touchedFilesB.has(fB)) recentHits++;
     }
 
-    if (samplePredictions.length < 15) {
+    if (samplePredictions.length < maxSamplePredictions) {
       samplePredictions.push({
         upstreamSha: current.commitA.sha.slice(0, 10),
         upstreamTimeIso: new Date(t * 1000).toISOString(),
@@ -907,11 +909,11 @@ export function runPairSuite({
         });
 
         const shuffledPrecision = shuffledRes.precisionAtK;
-        const strongestBaseline = Math.max(
+        const strongestMatchedBaseline = Math.max(
           mainRes.baselines.popularPrecision,
           mainRes.baselines.recentPrecision,
-          shuffledPrecision,
         );
+        const strongestBaseline = Math.max(strongestMatchedBaseline, shuffledPrecision);
         const liftOverStrongest =
           strongestBaseline > 0
             ? Number((mainRes.precisionAtK / strongestBaseline).toFixed(2))
@@ -919,18 +921,19 @@ export function runPairSuite({
               ? Infinity
               : 0;
         const marginOverStrongest = Number((mainRes.precisionAtK - strongestBaseline).toFixed(4));
+        const wilsonWidth = Number((mainRes.wilson95[1] - mainRes.wilson95[0]).toFixed(4));
 
         let status = 'NO-GO';
         if (!mainRes.sampleSizeGatePassed) {
           status = 'INCONCLUSIVE (sparse data)';
+        } else if (wilsonWidth > 0.35) {
+          status = 'NOT YET (wide CI > 35pp)';
         } else if (
           mainRes.precisionAtK >= 0.6 &&
           marginOverStrongest >= 0.15 &&
           liftOverStrongest >= 1.5
         ) {
           status = 'GO';
-        } else if (mainRes.repoLevelAlert.precision >= 0.6 && mainRes.repoLevelAlert.lift >= 1.5) {
-          status = 'NOT YET (repo-level only)';
         }
 
         runs.push({
@@ -938,6 +941,10 @@ export function runPairSuite({
           baselines: {
             ...mainRes.baselines,
             shuffledPrecision,
+            shuffledRetrainedFired: shuffledRes.queriesWithPrediction,
+            shuffledRetrainedSuggestions: shuffledRes.totalSuggestions,
+            shuffledRetrainedHits: shuffledRes.correctSuggestions,
+            strongestMatchedBaseline: Number(strongestMatchedBaseline.toFixed(4)),
             strongestBaseline: Number(strongestBaseline.toFixed(4)),
           },
           liftOverStrongestBaseline: liftOverStrongest,
@@ -1030,6 +1037,52 @@ export const PREREGISTERED_PAIRS = [
   },
 ];
 
+/**
+ * Evaluates the preregistered overall decision rules from `DECISION-THRESHOLDS.md`,
+ * explicitly surfacing overlaps between `NOT YET` (fewer than 2 pairs reaching N_min >= 30)
+ * and `NO-GO` (manual_only precision indistinguishable from controls, lift < 1.2x).
+ */
+export function computeOverallDecision(pairResults) {
+  const pairsWithManualSampleGate = pairResults.filter((p) =>
+    p.runs.some((r) => r.targetScope === 'manual_only' && r.sampleSizeGatePassed),
+  );
+  const qualifyingManualGo = pairResults.filter((p) =>
+    p.runs.some((r) => r.targetScope === 'manual_only' && r.status === 'GO'),
+  );
+  const notYetSampleCondition = pairsWithManualSampleGate.length < 2;
+  const noGoControlCondition = pairResults.some((p) =>
+    p.runs.some(
+      (r) =>
+        r.targetScope === 'manual_only' &&
+        r.sampleSizeGatePassed &&
+        r.liftOverStrongestBaseline < 1.2,
+    ),
+  );
+
+  let preregisteredRuleStatus = 'NO-GO';
+  let operationalDecision = 'NO-GO';
+
+  if (qualifyingManualGo.length >= 2 && !noGoControlCondition) {
+    preregisteredRuleStatus = 'GO';
+    operationalDecision = 'GO';
+  } else if (notYetSampleCondition && noGoControlCondition) {
+    preregisteredRuleStatus = 'NO-GO_AND_NOT_YET_OVERLAP';
+    operationalDecision = 'NO-GO';
+  } else if (notYetSampleCondition && !noGoControlCondition) {
+    preregisteredRuleStatus = 'NOT YET';
+    operationalDecision = 'NOT YET';
+  }
+
+  return {
+    operationalDecision,
+    preregisteredRuleStatus,
+    qualifyingManualPairsCount: qualifyingManualGo.length,
+    pairsReachingManualSampleGateCount: pairsWithManualSampleGate.length,
+    notYetConditionMet: notYetSampleCondition,
+    noGoConditionMet: noGoControlCondition,
+  };
+}
+
 async function main() {
   const { values } = parseArgs({
     options: {
@@ -1089,24 +1142,23 @@ async function main() {
     pairResults.push(suite);
   }
 
-  // Overall decision across the 3 pairs on `manual_only` at the 72h / 168h horizons
-  const qualifyingManualGo = pairResults.filter((p) =>
-    p.runs.some((r) => r.targetScope === 'manual_only' && r.status === 'GO'),
-  );
-  const overallDecision = qualifyingManualGo.length >= 2 ? 'GO' : 'NO-GO';
+  const decisionSummary = computeOverallDecision(pairResults);
+  const overallDecision = decisionSummary.operationalDecision;
+  const generatedAt = new Date().toISOString();
 
   const resultsPayload = {
     experimentId: 'GU-27',
-    generatedAt: '2026-11-08T15:40:00Z',
+    generatedAt,
     overallDecision,
-    qualifyingManualPairsCount: qualifyingManualGo.length,
+    decisionSummary,
+    qualifyingManualPairsCount: decisionSummary.qualifyingManualPairsCount,
     repoArchaeologyApi: raProbe,
     pairs: pairResults,
   };
 
   const manifestPayload = {
     experimentId: 'GU-27',
-    generatedAt: '2026-11-08T15:40:00Z',
+    generatedAt,
     nodeVersion: process.version,
     platform: `${process.platform}-${process.arch}`,
     repoArchaeologyApi: raProbe,

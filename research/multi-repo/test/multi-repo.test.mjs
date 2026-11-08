@@ -1,14 +1,22 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import { buildReportMarkdown } from '../generate-report.mjs';
 import {
   buildShuffledDownstreamCommits,
   classifyCommit,
   classifyFilePath,
+  computeOverallDecision,
   evaluateWalkForward,
   extractContractTokens,
   extractExplicitRefsFromSubject,
   wilsonInterval,
 } from '../run.mjs';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const MULTI_REPO_DIR = join(HERE, '..');
 
 const HOUR = 3600;
 const DAY = 24 * HOUR;
@@ -332,5 +340,66 @@ describe('GU-27 multi-repo research harness', () => {
     const half = wilsonInterval(50, 100);
     assert.ok(half.low > 0.4 && half.low < 0.5);
     assert.ok(half.high > 0.5 && half.high < 0.6);
+  });
+
+  it('recognizes Kubernetes Publisher committer as mirrored and evaluates GO / NOT YET / NO-GO overlap', () => {
+    const k8sPublisherCommit = makeCommit({
+      sha: 'kp1',
+      commitTime: 1000,
+      files: ['tools/events/event_broadcaster.go'],
+      authorName: 'Human Contributor',
+      committerName: 'Kubernetes Publisher',
+      subject: 'client-go: avoid holding lock',
+      repoId: 'kubernetes/client-go',
+    });
+    assert.equal(k8sPublisherCommit.category, 'mirrored');
+
+    // Sparse only (< 2 pairs with N >= 30, no qualifying negative pair) -> NOT YET
+    const sparseOnly = computeOverallDecision([
+      {
+        runs: [{ targetScope: 'manual_only', sampleSizeGatePassed: false, status: 'INCONCLUSIVE (sparse data)', liftOverStrongestBaseline: 0 }],
+      },
+    ]);
+    assert.equal(sparseOnly.operationalDecision, 'NOT YET');
+    assert.equal(sparseOnly.preregisteredRuleStatus, 'NOT YET');
+
+    // 1 pair reaches N >= 30 with lift < 1.2 -> NO-GO_AND_NOT_YET_OVERLAP (operational NO-GO)
+    const overlap = computeOverallDecision([
+      {
+        runs: [{ targetScope: 'manual_only', sampleSizeGatePassed: true, status: 'NO-GO', liftOverStrongestBaseline: 0.69 }],
+      },
+      {
+        runs: [{ targetScope: 'manual_only', sampleSizeGatePassed: false, status: 'INCONCLUSIVE (sparse data)', liftOverStrongestBaseline: 0 }],
+      },
+    ]);
+    assert.equal(overlap.operationalDecision, 'NO-GO');
+    assert.equal(overlap.preregisteredRuleStatus, 'NO-GO_AND_NOT_YET_OVERLAP');
+    assert.equal(overlap.notYetConditionMet, true);
+    assert.equal(overlap.noGoConditionMet, true);
+
+    // 2 pairs reach N >= 30 and pass GO -> GO
+    const goDecision = computeOverallDecision([
+      {
+        runs: [{ targetScope: 'manual_only', sampleSizeGatePassed: true, status: 'GO', liftOverStrongestBaseline: 1.8 }],
+      },
+      {
+        runs: [{ targetScope: 'manual_only', sampleSizeGatePassed: true, status: 'GO', liftOverStrongestBaseline: 2.1 }],
+      },
+    ]);
+    assert.equal(goDecision.operationalDecision, 'GO');
+    assert.equal(goDecision.preregisteredRuleStatus, 'GO');
+  });
+
+  it('verifies REPORT.md is generated deterministically from results.json and diagnostics.json', () => {
+    const results = JSON.parse(readFileSync(join(MULTI_REPO_DIR, 'results.json'), 'utf8'));
+    const diagnostics = JSON.parse(readFileSync(join(MULTI_REPO_DIR, 'diagnostics.json'), 'utf8'));
+    const reportOnDisk = readFileSync(join(MULTI_REPO_DIR, 'REPORT.md'), 'utf8');
+    const expected = buildReportMarkdown(results, diagnostics);
+
+    assert.equal(reportOnDisk, expected, 'REPORT.md must match buildReportMarkdown(results, diagnostics) byte-for-byte');
+    assert.ok(
+      reportOnDisk.includes('**0.4577** (287/627)'),
+      'REPORT.md must contain the exact Stripe 168h temporal/all row from results.json (287/627 = 0.4577)',
+    );
   });
 });
