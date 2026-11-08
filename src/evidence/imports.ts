@@ -32,11 +32,12 @@ const MAX_FILE_BYTES = 512 * 1024;
 const MAX_FILES = 25_000;
 const MAX_UNRESOLVED_SAMPLES = 5;
 
-/** Check whether a raw string looks like a genuine module specifier (no whitespace, control chars, or code fragments). */
+/** Check whether a raw string looks like a genuine module specifier (no control chars or code fragments). */
 export function isValidSpecifier(spec: string): boolean {
   if (!spec || spec.length > MAX_SPECIFIER_LEN) return false;
-  if (/[\s\0-\x1f]/.test(spec)) return false;
+  if (/[\0-\x1f\r\n]/.test(spec)) return false;
   if (spec.startsWith('./') || spec.startsWith('../') || spec === '.' || spec === '..') return true;
+  if (/\s/.test(spec)) return false;
   return VALID_SPECIFIER.test(spec);
 }
 
