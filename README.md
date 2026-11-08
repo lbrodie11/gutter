@@ -30,8 +30,6 @@ jobs:
       - uses: lbrodie11/gutter@v0
 ```
 
-> **Pre-release status:** The `v0.1.0` / `v0` release tags and the `gutter-brief` npm package are published by [`.github/workflows/release.yml`](.github/workflows/release.yml) once the initial release tag is pushed and the repository is made public (see [`docs/RELEASING.md`](docs/RELEASING.md)). Until `v0.1.0` is cut, use [Option 1 (Run locally from source)](#option-1--run-locally-from-source-works-today) below.
-
 ---
 
 ### See what the diff doesn't tell you
@@ -125,7 +123,32 @@ To help reviewers calibrate trust on *their specific repository*, Gutter runs Re
 
 ## Quick start
 
-### Option 1 · Run locally from source (works today)
+### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
+
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.1.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.1.0^{commit}`), never an unbuilt `main` branch commit SHA.
+
+| Input | Default | Behavior |
+|---|---|---|
+| `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
+| `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.3.0`) |
+| `calibrate` | `true` | Backtest warning accuracy on this repo (~0.3s on 1,900 commits) |
+| `max-forgotten` | `3` | Maximum historical companions to display (`0` disables companion rows) |
+| `archaeology-version` | `^0.3.0` | npm version range of `repo-archaeology` to execute |
+| `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
+
+Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count`, `forgotten-count`, `json-path`, `html-path`.
+
+### Option 2 · CLI (`gutter-brief` on npm, binary `gutter`)
+
+```bash
+npx gutter-brief brief --base main
+npx gutter-brief brief --base main --print md        # also print the Markdown comment to stdout
+npx gutter-brief render .gutter/gutter.json --format html > page.html
+```
+
+Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
+
+### Option 3 · Run locally from source
 
 Built `dist/` runs on **Node.js ≥ 22** (and `git`).
 
@@ -143,31 +166,6 @@ node /tmp/gutter/dist/cli.js brief --base main
 #   .gutter/brief.md      the compact PR comment
 #   .gutter/gutter.html   the self-contained six-panel page
 ```
-
-### Option 2 · CLI (`gutter-brief` on npm, binary `gutter` — available after `v0.1.0` npm publish)
-
-```bash
-npx gutter-brief brief --base main
-npx gutter-brief brief --base main --print md        # also print the Markdown comment to stdout
-npx gutter-brief render .gutter/gutter.json --format html > page.html
-```
-
-Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
-
-### Option 3 · GitHub Action (`lbrodie11/gutter@v0` — available after `v0.1.0` tag push)
-
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.1.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.1.0^{commit}`), never an unbuilt `main` branch commit SHA.
-
-| Input | Default | Behavior |
-|---|---|---|
-| `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
-| `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.3.0`) |
-| `calibrate` | `true` | Backtest warning accuracy on this repo (~0.3s on 1,900 commits) |
-| `max-forgotten` | `3` | Maximum historical companions to display (`0` disables companion rows) |
-| `archaeology-version` | `^0.3.0` | npm version range of `repo-archaeology` to execute |
-| `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
-
-Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count`, `forgotten-count`, `json-path`, `html-path`.
 
 ---
 
