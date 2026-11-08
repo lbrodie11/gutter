@@ -240,6 +240,9 @@ export function buildSocialCardHtml(): string {
     justify-content: space-between;
     white-space: nowrap;
   }
+  .cut-tag .sha {
+    text-transform: none;
+  }
   .cut-title {
     font-size: 15.5px;
     font-weight: 900;
@@ -328,7 +331,7 @@ export function buildSocialCardHtml(): string {
         <div class="cut-code">src/middleware/serve-static/index.test.ts</div>
       </div>
       <div class="cut">
-        <div class="cut-tag"><span>C-06 · CHECK THESE</span><span>RECEIPTS · d54720d · 588ec13</span></div>
+        <div class="cut-tag"><span>C-06 · CHECK THESE</span><span>RECEIPTS · <span class="sha">d54720d</span> · <span class="sha">588ec13</span></span></div>
         <div class="cut-title">Does index.test.ts need a matching change?</div>
       </div>
       <div class="colophon-bar">
