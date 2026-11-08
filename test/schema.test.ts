@@ -2,7 +2,13 @@ import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildBrief } from '../src/brief.ts';
+import { GUTTER_VERSION } from '../src/version.ts';
 import { TempRepo, lines, raBacktestFixture, raDiffFixture } from './helpers.ts';
+
+test('GUTTER_VERSION in src/version.ts matches package.json version', () => {
+  const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { version: string };
+  assert.equal(GUTTER_VERSION, pkg.version);
+});
 
 /**
  * A dependency-free conformance check: every `required` key in the published

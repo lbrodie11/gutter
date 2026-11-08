@@ -12,34 +12,57 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-24.04, macos-15-intel, windows-2025]
         node: [22, 24]
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: ${{ matrix.node }}
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: Smoke test built CLI (dist/cli.js)
+        shell: bash
+        run: |
+          node dist/cli.js --version
+          TMP_REPO=$(mktemp -d)
+          cd "$TMP_REPO"
+          git init -q -b main
+          git config user.name "CI"
+          git config user.email "ci@example.com"
+          printf 'export const a = 1;\n' > a.ts
+          git add a.ts && git commit -q -m "initial"
+          BASE_SHA=$(git rev-parse HEAD)
+          git checkout -q -b feature
+          printf 'export const a = 2;\n' > a.ts
+          git add a.ts && git commit -q -m "update a"
+          node "$GITHUB_WORKSPACE/dist/cli.js" brief --base "$BASE_SHA" --no-history --out "$TMP_REPO/.gutter"
+          test -f "$TMP_REPO/.gutter/gutter.json"
+          test -f "$TMP_REPO/.gutter/brief.md"
+          test -f "$TMP_REPO/.gutter/gutter.html"
+          rm -rf "$TMP_REPO"
 
   dogfood:
-    # Gutter briefs its own PRs.
+    # Gutter briefs its own PRs using the built dist/ path.
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
+      - run: npm ci
+      - run: npm run build
       - uses: ./
         with:
           post: always

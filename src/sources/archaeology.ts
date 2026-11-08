@@ -7,6 +7,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import type { Calibration, CommitRef, FamilyItem, ForgottenItem, ForgottenLayer } from '../contract.ts';
 import { wilsonInterval, pct } from '../stats/wilson.ts';
 import { isAutomatedAuthor } from '../evidence/automation.ts';
@@ -74,6 +75,15 @@ function command(runner: RaRunner): { file: string; pre: string[] } {
   if (bin) return /\.[cm]?js$/.test(bin) ? { file: process.execPath, pre: [bin] } : { file: bin, pre: [] };
   const spec = runner.spec ?? DEFAULT_RA_SPEC;
   if (!/^[\w.^~<>=*| -]+$/.test(spec)) throw new Error(`invalid repo-archaeology version spec: ${spec}`);
+  if (process.platform === 'win32') {
+    const candidates = [
+      process.env.npm_execpath ? join(dirname(process.env.npm_execpath), 'npx-cli.js') : '',
+      join(dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js'),
+    ].filter(Boolean);
+    for (const c of candidates) {
+      if (existsSync(c)) return { file: process.execPath, pre: [c, '--yes', `repo-archaeology@${spec}`] };
+    }
+  }
   return { file: 'npx', pre: ['--yes', `repo-archaeology@${spec}`] };
 }
 

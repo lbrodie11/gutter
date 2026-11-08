@@ -34,10 +34,18 @@ PR comments can't render custom HTML/CSS. The comment is compact Markdown with c
 
 `pull_request` only, never `pull_request_target`. Fork PRs fall back to summary + artifact. All PR-derived text is escaped per output format; links come only from `http(s)` bases and hex SHAs; git runs via argument vectors. Gutter never fails a build. An analysis error becomes a warning annotation.
 
-## 9. Zero runtime dependencies, Node ≥ 22.6
+## 9. Zero runtime dependencies; Node ≥ 22
 
-Same model as Repo Archaeology: TypeScript sources run directly via type stripping (`allowImportingTsExtensions` + `rewriteRelativeImportExtensions` for the build), `node:test` for tests, `parseArgs` for the CLI. Smaller attack surface for something that runs in other people's CI.
+Published builds and release tags ship compiled ES2022 JavaScript in `dist/`, which runs on Node.js ≥ 22 (`engines.node: ">=22"`) without experimental flags or runtime dependencies — matching `repo-archaeology@^0.3.0`'s Node ≥ 22 requirement while Node 20 is EOL. Local development (`npm run dev`) and tests (`npm test`) run `.ts` sources directly via Node ≥ 22.6 type stripping (`--experimental-strip-types`), `node:test` for tests, and `parseArgs` for the CLI. Smaller attack surface for something that runs in other people's CI.
 
 ## 10. Free Action first; paid GitHub App later
 
 The CLI and Action stay free and MIT. Monetization, if any, is a companion GitHub App with flat per-organization pricing (not per seat, so it doesn't line up against $20–$60/seat AI reviewers). GitHub Marketplace requires 100 installations before an App can list paid plans; that is the gate, not a goal. Paid features coordinate teams (accuracy dashboard, shared config, multi-repo, history caching); the core analysis stays free.
+
+## 11. Version single source of truth
+
+`package.json` and `src/version.ts` both carry the version string so the source tree can run directly without a code-generation pre-step. An automated test in `test/schema.test.ts` asserts `GUTTER_VERSION === package.json#version` on every test and release run, preventing drift.
+
+## 12. Detached-HEAD release tags carry `dist/`
+
+`dist/` stays in `.gitignore` on `main` so pull requests never carry build diffs. When a `vX.Y.Z` tag is pushed, `.github/workflows/release.yml` runs `npm ci`, typechecks, tests, builds `dist/`, force-adds `dist/` into a single detached-HEAD release commit, and moves both `vX.Y.Z` and the major `v0` tag to that commit. Consumers referencing `lbrodie11/gutter@v0` or `lbrodie11/gutter@v0.1.0` always get a prebuilt `dist/action/main.js` that runs on Node ≥ 22 without installing dependencies or stripping types at runtime.
