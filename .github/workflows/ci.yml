@@ -26,6 +26,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - run: node --test research/multi-repo/test/*.test.mjs
+      - run: node research/multi-repo/generate-report.mjs --check
       - run: npm run build
       - name: Smoke test built CLI (dist/cli.js)
         shell: bash

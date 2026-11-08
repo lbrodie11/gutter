@@ -1,0 +1,881 @@
+{
+  "experimentId": "GU-27",
+  "description": "Supplementary diagnostics for results.json: matched-baseline lifts, non-matched shuffled placebo fired/hit counts, and kubernetes/client-go mirror metadata analysis.",
+  "kubernetesMirrorDiagnostics": {
+    "downstreamTotalNonMergeCommits": 102,
+    "downstreamDroppedOver50Files": 6,
+    "downstreamDroppedNoScopedGoFiles": 1,
+    "downstreamDroppedNoScopedGoCommitSha": "d9290726ad",
+    "downstreamMaxFilesInSingleCommit": 148,
+    "downstreamKeptCommits": 95,
+    "downstreamCommitterKubernetesPublisherAll": 102,
+    "downstreamCommitterKubernetesPublisherKept": 95,
+    "downstreamAuthorTimeEqualsCommitTimeKept": 94,
+    "matchedSubjectAndAuthorTimePairs": 92,
+    "pairsWithTbLessOrEqualTa": 91,
+    "pairsWithTbStrictlyGreaterTa": 1,
+    "medianTbMinusTaHours": -48.98
+  },
+  "stripeShuffledEvalWindowDiagnostics": {
+    "unshifted": {
+      "manualEvalCommits": 37,
+      "fileCounts": {
+        "src/stripe.core.ts": 14,
+        "src/stripe.esm.node.ts": 12,
+        "src/utils.ts": 5,
+        "src/RequestSender.ts": 10
+      }
+    },
+    "shiftedPlus45d": {
+      "manualEvalCommits": 34,
+      "fileCounts": {
+        "src/stripe.core.ts": 17,
+        "src/stripe.esm.node.ts": 15,
+        "src/utils.ts": 6,
+        "src/RequestSender.ts": 10
+      }
+    }
+  },
+  "pairs": {
+    "stripe-openapi-to-node": {
+      "runs": [
+        {
+          "deltaHours": 24,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.1903,
+            "recentPrecision": 0.0742,
+            "shuffledMatchedWindowPrecision": 0.5516,
+            "shuffledMatchedWindowHits": 171,
+            "shuffledMatchedWindowSuggestions": 310,
+            "shuffledMatchedWindowUniqueCommits": 27,
+            "strongestMatchedBaseline": 0.1903,
+            "liftOverMatchedBaseline": 1,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 152,
+            "totalSuggestions": 152,
+            "correctSuggestions": 96,
+            "precisionAtK": 0.6316,
+            "sampleSizeGatePassed": true
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0.1056,
+            "recentPrecision": 0.0141,
+            "shuffledMatchedWindowPrecision": 0.3803,
+            "shuffledMatchedWindowHits": 54,
+            "shuffledMatchedWindowSuggestions": 142,
+            "shuffledMatchedWindowUniqueCommits": 8,
+            "strongestMatchedBaseline": 0.1056,
+            "liftOverMatchedBaseline": 1,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 95,
+            "totalSuggestions": 95,
+            "correctSuggestions": 35,
+            "precisionAtK": 0.3684,
+            "sampleSizeGatePassed": true
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.7097,
+            "recentPrecision": 0.5136,
+            "shuffledMatchedWindowPrecision": 0.5614,
+            "shuffledMatchedWindowHits": 352,
+            "shuffledMatchedWindowSuggestions": 627,
+            "shuffledMatchedWindowUniqueCommits": 29,
+            "strongestMatchedBaseline": 0.7097,
+            "liftOverMatchedBaseline": 0.64,
+            "marginOverMatchedBaseline": -0.252
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 213,
+            "totalSuggestions": 226,
+            "correctSuggestions": 183,
+            "precisionAtK": 0.8097,
+            "sampleSizeGatePassed": true
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0.4502,
+            "recentPrecision": 0.2259,
+            "shuffledMatchedWindowPrecision": 0.4269,
+            "shuffledMatchedWindowHits": 257,
+            "shuffledMatchedWindowSuggestions": 602,
+            "shuffledMatchedWindowUniqueCommits": 17,
+            "strongestMatchedBaseline": 0.4502,
+            "liftOverMatchedBaseline": 0.83,
+            "marginOverMatchedBaseline": -0.0764
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 310,
+            "totalSuggestions": 539,
+            "correctSuggestions": 294,
+            "precisionAtK": 0.5455,
+            "sampleSizeGatePassed": true
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        }
+      ]
+    },
+    "otel-proto-to-js": {
+      "runs": [
+        {
+          "deltaHours": 24,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 2,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 2,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 2,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 2,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.3333,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 3,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0.3333,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": -0.3333
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0.3333,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 3,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0.3333,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": -0.3333
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.3333,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 3,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0.3333,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": -0.3333
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0.3333,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 3,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0.3333,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": -0.3333
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        }
+      ]
+    },
+    "k8s-staging-to-client-go": {
+      "runs": [
+        {
+          "deltaHours": 24,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.6667,
+            "recentPrecision": 0.3333,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 3,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0.6667,
+            "liftOverMatchedBaseline": 1,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 24,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 0,
+            "totalSuggestions": 0,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.2632,
+            "recentPrecision": 0.0526,
+            "shuffledMatchedWindowPrecision": 0.1579,
+            "shuffledMatchedWindowHits": 3,
+            "shuffledMatchedWindowSuggestions": 19,
+            "shuffledMatchedWindowUniqueCommits": 3,
+            "strongestMatchedBaseline": 0.2632,
+            "liftOverMatchedBaseline": 1,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 2,
+            "totalSuggestions": 6,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 1,
+            "shuffledMatchedWindowHits": 4,
+            "shuffledMatchedWindowSuggestions": 4,
+            "shuffledMatchedWindowUniqueCommits": 1,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 2,
+            "totalSuggestions": 6,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.3333,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 6,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0.3333,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": -0.3333
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 2,
+            "totalSuggestions": 2,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 72,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0,
+            "shuffledMatchedWindowHits": 0,
+            "shuffledMatchedWindowSuggestions": 0,
+            "shuffledMatchedWindowUniqueCommits": 0,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 2,
+            "totalSuggestions": 2,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "temporal",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.4844,
+            "recentPrecision": 0.0156,
+            "shuffledMatchedWindowPrecision": 0.375,
+            "shuffledMatchedWindowHits": 24,
+            "shuffledMatchedWindowSuggestions": 64,
+            "shuffledMatchedWindowUniqueCommits": 7,
+            "strongestMatchedBaseline": 0.4844,
+            "liftOverMatchedBaseline": 0.65,
+            "marginOverMatchedBaseline": -0.1719
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 3,
+            "totalSuggestions": 9,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "temporal",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0.2917,
+            "shuffledMatchedWindowHits": 7,
+            "shuffledMatchedWindowSuggestions": 24,
+            "shuffledMatchedWindowUniqueCommits": 2,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 3,
+            "totalSuggestions": 9,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "explicit_ref",
+          "targetScope": "all",
+          "matchedBaselines": {
+            "popularPrecision": 0.625,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 0.5625,
+            "shuffledMatchedWindowHits": 9,
+            "shuffledMatchedWindowSuggestions": 16,
+            "shuffledMatchedWindowUniqueCommits": 3,
+            "strongestMatchedBaseline": 0.625,
+            "liftOverMatchedBaseline": 0.1,
+            "marginOverMatchedBaseline": -0.5625
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 3,
+            "totalSuggestions": 3,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        },
+        {
+          "deltaHours": 168,
+          "method": "explicit_ref",
+          "targetScope": "manual_only",
+          "matchedBaselines": {
+            "popularPrecision": 0,
+            "recentPrecision": 0,
+            "shuffledMatchedWindowPrecision": 1,
+            "shuffledMatchedWindowHits": 1,
+            "shuffledMatchedWindowSuggestions": 1,
+            "shuffledMatchedWindowUniqueCommits": 1,
+            "strongestMatchedBaseline": 0,
+            "liftOverMatchedBaseline": 0,
+            "marginOverMatchedBaseline": 0
+          },
+          "shuffledRetrainedPlacebo": {
+            "queriesWithPrediction": 3,
+            "totalSuggestions": 3,
+            "correctSuggestions": 0,
+            "precisionAtK": 0,
+            "sampleSizeGatePassed": false
+          }
+        }
+      ]
+    }
+  }
+}

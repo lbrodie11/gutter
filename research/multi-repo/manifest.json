@@ -1,0 +1,117 @@
+{
+  "experimentId": "GU-27",
+  "generatedAt": "2026-11-08T15:40:00Z",
+  "nodeVersion": "v22.14.0",
+  "platform": "darwin-arm64",
+  "repoArchaeologyApi": {
+    "available": true,
+    "source": "workspace:repo-archaeology",
+    "exposesOpenRepository": true,
+    "exposesRawCommitHistory": false,
+    "supportedMethods": [
+      "diff",
+      "scan",
+      "file",
+      "explain",
+      "backtest",
+      "importGraph",
+      "close"
+    ]
+  },
+  "preregisteredParameters": {
+    "horizonsHours": [
+      24,
+      72,
+      168
+    ],
+    "embargoHours": 168,
+    "maxFilesPerCommit": 50,
+    "topK": 3,
+    "minShared": 3,
+    "minWilsonLow": 0.2,
+    "minLift": 1.5,
+    "minFiredEventsGate": 30,
+    "shuffledControlOffsetDays": 45,
+    "prngSeed": 20261108
+  },
+  "repositories": [
+    {
+      "pairId": "stripe-openapi-to-node",
+      "upstream": {
+        "id": "stripe/openapi",
+        "url": "https://github.com/stripe/openapi",
+        "headSha": "6360907ca278d6aecff118df90167e94aaba1437",
+        "pathSpecs": [
+          "openapi",
+          "latest"
+        ]
+      },
+      "downstream": {
+        "id": "stripe/stripe-node",
+        "url": "https://github.com/stripe/stripe-node",
+        "headSha": "dacc71670c82e62cdf3f3dc56374ce941362aaca",
+        "pathSpecs": [
+          "src",
+          "types"
+        ]
+      },
+      "observationWindow": {
+        "startIso": "2025-05-01T00:00:00Z",
+        "endIso": "2026-11-01T00:00:00Z"
+      }
+    },
+    {
+      "pairId": "otel-proto-to-js",
+      "upstream": {
+        "id": "open-telemetry/opentelemetry-proto",
+        "url": "https://github.com/open-telemetry/opentelemetry-proto",
+        "headSha": "169f2f2c7c1550c364d5eecb05d1b6163a011b06",
+        "pathSpecs": [
+          "opentelemetry/proto"
+        ]
+      },
+      "downstream": {
+        "id": "open-telemetry/opentelemetry-js",
+        "url": "https://github.com/open-telemetry/opentelemetry-js",
+        "headSha": "ee94b842fd734e23064539c5f8069e0af0e92b9a",
+        "pathSpecs": [
+          "packages",
+          "experimental/packages"
+        ]
+      },
+      "observationWindow": {
+        "startIso": "2025-05-01T00:00:00Z",
+        "endIso": "2026-11-01T00:00:00Z"
+      }
+    },
+    {
+      "pairId": "k8s-staging-to-client-go",
+      "upstream": {
+        "id": "kubernetes/kubernetes",
+        "url": "https://github.com/kubernetes/kubernetes",
+        "headSha": "e3d37bb9fb1d695daff432925cd44b1452df64e1",
+        "pathSpecs": [
+          "staging/src/k8s.io/client-go",
+          "staging/src/k8s.io/api"
+        ]
+      },
+      "downstream": {
+        "id": "kubernetes/client-go",
+        "url": "https://github.com/kubernetes/client-go",
+        "headSha": "494d62c5edeff3b84f2e6b3e757554c13bc3648f",
+        "pathSpecs": [
+          "kubernetes",
+          "rest",
+          "tools",
+          "applyconfigurations",
+          "dynamic",
+          "discovery"
+        ]
+      },
+      "observationWindow": {
+        "startIso": "2025-08-01T00:00:00Z",
+        "endIso": "2026-11-01T00:00:00Z"
+      }
+    }
+  ]
+}
