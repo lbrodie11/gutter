@@ -41,3 +41,5 @@ jobs:
         with:
           node-version: 22
       - uses: ./
+        with:
+          post: always
