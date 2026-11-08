@@ -10,20 +10,28 @@ An evidence-backed change briefing that shows what changed, what depends on it, 
 
 ### See what the diff doesn't tell you
 
-Gutter combines `git diff` structure, static import analysis, test-file conventions, and [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) co-change history into a one-minute briefing for human reviewers.
+Gutter combines `git diff` structure, static import analysis, test-file conventions, and [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) co-change history into a compact, evidence-backed briefing for human reviewers.
 
 **Gutter doesn't replace your judgment.** It never writes AI verdicts, suggests code rewrites, or blocks a merge. Instead, it gives you verifiable repository evidence — with clickable commit receipts, 95% Wilson confidence intervals, and a per-repo accuracy backtest — so you can decide where to spend your attention.
 
+![Focused view of Gutter's historical companion panel on Hono](docs/images/hono-hero-crop.png)
+
+<sub>Above: Panel 4 of Gutter's briefing on an illustrative [honojs/hono](https://github.com/honojs/hono) change. Touching `src/middleware/serve-static/index.ts` and `src/adapter/bun/serve-static.ts` surfaces the untouched middleware test (`17 of 20` commits together) and sibling Deno adapter (`9 of 11` commits together), with the exact commits behind each relationship.</sub>
+
 ---
 
-## Example: Catching a missed test and sibling adapter in Hono
+## Example: Spotting overlooked relationships in Hono
 
 > **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,868` commits). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts, confidence intervals, and supporting commit receipts are genuine.
 >
-> **Reproduce locally from the saved contract:**
+> **Reproduce locally:**
 > ```bash
+> # Re-render the Markdown comment or HTML page from the saved contract:
 > node dist/cli.js render docs/example/gutter.json --format md
 > node dist/cli.js render docs/example/gutter.json --format html > /tmp/gutter.html
+>
+> # Or re-run the full analysis from scratch against a clone of honojs/hono:
+> bash docs/example/reproduce.sh
 > ```
 
 ### 1 · What Gutter surfaces
@@ -73,35 +81,38 @@ Alongside the Markdown comment, Gutter writes a self-contained, offline HTML pag
 
 ---
 
-## How accuracy calibration works (73% hit rate vs. 57% per-file precision)
+## How accuracy calibration works (73% hit rate vs. 57% precision)
 
 Historical co-change is a probabilistic signal, not proof of a bug. Sometimes a companion file was genuinely overlooked; other times a change intentionally applies to only one adapter or module.
 
-To help reviewers calibrate trust on *their specific repository*, Gutter runs Repo Archaeology's walk-forward backtest on recent history and reports two distinct retrospective metrics in the footer:
+To help reviewers calibrate trust on *their specific repository*, Gutter runs Repo Archaeology's walk-forward backtest on recent history and reports retrospective co-change prediction metrics (not the percentage of real-world omissions detected):
 
-- **Change-level hit rate (`73%` on Hono, `6.8×` lift over guessing busy files):** Across `375` held-out commits where warnings fired, at least one flagged companion file really did change in that commit 73% of the time.
-- **Per-file precision (`57%` on Hono):** Across all `516` individual file warnings emitted during the backtest, 57% of the individually flagged files changed.
+- **Evaluated window (`375` held-out test commits on Hono):** Each held-out commit is replayed using only history prior to that commit.
+- **Query hit rate (`73%` across `516` fired file-level queries, `6.8×` lift over guessing busy files):** Among the `516` file-level queries where historical suggestions were returned, `73%` had at least one suggestion that genuinely changed in the same commit.
+- **Per-suggestion precision (`57%`):** Across all individual file suggestions emitted across those queries, `57%` matched files that changed in the same commit.
 
-**Automatic gating:** When a repository's measured per-file precision falls below `25%`, Gutter suppresses co-change questions from the checklist while still keeping the raw table available for inspection. Weak matches (Wilson lower bound `< 30%`) and matches backed mostly by bot commits (`dependabot`, `renovate`, etc.) never become checklist questions.
+**Automatic gating:** When a repository's measured per-suggestion precision falls below `25%`, Gutter suppresses co-change questions from the checklist while still keeping the raw table available for inspection. Weak matches (Wilson lower bound `< 30%`) and matches backed mostly by bot commits (`dependabot`, `renovate`, etc.) never become checklist questions.
 
 ---
 
 ## Quick start
 
-> **Release status (`v0.1.0` · experimental):** This repository is currently in pre-launch validation ([M0/M1 on the roadmap](docs/ROADMAP.md)). Its co-change engine [`repo-archaeology@0.3.0`](https://www.npmjs.com/package/repo-archaeology) is published on npm, and the `v0` / `v0.1.0` git tags are pushed. Until `gutter-brief` is published to npm and this repository is made public, run Gutter locally from a clone (Option 1) or reference the Action from workflows with access to this repository (Option 2).
+> **Release status (`v0.1.0` · experimental):** This repository is currently in pre-launch validation ([M0/M1 on the roadmap](docs/ROADMAP.md)). Its co-change engine [`repo-archaeology@0.3.0`](https://www.npmjs.com/package/repo-archaeology) is published on npm, and the `v0` / `v0.1.0` git tags are pushed. Until `gutter-brief` is published to npm and this repository is made public, run Gutter locally from a clone (Option 1) or reference the Action from workflows with access to this repository (Option 3).
 
 ### Option 1 · Run locally from source (works today)
 
 Requires **Node.js ≥ 22.6** and **git**.
 
 ```bash
-git clone https://github.com/lbrodie11/gutter.git
-cd gutter
+# 1. Clone and build Gutter
+git clone https://github.com/lbrodie11/gutter.git /tmp/gutter
+cd /tmp/gutter
 npm ci
 npm run build
 
-# Analyze any local git repository against a base branch:
-node /path/to/gutter/dist/cli.js brief --base main
+# 2. Switch to the repository you want to analyze (on a feature branch)
+cd /path/to/your-project
+node /tmp/gutter/dist/cli.js brief --base main
 # → .gutter/gutter.json   the evidence contract
 #   .gutter/brief.md      the compact PR comment
 #   .gutter/gutter.html   the self-contained six-panel page
