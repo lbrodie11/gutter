@@ -3,7 +3,7 @@ description: 'A one-page, evidence-backed briefing on every pull request: what c
 author: 'Laqwan Brodie'
 
 branding:
-  icon: 'book-open'
+  icon: 'layout'
   color: 'yellow'
 
 inputs:

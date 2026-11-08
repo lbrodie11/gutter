@@ -1,4 +1,4 @@
-# Gutter
+# <img src="docs/brand/icon.svg" width="32" height="32" align="top" alt="Gutter mark"> Gutter
 
 **Understand a pull request before you review it.**
 
