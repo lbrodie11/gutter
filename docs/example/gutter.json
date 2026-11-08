@@ -6,19 +6,18 @@
   },
   "change": {
     "base": "main",
-    "head": "HEAD",
+    "head": "feat/serve-static-cache-control",
     "baseSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
-    "headSha": "42c8e6dbcc6f612139627fc70ba0705c664155e5",
+    "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
     "title": "feat(serve-static): add cacheControl option",
     "intent": "Adds a cacheControl option so static responses can set Cache-Control without custom middleware.",
     "commits": [
       {
-        "sha": "42c8e6dbcc6f612139627fc70ba0705c664155e5",
+        "sha": "local-sim",
         "subject": "feat(serve-static): add cacheControl option"
       }
     ],
-    "repoUrl": "https://github.com/honojs/hono",
-    "prNumber": 4242
+    "repoUrl": "https://github.com/honojs/hono"
   },
   "salience": {
     "level": "full",

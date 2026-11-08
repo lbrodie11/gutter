@@ -23,7 +23,7 @@ The question: **is panel 4 right often enough to be worth a reviewer's attention
 
 ## M2 · Public beta: GitHub Marketplace Action (~3 weeks)
 
-- [ ] Publish `repo-archaeology` ≥ 0.3.0 to npm (Gutter's Action depends on it).
+- [x] Publish `repo-archaeology` ≥ 0.3.0 to npm (Gutter's Action depends on it).
 - [ ] Tag `v0`, list the Action on Marketplace.
 - [ ] Launch assets: 5 before/after pages on recognizable OSS PRs, a 30-second on-twos screen recording, Show HN.
 - [ ] Feedback loop: 👍/👎 reactions on the sticky comment, read back into per-repo stats.

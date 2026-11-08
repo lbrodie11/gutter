@@ -1,37 +1,123 @@
 # Gutter
 
-**Every pull request gets a one-page briefing: what changed, what it touches, and what it probably forgot — with receipts.**
+**Understand a pull request before you review it.**
 
-In comics, the *gutter* is the space between panels where the reader works out what happened. Code review now lives there. Agents start a growing share of pull requests, those PRs touch more files, and reviewers trust them less. Gutter doesn't review your code. It helps the human reviewer build the right mental model of a change in about a minute, then shows exactly where each claim came from.
+An evidence-backed change briefing that shows what changed, what depends on it, and which historically related files deserve another look — with receipts.
 
-![Gutter briefing for a real Hono change](docs/images/hono-example.png)
+`Experimental · v0.1.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
-<sub>A real run on [honojs/hono](https://github.com/honojs/hono): a PR adds a `cacheControl` option to the shared serve-static middleware and the Bun adapter. Gutter notices the middleware's test file changed with it in 17 of its last 20 commits, the Deno adapter in 9 of 11, and that this is 1 of 3 parallel adapters. Every number links to the commits behind it. Full output: [`docs/example/`](docs/example/).</sub>
+---
 
-## What's on the page
+### See what the diff doesn't tell you
 
-| Panel | Question it answers | Where the evidence comes from |
+Gutter combines `git diff` structure, static import analysis, test-file conventions, and [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) co-change history into a one-minute briefing for human reviewers.
+
+**Gutter doesn't replace your judgment.** It never writes AI verdicts, suggests code rewrites, or blocks a merge. Instead, it gives you verifiable repository evidence — with clickable commit receipts, 95% Wilson confidence intervals, and a per-repo accuracy backtest — so you can decide where to spend your attention.
+
+---
+
+## Example: Catching a missed test and sibling adapter in Hono
+
+> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,868` commits). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts, confidence intervals, and supporting commit receipts are genuine.
+>
+> **Reproduce locally from the saved contract:**
+> ```bash
+> node dist/cli.js render docs/example/gutter.json --format md
+> node dist/cli.js render docs/example/gutter.json --format html > /tmp/gutter.html
+> ```
+
+### 1 · What Gutter surfaces
+
+Suppose a pull request adds a `cacheControl` option to Hono's shared static-file middleware ([`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts)) and updates the Bun adapter ([`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts)), touching 2 files (+10/−0).
+
+Before you read a line of the diff, Gutter raises three evidence-backed questions:
+
+| Reviewer question | Historical / static evidence | Supporting receipts |
 |---|---|---|
-| 1 · Intent | What is this change trying to do? | PR title/body, commit subjects |
-| 2 · What changed | How big is it, and where? | `git diff` grouped into modules, churn as screentone |
-| 3 · What it touches | Who depends on what changed? | Static import scan (TS/JS today; other languages are reported as *unchecked*, never as "no dependents") |
-| 4 · Likely forgotten | What usually changes with these files but didn't? | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) co-change history, with 95% Wilson intervals and the commits behind each claim |
-| 5 · Tests | Did the tests move with the code? | Conventional test-file links |
-| 6 · Check these | Where should I spend my attention? | Up to 4 deterministic questions, each citing evidence from panels 3–5 |
+| Does [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts) need a matching change? | Changed alongside `serve-static/index.ts` in **17 of its last 20 commits** (95% CI 64%–95%), untouched here | [`d54720d`](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) · [`588ec13`](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70) · [`8b05c77`](https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc) |
+| Does [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) need a matching change? | Changed alongside the Bun adapter in **9 of 11 commits** (95% CI 52%–95%), untouched here | [`26f8c33`](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) · [`1196f14`](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e) · [`246a06a`](https://github.com/honojs/hono/commit/246a06aa1d35aa206dcf11186b3aa90badb2de72) |
+| Should [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) (+1 more) follow? | PR changes **1 of 3 parallel implementations** (`serve-static.ts across src/adapter/*`) | [`cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) · [`deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) |
 
-The footer says how much to trust panel 4 *on this repository*. Gutter replays its own warnings against recent history (Repo Archaeology's backtest) and prints the result: *"when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files)."* If measured precision is poor, Gutter still shows the evidence but stops asking questions about it.
+### 2 · What lands in the pull request (sticky Markdown comment)
 
-## Principles
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md).
 
-1. **Explain, don't judge.** Gutter asks questions ("Does it need a matching change?"), never verdicts. It never fails a build.
-2. **Evidence before narration.** Everything renders from one deterministic document, [`gutter.json`](schema/gutter.schema.json). Every checklist item must cite evidence ids that exist in it; the renderers refuse otherwise. No AI writes any of it.
-3. **Honest uncertainty.** Counts with denominators, confidence intervals, per-repo backtests, "unchecked" instead of silence, and a flag when evidence comes mostly from bot commits.
-4. **Nothing to say is success.** Small, unremarkable PRs get one quiet line or no comment at all. A bot that comments loudly on everything gets muted.
-5. **Local-first.** Analysis runs on your machine or your Actions runner. Nothing is uploaded anywhere.
+> ### Gutter · change briefing
+>
+> **feat(serve-static): add cacheControl option**: 2 files across 2 modules (+10/−0)
+>
+> **Worth a look**
+>
+> 1. `src/middleware/serve-static/index.test.ts` changed alongside `src/middleware/serve-static/index.ts` in 17 of its 20 commits (95% CI 64%–95%) but is untouched here. Does it need a matching change?<br><sub>receipts: [d54720d](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) · [588ec13](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70)</sub>
+> 2. `src/adapter/deno/serve-static.ts` changed alongside `src/adapter/bun/serve-static.ts` in 9 of its 11 commits (95% CI 52%–95%) but is untouched here. Does it need a matching change?<br><sub>receipts: [26f8c33](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) · [1196f14](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e)</sub>
+> 3. This changes 1 of 3 parallel implementations (serve-static.ts across src/adapter/\*). Should `src/adapter/cloudflare-workers/serve-static.ts` (+1 more) follow?<br><sub>receipts: [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) · [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts)</sub>
+>
+> *(Plus collapsible `<details>` tables for **Likely forgotten**, **What it touches**, **Tests**, and **What changed**.)*
+>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.1.0 + repo-archaeology 0.3.0</sub>
+
+### 3 · The full six-panel page (`gutter.html` artifact)
+
+Alongside the Markdown comment, Gutter writes a self-contained, offline HTML page ([`docs/example/gutter.html`](docs/example/gutter.html)) rendered in [FRAME/12](https://github.com/lbrodie11/frame12)'s comic panel grammar — uploaded as a workflow artifact in CI or opened locally from `.gutter/gutter.html`:
+
+![Gutter six-panel briefing page for the Hono example](docs/images/hono-example.png)
+
+| Panel | Question it answers | Evidence source |
+|---|---|---|
+| **1 · Intent** | What is this change trying to do? | PR title/body, commit subjects |
+| **2 · What changed** | How big is it, and where? | `git diff` grouped into modules, churn as screentone |
+| **3 · What it touches** | Who depends on what changed? | Relative import scan for TS/JS; unresolved path aliases (`@/...`) mark the panel **partial**, and other languages are reported as **unchecked** — never silently as "no dependents" |
+| **4 · Likely forgotten** | Which files historically change with these files? | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) directional co-change history with 95% Wilson intervals and commit receipts |
+| **5 · Tests** | Did conventional test files move with the code? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` convention links |
+| **6 · Check these** | Where should I focus first? | Up to 4 deterministic questions, each required to cite evidence IDs from panels 3–5 |
+
+---
+
+## How accuracy calibration works (73% hit rate vs. 57% per-file precision)
+
+Historical co-change is a probabilistic signal, not proof of a bug. Sometimes a companion file was genuinely overlooked; other times a change intentionally applies to only one adapter or module.
+
+To help reviewers calibrate trust on *their specific repository*, Gutter runs Repo Archaeology's walk-forward backtest on recent history and reports two distinct retrospective metrics in the footer:
+
+- **Change-level hit rate (`73%` on Hono, `6.8×` lift over guessing busy files):** Across `375` held-out commits where warnings fired, at least one flagged companion file really did change in that commit 73% of the time.
+- **Per-file precision (`57%` on Hono):** Across all `516` individual file warnings emitted during the backtest, 57% of the individually flagged files changed.
+
+**Automatic gating:** When a repository's measured per-file precision falls below `25%`, Gutter suppresses co-change questions from the checklist while still keeping the raw table available for inspection. Weak matches (Wilson lower bound `< 30%`) and matches backed mostly by bot commits (`dependabot`, `renovate`, etc.) never become checklist questions.
+
+---
 
 ## Quick start
 
-### GitHub Action
+> **Release status (`v0.1.0` · experimental):** This repository is currently in pre-launch validation ([M0/M1 on the roadmap](docs/ROADMAP.md)). Its co-change engine [`repo-archaeology@0.3.0`](https://www.npmjs.com/package/repo-archaeology) is published on npm, and the `v0` / `v0.1.0` git tags are pushed. Until `gutter-brief` is published to npm and this repository is made public, run Gutter locally from a clone (Option 1) or reference the Action from workflows with access to this repository (Option 2).
+
+### Option 1 · Run locally from source (works today)
+
+Requires **Node.js ≥ 22.6** and **git**.
+
+```bash
+git clone https://github.com/lbrodie11/gutter.git
+cd gutter
+npm ci
+npm run build
+
+# Analyze any local git repository against a base branch:
+node /path/to/gutter/dist/cli.js brief --base main
+# → .gutter/gutter.json   the evidence contract
+#   .gutter/brief.md      the compact PR comment
+#   .gutter/gutter.html   the self-contained six-panel page
+```
+
+### Option 2 · CLI (once `gutter-brief` is published to npm)
+
+```bash
+npx gutter-brief brief --base main
+npx gutter-brief brief --base main --print md        # also print the Markdown comment to stdout
+npx gutter-brief render .gutter/gutter.json --format html > page.html
+```
+
+Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
+
+### Option 3 · GitHub Action
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -45,7 +131,7 @@ permissions:
 jobs:
   brief:
     if: ${{ !github.event.pull_request.draft }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
         with:
@@ -56,71 +142,53 @@ jobs:
       - uses: lbrodie11/gutter@v0
 ```
 
-You get one sticky PR comment that updates on every push, a job summary, and the comic page as a downloadable artifact (`gutter-brief`).
-
-| Input | Default | |
+| Input | Default | Behavior |
 |---|---|---|
-| `post` | `auto` | `auto` skips quiet PRs (but updates an existing comment), `always`, or `never` (summary + artifact only) |
-| `history` | `true` | Use co-change history |
-| `calibrate` | `true` | Backtest warning accuracy on this repo (fast: ~0.3 s on Hono's 1,900 commits) |
-| `max-forgotten` | `3` | Likely-forgotten files to show |
-| `archaeology-version` | `^0.3.0` | Repo Archaeology version to run |
-| `upload-page` | `true` | Upload the comic page as an artifact |
+| `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
+| `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.3.0`) |
+| `calibrate` | `true` | Backtest warning accuracy on this repo (~0.3s on 1,900 commits) |
+| `max-forgotten` | `3` | Maximum historical companions to display (`0` disables companion rows) |
+| `archaeology-version` | `^0.3.0` | npm version range of `repo-archaeology` to execute |
+| `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
 
-Outputs: `status`, `salience` (`quiet` / `brief` / `full`), `question-count`, `forgotten-count`, `json-path`, `html-path`.
+Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count`, `forgotten-count`, `json-path`, `html-path`.
 
-### CLI
+---
 
-```bash
-npx gutter-brief brief --base main
-# → .gutter/gutter.json   the evidence (the contract)
-#   .gutter/brief.md      the PR comment
-#   .gutter/gutter.html   the comic page (offline, self-contained)
+## Why the name "Gutter"?
 
-npx gutter-brief brief --base main --print md        # also print the comment
-npx gutter-brief render .gutter/gutter.json --format html > page.html
-```
+In comics, the *gutter* is the space between panels where the reader connects two moments and works out what happened. Code review now lives there: coding agents and large refactors touch more files at once, while alphabetical file diffs fragment the story. Gutter lays out the space between the commits so a human reviewer can see the whole shape of a change before reading line by line.
 
-Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
+## Principles
 
-## How it works
+1. **Explain, don't judge.** Gutter asks questions ("Does it need a matching change?"), never verdicts. It never fails a build.
+2. **Evidence before narration.** Every surface renders from one deterministic document, [`gutter.json`](schema/gutter.schema.json). Every checklist item must cite evidence IDs that exist in that document; the renderers throw if any reference is missing.
+3. **Honest uncertainty.** Counts with denominators, 95% Wilson intervals, per-repo backtests, `partial` / `unchecked` notices instead of silent false negatives, and a badge when evidence comes mostly from bot commits.
+4. **Nothing to say is success.** Small, unremarkable PRs get one quiet line or no comment at all.
+
+## Architecture, Privacy & Dependencies
 
 ```
 git diff ─────────────┐
 git ls-files + imports ┤
 test-file conventions ─┼─▶ evidence engine ─▶ gutter.json ─┬─▶ compact Markdown (PR comment)
-repo-archaeology diff ─┤                      (contract)    ├─▶ comic page (FRAME/12 grammar)
-repo-archaeology       ┘                                     └─▶ next: IDE, agent skill, analytics
+repo-archaeology diff ─┤                      (contract)    └─▶ comic page (FRAME/12 HTML artifact)
+repo-archaeology       ┘
   backtest
 ```
 
-- **Repo Archaeology owns the statistics**: directional co-change, Wilson ranking, sweep filtering, rename following, backtests. Gutter consumes its versioned v1 JSON contract and never re-implements it.
-- **Gutter owns comprehension**: what to show, what to ask, when to stay quiet, and how to lay it out.
-- **[FRAME/12](https://github.com/lbrodie11/frame12) owns the look**: tokens, panel grammar, screentone, and motion on twos (each panel steps in on 12fps poses; skipped under `prefers-reduced-motion`). Every generated page passes a design-grammar lint mirroring `check-frame12`.
+- **Privacy & data handling:** Analysis runs entirely on your local machine or your GitHub Actions runner. Gutter never transmits source code, diffs, or git history to any Gutter-operated service. When run in GitHub Actions, the Markdown comment (`post: auto|always`) and optional `gutter-brief` artifact (`upload-page: true`) are stored by GitHub in your repository's pull request and workflow run.
+- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty). When co-change history is enabled (the default), Gutter invokes [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) via `npx --yes repo-archaeology@^0.3.0` (or a pre-installed binary via `--ra-bin` / `GUTTER_RA_BIN`). Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
+- **Security:** Designed for `pull_request`, **never `pull_request_target`**. All PR-derived text is escaped per output format; links are built only from `http(s)` base URLs and hex SHAs; git is invoked strictly with argument vectors. See [SECURITY.md](SECURITY.md) for the full threat model.
 
-## Security
+## Documentation & Community
 
-- Runs on `pull_request`, **never `pull_request_target`**. PR contents are parsed as text; nothing from the PR is executed.
-- Fork PRs get a read-only token, so Gutter writes the job summary and artifact instead of a comment.
-- Titles, bodies, file names, commit subjects and author names are treated as hostile: HTML-escaped on the page, Markdown-escaped with defused `@mentions` in comments, and links are only ever built from `http(s)` bases and hex SHAs.
-- Git is always called with argument vectors, never shell strings.
-- `gutter.json` never contains absolute local paths.
-
-## Status
-
-`0.1.0`, experimental. TypeScript/JavaScript static analysis; co-change history works for any language. See [docs/ROADMAP.md](docs/ROADMAP.md) for what's next and [docs/DECISIONS.md](docs/DECISIONS.md) for why it's built this way.
-
-## Development
-
-```bash
-npm install
-npm test          # node:test, no test framework
-npm run typecheck
-npm run build
-```
-
-Zero runtime dependencies. Node ≥ 22.6 (TypeScript runs directly via type stripping in dev and in the Action's fallback path).
+- [Architecture & Product Decisions (`docs/DECISIONS.md`)](docs/DECISIONS.md)
+- [Validation Roadmap (`docs/ROADMAP.md`)](docs/ROADMAP.md)
+- [JSON Schema (`schema/gutter.schema.json`)](schema/gutter.schema.json)
+- [Contributing Guide (`CONTRIBUTING.md`)](CONTRIBUTING.md)
+- [Security Policy (`SECURITY.md`)](SECURITY.md)
 
 ## License
 
-MIT © Laqwan Brodie
+[MIT](LICENSE) © Laqwan Brodie
