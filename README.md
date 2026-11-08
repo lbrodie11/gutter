@@ -24,11 +24,13 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      # Optional: GitHub-hosted runners already include Node.js >= 22, which runs
-      # Gutter's prebuilt dist/ directly. Add actions/setup-node only if you want
-      # to pin a specific Node.js version.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
       - uses: lbrodie11/gutter@v0
 ```
+
+> **Pre-release status:** The `v0.1.0` / `v0` release tags and the `gutter-brief` npm package are published by [`.github/workflows/release.yml`](.github/workflows/release.yml) once the initial release tag is pushed and the repository is made public (see [`docs/RELEASING.md`](docs/RELEASING.md)). Until `v0.1.0` is cut, use [Option 1 (Run locally from source)](#option-1--run-locally-from-source-works-today) below.
 
 ---
 
@@ -140,7 +142,7 @@ node /tmp/gutter/dist/cli.js brief --base main
 #   .gutter/gutter.html   the self-contained six-panel page
 ```
 
-### Option 2 · CLI (`gutter-brief` on npm, binary `gutter`)
+### Option 2 · CLI (`gutter-brief` on npm, binary `gutter` — available after `v0.1.0` npm publish)
 
 ```bash
 npx gutter-brief brief --base main
@@ -150,7 +152,9 @@ npx gutter-brief render .gutter/gutter.json --format html > page.html
 
 Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
 
-### Option 3 · GitHub Action (`lbrodie11/gutter@v0`)
+### Option 3 · GitHub Action (`lbrodie11/gutter@v0` — available after `v0.1.0` tag push)
+
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.1.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.1.0^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|

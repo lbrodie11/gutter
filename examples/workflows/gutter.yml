@@ -22,9 +22,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0   # full history so Repo Archaeology can mine co-change
-      # Optional: GitHub-hosted runners already include Node.js >= 22, which runs
-      # Gutter's prebuilt dist/ directly. Add actions/setup-node only if your
-      # runner lacks Node.js >= 22 or you want to pin a specific version.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      # Note: If pinning by 40-char commit SHA instead of @v0, pin to a release tag's
+      # commit SHA (e.g. `git rev-parse v0.1.0^{commit}`), which contains prebuilt dist/,
+      # not an unbuilt commit SHA from main.
       - uses: lbrodie11/gutter@v0
         # with:
         #   post: auto          # auto (skip quiet PRs) | always | never

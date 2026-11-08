@@ -20,7 +20,7 @@ This guide covers how Gutter releases are built, tagged, published to npm, and l
      - **Repository owner:** `lbrodie11`
      - **Repository name:** `gutter`
      - **Workflow filename:** `release.yml`
-   -*(If `gutter-brief` has never been published on npm yet and npm requires an initial bootstrap publish before configuring Trusted Publishing, run `npm publish --access public` once locally after `npm run build`, then enable Trusted Publishing on the package settings page so all future releases use passwordless OIDC.)*
+   - *(If `gutter-brief` has never been published on npm yet and npm requires an initial bootstrap publish before configuring Trusted Publishing, run `npm publish --access public` once locally after `npm run build`, then enable Trusted Publishing on the package settings page so all future releases use passwordless OIDC.)*
 
 ---
 
@@ -44,14 +44,17 @@ This guide covers how Gutter releases are built, tagged, published to npm, and l
    git tag vX.Y.Z
    git push origin vX.Y.Z
    ```
+   > **Note on tag signing / annotations:** Push a lightweight tag (`git tag vX.Y.Z`). Because `release.yml` creates a detached-HEAD commit containing the compiled `dist/` directory and force-updates `refs/tags/vX.Y.Z` to point to that commit, any local tag annotation or GPG signature on the initial tag would be replaced by the workflow's built release tag.
 
 3. **Automated `.github/workflows/release.yml` pipeline:**
    When `vX.Y.Z` is pushed, the `Release` workflow automatically:
-   1. Checks out the tag, runs `npm ci`, `npm run typecheck`, `npm test`, and `npm run build`.
-   2. Verifies `package.json` version matches the tag (`vX.Y.Z`).
-   3. Force-adds `dist/` into a detached-HEAD commit (`release: vX.Y.Z (with dist)`), force-updates tag `vX.Y.Z` to that commit, and (for non-prerelease tags) force-updates the major floating tag (`v0`) to the same commit.
-   4. Publishes `gutter-brief@X.Y.Z` to npm with `--provenance --access public`.
-   5. Extracts the `## X.Y.Z` section from `CHANGELOG.md` and creates the GitHub Release for `vX.Y.Z`.
+   1. **Read-only `build` job:** Checks out the tag (`persist-credentials: false`), validates `vX.Y.Z` against `package.json`, runs `npm ci`, `npm run typecheck`, `npm test`, and `npm run build`, and uploads `dist/` as an artifact.
+   2. **Scoped `publish` job:** Downloads `dist/`, commits `dist/` on a detached HEAD (`release: vX.Y.Z (with dist)`), verifies `dist/action/main.js` and `dist/cli.js` exist in the tag tree, force-updates `vX.Y.Z` to that commit, and updates the major floating tag (`v0`) only when `vX.Y.Z` is a non-prerelease version greater than or equal to all existing stable `v0.*.*` tags (preventing backport patches from moving `v0` backwards).
+   3. **Idempotent npm publish:** Checks whether `gutter-brief@X.Y.Z` is already on npm (so workflow re-runs after partial failures succeed) and publishes with `--provenance --access public --ignore-scripts` (adding `--tag next` for prereleases).
+   4. **GitHub Release:** Extracts the `## X.Y.Z` section from `CHANGELOG.md` via `extractReleaseNotes()` and creates/updates the GitHub Release for `vX.Y.Z`.
+   5. **Dry-run verification (`workflow_dispatch` with `dry_run: true`):** Builds and verifies the detached-HEAD tag commit tree locally (`git ls-tree`) and runs `npm publish --dry-run` **without** pushing any tags to `origin` or mutating remote state.
+
+   > **Note for consumers who SHA-pin actions:** Because `dist/` lives on the release tag commit rather than on `main`, users who pin `lbrodie11/gutter@<40-char-sha>` must use the commit SHA that `vX.Y.Z` points to (`git rev-parse v0.1.0^{commit}`), not a commit SHA from `main`.
 
 4. **Human Step: List on GitHub Marketplace (first release / when updating Marketplace metadata):**
    - Open the created release at `https://github.com/lbrodie11/gutter/releases/tag/vX.Y.Z`.

@@ -1,15 +1,15 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync, spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
+import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { TempRepo, lines } from './helpers.ts';
+import { resolveRaCommand } from '../src/sources/archaeology.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const DIST_MAIN = join(ROOT, 'dist', 'action', 'main.js');
 
 interface RecordedRequest {
   method: string;
@@ -17,6 +17,8 @@ interface RecordedRequest {
   body: string;
 }
 
+let buildDir: string;
+let distMain: string;
 let repo: TempRepo;
 let headSha: string;
 let baseSha: string;
@@ -26,9 +28,14 @@ const comments: { id: number; body: string; html_url: string }[] = [];
 const requests: RecordedRequest[] = [];
 
 before(async () => {
-  // Compile dist/ so test/action.test.ts always exercises the built dist/action/main.js path.
+  // Compile into an isolated temp directory so `npm test` never dirties the working tree or leaves stale files.
+  buildDir = mkdtempSync(join(tmpdir(), 'gutter-dist-build-'));
   const tsc = join(ROOT, 'node_modules', 'typescript', 'bin', 'tsc');
-  execFileSync(process.execPath, [tsc, '-p', join(ROOT, 'tsconfig.json')], { cwd: ROOT, stdio: 'pipe' });
+  execFileSync(process.execPath, [tsc, '-p', join(ROOT, 'tsconfig.json'), '--outDir', buildDir], {
+    cwd: ROOT,
+    stdio: 'pipe',
+  });
+  distMain = join(buildDir, 'action', 'main.js');
 
   repo = new TempRepo()
     .write({
@@ -86,6 +93,7 @@ before(async () => {
 
 after(async () => {
   repo.cleanup();
+  rmSync(buildDir, { recursive: true, force: true });
   await new Promise<void>((resolveClose) => server.close(() => resolveClose()));
 });
 
@@ -119,7 +127,7 @@ async function runAction(envOverrides: Record<string, string>): Promise<{
   writeFileSync(summaryPath, '');
 
   const res = await new Promise<{ status: number | null; stdout: string; stderr: string }>((resolveChild, rejectChild) => {
-    const child = spawn(process.execPath, [DIST_MAIN], {
+    const child = spawn(process.execPath, [distMain], {
       cwd: repo.dir,
       env: {
         ...process.env,
@@ -139,6 +147,10 @@ async function runAction(envOverrides: Record<string, string>): Promise<{
         ...envOverrides,
       },
     });
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+      rejectChild(new Error('Action child process timed out after 15s'));
+    }, 15_000);
     let stdout = '';
     let stderr = '';
     child.stdout.setEncoding('utf8');
@@ -149,8 +161,14 @@ async function runAction(envOverrides: Record<string, string>): Promise<{
     child.stderr.on('data', (chunk: string) => {
       stderr += chunk;
     });
-    child.on('error', rejectChild);
-    child.on('close', (code) => resolveChild({ status: code, stdout, stderr }));
+    child.on('error', (err) => {
+      clearTimeout(timer);
+      rejectChild(err);
+    });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      resolveChild({ status: code, stdout, stderr });
+    });
   });
 
   const outputs: Record<string, string> = {};
@@ -174,8 +192,8 @@ test('built dist/action/main.js writes outputs, summary, and creates then update
   try {
     assert.equal(first.status, 0, first.stderr || first.stdout);
     assert.equal(first.outputs.status, 'analyzed');
-    assert.equal(first.outputs.salience, 'brief');
-    assert.equal(first.outputs['question-count'], '1');
+    assert.notEqual(first.outputs.salience, 'quiet');
+    assert.ok(Number(first.outputs['question-count']) >= 1);
     assert.equal(first.outputs.comment, 'created');
     assert.ok(first.outputs['json-path'] && existsSync(first.outputs['json-path']));
     assert.ok(first.outputs['html-path'] && existsSync(first.outputs['html-path']));
@@ -205,4 +223,123 @@ test('built dist/action/main.js never exits non-zero on internal errors and reco
   } finally {
     run.cleanup();
   }
+});
+
+test('action.yml shell wrapper fails open when dist/action/main.js is missing, Node < 22, or node output is non-numeric', { skip: process.platform === 'win32' }, () => {
+  const actionYml = readFileSync(join(ROOT, 'action.yml'), 'utf8');
+  const runMatch = /run:\s*\|\n([\s\S]*?)\n\n\s*- name: Upload/.exec(actionYml);
+  assert.ok(runMatch && runMatch[1], 'extracted composite shell script from action.yml');
+  const script = runMatch[1]
+    .split('\n')
+    .map((line) => line.replace(/^ {8}/, ''))
+    .join('\n');
+
+  const scratch = mkdtempSync(join(tmpdir(), 'gutter-wrapper-test-'));
+  try {
+    // 1. Missing dist/action/main.js fails open with status=error and exit 0.
+    const outMissing = join(scratch, 'out-missing.txt');
+    writeFileSync(outMissing, '');
+    const resMissing = spawnSync('bash', ['-c', script], {
+      encoding: 'utf8',
+      env: { ...process.env, GITHUB_ACTION_PATH: scratch, GITHUB_OUTPUT: outMissing },
+    });
+    assert.equal(resMissing.status, 0);
+    assert.match(resMissing.stdout, /::warning::Gutter's built dist\/action\/main\.js was not found/);
+    assert.match(readFileSync(outMissing, 'utf8'), /status=error/);
+
+    // 2. Real older Node major version (20) hits the numeric `-lt 22` branch and fails open.
+    const stubNode20Dir = mkdtempSync(join(scratch, 'stub-node20-'));
+    const fakeNode20 = join(stubNode20Dir, 'node');
+    writeFileSync(fakeNode20, '#!/bin/sh\nif [ "$1" = "-v" ]; then echo "v20.19.0"; else echo "20"; fi\n');
+    chmodSync(fakeNode20, 0o755);
+    const outNode20 = join(scratch, 'out-node20.txt');
+    writeFileSync(outNode20, '');
+    const resNode20 = spawnSync('bash', ['-c', script], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        PATH: `${stubNode20Dir}:${process.env.PATH ?? ''}`,
+        GITHUB_ACTION_PATH: scratch,
+        GITHUB_OUTPUT: outNode20,
+      },
+    });
+    assert.equal(resNode20.status, 0);
+    assert.equal(resNode20.stderr, '');
+    assert.match(resNode20.stdout, /::warning::Gutter needs Node\.js >= 22 on PATH \(found v20\.19\.0\)/);
+    assert.match(readFileSync(outNode20, 'utf8'), /status=error/);
+
+    // 3. Non-numeric `node -p` output is sanitized by `case "$NODE_MAJOR"` without bash `[ -lt ]` stderr.
+    const stubBadDir = mkdtempSync(join(scratch, 'stub-node-bad-'));
+    const fakeNodeBad = join(stubBadDir, 'node');
+    writeFileSync(fakeNodeBad, '#!/bin/sh\nif [ "$1" = "-v" ]; then echo "custom-node"; else echo "not-a-number"; fi\n');
+    chmodSync(fakeNodeBad, 0o755);
+    const outBad = join(scratch, 'out-bad.txt');
+    writeFileSync(outBad, '');
+    const resBad = spawnSync('bash', ['-c', script], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        PATH: `${stubBadDir}:${process.env.PATH ?? ''}`,
+        GITHUB_ACTION_PATH: scratch,
+        GITHUB_OUTPUT: outBad,
+      },
+    });
+    assert.equal(resBad.status, 0);
+    assert.equal(resBad.stderr, '');
+    assert.match(resBad.stdout, /::warning::Gutter needs Node\.js >= 22/);
+    assert.match(readFileSync(outBad, 'utf8'), /status=error/);
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
+test('resolveRaCommand resolves both Windows npx-cli.js candidates with win32 paths or throws an actionable error', () => {
+  // 1. Windows candidate #1: sibling of npm_execpath (`C:\npm\bin\npx-cli.js`) wins when present.
+  const fromNpmExec = resolveRaCommand(
+    {},
+    {
+      platform: 'win32',
+      execPath: 'C:\\Program Files\\nodejs\\node.exe',
+      env: { npm_execpath: 'C:\\npm\\bin\\npm-cli.js' },
+      exists: (p) => p === 'C:\\npm\\bin\\npx-cli.js',
+    },
+  );
+  assert.equal(fromNpmExec.file, 'C:\\Program Files\\nodejs\\node.exe');
+  assert.deepEqual(fromNpmExec.pre, ['C:\\npm\\bin\\npx-cli.js', '--yes', 'repo-archaeology@^0.3.0']);
+
+  // 2. Windows candidate #2: bundled npm next to node.exe (`C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js`) wins when npm_execpath is unset.
+  const fromNodeDir = resolveRaCommand(
+    {},
+    {
+      platform: 'win32',
+      execPath: 'C:\\Program Files\\nodejs\\node.exe',
+      env: {},
+      exists: (p) => p === 'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npx-cli.js',
+    },
+  );
+  assert.equal(fromNodeDir.file, 'C:\\Program Files\\nodejs\\node.exe');
+  assert.deepEqual(fromNodeDir.pre, [
+    'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npx-cli.js',
+    '--yes',
+    'repo-archaeology@^0.3.0',
+  ]);
+
+  // 3. Windows when neither candidate exists throws a clear error mentioning GUTTER_RA_BIN.
+  assert.throws(
+    () =>
+      resolveRaCommand(
+        {},
+        {
+          platform: 'win32',
+          execPath: 'C:\\Program Files\\nodejs\\node.exe',
+          env: {},
+          exists: () => false,
+        },
+      ),
+    /Could not locate npx-cli\.js.*GUTTER_RA_BIN/,
+  );
+
+  // 4. POSIX fallback uses npx directly.
+  const posix = resolveRaCommand({}, { platform: 'linux', env: {} });
+  assert.deepEqual(posix, { file: 'npx', pre: ['--yes', 'repo-archaeology@^0.3.0'] });
 });

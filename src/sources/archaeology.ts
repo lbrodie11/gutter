@@ -7,7 +7,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { win32 } from 'node:path';
 import type { Calibration, CommitRef, FamilyItem, ForgottenItem, ForgottenLayer } from '../contract.ts';
 import { wilsonInterval, pct } from '../stats/wilson.ts';
 import { isAutomatedAuthor } from '../evidence/automation.ts';
@@ -70,25 +70,40 @@ export interface RaRunner {
 
 export const DEFAULT_RA_SPEC = '^0.3.0';
 
-function command(runner: RaRunner): { file: string; pre: string[] } {
-  const bin = runner.bin ?? process.env.GUTTER_RA_BIN;
-  if (bin) return /\.[cm]?js$/.test(bin) ? { file: process.execPath, pre: [bin] } : { file: bin, pre: [] };
+export interface RaCommandContext {
+  env?: NodeJS.ProcessEnv;
+  platform?: NodeJS.Platform;
+  execPath?: string;
+  exists?: (path: string) => boolean;
+}
+
+export function resolveRaCommand(runner: RaRunner, ctx: RaCommandContext = {}): { file: string; pre: string[] } {
+  const env = ctx.env ?? process.env;
+  const platform = ctx.platform ?? process.platform;
+  const execPath = ctx.execPath ?? process.execPath;
+  const exists = ctx.exists ?? existsSync;
+
+  const bin = runner.bin ?? env.GUTTER_RA_BIN;
+  if (bin) return /\.[cm]?js$/.test(bin) ? { file: execPath, pre: [bin] } : { file: bin, pre: [] };
   const spec = runner.spec ?? DEFAULT_RA_SPEC;
   if (!/^[\w.^~<>=*| -]+$/.test(spec)) throw new Error(`invalid repo-archaeology version spec: ${spec}`);
-  if (process.platform === 'win32') {
+  if (platform === 'win32') {
     const candidates = [
-      process.env.npm_execpath ? join(dirname(process.env.npm_execpath), 'npx-cli.js') : '',
-      join(dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js'),
+      env.npm_execpath ? win32.join(win32.dirname(env.npm_execpath), 'npx-cli.js') : '',
+      win32.join(win32.dirname(execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js'),
     ].filter(Boolean);
     for (const c of candidates) {
-      if (existsSync(c)) return { file: process.execPath, pre: [c, '--yes', `repo-archaeology@${spec}`] };
+      if (exists(c)) return { file: execPath, pre: [c, '--yes', `repo-archaeology@${spec}`] };
     }
+    throw new Error(
+      'Could not locate npx-cli.js for this Windows Node.js installation; set GUTTER_RA_BIN or pass --ra-bin pointing to repo-archaeology/dist/cli.js.',
+    );
   }
   return { file: 'npx', pre: ['--yes', `repo-archaeology@${spec}`] };
 }
 
 function runJson<T>(root: string, runner: RaRunner, args: string[]): T {
-  const { file, pre } = command(runner);
+  const { file, pre } = resolveRaCommand(runner);
   const out = execFileSync(file, [...pre, ...args, '--json'], {
     cwd: root,
     encoding: 'utf8',
