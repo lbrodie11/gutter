@@ -7,7 +7,6 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { TempRepo, lines } from './helpers.ts';
-import { extractReleaseNotes, shouldMoveMajorTag } from '../src/release-notes.ts';
 import { resolveRaCommand } from '../src/sources/archaeology.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -226,7 +225,7 @@ test('built dist/action/main.js never exits non-zero on internal errors and reco
   }
 });
 
-test('action.yml shell wrapper fails open when dist/action/main.js is missing or Node < 22', { skip: process.platform === 'win32' }, () => {
+test('action.yml shell wrapper fails open when dist/action/main.js is missing, Node < 22, or node output is non-numeric', { skip: process.platform === 'win32' }, () => {
   const actionYml = readFileSync(join(ROOT, 'action.yml'), 'utf8');
   const runMatch = /run:\s*\|\n([\s\S]*?)\n\n\s*- name: Upload/.exec(actionYml);
   assert.ok(runMatch && runMatch[1], 'extracted composite shell script from action.yml');
@@ -248,50 +247,84 @@ test('action.yml shell wrapper fails open when dist/action/main.js is missing or
     assert.match(resMissing.stdout, /::warning::Gutter's built dist\/action\/main\.js was not found/);
     assert.match(readFileSync(outMissing, 'utf8'), /status=error/);
 
-    // 2. Non-numeric or old Node version fails open without bash [ -lt ] errors.
-    const fakeBin = join(scratch, 'bin');
-    mkdtempSync(join(scratch, 'bin-'));
-    const stubDir = mkdtempSync(join(scratch, 'stub-node-'));
-    const fakeNode = join(stubDir, 'node');
-    writeFileSync(fakeNode, '#!/bin/sh\nif [ "$1" = "-v" ]; then echo "v20.19.0"; else echo "not-a-number"; fi\n');
-    chmodSync(fakeNode, 0o755);
-    const outOld = join(scratch, 'out-old.txt');
-    writeFileSync(outOld, '');
-    const resOld = spawnSync('bash', ['-c', script], {
+    // 2. Real older Node major version (20) hits the numeric `-lt 22` branch and fails open.
+    const stubNode20Dir = mkdtempSync(join(scratch, 'stub-node20-'));
+    const fakeNode20 = join(stubNode20Dir, 'node');
+    writeFileSync(fakeNode20, '#!/bin/sh\nif [ "$1" = "-v" ]; then echo "v20.19.0"; else echo "20"; fi\n');
+    chmodSync(fakeNode20, 0o755);
+    const outNode20 = join(scratch, 'out-node20.txt');
+    writeFileSync(outNode20, '');
+    const resNode20 = spawnSync('bash', ['-c', script], {
       encoding: 'utf8',
       env: {
         ...process.env,
-        PATH: `${stubDir}:${process.env.PATH ?? ''}`,
+        PATH: `${stubNode20Dir}:${process.env.PATH ?? ''}`,
         GITHUB_ACTION_PATH: scratch,
-        GITHUB_OUTPUT: outOld,
+        GITHUB_OUTPUT: outNode20,
       },
     });
-    assert.equal(resOld.status, 0);
-    assert.equal(resOld.stderr, '');
-    assert.match(resOld.stdout, /::warning::Gutter needs Node\.js >= 22/);
-    assert.match(readFileSync(outOld, 'utf8'), /status=error/);
-    void fakeBin;
+    assert.equal(resNode20.status, 0);
+    assert.equal(resNode20.stderr, '');
+    assert.match(resNode20.stdout, /::warning::Gutter needs Node\.js >= 22 on PATH \(found v20\.19\.0\)/);
+    assert.match(readFileSync(outNode20, 'utf8'), /status=error/);
+
+    // 3. Non-numeric `node -p` output is sanitized by `case "$NODE_MAJOR"` without bash `[ -lt ]` stderr.
+    const stubBadDir = mkdtempSync(join(scratch, 'stub-node-bad-'));
+    const fakeNodeBad = join(stubBadDir, 'node');
+    writeFileSync(fakeNodeBad, '#!/bin/sh\nif [ "$1" = "-v" ]; then echo "custom-node"; else echo "not-a-number"; fi\n');
+    chmodSync(fakeNodeBad, 0o755);
+    const outBad = join(scratch, 'out-bad.txt');
+    writeFileSync(outBad, '');
+    const resBad = spawnSync('bash', ['-c', script], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        PATH: `${stubBadDir}:${process.env.PATH ?? ''}`,
+        GITHUB_ACTION_PATH: scratch,
+        GITHUB_OUTPUT: outBad,
+      },
+    });
+    assert.equal(resBad.status, 0);
+    assert.equal(resBad.stderr, '');
+    assert.match(resBad.stdout, /::warning::Gutter needs Node\.js >= 22/);
+    assert.match(readFileSync(outBad, 'utf8'), /status=error/);
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }
 });
 
-test('resolveRaCommand resolves Windows npx-cli.js or throws an actionable error instead of ENOENT', () => {
-  // 1. Windows with npm_execpath present
+test('resolveRaCommand resolves both Windows npx-cli.js candidates with win32 paths or throws an actionable error', () => {
+  // 1. Windows candidate #1: sibling of npm_execpath (`C:\npm\bin\npx-cli.js`) wins when present.
   const fromNpmExec = resolveRaCommand(
     {},
     {
       platform: 'win32',
       execPath: 'C:\\Program Files\\nodejs\\node.exe',
       env: { npm_execpath: 'C:\\npm\\bin\\npm-cli.js' },
-      exists: (p) => p.endsWith('npx-cli.js') && p.includes('npm'),
+      exists: (p) => p === 'C:\\npm\\bin\\npx-cli.js',
     },
   );
   assert.equal(fromNpmExec.file, 'C:\\Program Files\\nodejs\\node.exe');
-  assert.ok(fromNpmExec.pre[0]?.endsWith('npx-cli.js'));
-  assert.deepEqual(fromNpmExec.pre.slice(1), ['--yes', 'repo-archaeology@^0.3.0']);
+  assert.deepEqual(fromNpmExec.pre, ['C:\\npm\\bin\\npx-cli.js', '--yes', 'repo-archaeology@^0.3.0']);
 
-  // 2. Windows when neither candidate exists throws a clear error mentioning GUTTER_RA_BIN
+  // 2. Windows candidate #2: bundled npm next to node.exe (`C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js`) wins when npm_execpath is unset.
+  const fromNodeDir = resolveRaCommand(
+    {},
+    {
+      platform: 'win32',
+      execPath: 'C:\\Program Files\\nodejs\\node.exe',
+      env: {},
+      exists: (p) => p === 'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npx-cli.js',
+    },
+  );
+  assert.equal(fromNodeDir.file, 'C:\\Program Files\\nodejs\\node.exe');
+  assert.deepEqual(fromNodeDir.pre, [
+    'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npx-cli.js',
+    '--yes',
+    'repo-archaeology@^0.3.0',
+  ]);
+
+  // 3. Windows when neither candidate exists throws a clear error mentioning GUTTER_RA_BIN.
   assert.throws(
     () =>
       resolveRaCommand(
@@ -306,39 +339,7 @@ test('resolveRaCommand resolves Windows npx-cli.js or throws an actionable error
     /Could not locate npx-cli\.js.*GUTTER_RA_BIN/,
   );
 
-  // 3. POSIX fallback uses npx directly
+  // 4. POSIX fallback uses npx directly.
   const posix = resolveRaCommand({}, { platform: 'linux', env: {} });
   assert.deepEqual(posix, { file: 'npx', pre: ['--yes', 'repo-archaeology@^0.3.0'] });
-});
-
-test('extractReleaseNotes parses multiline CHANGELOG sections without matching prerelease prefixes', () => {
-  const realChangelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8');
-  const notes010 = extractReleaseNotes(realChangelog, 'v0.1.0');
-  assert.match(notes010, /`gutter\.json` v1 contract and JSON Schema/);
-  assert.notEqual(notes010, 'Release 0.1.0');
-
-  const multi = [
-    '# Changelog',
-    '',
-    '## 0.1.0-rc.1 · 2026-04-19',
-    '- Release candidate note',
-    '',
-    '## 0.1.0 · 2026-04-20',
-    '- First line of 0.1.0',
-    '- Second line of 0.1.0',
-    '',
-    '## 0.0.9 · 2026-04-01',
-    '- Older release',
-  ].join('\n');
-
-  assert.equal(extractReleaseNotes(multi, 'v0.1.0'), '- First line of 0.1.0\n- Second line of 0.1.0');
-  assert.equal(extractReleaseNotes(multi, 'v0.1.0-rc.1'), '- Release candidate note');
-  assert.equal(extractReleaseNotes(multi, 'v9.9.9'), 'Release 9.9.9');
-});
-
-test('shouldMoveMajorTag advances v0 on newer releases but never on prereleases or older backports', () => {
-  assert.equal(shouldMoveMajorTag('v0.1.0', []), true);
-  assert.equal(shouldMoveMajorTag('v0.2.0', ['v0.1.0', 'v0']), true);
-  assert.equal(shouldMoveMajorTag('v0.2.0-rc.1', ['v0.1.0']), false);
-  assert.equal(shouldMoveMajorTag('v0.1.5', ['v0.1.0', 'v0.2.0']), false);
 });

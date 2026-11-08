@@ -1,4 +1,10 @@
 /**
+ * Release helper utilities used by `.github/workflows/release.yml`.
+ * Kept in `scripts/` rather than `src/` so release tooling is not shipped in
+ * the published `dist/` directory or npm tarball.
+ */
+
+/**
  * Extracts the release notes section for a given version (e.g. "0.1.0" or
  * "0.1.0-rc.1") from CHANGELOG.md content.
  *

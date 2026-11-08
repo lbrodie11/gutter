@@ -7,7 +7,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { posix, win32 } from 'node:path';
 import type { Calibration, CommitRef, FamilyItem, ForgottenItem, ForgottenLayer } from '../contract.ts';
 import { wilsonInterval, pct } from '../stats/wilson.ts';
 import { isAutomatedAuthor } from '../evidence/automation.ts';
@@ -89,8 +89,8 @@ export function resolveRaCommand(runner: RaRunner, ctx: RaCommandContext = {}): 
   if (!/^[\w.^~<>=*| -]+$/.test(spec)) throw new Error(`invalid repo-archaeology version spec: ${spec}`);
   if (platform === 'win32') {
     const candidates = [
-      env.npm_execpath ? join(dirname(env.npm_execpath), 'npx-cli.js') : '',
-      join(dirname(execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js'),
+      env.npm_execpath ? win32.join(win32.dirname(env.npm_execpath), 'npx-cli.js') : '',
+      win32.join(win32.dirname(execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js'),
     ].filter(Boolean);
     for (const c of candidates) {
       if (exists(c)) return { file: execPath, pre: [c, '--yes', `repo-archaeology@${spec}`] };
@@ -99,6 +99,7 @@ export function resolveRaCommand(runner: RaRunner, ctx: RaCommandContext = {}): 
       'Could not locate npx-cli.js for this Windows Node.js installation; set GUTTER_RA_BIN or pass --ra-bin pointing to repo-archaeology/dist/cli.js.',
     );
   }
+  void posix;
   return { file: 'npx', pre: ['--yes', `repo-archaeology@${spec}`] };
 }
 
