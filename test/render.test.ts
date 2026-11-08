@@ -32,12 +32,25 @@ test('links are only built from http(s) bases and hex shas', () => {
 test('hostile PR text and file names never reach the page unescaped', () => {
   const r = new TempRepo().write({ 'src/x.ts': 'export const x = 1;\n' }).commit('init').branch('evil');
   repos.push(r);
-  r.write({ 'src/<img src=x onerror=alert(1)>.ts': 'x\n', 'src/x.ts': `export const x = 2;\n${lines(20)}` }).commit('</title><script>alert(1)</script>');
+  const diskEvilName = process.platform === 'win32' ? "src/evil&'file'[1].ts" : 'src/<img src=x onerror=alert(1)>.ts';
+  r.write({ [diskEvilName]: 'x\n', 'src/x.ts': `export const x = 2;\n${lines(20)}` }).commit('</title><script>alert(1)</script>');
   const brief = buildBrief({
     cwd: r.dir, base: 'main', noHistory: true,
     title: '<script>alert("t")</script> | @here',
     intent: '<iframe src=//evil></iframe>',
   });
+  if (process.platform === 'win32') {
+    brief.changes.files.push({
+      path: 'src/<img src=x onerror=alert(1)>.ts',
+      status: 'added',
+      additions: 1,
+      deletions: 0,
+      binary: false,
+      module: 'src/<img src=x onerror=alert(1)>.ts',
+      isTest: false,
+      language: 'typescript',
+    });
+  }
   const page = renderComic(brief);
   assert.equal(/<script>alert/.test(page), false);
   assert.equal(page.includes('<iframe'), false);
