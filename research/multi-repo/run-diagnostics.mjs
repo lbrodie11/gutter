@@ -81,20 +81,32 @@ function computeMatchedShuffledWindowMetrics({
   const deltaSec = deltaHours * 3600;
   let matchedSuggestions = 0;
   let matchedHits = 0;
+  const matchedShuffledCommitShas = new Set();
 
   for (const pred of fullMain.samplePredictions) {
     const tA = Math.floor(Date.parse(pred.upstreamTimeIso) / 1000);
     const windowEnd = tA + deltaSec;
     const touchedShuffled = new Set();
+    const matchingCommits = [];
     for (const cB of filteredShuffledB) {
       if (cB.commitTime <= tA) continue;
       if (cB.commitTime > windowEnd) break;
+      matchingCommits.push(cB);
       for (const fB of cB.files) touchedShuffled.add(fB);
     }
+    let queryHit = false;
     for (const s of pred.suggestions) {
       matchedSuggestions++;
       if (touchedShuffled.has(s.fileB)) {
         matchedHits++;
+        queryHit = true;
+      }
+    }
+    if (queryHit) {
+      for (const cB of matchingCommits) {
+        if (cB.files.some((f) => pred.suggestions.some((s) => s.fileB === f))) {
+          matchedShuffledCommitShas.add(cB.sha);
+        }
       }
     }
   }
@@ -104,6 +116,7 @@ function computeMatchedShuffledWindowMetrics({
     queriesWithPrediction: fullMain.queriesWithPrediction,
     totalSuggestions: matchedSuggestions,
     correctSuggestions: matchedHits,
+    uniqueDownstreamCommitHits: matchedShuffledCommitShas.size,
     precisionAtK,
   };
 }
@@ -180,6 +193,9 @@ function analyzeK8sMirror(reposDir) {
   const allB = parseRaw(rawB, k8sCfg.repoBFilter);
 
   const bOver50 = allB.filter((c) => c.totalFilesInCommit > DEFAULT_MAX_FILES_PER_COMMIT);
+  const bNoScopedGoFiles = allB.filter(
+    (c) => c.totalFilesInCommit <= DEFAULT_MAX_FILES_PER_COMMIT && c.scopedFilesCount === 0,
+  );
   const bKept = allB.filter(
     (c) => c.totalFilesInCommit <= DEFAULT_MAX_FILES_PER_COMMIT && c.scopedFilesCount > 0,
   );
@@ -218,6 +234,8 @@ function analyzeK8sMirror(reposDir) {
   return {
     downstreamTotalNonMergeCommits: allB.length,
     downstreamDroppedOver50Files: bOver50.length,
+    downstreamDroppedNoScopedGoFiles: bNoScopedGoFiles.length,
+    downstreamDroppedNoScopedGoCommitSha: bNoScopedGoFiles[0]?.sha.slice(0, 10) ?? null,
     downstreamMaxFilesInSingleCommit: maxFilesInB,
     downstreamKeptCommits: bKept.length,
     downstreamCommitterKubernetesPublisherAll: bPublisherAll.length,
@@ -239,6 +257,7 @@ function main() {
   const results = JSON.parse(readFileSync(resultsPath, 'utf8'));
 
   const pairDiagnostics = {};
+  let stripeEvalWindowFileCounts = null;
 
   for (const cfg of PREREGISTERED_PAIRS) {
     const dirA = join(reposDir, cfg.repoADirName);
@@ -286,6 +305,31 @@ function main() {
     const evalStartSec = tuneEndSec + EMBARGO_SECONDS;
 
     const shuffledB = buildShuffledDownstreamCommits(histB.commits, startSec, endSec, 45 * 86400);
+    if (cfg.pairId === 'stripe-openapi-to-node') {
+      const trackedCoreFiles = [
+        'src/stripe.core.ts',
+        'src/stripe.esm.node.ts',
+        'src/utils.ts',
+        'src/RequestSender.ts',
+      ];
+      const countEvalTouches = (commits) => {
+        const counts = Object.fromEntries(trackedCoreFiles.map((f) => [f, 0]));
+        let manualEvalCommits = 0;
+        for (const c of commits) {
+          if (c.commitTime > evalStartSec && c.commitTime <= endSec && c.category === 'manual') {
+            manualEvalCommits++;
+            for (const f of c.files) {
+              if (f in counts) counts[f]++;
+            }
+          }
+        }
+        return { manualEvalCommits, fileCounts: counts };
+      };
+      stripeEvalWindowFileCounts = {
+        unshifted: countEvalTouches(histB.commits),
+        shiftedPlus45d: countEvalTouches(shuffledB),
+      };
+    }
     const pairEntry = results.pairs.find((p) => p.pairId === cfg.pairId);
     const runDiagList = [];
 
@@ -346,6 +390,7 @@ function main() {
               shuffledMatchedWindowPrecision: matchedShuffledWindow.precisionAtK,
               shuffledMatchedWindowHits: matchedShuffledWindow.correctSuggestions,
               shuffledMatchedWindowSuggestions: matchedShuffledWindow.totalSuggestions,
+              shuffledMatchedWindowUniqueCommits: matchedShuffledWindow.uniqueDownstreamCommitHits,
               strongestMatchedBaseline: Number(strongestMatched.toFixed(4)),
               liftOverMatchedBaseline: liftOverMatched,
               marginOverMatchedBaseline: marginOverMatched,
@@ -374,6 +419,7 @@ function main() {
     description:
       'Supplementary diagnostics for results.json: matched-baseline lifts, non-matched shuffled placebo fired/hit counts, and kubernetes/client-go mirror metadata analysis.',
     kubernetesMirrorDiagnostics: k8sMirrorAnalysis,
+    stripeShuffledEvalWindowDiagnostics: stripeEvalWindowFileCounts,
     pairs: pairDiagnostics,
   };
 

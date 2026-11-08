@@ -60,15 +60,22 @@ No local sibling checkout is required:
 
 ### 3. Run Diagnostics & Regenerate the Report
 
-To recompute [`diagnostics.json`](./diagnostics.json) and regenerate [`REPORT.md`](./REPORT.md) while preserving the raw [`results.json`](./results.json) artifact:
+[`results.json`](./results.json) is the frozen raw evaluation output from commit `1014af3` (prior to adding `"Kubernetes Publisher"` to `classifyCommit()`, the `NOT YET (wide CI > 35pp)` run status, and `decisionSummary` / `computeOverallDecision()` in [`run.mjs`](./run.mjs)).
 
-```bash
-node research/multi-repo/run-diagnostics.mjs
-node research/multi-repo/generate-report.mjs
-```
-
-To execute a fresh full evaluation run into a separate output directory (so the preserved `results.json` in `research/multi-repo/` is not overwritten):
-
-```bash
-node research/multi-repo/run.mjs --repos-dir /tmp/gu27-repos --out-dir /tmp/gu27-rerun
-```
+- **Recomputing [`diagnostics.json`](./diagnostics.json) and [`REPORT.md`](./REPORT.md) against frozen `results.json`:**
+  [`run-diagnostics.mjs`](./run-diagnostics.mjs) deliberately restores the initial `1014af3` classification for `"Kubernetes Publisher"` when computing `diagnostics.json` so that its matched-window shuffled control and audit counts align with the frozen `results.json` artifact:
+  ```bash
+  node research/multi-repo/run-diagnostics.mjs
+  node research/multi-repo/generate-report.mjs
+  ```
+- **Reproducing the frozen [`results.json`](./results.json) from `1014af3`:**
+  To reproduce the exact `results.json` from commit `1014af3` (apart from runtime timings), run the `1014af3` revision of `run.mjs` against `/tmp/gu27-repos`:
+  ```bash
+  git show 1014af3:research/multi-repo/run.mjs > /tmp/gu27-run-1014af3.mjs
+  node /tmp/gu27-run-1014af3.mjs --repos-dir /tmp/gu27-repos --out-dir /tmp/gu27-repro-1014af3
+  ```
+- **Running the updated [`run.mjs`](./run.mjs) (with `"Kubernetes Publisher"` classified as `mirrored`, `liftOverMatchedBaseline`, and `computeOverallDecision()`):**
+  To execute a fresh evaluation run with the updated `run.mjs` into a separate output directory (without overwriting the frozen `results.json`):
+  ```bash
+  node research/multi-repo/run.mjs --repos-dir /tmp/gu27-repos --out-dir /tmp/gu27-rerun
+  ```

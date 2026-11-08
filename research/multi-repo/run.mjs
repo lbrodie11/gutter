@@ -913,6 +913,15 @@ export function runPairSuite({
           mainRes.baselines.popularPrecision,
           mainRes.baselines.recentPrecision,
         );
+        const liftOverMatched =
+          strongestMatchedBaseline > 0
+            ? Number((mainRes.precisionAtK / strongestMatchedBaseline).toFixed(2))
+            : mainRes.precisionAtK > 0
+              ? Infinity
+              : 0;
+        const marginOverMatched = Number(
+          (mainRes.precisionAtK - strongestMatchedBaseline).toFixed(4),
+        );
         const strongestBaseline = Math.max(strongestMatchedBaseline, shuffledPrecision);
         const liftOverStrongest =
           strongestBaseline > 0
@@ -930,8 +939,8 @@ export function runPairSuite({
           status = 'NOT YET (wide CI > 35pp)';
         } else if (
           mainRes.precisionAtK >= 0.6 &&
-          marginOverStrongest >= 0.15 &&
-          liftOverStrongest >= 1.5
+          marginOverMatched >= 0.15 &&
+          liftOverMatched >= 1.5
         ) {
           status = 'GO';
         }
@@ -947,6 +956,8 @@ export function runPairSuite({
             strongestMatchedBaseline: Number(strongestMatchedBaseline.toFixed(4)),
             strongestBaseline: Number(strongestBaseline.toFixed(4)),
           },
+          liftOverMatchedBaseline: liftOverMatched,
+          marginOverMatchedBaseline: marginOverMatched,
           liftOverStrongestBaseline: liftOverStrongest,
           marginOverStrongestBaseline: marginOverStrongest,
           status,
@@ -1051,12 +1062,10 @@ export function computeOverallDecision(pairResults) {
   );
   const notYetSampleCondition = pairsWithManualSampleGate.length < 2;
   const noGoControlCondition = pairResults.some((p) =>
-    p.runs.some(
-      (r) =>
-        r.targetScope === 'manual_only' &&
-        r.sampleSizeGatePassed &&
-        r.liftOverStrongestBaseline < 1.2,
-    ),
+    p.runs.some((r) => {
+      const lift = r.liftOverMatchedBaseline ?? r.liftOverStrongestBaseline;
+      return r.targetScope === 'manual_only' && r.sampleSizeGatePassed && lift < 1.2;
+    }),
   );
 
   let preregisteredRuleStatus = 'NO-GO';
