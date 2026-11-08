@@ -1,14 +1,13 @@
 /**
- * Deterministic generator for `docs/brand/*` assets.
+ * Generator for `docs/brand/*` assets.
  *
  * Usage:
  *   node --experimental-strip-types scripts/generate-brand-assets.ts
  *
- * Requires Playwright (`npm i -D playwright`, `npx playwright`, or `NODE_PATH`).
+ * Requires Playwright (`npm i -D playwright` or `NODE_PATH` pointing to an installed `playwright` package).
  */
-import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { homedir } from 'node:os';
 import { delimiter, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,15 +32,9 @@ interface PlaywrightModule {
 
 function loadPlaywright(): PlaywrightModule {
   const nodePathEntries = process.env.NODE_PATH ? process.env.NODE_PATH.split(delimiter).filter(Boolean) : [];
-  const npxCacheDir = join(homedir(), '.npm', '_npx');
-  const npxEntries = existsSync(npxCacheDir)
-    ? readdirSync(npxCacheDir).map((entry) => join(npxCacheDir, entry, 'node_modules'))
-    : [];
-
   const anchors = [
     join(ROOT_DIR, 'package.json'),
     ...nodePathEntries.flatMap((p) => [join(p, 'playwright', 'package.json'), join(p, '..', 'package.json')]),
-    ...npxEntries.map((p) => join(p, 'playwright', 'package.json')),
   ];
   for (const anchor of anchors) {
     if (!existsSync(anchor)) continue;
@@ -220,20 +213,20 @@ export function buildSocialCardHtml(): string {
   }
   .right {
     background: #f4f4f5;
-    padding: 28px 32px;
+    padding: 24px 30px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 14px;
+    justify-content: space-between;
+    gap: 10px;
   }
   .cut {
     background: #ffffff;
     border: 3px solid #121212;
-    padding: 15px 18px;
+    padding: 12px 16px;
   }
   .cut.alert {
     box-shadow: inset 8px 0 0 #ffd60a, 6px 6px 0 #121212;
-    padding-left: 24px;
+    padding-left: 22px;
   }
   .cut-tag {
     font-family: "M PLUS 1 Code", monospace;
@@ -242,23 +235,26 @@ export function buildSocialCardHtml(): string {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #4b4b4b;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     display: flex;
     justify-content: space-between;
     white-space: nowrap;
   }
   .cut-title {
-    font-size: 16px;
+    font-size: 15.5px;
     font-weight: 900;
     color: #121212;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
+  }
+  .cut-title:last-child {
+    margin-bottom: 0;
   }
   .cut-code {
     font-family: "M PLUS 1 Code", monospace;
-    font-size: 13px;
+    font-size: 12.5px;
     color: #121212;
     background: #f4f4f5;
-    padding: 6px 8px;
+    padding: 5px 8px;
     border: 1.5px solid #121212;
   }
   .gutter-slash {
@@ -274,6 +270,29 @@ export function buildSocialCardHtml(): string {
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
+  .colophon-bar {
+    border-top: 2.5px solid #121212;
+    padding-top: 10px;
+    font-family: "M PLUS 1 Code", monospace;
+    font-size: 12px;
+    color: #121212;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .colophon-bar .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #4b4b4b;
+  }
+  .colophon-bar .metric {
+    font-family: "Zen Kaku Gothic New", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14.5px;
+    font-weight: 900;
+    color: #121212;
+  }
 </style>
 </head>
 <body>
@@ -288,7 +307,7 @@ export function buildSocialCardHtml(): string {
       </div>
       <div>
         <div class="headline">What changed.<br>What it touches.<br><mark>What might be missing.</mark></div>
-        <div class="sub">One-page evidence-backed PR briefings with static import reach, test coverage links, and Wilson-scored co-change receipts.</div>
+        <div class="sub">One-page evidence-backed PR briefings with static import reach, test-file links, and Wilson-scored co-change receipts.</div>
       </div>
       <div class="pills">
         <span class="pill accent">Deterministic · No AI</span>
@@ -298,19 +317,23 @@ export function buildSocialCardHtml(): string {
     </div>
     <div class="right">
       <div class="cut">
-        <div class="cut-tag"><span>C-01 · THESIS</span><span>2 FILES · +10/−0</span></div>
+        <div class="cut-tag"><span>C-01 · INTENT</span><span>2 FILES · +10/−0</span></div>
         <div class="cut-title">feat(serve-static): add cacheControl option</div>
         <div class="cut-code">src/middleware/serve-static/index.ts</div>
       </div>
       <div class="gutter-slash">THE GUTTER · HISTORICAL CO-CHANGE EVIDENCE</div>
       <div class="cut alert">
-        <div class="cut-tag"><span>C-04 · UNTOUCHED COMPANION</span><span>85% · 17 OF 20 COMMITS</span></div>
+        <div class="cut-tag"><span>C-04 · LIKELY FORGOTTEN</span><span>85% · 17 OF 20 COMMITS</span></div>
         <div class="cut-title">Changed in 17 of 20 commits touching index.ts</div>
         <div class="cut-code">src/middleware/serve-static/index.test.ts</div>
       </div>
       <div class="cut">
-        <div class="cut-tag"><span>C-06 · CALIBRATION</span><span>MEASURED ON THIS REPO</span></div>
-        <div class="cut-title">81% backtest precision · 3.8× over random</div>
+        <div class="cut-tag"><span>C-06 · CHECK THESE</span><span>RECEIPTS · d54720d · 588ec13</span></div>
+        <div class="cut-title">Does index.test.ts need a matching change?</div>
+      </div>
+      <div class="colophon-bar">
+        <span class="label">Footer calibration · 375 commits replayed</span>
+        <span class="metric">73% hit rate (57% precision) · 6.8× over busy-file guessing</span>
       </div>
     </div>
   </div>

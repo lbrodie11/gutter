@@ -35,7 +35,7 @@ Matches `--f-ink`, `--f-panel`, and `--f-marker` in [`src/render/frame12-tokens.
 
 ## Regenerating Assets
 
-All vector marks, raster exports, and the `1280×640` social card are generated deterministically from [`scripts/generate-brand-assets.ts`](../../scripts/generate-brand-assets.ts):
+All vector marks, raster exports, and the `1280×640` social card are generated from [`scripts/generate-brand-assets.ts`](../../scripts/generate-brand-assets.ts):
 
 ```bash
 node --experimental-strip-types scripts/generate-brand-assets.ts
