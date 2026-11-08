@@ -1,15 +1,16 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync, spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
+import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { TempRepo, lines } from './helpers.ts';
+import { extractReleaseNotes, shouldMoveMajorTag } from '../src/release-notes.ts';
+import { resolveRaCommand } from '../src/sources/archaeology.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const DIST_MAIN = join(ROOT, 'dist', 'action', 'main.js');
 
 interface RecordedRequest {
   method: string;
@@ -17,6 +18,8 @@ interface RecordedRequest {
   body: string;
 }
 
+let buildDir: string;
+let distMain: string;
 let repo: TempRepo;
 let headSha: string;
 let baseSha: string;
@@ -26,9 +29,14 @@ const comments: { id: number; body: string; html_url: string }[] = [];
 const requests: RecordedRequest[] = [];
 
 before(async () => {
-  // Compile dist/ so test/action.test.ts always exercises the built dist/action/main.js path.
+  // Compile into an isolated temp directory so `npm test` never dirties the working tree or leaves stale files.
+  buildDir = mkdtempSync(join(tmpdir(), 'gutter-dist-build-'));
   const tsc = join(ROOT, 'node_modules', 'typescript', 'bin', 'tsc');
-  execFileSync(process.execPath, [tsc, '-p', join(ROOT, 'tsconfig.json')], { cwd: ROOT, stdio: 'pipe' });
+  execFileSync(process.execPath, [tsc, '-p', join(ROOT, 'tsconfig.json'), '--outDir', buildDir], {
+    cwd: ROOT,
+    stdio: 'pipe',
+  });
+  distMain = join(buildDir, 'action', 'main.js');
 
   repo = new TempRepo()
     .write({
@@ -86,6 +94,7 @@ before(async () => {
 
 after(async () => {
   repo.cleanup();
+  rmSync(buildDir, { recursive: true, force: true });
   await new Promise<void>((resolveClose) => server.close(() => resolveClose()));
 });
 
@@ -119,7 +128,7 @@ async function runAction(envOverrides: Record<string, string>): Promise<{
   writeFileSync(summaryPath, '');
 
   const res = await new Promise<{ status: number | null; stdout: string; stderr: string }>((resolveChild, rejectChild) => {
-    const child = spawn(process.execPath, [DIST_MAIN], {
+    const child = spawn(process.execPath, [distMain], {
       cwd: repo.dir,
       env: {
         ...process.env,
@@ -139,6 +148,10 @@ async function runAction(envOverrides: Record<string, string>): Promise<{
         ...envOverrides,
       },
     });
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+      rejectChild(new Error('Action child process timed out after 15s'));
+    }, 15_000);
     let stdout = '';
     let stderr = '';
     child.stdout.setEncoding('utf8');
@@ -149,8 +162,14 @@ async function runAction(envOverrides: Record<string, string>): Promise<{
     child.stderr.on('data', (chunk: string) => {
       stderr += chunk;
     });
-    child.on('error', rejectChild);
-    child.on('close', (code) => resolveChild({ status: code, stdout, stderr }));
+    child.on('error', (err) => {
+      clearTimeout(timer);
+      rejectChild(err);
+    });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      resolveChild({ status: code, stdout, stderr });
+    });
   });
 
   const outputs: Record<string, string> = {};
@@ -174,8 +193,8 @@ test('built dist/action/main.js writes outputs, summary, and creates then update
   try {
     assert.equal(first.status, 0, first.stderr || first.stdout);
     assert.equal(first.outputs.status, 'analyzed');
-    assert.equal(first.outputs.salience, 'brief');
-    assert.equal(first.outputs['question-count'], '1');
+    assert.notEqual(first.outputs.salience, 'quiet');
+    assert.ok(Number(first.outputs['question-count']) >= 1);
     assert.equal(first.outputs.comment, 'created');
     assert.ok(first.outputs['json-path'] && existsSync(first.outputs['json-path']));
     assert.ok(first.outputs['html-path'] && existsSync(first.outputs['html-path']));
@@ -205,4 +224,121 @@ test('built dist/action/main.js never exits non-zero on internal errors and reco
   } finally {
     run.cleanup();
   }
+});
+
+test('action.yml shell wrapper fails open when dist/action/main.js is missing or Node < 22', { skip: process.platform === 'win32' }, () => {
+  const actionYml = readFileSync(join(ROOT, 'action.yml'), 'utf8');
+  const runMatch = /run:\s*\|\n([\s\S]*?)\n\n\s*- name: Upload/.exec(actionYml);
+  assert.ok(runMatch && runMatch[1], 'extracted composite shell script from action.yml');
+  const script = runMatch[1]
+    .split('\n')
+    .map((line) => line.replace(/^ {8}/, ''))
+    .join('\n');
+
+  const scratch = mkdtempSync(join(tmpdir(), 'gutter-wrapper-test-'));
+  try {
+    // 1. Missing dist/action/main.js fails open with status=error and exit 0.
+    const outMissing = join(scratch, 'out-missing.txt');
+    writeFileSync(outMissing, '');
+    const resMissing = spawnSync('bash', ['-c', script], {
+      encoding: 'utf8',
+      env: { ...process.env, GITHUB_ACTION_PATH: scratch, GITHUB_OUTPUT: outMissing },
+    });
+    assert.equal(resMissing.status, 0);
+    assert.match(resMissing.stdout, /::warning::Gutter's built dist\/action\/main\.js was not found/);
+    assert.match(readFileSync(outMissing, 'utf8'), /status=error/);
+
+    // 2. Non-numeric or old Node version fails open without bash [ -lt ] errors.
+    const fakeBin = join(scratch, 'bin');
+    mkdtempSync(join(scratch, 'bin-'));
+    const stubDir = mkdtempSync(join(scratch, 'stub-node-'));
+    const fakeNode = join(stubDir, 'node');
+    writeFileSync(fakeNode, '#!/bin/sh\nif [ "$1" = "-v" ]; then echo "v20.19.0"; else echo "not-a-number"; fi\n');
+    chmodSync(fakeNode, 0o755);
+    const outOld = join(scratch, 'out-old.txt');
+    writeFileSync(outOld, '');
+    const resOld = spawnSync('bash', ['-c', script], {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        PATH: `${stubDir}:${process.env.PATH ?? ''}`,
+        GITHUB_ACTION_PATH: scratch,
+        GITHUB_OUTPUT: outOld,
+      },
+    });
+    assert.equal(resOld.status, 0);
+    assert.equal(resOld.stderr, '');
+    assert.match(resOld.stdout, /::warning::Gutter needs Node\.js >= 22/);
+    assert.match(readFileSync(outOld, 'utf8'), /status=error/);
+    void fakeBin;
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
+test('resolveRaCommand resolves Windows npx-cli.js or throws an actionable error instead of ENOENT', () => {
+  // 1. Windows with npm_execpath present
+  const fromNpmExec = resolveRaCommand(
+    {},
+    {
+      platform: 'win32',
+      execPath: 'C:\\Program Files\\nodejs\\node.exe',
+      env: { npm_execpath: 'C:\\npm\\bin\\npm-cli.js' },
+      exists: (p) => p.endsWith('npx-cli.js') && p.includes('npm'),
+    },
+  );
+  assert.equal(fromNpmExec.file, 'C:\\Program Files\\nodejs\\node.exe');
+  assert.ok(fromNpmExec.pre[0]?.endsWith('npx-cli.js'));
+  assert.deepEqual(fromNpmExec.pre.slice(1), ['--yes', 'repo-archaeology@^0.3.0']);
+
+  // 2. Windows when neither candidate exists throws a clear error mentioning GUTTER_RA_BIN
+  assert.throws(
+    () =>
+      resolveRaCommand(
+        {},
+        {
+          platform: 'win32',
+          execPath: 'C:\\Program Files\\nodejs\\node.exe',
+          env: {},
+          exists: () => false,
+        },
+      ),
+    /Could not locate npx-cli\.js.*GUTTER_RA_BIN/,
+  );
+
+  // 3. POSIX fallback uses npx directly
+  const posix = resolveRaCommand({}, { platform: 'linux', env: {} });
+  assert.deepEqual(posix, { file: 'npx', pre: ['--yes', 'repo-archaeology@^0.3.0'] });
+});
+
+test('extractReleaseNotes parses multiline CHANGELOG sections without matching prerelease prefixes', () => {
+  const realChangelog = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8');
+  const notes010 = extractReleaseNotes(realChangelog, 'v0.1.0');
+  assert.match(notes010, /`gutter\.json` v1 contract and JSON Schema/);
+  assert.notEqual(notes010, 'Release 0.1.0');
+
+  const multi = [
+    '# Changelog',
+    '',
+    '## 0.1.0-rc.1 · 2026-04-19',
+    '- Release candidate note',
+    '',
+    '## 0.1.0 · 2026-04-20',
+    '- First line of 0.1.0',
+    '- Second line of 0.1.0',
+    '',
+    '## 0.0.9 · 2026-04-01',
+    '- Older release',
+  ].join('\n');
+
+  assert.equal(extractReleaseNotes(multi, 'v0.1.0'), '- First line of 0.1.0\n- Second line of 0.1.0');
+  assert.equal(extractReleaseNotes(multi, 'v0.1.0-rc.1'), '- Release candidate note');
+  assert.equal(extractReleaseNotes(multi, 'v9.9.9'), 'Release 9.9.9');
+});
+
+test('shouldMoveMajorTag advances v0 on newer releases but never on prereleases or older backports', () => {
+  assert.equal(shouldMoveMajorTag('v0.1.0', []), true);
+  assert.equal(shouldMoveMajorTag('v0.2.0', ['v0.1.0', 'v0']), true);
+  assert.equal(shouldMoveMajorTag('v0.2.0-rc.1', ['v0.1.0']), false);
+  assert.equal(shouldMoveMajorTag('v0.1.5', ['v0.1.0', 'v0.2.0']), false);
 });

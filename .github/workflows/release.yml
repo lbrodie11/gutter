@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag name for dry-run verification (e.g. v0.0.0-test)'
+        description: 'Tag name to verify or release (e.g. v0.0.0-test)'
         required: true
         type: string
       dry_run:
-        description: 'Verify dist/ tag build without publishing to npm or creating a GitHub Release'
+        description: 'Verify dist/ tag build locally without pushing tags, publishing to npm, or creating a GitHub Release'
         required: false
         default: true
         type: boolean
@@ -19,30 +19,31 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
-  release:
+  build:
     runs-on: ubuntu-24.04
     permissions:
-      contents: write
-      id-token: write
+      contents: read
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      major: ${{ steps.meta.outputs.major }}
+      prerelease: ${{ steps.meta.outputs.prerelease }}
+      dry_run: ${{ steps.meta.outputs.dry_run }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Checkout repository (read-only)
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set up Node.js 24
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install, verify, and build dist/
-        run: |
-          npm ci
-          npm run typecheck
-          npm test
-          npm run build
 
       - name: Resolve and validate release tag
         id: meta
@@ -65,64 +66,140 @@ jobs:
           MAJOR="${BASH_REMATCH[1]}"
           PRERELEASE="${BASH_REMATCH[2]:-}"
           PKG_VER=$(node -p "require('./package.json').version")
-          if [ "$DRY_RUN" != "true" ] && [ "$TAG" != "v${PKG_VER}" ]; then
-            echo "error: tag '$TAG' does not match package.json version 'v${PKG_VER}'" >&2
-            exit 1
+          if [ "$DRY_RUN" != "true" ]; then
+            if [ "$TAG" != "v${PKG_VER}" ]; then
+              echo "error: tag '$TAG' does not match package.json version 'v${PKG_VER}'" >&2
+              exit 1
+            fi
+            if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] && git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+              echo "error: tag '$TAG' already exists; refusing to overwrite via workflow_dispatch" >&2
+              exit 1
+            fi
           fi
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "major=v$MAJOR" >> "$GITHUB_OUTPUT"
           echo "prerelease=$([ -n "$PRERELEASE" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           echo "dry_run=$DRY_RUN" >> "$GITHUB_OUTPUT"
 
-      - name: Create detached-HEAD release commit with dist/ and update tags
+      - name: Install, verify, and build dist/
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: Upload built dist/ artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: release-dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Download built dist/ artifact
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: release-dist
+          path: dist
+
+      - name: Create detached-HEAD release commit with dist/ and verify tree
         id: tag_dist
         shell: bash
         env:
-          TAG: ${{ steps.meta.outputs.tag }}
-          MAJOR: ${{ steps.meta.outputs.major }}
-          PRERELEASE: ${{ steps.meta.outputs.prerelease }}
-          DRY_RUN: ${{ steps.meta.outputs.dry_run }}
+          TAG: ${{ needs.build.outputs.tag }}
+          MAJOR: ${{ needs.build.outputs.major }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+          DRY_RUN: ${{ needs.build.outputs.dry_run }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          EXISTING_TAGS=$(git tag -l)
           git checkout --detach HEAD
           git add -f dist
           git commit -q -m "release: ${TAG} (with dist)"
           RELEASE_SHA=$(git rev-parse HEAD)
           git tag -f "$TAG" "$RELEASE_SHA"
+
+          # Verify the tagged commit tree contains compiled entrypoints.
+          TREE_CHECK=$(git ls-tree -r "$TAG" dist/action/main.js dist/cli.js)
+          echo "$TREE_CHECK"
+          echo "$TREE_CHECK" | grep -q "dist/action/main.js"
+          echo "$TREE_CHECK" | grep -q "dist/cli.js"
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run: verified local tag $TAG ($RELEASE_SHA) contains dist/; skipping remote tag push."
+            exit 0
+          fi
+
           git push origin "refs/tags/${TAG}" --force
-          if [ "$PRERELEASE" != "true" ] && [ "$DRY_RUN" != "true" ]; then
+
+          MOVE_MAJOR=$(node --input-type=module -e '
+            import { shouldMoveMajorTag } from "./dist/release-notes.js";
+            const tag = process.env.TAG;
+            const existing = (process.env.EXISTING_TAGS ?? "").split(/\r?\n/).filter(Boolean);
+            process.stdout.write(shouldMoveMajorTag(tag, existing) ? "true" : "false");
+          ')
+          if [ "$MOVE_MAJOR" = "true" ]; then
             git tag -f "$MAJOR" "$RELEASE_SHA"
             git push origin "refs/tags/${MAJOR}" --force
+          else
+            echo "Skipping $MAJOR update for $TAG (prerelease or older than an existing stable release)."
           fi
-          echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
-
-      - name: Publish to npm with provenance
-        if: ${{ steps.meta.outputs.dry_run != 'true' && steps.meta.outputs.prerelease != 'true' }}
-        run: npm publish --provenance --access public
 
       - name: Dry-run npm pack check
-        if: ${{ steps.meta.outputs.dry_run == 'true' || steps.meta.outputs.prerelease == 'true' }}
-        run: npm publish --dry-run
+        if: ${{ needs.build.outputs.dry_run == 'true' }}
+        run: npm publish --dry-run --ignore-scripts
+
+      - name: Publish to npm with provenance
+        if: ${{ needs.build.outputs.dry_run != 'true' }}
+        shell: bash
+        env:
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VER=$(node -p "require('./package.json').version")
+          if npm view "${PKG_NAME}@${PKG_VER}" version >/dev/null 2>&1; then
+            echo "${PKG_NAME}@${PKG_VER} is already published on npm; skipping publish step."
+            exit 0
+          fi
+          if [ "$PRERELEASE" = "true" ]; then
+            npm publish --provenance --access public --tag next --ignore-scripts
+          else
+            npm publish --provenance --access public --ignore-scripts
+          fi
 
       - name: Create GitHub Release from CHANGELOG.md
-        if: ${{ steps.meta.outputs.dry_run != 'true' }}
+        if: ${{ needs.build.outputs.dry_run != 'true' }}
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ steps.meta.outputs.tag }}
-          PRERELEASE: ${{ steps.meta.outputs.prerelease }}
+          TAG: ${{ needs.build.outputs.tag }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
         run: |
-          VER="${TAG#v}"
-          NOTES=$(node -e '
-            const fs = require("node:fs");
-            const ver = process.argv[1];
-            const raw = fs.readFileSync("CHANGELOG.md", "utf8");
-            const escaped = ver.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            const re = new RegExp(`^##\\s+v?${escaped}\\b[^\\n]*\\n([\\s\\S]*?)(?=^##\\s+|$)`, "m");
-            const m = re.exec(raw);
-            process.stdout.write((m && m[1] ? m[1].trim() : `Release ${ver}`) + "\n");
-          ' "$VER")
+          NOTES=$(node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            import { extractReleaseNotes } from "./dist/release-notes.js";
+            const raw = readFileSync("CHANGELOG.md", "utf8");
+            process.stdout.write(extractReleaseNotes(raw, process.env.TAG) + "\n");
+          ')
           EXTRA_ARGS=()
           if [ "$PRERELEASE" = "true" ]; then
             EXTRA_ARGS+=(--prerelease)

@@ -91,13 +91,16 @@ runs:
           exit 0
         fi
         NODE_MAJOR=$(NODE_OPTIONS="" node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)
+        case "$NODE_MAJOR" in
+          ''|*[!0-9]*) NODE_MAJOR=0 ;;
+        esac
         if [ "$NODE_MAJOR" -lt 22 ]; then
           echo "::warning::Gutter needs Node.js >= 22 on PATH (found $(node -v 2>/dev/null || echo 'unknown'))."
           set_out status error
           exit 0
         fi
         if [ ! -f "$GITHUB_ACTION_PATH/dist/action/main.js" ]; then
-          echo "::warning::Gutter's built dist/action/main.js was not found in $GITHUB_ACTION_PATH. Reference a release tag (e.g. lbrodie11/gutter@v0) or run 'npm run build' first."
+          echo "::warning::Gutter's built dist/action/main.js was not found in $GITHUB_ACTION_PATH. Pin to a release tag (e.g. lbrodie11/gutter@v0) or a release tag's commit SHA (not an unbuilt main branch SHA), or run 'npm run build' first."
           set_out status error
           exit 0
         fi
@@ -105,7 +108,7 @@ runs:
 
     - name: Upload the comic page
       if: ${{ inputs.upload-page == 'true' && steps.brief.outputs.status == 'analyzed' }}
-      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: gutter-brief
         path: |
