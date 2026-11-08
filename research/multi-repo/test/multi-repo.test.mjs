@@ -393,7 +393,7 @@ describe('GU-27 multi-repo research harness', () => {
   it('verifies REPORT.md is generated deterministically from results.json and diagnostics.json', () => {
     const results = JSON.parse(readFileSync(join(MULTI_REPO_DIR, 'results.json'), 'utf8'));
     const diagnostics = JSON.parse(readFileSync(join(MULTI_REPO_DIR, 'diagnostics.json'), 'utf8'));
-    const reportOnDisk = readFileSync(join(MULTI_REPO_DIR, 'REPORT.md'), 'utf8');
+    const reportOnDisk = readFileSync(join(MULTI_REPO_DIR, 'REPORT.md'), 'utf8').replace(/\r\n/g, '\n');
     const expected = buildReportMarkdown(results, diagnostics);
 
     assert.equal(reportOnDisk, expected, 'REPORT.md must match buildReportMarkdown(results, diagnostics) byte-for-byte');

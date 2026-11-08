@@ -317,7 +317,7 @@ function main() {
   const reportPath = join(HERE, 'REPORT.md');
 
   if (process.argv.includes('--check')) {
-    const current = readFileSync(reportPath, 'utf8');
+    const current = readFileSync(reportPath, 'utf8').replace(/\r\n/g, '\n');
     if (current !== markdown) {
       console.error(
         '✗ research/multi-repo/REPORT.md is out of sync with results.json / diagnostics.json. Run: node research/multi-repo/generate-report.mjs',
