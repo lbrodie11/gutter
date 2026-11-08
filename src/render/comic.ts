@@ -66,8 +66,8 @@ export function renderComic(brief: GutterBrief): string {
 
   // C-03 · What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted).slice(0, 6);
-  const isPartial = brief.dependents.coverage === 'partial';
-  const uCount = brief.dependents.unresolved.count;
+  const uCount = brief.dependents.unresolved?.count ?? 0;
+  const isPartial = brief.dependents.coverage === 'partial' || uCount > 0;
   const hasAnalyzedTargets = changes.files.some((f) => f.language === 'typescript' || f.language === 'javascript');
   const partialSentence = `${uCount} import${uCount === 1 ? ' uses' : 's use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
   const depBody = deps.length
@@ -268,10 +268,8 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .path.dashed{border-style:dashed}
 .path.solid{border-width:2px}
 .deps{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-pair)}
-.deps li{display:flex;flex-wrap:wrap;align-items:baseline}
-.deps li>*{margin:2px 6px 2px 0}
-.importers{display:inline-flex;flex-wrap:wrap}
-.importers>*{margin:1px 4px 1px 0}
+.deps li{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--f-gutter-pair)}
+.importers{display:inline-flex;flex-wrap:wrap;gap:var(--f-gutter-pair)}
 .stamp{font-family:var(--font-f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 5px;transform:rotate(-3deg);display:inline-block}
 .small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
 .quiet-line{margin:0;color:var(--f-ink-2)}
@@ -293,8 +291,7 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 @media (min-width:860px){.checks{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--f-gutter-change)}}
 .checks p{margin:0}
 .jump{font-size:12px}
-.colophon{margin-top:var(--f-gutter-scene);border-top:var(--f-stroke) solid var(--f-rule);padding-top:var(--f-gutter-pair);display:grid;gap:0}
-.colophon>*+*{margin-top:6px}
+.colophon{margin-top:var(--f-gutter-scene);border-top:var(--f-stroke) solid var(--f-rule);padding-top:var(--f-gutter-pair);display:grid;gap:var(--f-gutter-pair)}
 .cal p{margin:0 0 6px;font-size:13px}
 .gauge{width:min(320px,100%);height:10px;display:block}
 @media (max-width:520px){.sheet{padding:var(--f-gutter-pair)}.wordmark{font-size:26px}.wire{grid-template-columns:1fr}.ghost{transform:rotate(90deg);height:12px;width:28px;justify-self:start}}

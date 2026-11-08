@@ -100,8 +100,27 @@ export function buildBrief(opts: BriefOptions): GutterBrief {
   };
 }
 
+/** Normalize legacy schemaVersion: 1 briefs (`unresolvedAliases`) into `{ coverage, unresolved }`. */
+export function normalizeBrief(brief: GutterBrief): GutterBrief {
+  const deps = brief.dependents as GutterBrief['dependents'] & { unresolvedAliases?: number };
+  const legacyCount = typeof deps.unresolvedAliases === 'number' ? deps.unresolvedAliases : 0;
+  if (!deps.unresolved || typeof deps.unresolved.count !== 'number') {
+    deps.unresolved = {
+      count: legacyCount,
+      samples: Array.isArray(deps.unresolved?.samples) ? deps.unresolved.samples : [],
+    };
+  } else if (!Array.isArray(deps.unresolved.samples)) {
+    deps.unresolved.samples = [];
+  }
+  if (deps.coverage !== 'full' && deps.coverage !== 'partial') {
+    deps.coverage = deps.unresolved.count > 0 ? 'partial' : 'full';
+  }
+  return brief;
+}
+
 /** Every checklist item must point at evidence that exists. Renderers call this. */
 export function assertEvidenceResolves(brief: GutterBrief): void {
+  normalizeBrief(brief);
   const ids = new Set<string>([
     ...brief.dependents.entries.map((e) => e.id),
     ...brief.forgotten.items.map((e) => e.id),

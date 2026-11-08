@@ -21,12 +21,14 @@
 
 </details>
 
-<details><summary><b>What it touches</b> · 2 changed files with importers outside this PR</summary>
+<details><summary><b>What it touches</b> · 2 changed files with importers outside this PR (partial)</summary>
 
 - [`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts) ← [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts), [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts), [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts)
 - [`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts) ← [`src/adapter/bun/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/index.ts)
 
 </details>
+
+<sub>84 imports use aliases or packages Gutter can't resolve yet, so some importers may be missing.</sub>
 
 <details><summary><b>Tests</b> · 0 updated · 1 untouched · 1 with no test found</summary>
 

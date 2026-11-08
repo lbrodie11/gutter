@@ -1,7 +1,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildBrief, assertEvidenceResolves } from '../src/brief.ts';
-import { classifyNonRelativeSpecifier } from '../src/evidence/imports.ts';
+import { buildDependents, classifyNonRelativeSpecifier, extractSpecifiers } from '../src/evidence/imports.ts';
 import type { GutterBrief } from '../src/contract.ts';
 import { TempRepo, lines, raBacktestFixture, raDiffFixture } from './helpers.ts';
 
@@ -118,16 +118,23 @@ test('classifies non-relative specifiers into external (Node builtins + declared
   const declared = new Set(['react', '@octokit/rest']);
   assert.equal(classifyNonRelativeSpecifier('node:fs', declared), 'external');
   assert.equal(classifyNonRelativeSpecifier('fs/promises', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('stream/web', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('bun:test', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('npm:find-my-way', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('virtual:pwa-register', declared), 'external');
+  assert.equal(classifyNonRelativeSpecifier('$app/environment', declared), 'external');
   assert.equal(classifyNonRelativeSpecifier('react', declared), 'external');
   assert.equal(classifyNonRelativeSpecifier('react/jsx-runtime', declared), 'external');
   assert.equal(classifyNonRelativeSpecifier('@octokit/rest/endpoints', declared), 'external');
 
+  // Non-builtin subpaths (`stream/utils`) must not be mistaken for Node built-ins (`isBuiltin('stream/utils') === false`).
+  assert.equal(classifyNonRelativeSpecifier('stream/utils', declared), 'unresolved');
+  assert.equal(classifyNonRelativeSpecifier('stream/utils', new Set(['stream']), ['stream/']), 'unresolved');
   assert.equal(classifyNonRelativeSpecifier('@/a', declared, ['@/']), 'unresolved');
   assert.equal(classifyNonRelativeSpecifier('~/utils', declared), 'unresolved');
   assert.equal(classifyNonRelativeSpecifier('#internal/db', declared), 'unresolved');
   assert.equal(classifyNonRelativeSpecifier('@acme/workspace-pkg', declared), 'unresolved');
 
-  const imp = (s: string) => `imp${'ort'} '${s}';\n`;
   const r = new TempRepo()
     .write({
       'package.json': JSON.stringify({
@@ -136,7 +143,7 @@ test('classifies non-relative specifiers into external (Node builtins + declared
       }),
       'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { '@/*': ['src/*'] } } }),
       'src/a.ts': 'export const a = 1;\n',
-      'src/b.ts': imp('node:fs') + imp('react') + imp('react/jsx-runtime') + imp('@/a'),
+      'src/b.ts': "import 'node:fs';\nimport 'react';\nimport 'react/jsx-runtime';\nimport '@/a';\n",
     })
     .commit('init')
     .branch('alias-change')
@@ -151,4 +158,62 @@ test('classifies non-relative specifiers into external (Node builtins + declared
   } finally {
     r.cleanup();
   }
+});
+
+test('builtin-prefixed tsconfig alias (stream/*) is detected as unresolved rather than a Node builtin', () => {
+  const r = new TempRepo()
+    .write({
+      'package.json': JSON.stringify({ name: 'stream-alias-app' }),
+      'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { 'stream/*': ['src/stream/*'] } } }),
+      'src/stream/utils.ts': 'export const u = 1;\n',
+      'src/b.ts': "import { u } from 'stream/utils';\nexport const b = u;\n",
+    })
+    .commit('init')
+    .branch('stream-alias')
+    .write({ 'src/stream/utils.ts': `export const u = 2;\n${lines(15)}` })
+    .commit('update stream utils');
+  try {
+    const b = buildBrief({ cwd: r.dir, base: 'main', noHistory: true });
+    assert.equal(b.dependents.entries.length, 0);
+    assert.equal(b.dependents.coverage, 'partial');
+    assert.equal(b.dependents.unresolved.count, 1);
+    assert.deepEqual(b.dependents.unresolved.samples, ['src/b.ts → stream/utils']);
+  } finally {
+    r.cleanup();
+  }
+});
+
+test('extractSpecifiers ignores import words in strings, comments, and union literals', () => {
+  const sample = [
+    "// import 'commented-out'",
+    "/* import 'block-commented' */",
+    "type Kind = 'broken-import' | 'forgotten-companion';",
+    "const msg = `${plural(n, 'import')} ${n === 1 ? 'uses' : 'use'} aliases`;",
+    "const obj = { kind: 'broken-import', question: `from 'not-an-import'` };",
+    "const inline = \"import 'node:fs'; import '@/fake'\";",
+    "import { readFileSync } from 'node:fs';",
+  ].join('\n');
+  assert.deepEqual(extractSpecifiers(sample), ['node:fs']);
+
+  // Dogfood check: scanning all tracked .ts files in Gutter itself finds zero unresolved imports
+  const selfDeps = buildDependents(process.cwd(), {
+    files: [
+      {
+        path: 'src/contract.ts',
+        status: 'modified',
+        additions: 1,
+        deletions: 0,
+        binary: false,
+        module: 'src',
+        isTest: false,
+        language: 'typescript',
+      },
+    ],
+    modules: [{ name: 'src', files: 1, additions: 1, deletions: 0 }],
+    totals: { files: 1, additions: 1, deletions: 0, modules: 1 },
+  });
+  assert.ok(selfDeps.scannedFiles >= 20, `expected >=20 scanned files, got ${selfDeps.scannedFiles}`);
+  assert.equal(selfDeps.coverage, 'full');
+  assert.equal(selfDeps.unresolved.count, 0);
+  assert.deepEqual(selfDeps.unresolved.samples, []);
 });

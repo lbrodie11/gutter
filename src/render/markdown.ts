@@ -83,8 +83,8 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
 
   // What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted);
-  const isPartial = brief.dependents.coverage === 'partial';
-  const uCount = brief.dependents.unresolved.count;
+  const uCount = brief.dependents.unresolved?.count ?? 0;
+  const isPartial = brief.dependents.coverage === 'partial' || uCount > 0;
   const partialSentence = `${plural(uCount, 'import')} ${uCount === 1 ? 'uses' : 'use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
   if (deps.length) {
     out.push(`<details><summary><b>What it touches</b> · ${plural(deps.length, 'changed file')} with importers outside this PR${isPartial ? ' (partial)' : ''}</summary>`, '');

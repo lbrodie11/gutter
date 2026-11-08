@@ -9,8 +9,8 @@
 import assert from 'node:assert/strict';
 import { existsSync, mkdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { delimiter, dirname, join, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -54,10 +54,10 @@ interface PlaywrightModule {
 }
 
 function loadPlaywright(): PlaywrightModule {
+  const nodePathEntries = process.env.NODE_PATH ? process.env.NODE_PATH.split(delimiter).filter(Boolean) : [];
   const anchors = [
     join(ROOT, 'package.json'),
-    ...(process.env.NODE_PATH ? process.env.NODE_PATH.split(':').filter(Boolean).map((p) => join(p, 'playwright', 'package.json')) : []),
-    '/Users/brodie/Workspace/frame12/package.json',
+    ...nodePathEntries.flatMap((p) => [join(p, 'playwright', 'package.json'), join(p, '..', 'package.json')]),
   ];
   for (const anchor of anchors) {
     if (!existsSync(anchor)) continue;
@@ -122,10 +122,10 @@ async function main(): Promise<void> {
         viewport: { width: cfg.width, height: cfg.height },
         colorScheme: cfg.scheme,
         reducedMotion: 'reduce',
-        deviceScaleFactor: 2,
+        deviceScaleFactor: 1,
       });
       const page = await ctx.newPage();
-      await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle' });
+      await page.goto(pathToFileURL(htmlPath).href, { waitUntil: 'networkidle' });
 
       const metrics = await page.evaluate(() => {
         const doc = document.documentElement;

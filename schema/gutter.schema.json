@@ -88,6 +88,7 @@
             "samples": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
           }
         },
+        "unresolvedAliases": { "type": "integer", "minimum": 0, "description": "Deprecated legacy v1 count normalized into unresolved.count." },
         "scannedFiles": { "type": "integer" }
       }
     },

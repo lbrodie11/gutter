@@ -99,13 +99,12 @@ test('a small, unremarkable change produces a one-line quiet comment', () => {
 });
 
 test('panel 3 marks itself partial instead of claiming no dependents when alias imports exist', () => {
-  const imp = (s: string) => `imp${'ort'} '${s}';\n`;
   const r = new TempRepo()
     .write({
       'tsconfig.json': JSON.stringify({ compilerOptions: { paths: { '@/*': ['src/*'] } } }),
       'src/a.ts': 'export const a = 1;\n',
       'src/a.test.ts': 'export const t = 1;\n',
-      'src/b.ts': imp('@/a'),
+      'src/b.ts': "import '@/a';\n",
     })
     .commit('init')
     .branch('next-app');
@@ -132,4 +131,24 @@ test('panel 3 marks itself partial instead of claiming no dependents when alias 
     md,
     /<sub>No importers found through relative imports\. 1 import uses aliases or packages Gutter can't resolve yet, so some importers may be missing\.<\/sub>/,
   );
+
+  // Saved legacy schemaVersion: 1 briefs (`unresolvedAliases` without `coverage` or `unresolved`)
+  const { coverage: _c, unresolved: _u, ...legacyDepsBase } = brief.dependents;
+  const legacyFull = {
+    ...structuredClone(brief),
+    dependents: { ...legacyDepsBase, unresolvedAliases: 0 } as unknown as typeof brief.dependents,
+  };
+  const legacyFullHtml = renderComic(legacyFull);
+  const legacyFullMd = renderMarkdown(legacyFull);
+  assert.match(legacyFullHtml, /No file outside this change imports what it changed\./);
+  assert.equal(legacyFullMd.includes("aliases or packages Gutter can't resolve yet"), false);
+
+  const legacyPartial = {
+    ...structuredClone(brief),
+    dependents: { ...legacyDepsBase, unresolvedAliases: 2 } as unknown as typeof brief.dependents,
+  };
+  const legacyPartialHtml = renderComic(legacyPartial);
+  const legacyPartialMd = renderMarkdown(legacyPartial);
+  assert.match(legacyPartialHtml, /2 imports use aliases or packages Gutter can&#39;t resolve yet/);
+  assert.match(legacyPartialMd, /2 imports use aliases or packages Gutter can't resolve yet/);
 });

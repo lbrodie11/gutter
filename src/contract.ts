@@ -104,6 +104,8 @@ export interface DependentsLayer {
   coverage: 'full' | 'partial';
   /** Unresolved non-relative, non-external imports (`<file> → <specifier>`), capped at 5 sorted samples. */
   unresolved: { count: number; samples: string[] };
+  /** @deprecated Legacy v1 field normalized into `unresolved.count`. */
+  unresolvedAliases?: number;
   scannedFiles: number;
 }
 

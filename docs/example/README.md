@@ -25,18 +25,20 @@ Or step by step:
 
 ```bash
 npm run build
-git clone https://github.com/honojs/hono.git /tmp/hono-repro
-cd /tmp/hono-repro
-git checkout -B main eb754bd5ef22c63f1634a4c374a86be086f85710
+mkdir -p /tmp/hono-repro && cd /tmp/hono-repro
+git init && git remote add origin https://github.com/honojs/hono.git
+git fetch --depth 1500 origin eb754bd5ef22c63f1634a4c374a86be086f85710
+git checkout -B main FETCH_HEAD
 git checkout -b feat/serve-static-cache-control
 
 # Apply the 2-file (+10/-0) edit to src/middleware/serve-static/index.ts and src/adapter/bun/serve-static.ts, commit, and run:
 node /path/to/gutter/dist/cli.js brief \
   --base main \
+  --head feat/serve-static-cache-control \
   --title "feat(serve-static): add cacheControl option" \
   --intent "Adds a cacheControl option so static responses can set Cache-Control without custom middleware." \
   --repo-url "https://github.com/honojs/hono" \
-  --ra-spec "0.3.0" \
+  --ra-version "0.3.0" \
   --out /tmp/hono-repro/.gutter
 ```
 
