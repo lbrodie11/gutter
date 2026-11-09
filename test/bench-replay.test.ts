@@ -34,23 +34,23 @@ test('discoverChangeUnits: classifies merge-commit, unnumbered merge, squash (#n
     // 6. Merge-commit PR (#12) -> merge-commit / high
     repo.branch('pr-12');
     repo.write({ 'src/pr12.ts': 'export const pr12 = 1;\n' }).commit('feat: pr 12 work');
-    git(repo.dir, ['checkout', '-q', 'main']);
-    git(repo.dir, ['merge', '--no-ff', 'pr-12', '-m', 'Merge pull request #12 from org/pr-12']);
+    repo.git('checkout', '-q', 'main');
+    repo.git('merge', '--no-ff', 'pr-12', '-m', 'Merge pull request #12 from org/pr-12');
 
     // 7. Unnumbered merge commit -> merge-commit / medium
     repo.branch('feature-unnumbered');
     repo.write({ 'src/unnum.ts': 'export const un = 1;\n' }).commit('feat: unnumbered branch work');
-    git(repo.dir, ['checkout', '-q', 'main']);
-    git(repo.dir, ['merge', '--no-ff', 'feature-unnumbered', '-m', "Merge branch 'feature-unnumbered'"]);
+    repo.git('checkout', '-q', 'main');
+    repo.git('merge', '--no-ff', 'feature-unnumbered', '-m', "Merge branch 'feature-unnumbered'");
 
     // 8. Octopus merge (>2 parents) -> skipped: octopus
     repo.branch('octo-a');
     repo.write({ 'src/octo-a.ts': 'export const oa = 1;\n' }).commit('feat: octo a');
-    git(repo.dir, ['checkout', '-q', 'main']);
+    repo.git('checkout', '-q', 'main');
     repo.branch('octo-b');
     repo.write({ 'src/octo-b.ts': 'export const ob = 1;\n' }).commit('feat: octo b');
-    git(repo.dir, ['checkout', '-q', 'main']);
-    git(repo.dir, ['merge', '--no-ff', 'octo-a', 'octo-b', '-m', 'Merge branches octo-a and octo-b']);
+    repo.git('checkout', '-q', 'main');
+    repo.git('merge', '--no-ff', 'octo-a', 'octo-b', '-m', 'Merge branches octo-a and octo-b');
 
     const defaultDiscovery = discoverChangeUnits({ cwd: repo.dir });
     assert.equal(defaultDiscovery.funnel.discovered, 9);
@@ -310,12 +310,12 @@ test('merge semantics: conflict resolution editing a suggested file sets mergeDi
     }).commit('feat: edit a only on branch');
 
     // Meanwhile on main, make a commit and merge pr-conflict while also resolving/editing src/b.ts in the merge commit
-    git(repo.dir, ['checkout', '-q', 'main']);
+    repo.git('checkout', '-q', 'main');
     repo.write({ 'README.md': '# Main update\n' }).commit('docs: update readme on main');
-    git(repo.dir, ['merge', '--no-ff', '--no-commit', 'pr-conflict']);
+    repo.git('merge', '--no-ff', '--no-commit', 'pr-conflict');
     repo.write({ 'src/b.ts': 'export const b = 100; // updated during merge conflict resolution\n' });
-    git(repo.dir, ['add', 'src/b.ts']);
-    git(repo.dir, ['commit', '-q', '-m', 'Merge pull request #42 from org/pr-conflict']);
+    repo.git('add', 'src/b.ts');
+    repo.git('commit', '-q', '-m', 'Merge pull request #42 from org/pr-conflict');
 
     const discovery = discoverChangeUnits({ cwd: repo.dir });
     const pr42 = discovery.eligiblePrs.find((p) => p.prNumber === 42)!;
