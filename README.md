@@ -4,7 +4,7 @@
 
 Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, and which historically related files deserve another look — with clickable commit receipts.
 
-`Experimental · v0.1.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+`Experimental · v0.2.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -160,7 +160,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
 
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.1.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.1.0^{commit}`), never an unbuilt `main` branch commit SHA.
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.2.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.2.0^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|
@@ -248,6 +248,7 @@ npm run build     # compiles dist/ (built CLI and Action run on Node.js >= 22 wi
 
 - [Architecture & Product Decisions (`docs/DECISIONS.md`)](docs/DECISIONS.md)
 - [Benchmark Methodology & Preregistration (`docs/benchmark/METHOD.md`)](docs/benchmark/METHOD.md)
+- [Cross-Repository Coupling Research (`research/multi-repo/REPORT.md`)](research/multi-repo/REPORT.md)
 - [Release Checklist & Marketplace Guide (`docs/RELEASING.md`)](docs/RELEASING.md)
 - [Validation Roadmap (`docs/ROADMAP.md`)](docs/ROADMAP.md)
 - [JSON Schemas (`schema/gutter.schema.json`, `schema/bench.schema.json`)](schema/gutter.schema.json)

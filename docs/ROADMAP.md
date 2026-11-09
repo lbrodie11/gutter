@@ -7,8 +7,9 @@ Proof before platform. Each milestone has an exit test. If a milestone's exit te
 The question: **is panel 4 right often enough to be worth a reviewer's attention?**
 
 - [ ] Run `repo-archaeology backtest` across 15–20 active OSS repos (mixed TS, Go, Python, monorepos) and publish the table: precision, hit rate, lift, test-window size.
-- [ ] Replay Gutter over each repo's last 200 merged PRs: how many get `quiet` / `brief` / `full`, how many questions per PR, how often a "likely forgotten" file was changed in a follow-up commit within 7 days.
-- [ ] Hand-review 50 flagged PRs: was the question useful, irrelevant, or wrong?
+- [x] Build `gutter bench` (`GU-03`) to replay a repo's merged PRs strictly as of each PR (`quiet` / `brief` / `full`, questions per PR, 7-day post-merge follow-up proxy vs. matched baselines).
+- [ ] Replay Gutter over each repo's last 200 merged PRs across the multi-repo benchmark corpus (`GU-18`).
+- [ ] Hand-review 50 flagged PRs (`GU-04`): was the question useful, irrelevant, or wrong?
 - [ ] Agent-commit weighting: measure whether bot- and agent-authored sweeping commits inflate co-change, and tune upstream in Repo Archaeology.
 
 **Exit test:** warnings that become questions are right ≥ 70% of the time on the median repo, and fewer than 1 in 3 PRs get a `full` page.
@@ -24,8 +25,9 @@ The question: **is panel 4 right often enough to be worth a reviewer's attention
 ## M2 · Public beta: GitHub Marketplace Action (~3 weeks)
 
 - [x] Publish `repo-archaeology` ≥ 0.3.0 to npm (Gutter's Action depends on it).
-- [ ] Tag `v0` and `v0.1.0` on the repository.
-- [ ] Publish `gutter-brief` to npm, make the repository public, and list the Action on GitHub Marketplace.
+- [x] Tag `v0` and `v0.1.0` (`v0.2.0`) on the repository.
+- [x] Publish `gutter-brief` to npm and make the repository public.
+- [ ] List the Action on GitHub Marketplace.
 - [ ] Launch assets: 5 before/after pages on recognizable OSS PRs, a 30-second on-twos screen recording, Show HN.
 - [ ] Feedback loop: 👍/👎 reactions on the sticky comment, read back into per-repo stats.
 
@@ -52,8 +54,8 @@ The question: **is panel 4 right often enough to be worth a reviewer's attention
 ## Upstream asks
 
 **Repo Archaeology**
-- Library API (`import { diff, backtest } from 'repo-archaeology'`) to drop the `npx` hop.
-- Agent attribution from `Co-authored-by:` trailers, and optional down-weighting of agent-authored sweeping commits.
+- [x] Library API (`openRepository` in `repo-archaeology` ≥ 0.4.0) to drop the `npx` hop during replay.
+- [x] Agent attribution from `Co-authored-by:` trailers, and optional down-weighting of agent-authored sweeping commits (`origin` in `repo-archaeology` ≥ 0.4.0).
 - Expose the Wilson interval upper bound alongside `score`.
 
 **FRAME/12**
