@@ -2,6 +2,7 @@ import type { GutterBrief } from '../contract.ts';
 import { git } from '../git.ts';
 import type { DiscoveredChangeUnit } from './discover.ts';
 import { extractQuestionTargets } from './discover.ts';
+import { sanitizeAuthorName, sanitizePath, sanitizeText } from './sanitize.ts';
 import type {
   QuestionOutcomeRecord,
   RaFollowUpSignal,
@@ -153,14 +154,15 @@ export interface ScoreTargetContext {
 }
 
 export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): TargetOutcomeRecord {
+  const safeTargetFile = sanitizePath(targetFile);
   if (ctx.resolvedAtMergeTargets.has(targetFile)) {
     return {
-      targetFile,
+      targetFile: safeTargetFile,
       status: 'resolvedAtMerge',
       commitSha: ctx.unit.mergeCommitSha,
       delayHours: 0,
       sameAuthor: true,
-      authorName: ctx.unit.authorNames[0] ?? null,
+      authorName: ctx.unit.authorNames[0] ? sanitizeAuthorName(ctx.unit.authorNames[0]) : null,
       targetRenamed: false,
       renamedTo: null,
       raFollowUpSignals: [],
@@ -188,7 +190,7 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
         currentPath = ch.path;
         if (inWindow) {
           targetRenamed = true;
-          renamedTo = ch.path;
+          renamedTo = sanitizePath(ch.path);
           if (!renameCommit) renameCommit = commit;
           if ((ch.similarity ?? 100) < 100) {
             matchedModification = true;
@@ -218,12 +220,12 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
 
     if (matchedDeletion) {
       return {
-        targetFile,
+        targetFile: safeTargetFile,
         status: 'targetDeleted',
         commitSha: commit.sha,
         delayHours,
         sameAuthor,
-        authorName: commit.authorName || null,
+        authorName: commit.authorName ? sanitizeAuthorName(commit.authorName) : null,
         targetRenamed,
         renamedTo,
         raFollowUpSignals: [],
@@ -249,12 +251,12 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
         sameAuthor && (touchesPrFile || idx === ctx.startIndexAfterMerge || FOLLOW_UP_SUBJECT_RE.test(commit.subject));
 
       return {
-        targetFile,
+        targetFile: safeTargetFile,
         status: 'followedUp',
         commitSha: commit.sha,
         delayHours,
         sameAuthor,
-        authorName: commit.authorName || null,
+        authorName: commit.authorName ? sanitizeAuthorName(commit.authorName) : null,
         targetRenamed,
         renamedTo,
         raFollowUpSignals: signals,
@@ -268,12 +270,12 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
     const delayHours = Number(Math.max(0, (renameCommit.committerTimeSec - ctx.unit.mergedAtSec) / 3600).toFixed(2));
     const sameAuthor = isSameAuthorAsPr(ctx.unit.authors, renameCommit.authorKey, renameCommit.authorEmail);
     return {
-      targetFile,
+      targetFile: safeTargetFile,
       status: 'targetRenamed',
       commitSha: renameCommit.sha,
       delayHours,
       sameAuthor,
-      authorName: renameCommit.authorName || null,
+      authorName: renameCommit.authorName ? sanitizeAuthorName(renameCommit.authorName) : null,
       targetRenamed: true,
       renamedTo,
       raFollowUpSignals: [],
@@ -284,7 +286,7 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
 
   const isCensored = windowEndSec > ctx.newestCommitSec;
   return {
-    targetFile,
+    targetFile: safeTargetFile,
     status: isCensored ? 'censored' : 'notFollowedUp',
     commitSha: null,
     delayHours: null,
@@ -322,13 +324,15 @@ export function scoreBriefQuestions(
   ctx: Omit<ScoreTargetContext, 'brokenImportPath'>,
 ): QuestionOutcomeRecord[] {
   const extracted = extractQuestionTargets(brief);
+  const safeAuthors = ctx.unit.authorNames.map((n) => sanitizeAuthorName(n));
   return brief.checklist.map((item, idx) => {
     const info = extracted[idx]!;
     if (item.kind === 'wide-surface' || info.targetFiles.length === 0) {
       return {
-        id: item.id,
+        id: sanitizeText(item.id, 160),
         kind: item.kind,
-        question: item.question,
+        question: sanitizeText(item.question, 400),
+        authorNames: safeAuthors,
         intervalLow: info.intervalLow,
         intervalLowBucket: intervalLowBucketOf(info.intervalLow),
         status: 'unscorable',
@@ -350,9 +354,10 @@ export function scoreBriefQuestions(
     const matchesRaFollowUpHit = targets.some((t) => t.status === 'followedUp' && t.matchesRaFollowUp);
 
     return {
-      id: item.id,
+      id: sanitizeText(item.id, 160),
       kind: item.kind,
-      question: item.question,
+      question: sanitizeText(item.question, 400),
+      authorNames: safeAuthors,
       intervalLow: info.intervalLow,
       intervalLowBucket: intervalLowBucketOf(info.intervalLow),
       status,

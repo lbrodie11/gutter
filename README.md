@@ -121,6 +121,37 @@ To help reviewers calibrate trust on *their specific repository*, Gutter runs Re
 
 ---
 
+## Benchmark (`gutter bench`)
+
+Before trusting historical co-change or static questions on a repository, `gutter bench` replays the newest $N$ merged pull requests strictly **as of each PR** using the same question-generation code (`assembleBrief`) as production Gutter, scores what happened next on the first-parent branch, compares against matched baselines, and writes [`bench.json`](schema/bench.schema.json), `bench.md`, and a FRAME/12 `bench.html` page from one schema-validated results model.
+
+```bash
+# Replay the newest 200 eligible PRs on the current branch (offline; requires local repo-archaeology >= 0.4.0)
+node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
+```
+
+### What `gutter bench` measures — and what it does not
+
+1. **Commits ≠ pull requests (offline discovery funnel):**
+   `gutter bench` walks `git rev-list --first-parent <branch>` offline without requiring GitHub API tokens. Each commit is classified into `merge-commit` (`high` confidence when `Merge pull request #n`, `medium` when unnumbered), `squash-subject` (`medium` confidence when ending in `(#n)`), or skipped as `octopus` / `not-a-pr` (direct pushes and GitHub rebase merges, which leave no merge parent or `(#n)` suffix). Passing `--include-unnumbered` evaluates 1-parent unnumbered commits as `change-unit` (`low` confidence) in a separate pool that is never pooled with PR results.
+2. **Follow-ups are observations (`followedUp`), not ground-truth defects:**
+   A target file changing on the first-parent branch within `--window-days` (default `7`) after `mergedAt` is recorded as `followedUp` (along with delay, `sameAuthor` after `.mailmap`, and Repo Archaeology follow-up signals). Planned multi-PR splits and unrelated work can touch the same file, while a genuine omission left unfixed for 7 days is recorded as `notFollowedUp`. Consequently, **Gate A (`Question usefulness`) always prints `UNVERIFIED`** until human review labels exist in GU-04 — never `PASS` from automated follow-up rates.
+3. **Right-censoring and rename/deletion tracking:**
+   First-parent outcomes follow renames (`targetRenamed`) and record deletions as their own outcome (`targetDeleted`, never a hit). If a PR's observation window extends past the newest commit on the branch without an earlier hit, the target is marked `censored` and excluded from precision denominators.
+4. **Two explicit policies (`production` vs. `ungated`):**
+   - **`production`:** What Gutter would actually have posted, gated by Repo Archaeology's `backtest()` calibration computed strictly as-of each PR's history (or the newest checkpoint at or before `base` under `--calibration-every <n>`).
+   - **`ungated` (`research: not product behavior`):** Calibration bypassed to measure the raw signal. Always reported separately and never presented as Gutter's product precision.
+5. **Matched as-of baselines (`popular`, `popular-near`, `recent`):**
+   For every scored PR with $k$ scorable targets, each baseline proposes up to $k$ files existing at `head`, untouched by the PR, passing the same generated/vendored/bot filters as Gutter, and ranked strictly from commit ancestry of `base`:
+   - `popular`: most frequently changed files overall.
+   - `popular-near`: most frequently changed files sharing a top-level directory or module with a file touched by the PR.
+   - `recent`: most frequently changed files in the 30 days prior to `base`.
+   Headline lift is reported against the **strongest** baseline on the repository, with 95% Wilson intervals and a seeded 1,000-resample PR-clustered bootstrap.
+
+Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](docs/benchmark/METHOD.md).
+
+---
+
 ## Quick start
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
@@ -212,9 +243,10 @@ npm run build     # compiles dist/ (built CLI and Action run on Node.js >= 22 wi
 ## Documentation & Community
 
 - [Architecture & Product Decisions (`docs/DECISIONS.md`)](docs/DECISIONS.md)
+- [Benchmark Methodology & Preregistration (`docs/benchmark/METHOD.md`)](docs/benchmark/METHOD.md)
 - [Release Checklist & Marketplace Guide (`docs/RELEASING.md`)](docs/RELEASING.md)
 - [Validation Roadmap (`docs/ROADMAP.md`)](docs/ROADMAP.md)
-- [JSON Schema (`schema/gutter.schema.json`)](schema/gutter.schema.json)
+- [JSON Schemas (`schema/gutter.schema.json`, `schema/bench.schema.json`)](schema/gutter.schema.json)
 - [Contributing Guide (`CONTRIBUTING.md`)](CONTRIBUTING.md)
 - [Security Policy (`SECURITY.md`)](SECURITY.md)
 

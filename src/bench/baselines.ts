@@ -473,7 +473,11 @@ export function computeAndScoreBaselines(opts: {
     .slice(0, k);
 
   const buildSet = (baseline: BaselineName, files: string[]): BaselineProposalSet => {
-    const targets = files.map((f) => scoreSingleTarget(f, scoreCtx));
+    const targets = files.map((f) => ({
+      ...scoreSingleTarget(f, scoreCtx),
+      // Keep author names strictly in per-question detail (Req 12).
+      authorName: null,
+    }));
     return {
       baseline,
       kRequested: k,

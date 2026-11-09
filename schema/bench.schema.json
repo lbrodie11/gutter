@@ -1,0 +1,835 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lbrodie11/gutter/schema/bench.schema.json",
+  "title": "bench.json (schemaVersion 1)",
+  "description": "Historical pull-request replay benchmark results for Gutter. Validated before writing bench.json, bench.md, or bench.html.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "scoringVersion",
+    "generatedAt",
+    "repo",
+    "tools",
+    "settings",
+    "runIdentity",
+    "funnel",
+    "gates",
+    "aggregates",
+    "prs",
+    "changeUnits",
+    "timings"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "scoringVersion": { "const": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "repo": {
+      "type": "object",
+      "required": ["name", "remoteUrl", "branch", "headSha", "shallow"],
+      "properties": {
+        "name": { "type": "string" },
+        "remoteUrl": { "type": ["string", "null"] },
+        "branch": { "type": "string" },
+        "headSha": { "type": "string" },
+        "shallow": { "type": "boolean" }
+      }
+    },
+    "tools": {
+      "type": "object",
+      "required": ["gutter", "repoArchaeology"],
+      "properties": {
+        "gutter": { "type": "string" },
+        "repoArchaeology": { "type": "string" }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "required": [
+        "branch",
+        "prsLimit",
+        "since",
+        "windowDays",
+        "calibrationEvery",
+        "includeUnnumbered",
+        "gateFullShare",
+        "proxyMinLift",
+        "configOverrides",
+        "raCacheEnabled"
+      ],
+      "properties": {
+        "branch": { "type": "string" },
+        "prsLimit": { "type": "integer", "minimum": 1 },
+        "since": { "type": ["string", "null"] },
+        "windowDays": { "type": "integer", "minimum": 1 },
+        "calibrationEvery": { "type": "integer", "minimum": 1 },
+        "includeUnnumbered": { "type": "boolean" },
+        "gateFullShare": { "type": "number", "minimum": 0, "maximum": 1 },
+        "proxyMinLift": { "type": "number", "minimum": 0 },
+        "configOverrides": { "type": "object" },
+        "raCacheEnabled": { "type": "boolean" }
+      }
+    },
+    "runIdentity": {
+      "type": "object",
+      "required": [
+        "repo",
+        "branchHeadSha",
+        "settingsHash",
+        "gutterVersion",
+        "raVersion",
+        "scoringVersion",
+        "schemaVersion"
+      ],
+      "properties": {
+        "repo": { "type": "string" },
+        "branchHeadSha": { "type": "string" },
+        "settingsHash": { "type": "string" },
+        "gutterVersion": { "type": "string" },
+        "raVersion": { "type": "string" },
+        "scoringVersion": { "const": 1 },
+        "schemaVersion": { "const": 1 }
+      }
+    },
+    "funnel": {
+      "type": "object",
+      "required": [
+        "discovered",
+        "classified",
+        "eligible",
+        "evaluated",
+        "scored",
+        "changeUnitsDiscovered",
+        "changeUnitsEligible",
+        "changeUnitsEvaluated",
+        "changeUnitsScored",
+        "exclusions"
+      ],
+      "properties": {
+        "discovered": { "type": "integer", "minimum": 0 },
+        "classified": {
+          "type": "object",
+          "required": [
+            "mergeCommitHigh",
+            "mergeCommitMedium",
+            "squashMedium",
+            "octopus",
+            "notAPr",
+            "changeUnitLow"
+          ],
+          "properties": {
+            "mergeCommitHigh": { "type": "integer", "minimum": 0 },
+            "mergeCommitMedium": { "type": "integer", "minimum": 0 },
+            "squashMedium": { "type": "integer", "minimum": 0 },
+            "octopus": { "type": "integer", "minimum": 0 },
+            "notAPr": { "type": "integer", "minimum": 0 },
+            "changeUnitLow": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "eligible": { "type": "integer", "minimum": 0 },
+        "evaluated": { "type": "integer", "minimum": 0 },
+        "scored": { "type": "integer", "minimum": 0 },
+        "changeUnitsDiscovered": { "type": "integer", "minimum": 0 },
+        "changeUnitsEligible": { "type": "integer", "minimum": 0 },
+        "changeUnitsEvaluated": { "type": "integer", "minimum": 0 },
+        "changeUnitsScored": { "type": "integer", "minimum": 0 },
+        "exclusions": {
+          "type": "object",
+          "required": [
+            "octopus",
+            "notAPr",
+            "rootCommit",
+            "beforeSince",
+            "missingMergeBase",
+            "emptyDiff",
+            "beyondPrsLimit",
+            "historyUnavailable",
+            "noQuestions",
+            "unscorableOnly",
+            "resolvedAtMergeOnly",
+            "censored"
+          ],
+          "properties": {
+            "octopus": { "type": "integer", "minimum": 0 },
+            "notAPr": { "type": "integer", "minimum": 0 },
+            "rootCommit": { "type": "integer", "minimum": 0 },
+            "beforeSince": { "type": "integer", "minimum": 0 },
+            "missingMergeBase": { "type": "integer", "minimum": 0 },
+            "emptyDiff": { "type": "integer", "minimum": 0 },
+            "beyondPrsLimit": { "type": "integer", "minimum": 0 },
+            "historyUnavailable": { "type": "integer", "minimum": 0 },
+            "noQuestions": { "type": "integer", "minimum": 0 },
+            "unscorableOnly": { "type": "integer", "minimum": 0 },
+            "resolvedAtMergeOnly": { "type": "integer", "minimum": 0 },
+            "censored": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "object",
+      "required": ["fullSalienceShare", "gateAUsefulness"],
+      "properties": {
+        "fullSalienceShare": {
+          "type": "object",
+          "required": ["value", "threshold", "passed", "line"],
+          "properties": {
+            "value": { "type": ["number", "null"] },
+            "threshold": { "type": "number" },
+            "passed": { "type": ["boolean", "null"] },
+            "line": { "type": "string" }
+          }
+        },
+        "gateAUsefulness": {
+          "type": "object",
+          "required": [
+            "status",
+            "followUpProxyRate",
+            "followUpProxyInterval",
+            "strongestBaseline",
+            "liftVsStrongest",
+            "proxyMinLift",
+            "line"
+          ],
+          "properties": {
+            "status": { "const": "UNVERIFIED" },
+            "followUpProxyRate": { "type": ["number", "null"] },
+            "followUpProxyInterval": { "$ref": "#/$defs/NullableInterval" },
+            "strongestBaseline": { "enum": ["popular", "popular-near", "recent", null] },
+            "liftVsStrongest": { "type": ["number", "null"] },
+            "proxyMinLift": { "type": "number" },
+            "line": { "type": "string" }
+          }
+        }
+      }
+    },
+    "aggregates": {
+      "type": "object",
+      "required": ["production", "ungated"],
+      "properties": {
+        "production": { "$ref": "#/$defs/PolicyAggregateSummary" },
+        "ungated": { "$ref": "#/$defs/PolicyAggregateSummary" }
+      }
+    },
+    "prs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/BenchPrRecord" }
+    },
+    "changeUnits": {
+      "type": "object",
+      "required": ["prs", "aggregates"],
+      "properties": {
+        "prs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/BenchPrRecord" }
+        },
+        "aggregates": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["production", "ungated"],
+              "properties": {
+                "production": { "$ref": "#/$defs/PolicyAggregateSummary" },
+                "ungated": { "$ref": "#/$defs/PolicyAggregateSummary" }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "timings": {
+      "type": "object",
+      "required": ["totalWallMs", "stages"],
+      "properties": {
+        "totalWallMs": { "type": "number", "minimum": 0 },
+        "stages": {
+          "type": "object",
+          "required": ["discovery", "sessionOpen", "staticAnalysis", "brief", "scoring", "report"],
+          "properties": {
+            "discovery": { "$ref": "#/$defs/StageTimingSummary" },
+            "sessionOpen": { "$ref": "#/$defs/StageTimingSummary" },
+            "staticAnalysis": { "$ref": "#/$defs/StageTimingSummary" },
+            "brief": { "$ref": "#/$defs/StageTimingSummary" },
+            "scoring": { "$ref": "#/$defs/StageTimingSummary" },
+            "report": { "$ref": "#/$defs/StageTimingSummary" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "NullableInterval": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["low", "high"],
+          "properties": {
+            "low": { "type": "number" },
+            "high": { "type": "number" }
+          }
+        }
+      ]
+    },
+    "ProportionMetric": {
+      "type": "object",
+      "required": ["numerator", "denominator", "rate", "interval"],
+      "properties": {
+        "numerator": { "type": "integer", "minimum": 0 },
+        "denominator": { "type": "integer", "minimum": 0 },
+        "rate": { "type": ["number", "null"] },
+        "interval": { "$ref": "#/$defs/NullableInterval" }
+      }
+    },
+    "BootstrapInterval": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["low", "high", "median", "resamples", "seed"],
+          "properties": {
+            "low": { "type": "number" },
+            "high": { "type": "number" },
+            "median": { "type": "number" },
+            "resamples": { "type": "integer", "minimum": 1 },
+            "seed": { "type": "integer" }
+          }
+        }
+      ]
+    },
+    "TargetOutcomeRecord": {
+      "type": "object",
+      "required": [
+        "targetFile",
+        "status",
+        "commitSha",
+        "delayHours",
+        "sameAuthor",
+        "authorName",
+        "targetRenamed",
+        "renamedTo",
+        "raFollowUpSignals",
+        "matchesRaFollowUp",
+        "sharedWithOtherPrs"
+      ],
+      "properties": {
+        "targetFile": { "type": "string" },
+        "status": {
+          "enum": [
+            "followedUp",
+            "notFollowedUp",
+            "censored",
+            "targetDeleted",
+            "targetRenamed",
+            "resolvedAtMerge",
+            "unscorable"
+          ]
+        },
+        "commitSha": { "type": ["string", "null"] },
+        "delayHours": { "type": ["number", "null"] },
+        "sameAuthor": { "type": ["boolean", "null"] },
+        "authorName": { "type": ["string", "null"] },
+        "targetRenamed": { "type": "boolean" },
+        "renamedTo": { "type": ["string", "null"] },
+        "raFollowUpSignals": {
+          "type": "array",
+          "items": { "enum": ["subject-cue", "shared-file", "immediate-same-author"] }
+        },
+        "matchesRaFollowUp": { "type": "boolean" },
+        "sharedWithOtherPrs": { "type": "boolean" }
+      }
+    },
+    "QuestionOutcomeRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "question",
+        "authorNames",
+        "intervalLow",
+        "intervalLowBucket",
+        "status",
+        "targets",
+        "sameAuthorHit",
+        "matchesRaFollowUpHit"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": {
+          "enum": [
+            "broken-import",
+            "forgotten-companion",
+            "family-drift",
+            "untested-change",
+            "wide-surface"
+          ]
+        },
+        "question": { "type": "string" },
+        "authorNames": { "type": "array", "items": { "type": "string" } },
+        "intervalLow": { "type": ["number", "null"] },
+        "intervalLowBucket": { "enum": ["0-0.3", "0.3-0.5", "0.5+", "none"] },
+        "status": {
+          "enum": [
+            "followedUp",
+            "notFollowedUp",
+            "censored",
+            "targetDeleted",
+            "targetRenamed",
+            "resolvedAtMerge",
+            "unscorable"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TargetOutcomeRecord" }
+        },
+        "sameAuthorHit": { "type": "boolean" },
+        "matchesRaFollowUpHit": { "type": "boolean" }
+      }
+    },
+    "BaselineProposalSet": {
+      "type": "object",
+      "required": ["baseline", "kRequested", "proposedCount", "shortfall", "targets", "anyFollowedUp"],
+      "properties": {
+        "baseline": { "enum": ["popular", "popular-near", "recent"] },
+        "kRequested": { "type": "integer", "minimum": 0 },
+        "proposedCount": { "type": "integer", "minimum": 0 },
+        "shortfall": { "type": "integer", "minimum": 0 },
+        "targets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/TargetOutcomeRecord" }
+        },
+        "anyFollowedUp": { "type": "boolean" }
+      }
+    },
+    "PrPolicyEvaluation": {
+      "type": "object",
+      "required": [
+        "policy",
+        "policyLabel",
+        "salience",
+        "calibrationStatus",
+        "calibrationPrecision",
+        "calibrationCheckpointBaseSha",
+        "questions",
+        "baselines",
+        "missedFollowUpFiles"
+      ],
+      "properties": {
+        "policy": { "enum": ["production", "ungated"] },
+        "policyLabel": { "type": "string" },
+        "salience": { "enum": ["quiet", "brief", "full"] },
+        "calibrationStatus": { "enum": ["measured", "thin", "unavailable", "skipped"] },
+        "calibrationPrecision": { "type": ["number", "null"] },
+        "calibrationCheckpointBaseSha": { "type": "string" },
+        "questions": {
+          "type": "array",
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/QuestionOutcomeRecord" }
+        },
+        "baselines": {
+          "type": "object",
+          "required": ["popular", "popular-near", "recent"],
+          "properties": {
+            "popular": { "$ref": "#/$defs/BaselineProposalSet" },
+            "popular-near": { "$ref": "#/$defs/BaselineProposalSet" },
+            "recent": { "$ref": "#/$defs/BaselineProposalSet" }
+          }
+        },
+        "missedFollowUpFiles": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "BenchPrRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "prNumber",
+        "detection",
+        "confidence",
+        "base",
+        "head",
+        "mergeCommitSha",
+        "mergedAt",
+        "subject",
+        "changedFilesCount",
+        "timestampAnomaly",
+        "history",
+        "mergeDiffers",
+        "mergeDifferingFiles",
+        "confounders",
+        "policies"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "prNumber": { "type": ["integer", "null"] },
+        "detection": { "enum": ["merge-commit", "squash-subject", "change-unit"] },
+        "confidence": { "enum": ["high", "medium", "low"] },
+        "base": { "type": "string" },
+        "head": { "type": "string" },
+        "mergeCommitSha": { "type": "string" },
+        "mergedAt": { "type": "string" },
+        "subject": { "type": "string" },
+        "changedFilesCount": { "type": "integer", "minimum": 0 },
+        "timestampAnomaly": { "type": "boolean" },
+        "history": { "enum": ["available", "unavailable"] },
+        "mergeDiffers": { "type": "boolean" },
+        "mergeDifferingFiles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "confounders": {
+          "type": "object",
+          "required": [
+            "botOrAgentOrigin",
+            "generatedPaths",
+            "dependencyOrVersionOnly",
+            "largeSweep50Plus"
+          ],
+          "properties": {
+            "botOrAgentOrigin": { "type": "boolean" },
+            "generatedPaths": { "type": "boolean" },
+            "dependencyOrVersionOnly": { "type": "boolean" },
+            "largeSweep50Plus": { "type": "boolean" }
+          }
+        },
+        "policies": {
+          "type": "object",
+          "required": ["production", "ungated"],
+          "properties": {
+            "production": { "$ref": "#/$defs/PrPolicyEvaluation" },
+            "ungated": { "$ref": "#/$defs/PrPolicyEvaluation" }
+          }
+        }
+      }
+    },
+    "BaselineAggregateSummary": {
+      "type": "object",
+      "required": [
+        "baseline",
+        "proposedTargets",
+        "shortfallPrs",
+        "shortfallTargets",
+        "fileLevelFollowUp",
+        "questionLevelHitRate",
+        "sameAuthorFollowUpRate",
+        "liftVsBaseline",
+        "bootstrapLiftCi"
+      ],
+      "properties": {
+        "baseline": { "enum": ["popular", "popular-near", "recent"] },
+        "proposedTargets": { "type": "integer", "minimum": 0 },
+        "shortfallPrs": { "type": "integer", "minimum": 0 },
+        "shortfallTargets": { "type": "integer", "minimum": 0 },
+        "fileLevelFollowUp": { "$ref": "#/$defs/ProportionMetric" },
+        "questionLevelHitRate": { "$ref": "#/$defs/ProportionMetric" },
+        "sameAuthorFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
+        "liftVsBaseline": { "type": ["number", "null"] },
+        "bootstrapLiftCi": { "$ref": "#/$defs/BootstrapInterval" }
+      }
+    },
+    "KindBreakdownRow": {
+      "type": "object",
+      "required": [
+        "kind",
+        "questions",
+        "scoredQuestions",
+        "questionFollowUpRate",
+        "scoredTargets",
+        "fileFollowUpPrecision",
+        "sameAuthorFollowUpRate"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "broken-import",
+            "forgotten-companion",
+            "family-drift",
+            "untested-change",
+            "wide-surface"
+          ]
+        },
+        "questions": { "type": "integer", "minimum": 0 },
+        "scoredQuestions": { "type": "integer", "minimum": 0 },
+        "questionFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
+        "scoredTargets": { "type": "integer", "minimum": 0 },
+        "fileFollowUpPrecision": { "$ref": "#/$defs/ProportionMetric" },
+        "sameAuthorFollowUpRate": { "$ref": "#/$defs/ProportionMetric" }
+      }
+    },
+    "IntervalBucketBreakdownRow": {
+      "type": "object",
+      "required": ["bucket", "targets", "scoredTargets", "fileFollowUpPrecision", "sameAuthorFollowUpRate"],
+      "properties": {
+        "bucket": { "enum": ["0-0.3", "0.3-0.5", "0.5+"] },
+        "targets": { "type": "integer", "minimum": 0 },
+        "scoredTargets": { "type": "integer", "minimum": 0 },
+        "fileFollowUpPrecision": { "$ref": "#/$defs/ProportionMetric" },
+        "sameAuthorFollowUpRate": { "$ref": "#/$defs/ProportionMetric" }
+      }
+    },
+    "ConfounderBreakdownRow": {
+      "type": "object",
+      "required": ["slice", "prsEvaluated", "scoredTargets", "fileFollowUpPrecision"],
+      "properties": {
+        "slice": {
+          "enum": [
+            "botOrAgentOrigin",
+            "generatedPaths",
+            "dependencyOrVersionOnly",
+            "largeSweep50Plus",
+            "cleanManual"
+          ]
+        },
+        "prsEvaluated": { "type": "integer", "minimum": 0 },
+        "scoredTargets": { "type": "integer", "minimum": 0 },
+        "fileFollowUpPrecision": { "$ref": "#/$defs/ProportionMetric" }
+      }
+    },
+    "ExemplarQuestion": {
+      "type": "object",
+      "required": [
+        "prId",
+        "prNumber",
+        "headSha",
+        "subject",
+        "authorNames",
+        "kind",
+        "question",
+        "targetFile",
+        "intervalLow",
+        "status",
+        "followUpCommitSha",
+        "delayHours",
+        "sameAuthor"
+      ],
+      "properties": {
+        "prId": { "type": "string" },
+        "prNumber": { "type": ["integer", "null"] },
+        "headSha": { "type": "string" },
+        "subject": { "type": "string" },
+        "authorNames": { "type": "array", "items": { "type": "string" } },
+        "kind": {
+          "enum": [
+            "broken-import",
+            "forgotten-companion",
+            "family-drift",
+            "untested-change",
+            "wide-surface"
+          ]
+        },
+        "question": { "type": "string" },
+        "targetFile": { "type": "string" },
+        "intervalLow": { "type": ["number", "null"] },
+        "status": { "enum": ["followedUp", "notFollowedUp"] },
+        "followUpCommitSha": { "type": ["string", "null"] },
+        "delayHours": { "type": ["number", "null"] },
+        "sameAuthor": { "type": ["boolean", "null"] }
+      }
+    },
+    "PolicyAggregateSummary": {
+      "type": "object",
+      "required": [
+        "policy",
+        "policyLabel",
+        "sampleStatus",
+        "coverage",
+        "outcomes",
+        "accuracyProxy",
+        "missedFollowUps",
+        "baselines",
+        "headlineBaseline",
+        "breakdowns",
+        "exemplars"
+      ],
+      "properties": {
+        "policy": { "enum": ["production", "ungated"] },
+        "policyLabel": { "type": "string" },
+        "sampleStatus": { "enum": ["sufficient", "insufficient-sample (< 30 scored)"] },
+        "coverage": {
+          "type": "object",
+          "required": [
+            "prsEvaluated",
+            "prsScored",
+            "prsWithQuestions",
+            "questionsTotal",
+            "questionsPerPr",
+            "salienceDistribution",
+            "fullSalienceShare"
+          ],
+          "properties": {
+            "prsEvaluated": { "type": "integer", "minimum": 0 },
+            "prsScored": { "type": "integer", "minimum": 0 },
+            "prsWithQuestions": { "$ref": "#/$defs/ProportionMetric" },
+            "questionsTotal": { "type": "integer", "minimum": 0 },
+            "questionsPerPr": { "type": ["number", "null"] },
+            "salienceDistribution": {
+              "type": "object",
+              "required": ["quiet", "brief", "full"],
+              "properties": {
+                "quiet": { "$ref": "#/$defs/ProportionMetric" },
+                "brief": { "$ref": "#/$defs/ProportionMetric" },
+                "full": { "$ref": "#/$defs/ProportionMetric" }
+              }
+            },
+            "fullSalienceShare": { "$ref": "#/$defs/ProportionMetric" }
+          }
+        },
+        "outcomes": {
+          "type": "object",
+          "required": [
+            "followedUp",
+            "notFollowedUp",
+            "censored",
+            "targetDeleted",
+            "targetRenamed",
+            "resolvedAtMerge",
+            "unscorable",
+            "sharedFollowUpOutcomes"
+          ],
+          "properties": {
+            "followedUp": { "type": "integer", "minimum": 0 },
+            "notFollowedUp": { "type": "integer", "minimum": 0 },
+            "censored": { "type": "integer", "minimum": 0 },
+            "targetDeleted": { "type": "integer", "minimum": 0 },
+            "targetRenamed": { "type": "integer", "minimum": 0 },
+            "resolvedAtMerge": { "type": "integer", "minimum": 0 },
+            "unscorable": { "type": "integer", "minimum": 0 },
+            "sharedFollowUpOutcomes": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "accuracyProxy": {
+          "type": "object",
+          "required": [
+            "fileLevelFollowUpPrecision",
+            "questionLevelFollowUpRate",
+            "precisionAt1",
+            "precisionAt3",
+            "precisionAt3ShortQueries",
+            "precisionAt3Note",
+            "sameAuthorFollowUpRate",
+            "sameAuthorShareOfFollowedUp",
+            "raSignalFollowUpRate",
+            "bootstrapFilePrecisionCi"
+          ],
+          "properties": {
+            "fileLevelFollowUpPrecision": { "$ref": "#/$defs/ProportionMetric" },
+            "questionLevelFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
+            "precisionAt1": { "$ref": "#/$defs/ProportionMetric" },
+            "precisionAt3": { "$ref": "#/$defs/ProportionMetric" },
+            "precisionAt3ShortQueries": { "type": "integer", "minimum": 0 },
+            "precisionAt3Note": { "type": "string" },
+            "sameAuthorFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
+            "sameAuthorShareOfFollowedUp": { "$ref": "#/$defs/ProportionMetric" },
+            "raSignalFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
+            "bootstrapFilePrecisionCi": { "$ref": "#/$defs/BootstrapInterval" }
+          }
+        },
+        "missedFollowUps": {
+          "type": "object",
+          "required": ["missedFilesTotal", "prsWithMissedFollowUp", "recallProxy"],
+          "properties": {
+            "missedFilesTotal": { "type": "integer", "minimum": 0 },
+            "prsWithMissedFollowUp": { "type": "integer", "minimum": 0 },
+            "recallProxy": { "$ref": "#/$defs/ProportionMetric" }
+          }
+        },
+        "baselines": {
+          "type": "object",
+          "required": ["popular", "popular-near", "recent"],
+          "properties": {
+            "popular": { "$ref": "#/$defs/BaselineAggregateSummary" },
+            "popular-near": { "$ref": "#/$defs/BaselineAggregateSummary" },
+            "recent": { "$ref": "#/$defs/BaselineAggregateSummary" }
+          }
+        },
+        "headlineBaseline": {
+          "type": "object",
+          "required": ["strongestBaseline", "lift", "bootstrapLiftCi"],
+          "properties": {
+            "strongestBaseline": { "enum": ["popular", "popular-near", "recent", null] },
+            "lift": { "type": ["number", "null"] },
+            "bootstrapLiftCi": { "$ref": "#/$defs/BootstrapInterval" }
+          }
+        },
+        "breakdowns": {
+          "type": "object",
+          "required": ["byKind", "byIntervalLow", "byConfounder"],
+          "properties": {
+            "byKind": {
+              "type": "object",
+              "required": [
+                "broken-import",
+                "forgotten-companion",
+                "family-drift",
+                "untested-change",
+                "wide-surface"
+              ],
+              "properties": {
+                "broken-import": { "$ref": "#/$defs/KindBreakdownRow" },
+                "forgotten-companion": { "$ref": "#/$defs/KindBreakdownRow" },
+                "family-drift": { "$ref": "#/$defs/KindBreakdownRow" },
+                "untested-change": { "$ref": "#/$defs/KindBreakdownRow" },
+                "wide-surface": { "$ref": "#/$defs/KindBreakdownRow" }
+              }
+            },
+            "byIntervalLow": {
+              "type": "object",
+              "required": ["0-0.3", "0.3-0.5", "0.5+"],
+              "properties": {
+                "0-0.3": { "$ref": "#/$defs/IntervalBucketBreakdownRow" },
+                "0.3-0.5": { "$ref": "#/$defs/IntervalBucketBreakdownRow" },
+                "0.5+": { "$ref": "#/$defs/IntervalBucketBreakdownRow" }
+              }
+            },
+            "byConfounder": {
+              "type": "object",
+              "required": [
+                "botOrAgentOrigin",
+                "generatedPaths",
+                "dependencyOrVersionOnly",
+                "largeSweep50Plus",
+                "cleanManual"
+              ],
+              "properties": {
+                "botOrAgentOrigin": { "$ref": "#/$defs/ConfounderBreakdownRow" },
+                "generatedPaths": { "$ref": "#/$defs/ConfounderBreakdownRow" },
+                "dependencyOrVersionOnly": { "$ref": "#/$defs/ConfounderBreakdownRow" },
+                "largeSweep50Plus": { "$ref": "#/$defs/ConfounderBreakdownRow" },
+                "cleanManual": { "$ref": "#/$defs/ConfounderBreakdownRow" }
+              }
+            }
+          }
+        },
+        "exemplars": {
+          "type": "object",
+          "required": ["bestQuestions", "worstQuestions"],
+          "properties": {
+            "bestQuestions": {
+              "type": "array",
+              "maxItems": 5,
+              "items": { "$ref": "#/$defs/ExemplarQuestion" }
+            },
+            "worstQuestions": {
+              "type": "array",
+              "maxItems": 5,
+              "items": { "$ref": "#/$defs/ExemplarQuestion" }
+            }
+          }
+        }
+      }
+    },
+    "StageTimingSummary": {
+      "type": "object",
+      "required": ["count", "totalMs", "p50Ms", "p95Ms"],
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "totalMs": { "type": "number", "minimum": 0 },
+        "p50Ms": { "type": "number", "minimum": 0 },
+        "p95Ms": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}

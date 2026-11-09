@@ -37,6 +37,11 @@ import {
   UNGATED_POLICY_LABEL,
 } from './model.ts';
 import { loadFirstParentStream, scoreBriefQuestions } from './outcomes.ts';
+import { renderBenchHtml } from './report-html.ts';
+import { renderBenchMarkdown } from './report-md.ts';
+import { sanitizePath, sanitizeText } from './sanitize.ts';
+import { assertValidBenchResults } from './validate.ts';
+import { lintPage } from '../render/comic.ts';
 
 export interface RunBenchOptions {
   cwd: string;
@@ -530,13 +535,12 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         head: unit.head,
         mergeCommitSha: unit.mergeCommitSha,
         mergedAt: unit.mergedAt,
-        subject: unit.subject,
-        authorNames: unit.authorNames,
+        subject: sanitizeText(unit.subject),
         changedFilesCount: brief.changes.totals.files,
         timestampAnomaly: unit.timestampAnomaly || meta.timestampAnomaly,
         history: meta.history,
         mergeDiffers: mergeResolution.mergeDiffers,
-        mergeDifferingFiles: mergeResolution.mergeDifferingFiles,
+        mergeDifferingFiles: mergeResolution.mergeDifferingFiles.map((f) => sanitizePath(f)),
         confounders,
         policies: {
           production: productionEval,
@@ -628,16 +632,16 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
       : null;
 
   const gates = buildGateSummary(productionAgg, settings.gateFullShare, settings.proxyMinLift);
-  const totalWallMs = Number((performance.now() - tWallStart).toFixed(2));
+  const tReportStart = performance.now();
 
-  return {
+  const model: BenchResultsModel = {
     schemaVersion: BENCH_SCHEMA_VERSION,
     scoringVersion: BENCH_SCORING_VERSION,
     generatedAt: (opts.now ?? new Date()).toISOString(),
     repo: {
-      name: repoName,
+      name: sanitizeText(repoName, 100),
       remoteUrl,
-      branch: discovery.branch,
+      branch: sanitizeText(discovery.branch, 100),
       headSha: discovery.branchHeadSha,
       shallow: discovery.shallow,
     },
@@ -659,7 +663,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
       aggregates: changeUnitsAgg,
     },
     timings: {
-      totalWallMs,
+      totalWallMs: 0,
       stages: {
         discovery: summarizeStageTiming([Number((discoveryMs + prepMs).toFixed(2))]),
         sessionOpen: summarizeStageTiming(sessionOpenSamples),
@@ -670,4 +674,57 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
       },
     },
   };
+
+  // Validate against schema/bench.schema.json before writing anything (Req 11).
+  assertValidBenchResults(model);
+  // Pre-render once to time report generation, then update timings on the model and re-validate.
+  renderBenchMarkdown(model);
+  renderBenchHtml(model);
+  const reportMs = Number((performance.now() - tReportStart).toFixed(2));
+  model.timings.stages.report = summarizeStageTiming([reportMs]);
+  model.timings.totalWallMs = Number((performance.now() - tWallStart).toFixed(2));
+
+  assertValidBenchResults(model);
+
+  if (opts.outDir) {
+    writeBenchOutputs(model, opts.outDir);
+  }
+
+  return model;
+}
+
+export interface BenchOutputPaths {
+  json: string;
+  markdown: string;
+  html: string;
+}
+
+/**
+ * Validate `model` against `schema/bench.schema.json`, generate `bench.md` and
+ * `bench.html` strictly from the validated model, verify FRAME/12 grammar via
+ * `lintPage()`, and write all three files atomically.
+ */
+export function writeBenchOutputs(model: BenchResultsModel, outDir: string): BenchOutputPaths {
+  assertValidBenchResults(model);
+  const jsonContent = JSON.stringify(model, null, 2) + '\n';
+  const mdContent = renderBenchMarkdown(model);
+  const htmlContent = renderBenchHtml(model);
+
+  const grammarProblems = lintPage(htmlContent);
+  if (grammarProblems.length > 0) {
+    throw new Error(`bench.html failed FRAME/12 grammar lint:\n  ${grammarProblems.join('\n  ')}`);
+  }
+
+  mkdirSync(outDir, { recursive: true });
+  const paths: BenchOutputPaths = {
+    json: join(outDir, 'bench.json'),
+    markdown: join(outDir, 'bench.md'),
+    html: join(outDir, 'bench.html'),
+  };
+
+  writeFileAtomic(paths.json, jsonContent);
+  writeFileAtomic(paths.markdown, mdContent);
+  writeFileAtomic(paths.html, htmlContent);
+
+  return paths;
 }
