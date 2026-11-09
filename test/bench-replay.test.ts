@@ -446,20 +446,37 @@ test('offline dependency rule: missing or old repo-archaeology library throws ex
   }
 });
 
-test('config safety: replayBrief rejects unsafe .repo-archaeology.json cache.dir / maxFilesPerCommit and never writes outside the repo', async () => {
+test('config safety: replayBrief matches the repo-archaeology config contract, rejects unsafe cache.dir / maxFilesPerCommit, and never falls back to working-tree config on symlinked or invalid historical configs', async () => {
   const repo = new TempRepo();
   const outsideCacheDir = mkdtempSync(join(tmpdir(), 'gutter-outside-cache-'));
   const targetOutsideSubdir = join(outsideCacheDir, 'pwn-cache');
   try {
-    // Unit-check validateRaRepoConfig boundaries
+    // 1. Unit-check validateRaRepoConfig against the repo-archaeology 0.4.0 contract
     assert.equal(validateRaRepoConfig(JSON.stringify({ cache: { dir: targetOutsideSubdir } })).valid, false);
     assert.equal(validateRaRepoConfig(JSON.stringify({ cache: { dir: '../escape' } })).valid, false);
     assert.equal(validateRaRepoConfig(JSON.stringify({ maxFilesPerCommit: 5000 })).valid, false);
-    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommitPrefixes: ['a'] })).valid, false);
-    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommitPrefixes: ['merge'] })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ maxFilesPerCommit: 1 })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommits: '(a+)+' })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommits: ['abc1234'] })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommitPrefixes: [''] })).valid, false);
     assert.equal(validateRaRepoConfig(JSON.stringify({ unknownKey: true })).valid, false);
     assert.equal(
-      validateRaRepoConfig(JSON.stringify({ minShared: 2, cache: { enabled: true, dir: '.ra-cache' } })).valid,
+      validateRaRepoConfig(
+        JSON.stringify({
+          minShared: 2,
+          halfLifeDays: 30,
+          skipCommits: '^chore:',
+          skipCommitPrefixes: ['release', 'bump'],
+          ignore: ['src/b.ts'],
+          origin: {
+            botPatterns: ['^custom-bot$'],
+            weights: { human: 1, agent: 0.5, bot: 0 },
+          },
+          owners: { enabled: true, max: 2, lookbackDays: 90, maxCommits: 50 },
+          style: 'rich',
+          cache: { enabled: true, dir: '.ra-cache' },
+        }),
+      ).valid,
       true,
     );
 
@@ -468,7 +485,7 @@ test('config safety: replayBrief rejects unsafe .repo-archaeology.json cache.dir
       'src/b.ts': 'export const b = 1;\n',
     }).commit('init');
 
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 8; i++) {
       repo.write({
         'src/a.ts': `export const a = ${i + 1};\n`,
         'src/b.ts': `export const b = ${i + 1};\n`,
@@ -476,7 +493,7 @@ test('config safety: replayBrief rejects unsafe .repo-archaeology.json cache.dir
     }
 
     const baseSha = resolveSha(repo.dir, 'HEAD')!;
-    // PR commits a hostile .repo-archaeology.json pointing cache.dir outside the repo
+    // 2. PR #77 commits a hostile .repo-archaeology.json pointing cache.dir outside the repo
     repo.write({
       '.repo-archaeology.json': JSON.stringify({
         cache: { enabled: true, dir: targetOutsideSubdir },
@@ -484,16 +501,79 @@ test('config safety: replayBrief rejects unsafe .repo-archaeology.json cache.dir
       }),
       'src/a.ts': `export const a = 999;\n${lines(10)}`,
     }).commit('feat: pr with hostile .repo-archaeology.json (#77)');
-    const headSha = resolveSha(repo.dir, 'HEAD')!;
+    const head77Sha = resolveSha(repo.dir, 'HEAD')!;
 
-    const res = await replayBriefWithMeta({
+    const res77 = await replayBriefWithMeta({
       cwd: repo.dir,
       base: baseSha,
-      head: headSha,
+      head: head77Sha,
     });
-    assert.equal(res.meta.raSettings, undefined, 'invalid .repo-archaeology.json must be rejected');
+    assert.equal(res77.meta.raSettings, undefined, 'invalid .repo-archaeology.json must be rejected');
     assert.equal(existsSync(targetOutsideSubdir), false, 'must never create cache dir outside repo');
     assert.equal(readdirSync(outsideCacheDir).length, 0, 'outside temp dir must remain completely empty');
+
+    // 3. PR #78 commits a valid .repo-archaeology.json with halfLifeDays + ignore: ['src/b.ts']
+    const base78Sha = head77Sha;
+    repo.write({
+      '.repo-archaeology.json': JSON.stringify({
+        halfLifeDays: 30,
+        ignore: ['src/b.ts'],
+      }),
+      'src/a.ts': `export const a = 1000;\n${lines(10)}`,
+    }).commit('feat: pr with valid halfLifeDays + ignore (#78)');
+    const head78Sha = resolveSha(repo.dir, 'HEAD')!;
+
+    const res78 = await replayBriefWithMeta({
+      cwd: repo.dir,
+      base: base78Sha,
+      head: head78Sha,
+    });
+    assert.equal(res78.meta.raSettings?.halfLifeDays, 30);
+    assert.deepEqual(res78.meta.raSettings?.ignore, ['src/b.ts']);
+    assert.equal(
+      res78.brief.forgotten.items.some((it) => it.file === 'src/b.ts'),
+      false,
+      'valid snapshot .repo-archaeology.json with halfLifeDays + ignore must exclude src/b.ts',
+    );
+
+    // 4. PR #79 commits a symlinked .repo-archaeology.json at head; later commit replaces it with {"ignore":["src/b.ts"]}
+    const base79Sha = head78Sha;
+    rmSync(join(repo.dir, '.repo-archaeology.json'), { force: true });
+    symlinkSync('src/a.ts', join(repo.dir, '.repo-archaeology.json'));
+    repo.write({
+      'src/a.ts': `export const a = 1001;\n${lines(10)}`,
+    }).commit('feat: pr with symlinked .repo-archaeology.json (#79)');
+    const head79Sha = resolveSha(repo.dir, 'HEAD')!;
+
+    const beforeFutureEdit = await replayBrief({
+      cwd: repo.dir,
+      base: base79Sha,
+      head: head79Sha,
+      noCalibration: true,
+    });
+    assert.equal(
+      beforeFutureEdit.checklist.some((q) => q.kind === 'forgotten-companion' && q.question.includes('src/b.ts')),
+      true,
+      'PR #79 with symlinked config should emit companion question for src/b.ts using deterministic defaults',
+    );
+
+    // Future commit replaces the symlink with {"ignore":["src/b.ts"]} in the working tree / HEAD
+    rmSync(join(repo.dir, '.repo-archaeology.json'), { force: true });
+    repo.write({
+      '.repo-archaeology.json': JSON.stringify({ ignore: ['src/b.ts'] }),
+    }).commit('chore: future commit ignores src/b.ts (#80)');
+
+    const afterFutureEdit = await replayBrief({
+      cwd: repo.dir,
+      base: base79Sha,
+      head: head79Sha,
+      noCalibration: true,
+    });
+    assert.deepEqual(
+      afterFutureEdit.checklist,
+      beforeFutureEdit.checklist,
+      'Replaying historical PR #79 must never fall back to the future working-tree .repo-archaeology.json',
+    );
   } finally {
     repo.cleanup();
     rmSync(outsideCacheDir, { recursive: true, force: true });

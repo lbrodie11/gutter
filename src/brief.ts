@@ -186,10 +186,18 @@ export function buildBrief(opts: BriefOptions): GutterBrief {
   const ownReader = !opts.reader;
   const reader = opts.reader ?? new WorkingTreeReader(root);
   try {
+    const checkedOut = resolveSha(root, 'HEAD');
     let gutterConfig: GutterConfig;
     if (opts.configRef) {
       const cfgSha = resolveSha(root, opts.configRef) ?? baseSha;
       const cfgReader = new GitTreeReader(root, cfgSha);
+      try {
+        gutterConfig = readSnapshotAuxConfigs(cfgReader).gutterConfig;
+      } finally {
+        cfgReader.close();
+      }
+    } else if (!opts.reader && checkedOut && headSha !== checkedOut) {
+      const cfgReader = new GitTreeReader(root, headSha);
       try {
         gutterConfig = readSnapshotAuxConfigs(cfgReader).gutterConfig;
       } finally {

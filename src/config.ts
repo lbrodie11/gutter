@@ -1,4 +1,4 @@
-import { posix, win32 } from 'node:path';
+import { isAbsolute } from 'node:path';
 import type { SourceReader } from './source/reader.ts';
 
 export interface GutterConfig {
@@ -13,53 +13,142 @@ export interface GutterConfig {
   noCalibration?: boolean;
 }
 
+export interface SafeRaOriginWeights {
+  human?: number;
+  agent?: number;
+  bot?: number;
+}
+
+export interface SafeRaOriginConfig {
+  agentAuthorPatterns?: string[];
+  botPatterns?: string[];
+  agentTrailerPatterns?: string[];
+  replaceDefaults?: boolean;
+  weights?: SafeRaOriginWeights;
+}
+
+export interface SafeRaOwnersConfig {
+  enabled?: boolean;
+  max?: number;
+  lookbackDays?: number;
+  maxCommits?: number;
+}
+
 export interface SafeRaRepoConfig {
-  schemaVersion?: 1;
   maxCommits?: number;
   maxFilesPerCommit?: number;
   minShared?: number;
   minConfidence?: number;
-  limit?: number;
+  halfLifeDays?: number;
   since?: string;
   ignore?: string[];
   useDefaultIgnores?: boolean;
-  kinds?: string[];
-  skipCommits?: string[];
+  skipCommits?: string;
   skipCommitPrefixes?: string[];
-  cache?: boolean | { enabled?: boolean; dir?: string };
+  origin?: SafeRaOriginConfig;
+  style?: 'classic' | 'rich';
+  cache?: { enabled?: boolean; dir?: string };
+  owners?: SafeRaOwnersConfig;
 }
 
 const MAX_RA_CONFIG_BYTES = 64 * 1024;
 const CONFIG_MAX_FILES_PER_COMMIT = 1000;
+const MAX_ORIGIN_PATTERN_LENGTH = 200;
+const MAX_OWNERS_PER_SUGGESTION = 5;
+const MAX_OWNERS_LOOKBACK_DAYS = 3650;
+const MAX_OWNERS_COMMITS = 1000;
 
 const KNOWN_RA_CONFIG_KEYS = new Set([
   'maxCommits',
   'maxFilesPerCommit',
   'minShared',
   'minConfidence',
-  'limit',
-  'since',
   'ignore',
   'useDefaultIgnores',
-  'kinds',
+  'since',
+  'halfLifeDays',
   'skipCommits',
   'skipCommitPrefixes',
+  'origin',
+  'style',
   'cache',
-  'schemaVersion',
+  'owners',
 ]);
 
-const VALID_RA_KINDS = new Set(['test', 'docs', 'config', 'schema', 'types', 'code']);
+/**
+ * Matches `repo-archaeology` `riskySkipPattern` (`dist/model/origin.js`):
+ * rejects regexes > 200 chars, backreferences, quantified groups containing a quantifier
+ * or alternation, or > 6 repetition quantifiers.
+ */
+export function riskyRaSkipPattern(pattern: string): string | undefined {
+  if (pattern.length > MAX_ORIGIN_PATTERN_LENGTH) {
+    return `is longer than ${MAX_ORIGIN_PATTERN_LENGTH} characters`;
+  }
+  if (/\\(?:[1-9]|k<)/.test(pattern)) {
+    return 'uses a backreference';
+  }
+  const clean = pattern.replace(/\\./g, 'xx');
+  const masked = clean.replace(/\[[^\]]*\]/g, (m) => 'x'.repeat(m.length));
+  const normalized = masked.replace(/\(\?(?:<[^>()!]+>|[a-zA-Z-]*:)/g, (m) => '(' + 'x'.repeat(m.length - 1));
+  let quantifierCount = 0;
+  const stack: number[] = [];
+  for (let i = 0; i < normalized.length; i++) {
+    const ch = normalized[i];
+    if (ch === '*' || ch === '+' || ch === '{') {
+      quantifierCount++;
+    } else if (
+      ch === '?' &&
+      normalized[i - 1] !== '(' &&
+      normalized[i - 1] !== '*' &&
+      normalized[i - 1] !== '+' &&
+      normalized[i - 1] !== '?' &&
+      normalized[i - 1] !== '}'
+    ) {
+      quantifierCount++;
+    }
+    if (ch === '(') {
+      stack.push(i);
+    } else if (ch === ')' && stack.length > 0) {
+      const start = stack.pop()!;
+      const quantified = /^(?:[*+]|\{\d*,?\d*\})/.test(normalized.slice(i + 1));
+      if (quantified && /(?:[*+?|]|\{\d*,?\d*\})/.test(normalized.slice(start + 1, i))) {
+        return 'repeats a group that contains a quantifier or alternation, which can hang on some commit messages';
+      }
+    }
+  }
+  if (quantifierCount > 6) {
+    return 'has too many repetition quantifiers (*, +, ?, {n,m})';
+  }
+  return undefined;
+}
+
+/**
+ * Matches `repo-archaeology` `compileSkipPattern` (`dist/config.js`).
+ */
+export function compileRaSkipPattern(
+  pattern?: string,
+  prefixes?: string[],
+): RegExp | undefined {
+  const parts: string[] = [];
+  if (prefixes && prefixes.length > 0) {
+    const escaped = prefixes.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    parts.push(`^(?:${escaped})(?:\\b|[:\\s_-])`);
+  }
+  if (pattern !== undefined && pattern !== '') {
+    parts.push(`(?:${pattern})`);
+  }
+  if (parts.length === 0) return undefined;
+  return new RegExp(parts.join('|'), 'i');
+}
 
 function isSafeRepoRelativeCacheDir(dir: unknown, reader?: SourceReader): dir is string {
   if (typeof dir !== 'string') return false;
-  const trimmed = dir.trim();
-  if (!trimmed || trimmed.includes('\0')) return false;
-  if (trimmed.startsWith('/') || trimmed.startsWith('\\')) return false;
-  if (/^[a-zA-Z]:/.test(trimmed)) return false;
-  if (posix.isAbsolute(trimmed) || win32.isAbsolute(trimmed)) return false;
-  const parts = trimmed.split(/[\\/]+/).filter(Boolean);
+  if (dir.trim() === '' || dir.includes('\0')) return false;
+  if (isAbsolute(dir) || /^[\\/]|^[A-Za-z]:/.test(dir) || dir.split(/[\\/]/).includes('..')) {
+    return false;
+  }
+  const parts = dir.split(/[\\/]+/).filter((p) => p !== '' && p !== '.');
   if (parts.length === 0) return false;
-  if (parts.some((p) => p === '..' || p === '.')) return false;
   if (reader?.isNonRegularEntry) {
     let cur = '';
     for (const part of parts) {
@@ -70,11 +159,101 @@ function isSafeRepoRelativeCacheDir(dir: unknown, reader?: SourceReader): dir is
   return true;
 }
 
+function validateOriginConfig(raw: unknown): SafeRaOriginConfig | undefined {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
+  const obj = raw as Record<string, unknown>;
+  const knownKeys = new Set([
+    'agentAuthorPatterns',
+    'botPatterns',
+    'agentTrailerPatterns',
+    'replaceDefaults',
+    'weights',
+  ]);
+  for (const key of Object.keys(obj)) {
+    if (!knownKeys.has(key)) return undefined;
+  }
+  const out: SafeRaOriginConfig = {};
+  const validatePatternList = (field: 'agentAuthorPatterns' | 'botPatterns' | 'agentTrailerPatterns'): boolean => {
+    const val = obj[field];
+    if (val === undefined) return true;
+    if (!Array.isArray(val)) return false;
+    const list: string[] = [];
+    for (const item of val) {
+      if (typeof item !== 'string' || item.length === 0 || item.length > MAX_ORIGIN_PATTERN_LENGTH) {
+        return false;
+      }
+      try {
+        new RegExp(item, 'i');
+      } catch {
+        return false;
+      }
+      if (riskyRaSkipPattern(item)) return false;
+      list.push(item);
+    }
+    out[field] = list;
+    return true;
+  };
+  if (!validatePatternList('agentAuthorPatterns')) return undefined;
+  if (!validatePatternList('botPatterns')) return undefined;
+  if (!validatePatternList('agentTrailerPatterns')) return undefined;
+
+  if (obj.replaceDefaults !== undefined) {
+    if (typeof obj.replaceDefaults !== 'boolean') return undefined;
+    out.replaceDefaults = obj.replaceDefaults;
+  }
+  if (obj.weights !== undefined) {
+    if (typeof obj.weights !== 'object' || obj.weights === null || Array.isArray(obj.weights)) {
+      return undefined;
+    }
+    const wObj = obj.weights as Record<string, unknown>;
+    const knownWeightKeys = new Set(['human', 'agent', 'bot']);
+    for (const key of Object.keys(wObj)) {
+      if (!knownWeightKeys.has(key)) return undefined;
+    }
+    const weights: SafeRaOriginWeights = {};
+    for (const key of ['human', 'agent', 'bot'] as const) {
+      const v = wObj[key];
+      if (v === undefined) continue;
+      if (typeof v !== 'number' || !Number.isFinite(v) || v < 0 || v > 1) return undefined;
+      weights[key] = v;
+    }
+    out.weights = weights;
+  }
+  return out;
+}
+
+function validateOwnersConfig(raw: unknown): SafeRaOwnersConfig | undefined {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
+  const obj = raw as Record<string, unknown>;
+  const knownKeys = new Set(['enabled', 'max', 'lookbackDays', 'maxCommits']);
+  for (const key of Object.keys(obj)) {
+    if (!knownKeys.has(key)) return undefined;
+  }
+  const out: SafeRaOwnersConfig = {};
+  if (obj.enabled !== undefined) {
+    if (typeof obj.enabled !== 'boolean') return undefined;
+    out.enabled = obj.enabled;
+  }
+  const boundedInt = (
+    field: 'max' | 'lookbackDays' | 'maxCommits',
+    min: number,
+    max: number,
+  ): boolean => {
+    const val = obj[field];
+    if (val === undefined) return true;
+    if (typeof val !== 'number' || !Number.isInteger(val) || val < min || val > max) return false;
+    out[field] = val;
+    return true;
+  };
+  if (!boundedInt('max', 1, MAX_OWNERS_PER_SUGGESTION)) return undefined;
+  if (!boundedInt('lookbackDays', 1, MAX_OWNERS_LOOKBACK_DAYS)) return undefined;
+  if (!boundedInt('maxCommits', 1, MAX_OWNERS_COMMITS)) return undefined;
+  return out;
+}
+
 /**
- * Validate a repository's `.repo-archaeology.json` text using the same safety bounds
- * as `repo-archaeology`'s `parseConfigText` + `parseCacheConfig(..., 'file')`.
- * Any invalid or unsafe field rejects the entire config object so untrusted repo
- * configs are never treated as trusted API flags or allowed to escape the repo.
+ * Validate a repository's `.repo-archaeology.json` text using the exact schema and
+ * safety contract of `repo-archaeology`'s `parseConfigText` + `validatePartial` (`dist/config.js`).
  */
 export function validateRaRepoConfig(
   rawText: string,
@@ -100,10 +279,6 @@ export function validateRaRepoConfig(
   }
 
   const out: SafeRaRepoConfig = {};
-  if (raw.schemaVersion !== undefined) {
-    if (raw.schemaVersion !== 1) return { valid: false, config: undefined };
-    out.schemaVersion = 1;
-  }
   if (raw.maxCommits !== undefined) {
     if (typeof raw.maxCommits !== 'number' || !Number.isInteger(raw.maxCommits) || raw.maxCommits < 1) {
       return { valid: false, config: undefined };
@@ -114,7 +289,7 @@ export function validateRaRepoConfig(
     if (
       typeof raw.maxFilesPerCommit !== 'number' ||
       !Number.isInteger(raw.maxFilesPerCommit) ||
-      raw.maxFilesPerCommit < 1 ||
+      raw.maxFilesPerCommit < 2 ||
       raw.maxFilesPerCommit > CONFIG_MAX_FILES_PER_COMMIT
     ) {
       return { valid: false, config: undefined };
@@ -130,7 +305,7 @@ export function validateRaRepoConfig(
   if (raw.minConfidence !== undefined) {
     if (
       typeof raw.minConfidence !== 'number' ||
-      !Number.isFinite(raw.minConfidence) ||
+      Number.isNaN(raw.minConfidence) ||
       raw.minConfidence < 0 ||
       raw.minConfidence > 1
     ) {
@@ -138,20 +313,50 @@ export function validateRaRepoConfig(
     }
     out.minConfidence = raw.minConfidence;
   }
-  if (raw.limit !== undefined) {
-    if (typeof raw.limit !== 'number' || !Number.isInteger(raw.limit) || raw.limit < 1) {
+  if (raw.halfLifeDays !== undefined) {
+    if (typeof raw.halfLifeDays !== 'number' || !(raw.halfLifeDays > 0)) {
       return { valid: false, config: undefined };
     }
-    out.limit = raw.limit;
+    out.halfLifeDays = raw.halfLifeDays;
   }
   if (raw.since !== undefined) {
-    if (typeof raw.since !== 'string' || !raw.since.trim() || raw.since.trim().startsWith('-')) {
+    if (typeof raw.since !== 'string' || raw.since.trim() === '') {
       return { valid: false, config: undefined };
     }
-    out.since = raw.since.trim();
+    out.since = raw.since;
+  }
+  if (raw.skipCommits !== undefined) {
+    if (typeof raw.skipCommits !== 'string') {
+      return { valid: false, config: undefined };
+    }
+    try {
+      compileRaSkipPattern(raw.skipCommits);
+    } catch {
+      return { valid: false, config: undefined };
+    }
+    if (riskyRaSkipPattern(raw.skipCommits)) {
+      return { valid: false, config: undefined };
+    }
+    out.skipCommits = raw.skipCommits;
+  }
+  if (raw.skipCommitPrefixes !== undefined) {
+    if (
+      !Array.isArray(raw.skipCommitPrefixes) ||
+      raw.skipCommitPrefixes.some((p) => typeof p !== 'string' || p.trim() === '')
+    ) {
+      return { valid: false, config: undefined };
+    }
+    out.skipCommitPrefixes = [...raw.skipCommitPrefixes];
+  }
+  if (out.skipCommits !== undefined || out.skipCommitPrefixes !== undefined) {
+    try {
+      compileRaSkipPattern(out.skipCommits, out.skipCommitPrefixes);
+    } catch {
+      return { valid: false, config: undefined };
+    }
   }
   if (raw.ignore !== undefined) {
-    if (!Array.isArray(raw.ignore) || !raw.ignore.every((x) => typeof x === 'string')) {
+    if (!Array.isArray(raw.ignore) || raw.ignore.some((x) => typeof x !== 'string')) {
       return { valid: false, config: undefined };
     }
     out.ignore = [...raw.ignore];
@@ -162,53 +367,39 @@ export function validateRaRepoConfig(
     }
     out.useDefaultIgnores = raw.useDefaultIgnores;
   }
-  if (raw.kinds !== undefined) {
-    if (!Array.isArray(raw.kinds) || !raw.kinds.every((x) => typeof x === 'string' && VALID_RA_KINDS.has(x))) {
-      return { valid: false, config: undefined };
-    }
-    out.kinds = [...raw.kinds];
+  if (raw.origin !== undefined) {
+    const validatedOrigin = validateOriginConfig(raw.origin);
+    if (!validatedOrigin) return { valid: false, config: undefined };
+    out.origin = validatedOrigin;
   }
-  if (raw.skipCommits !== undefined) {
-    if (
-      !Array.isArray(raw.skipCommits) ||
-      !raw.skipCommits.every((x) => typeof x === 'string' && /^[0-9a-fA-F]{4,64}$/.test(x.trim()))
-    ) {
-      return { valid: false, config: undefined };
+  if (raw.style !== undefined) {
+    if (raw.style === 'classic' || raw.style === 'rich') {
+      out.style = raw.style;
     }
-    out.skipCommits = raw.skipCommits.map((x) => x.trim());
-  }
-  if (raw.skipCommitPrefixes !== undefined) {
-    if (
-      !Array.isArray(raw.skipCommitPrefixes) ||
-      !raw.skipCommitPrefixes.every(
-        (x) => typeof x === 'string' && x.trim().length >= 3 && !/^(merge|revert)$/i.test(x.trim()),
-      )
-    ) {
-      return { valid: false, config: undefined };
-    }
-    out.skipCommitPrefixes = raw.skipCommitPrefixes.map((x) => x.trim());
   }
   if (raw.cache !== undefined) {
-    if (typeof raw.cache === 'boolean') {
-      out.cache = raw.cache;
-    } else if (raw.cache && typeof raw.cache === 'object' && !Array.isArray(raw.cache)) {
-      const cacheObj = raw.cache as Record<string, unknown>;
-      for (const k of Object.keys(cacheObj)) {
-        if (k !== 'enabled' && k !== 'dir') return { valid: false, config: undefined };
-      }
-      const cleanCache: { enabled?: boolean; dir?: string } = {};
-      if (cacheObj.enabled !== undefined) {
-        if (typeof cacheObj.enabled !== 'boolean') return { valid: false, config: undefined };
-        cleanCache.enabled = cacheObj.enabled;
-      }
-      if (cacheObj.dir !== undefined) {
-        if (!isSafeRepoRelativeCacheDir(cacheObj.dir, reader)) return { valid: false, config: undefined };
-        cleanCache.dir = cacheObj.dir.trim();
-      }
-      out.cache = cleanCache;
-    } else {
+    if (!raw.cache || typeof raw.cache !== 'object' || Array.isArray(raw.cache)) {
       return { valid: false, config: undefined };
     }
+    const cacheObj = raw.cache as Record<string, unknown>;
+    for (const k of Object.keys(cacheObj)) {
+      if (k !== 'enabled' && k !== 'dir') return { valid: false, config: undefined };
+    }
+    const cleanCache: { enabled?: boolean; dir?: string } = {};
+    if (cacheObj.enabled !== undefined) {
+      if (typeof cacheObj.enabled !== 'boolean') return { valid: false, config: undefined };
+      cleanCache.enabled = cacheObj.enabled;
+    }
+    if (cacheObj.dir !== undefined) {
+      if (!isSafeRepoRelativeCacheDir(cacheObj.dir, reader)) return { valid: false, config: undefined };
+      cleanCache.dir = cacheObj.dir;
+    }
+    out.cache = cleanCache;
+  }
+  if (raw.owners !== undefined) {
+    const validatedOwners = validateOwnersConfig(raw.owners);
+    if (!validatedOwners) return { valid: false, config: undefined };
+    out.owners = validatedOwners;
   }
 
   return { valid: true, config: out };
@@ -284,6 +475,11 @@ export function readGutterConfig(reader: SourceReader): GutterConfig {
 export interface SnapshotAuxConfigs {
   gutterConfig: GutterConfig;
   raSettings: SafeRaRepoConfig | undefined;
+  /**
+   * True iff `.repo-archaeology.json` exists as a regular file in the snapshot
+   * and passes `validateRaRepoConfig`. False when absent, a symlink, > 64 KB, or invalid,
+   * so `openRepository({ useConfigFile: raConfigValid })` never falls back to the working tree.
+   */
   raConfigValid: boolean;
   hasVerdicts: boolean;
   codeownersPath: string | undefined;
@@ -298,12 +494,14 @@ const CODEOWNERS_CANDIDATES = ['.github/CODEOWNERS', 'CODEOWNERS', 'docs/CODEOWN
 export function readSnapshotAuxConfigs(reader: SourceReader): SnapshotAuxConfigs {
   const gutterConfig = readGutterConfig(reader);
   let raSettings: SafeRaRepoConfig | undefined;
-  let raConfigValid = true;
-  const raRaw = reader.readText('.repo-archaeology.json');
-  if (raRaw !== undefined) {
-    const validated = validateRaRepoConfig(raRaw, reader);
-    raConfigValid = validated.valid;
-    raSettings = validated.config;
+  let raConfigValid = false;
+  if (!reader.isNonRegularEntry?.('.repo-archaeology.json')) {
+    const raRaw = reader.readText('.repo-archaeology.json', MAX_RA_CONFIG_BYTES + 1);
+    if (raRaw !== undefined) {
+      const validated = validateRaRepoConfig(raRaw, reader);
+      raConfigValid = validated.valid;
+      raSettings = validated.config;
+    }
   }
   const hasVerdicts = reader.readText('.repo-archaeology.verdicts.json') !== undefined;
   let codeownersPath: string | undefined;
