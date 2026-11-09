@@ -445,7 +445,7 @@ export function discoverChangeUnits(opts: DiscoverOptions): DiscoveryResult {
   }
   const eligibleChangeUnits = allEligibleChangeUnits.slice(0, prsLimit);
 
-  const newestCommitSec = firstParentCommits[0]?.committerTimeSec ?? 0;
+  const newestCommitSec = firstParentCommits.reduce((max, c) => Math.max(max, c.committerTimeSec), 0);
 
   return {
     root,

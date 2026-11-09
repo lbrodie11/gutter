@@ -178,9 +178,7 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
 
   for (let idx = ctx.startIndexAfterMerge; idx < ctx.chronologicalStream.length; idx++) {
     const commit = ctx.chronologicalStream[idx]!;
-    if (commit.committerTimeSec > windowEndSec) {
-      break;
-    }
+    const inWindow = commit.committerTimeSec > ctx.unit.mergedAtSec && commit.committerTimeSec <= windowEndSec;
 
     let matchedModification = false;
     let matchedDeletion = false;
@@ -188,14 +186,17 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
     for (const ch of commit.changes) {
       if (ch.status === 'R' && ch.oldPath === currentPath) {
         currentPath = ch.path;
-        targetRenamed = true;
-        renamedTo = ch.path;
-        if (!renameCommit) renameCommit = commit;
-        if ((ch.similarity ?? 100) < 100) {
-          matchedModification = true;
+        if (inWindow) {
+          targetRenamed = true;
+          renamedTo = ch.path;
+          if (!renameCommit) renameCommit = commit;
+          if ((ch.similarity ?? 100) < 100) {
+            matchedModification = true;
+          }
         }
         continue;
       }
+      if (!inWindow) continue;
       if (ch.path === currentPath) {
         if (ch.status === 'D') {
           matchedDeletion = true;
@@ -209,6 +210,8 @@ export function scoreSingleTarget(targetFile: string, ctx: ScoreTargetContext): 
         matchedModification = true;
       }
     }
+
+    if (!inWindow) continue;
 
     const delayHours = Number(Math.max(0, (commit.committerTimeSec - ctx.unit.mergedAtSec) / 3600).toFixed(2));
     const sameAuthor = isSameAuthorAsPr(ctx.unit.authors, commit.authorKey, commit.authorEmail);
@@ -385,13 +388,17 @@ export function markSharedFollowUpCommits(
 
   let sharedOutcomesCount = 0;
   for (const { questions } of questionsByPr) {
+    const countedFilesInPr = new Set<string>();
     for (const q of questions) {
       for (const t of q.targets) {
         if (t.status === 'followedUp' && t.commitSha) {
           const count = prsByCommit.get(t.commitSha)?.size ?? 0;
           if (count > 1) {
             t.sharedWithOtherPrs = true;
-            sharedOutcomesCount++;
+            if (!countedFilesInPr.has(t.targetFile)) {
+              countedFilesInPr.add(t.targetFile);
+              sharedOutcomesCount++;
+            }
           }
         }
       }

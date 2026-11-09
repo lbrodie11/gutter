@@ -5,6 +5,8 @@ import { appendFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { replayBrief } from '../src/brief.ts';
+import { computePolicyAggregates } from '../src/bench/metrics.ts';
+import type { BenchPrRecord } from '../src/bench/model.ts';
 import { runBench } from '../src/bench/runner.ts';
 import { git, resolveSha } from '../src/git.ts';
 import { lines, TempRepo } from './helpers.ts';
@@ -497,5 +499,254 @@ test('cache equivalence and resumability: cache on vs off produces identical res
     rmSync(outCacheOn, { recursive: true, force: true });
     rmSync(outCacheOff, { recursive: true, force: true });
     rmSync(outResume, { recursive: true, force: true });
+  }
+});
+
+test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reuse and restores checkpoint state on --resume', async () => {
+  const repo = new TempRepo();
+  const outFull = mkdtempSync(join(tmpdir(), 'gutter-cal-full-'));
+  const outResume = mkdtempSync(join(tmpdir(), 'gutter-cal-resume-'));
+  try {
+    repo.write({
+      'src/a.ts': 'export const a = 0;\n',
+      'src/b.ts': 'export const b = 0;\n',
+      'src/n1.ts': 'export const n1 = 0;\n',
+      'src/n2.ts': 'export const n2 = 0;\n',
+    });
+    commitWithMeta(repo, 'init', { dateIso: '2026-01-01T00:00:00Z' });
+
+    for (let i = 1; i <= 8; i++) {
+      repo.write({
+        'src/a.ts': `export const a = ${i};\n`,
+        'src/b.ts': `export const b = ${i};\n`,
+      });
+      commitWithMeta(repo, `feat: pair ${i}`, { dateIso: `2026-01-0${i + 1}T00:00:00Z` });
+    }
+
+    // Branch `long-lived-pr` off this early commit (`earlyBase`), where history is small (calibration = unavailable)
+    const earlyBase = resolveSha(repo.dir, 'HEAD')!;
+    repo.branch('long-lived-pr');
+    repo.write({ 'src/a.ts': 'export const a = 500;\n' });
+    commitWithMeta(repo, 'feat: long-lived branch edits a', { dateIso: '2026-01-10T00:00:00Z' });
+
+    // Back on main, advance history with enough noise commits that calibration becomes 'measured' with precision 0 (< 0.25)
+    repo.git('checkout', '-q', 'main');
+    const fastImportLines: string[] = [];
+    let ts = Math.floor(Date.parse('2026-01-11T00:00:00Z') / 1000);
+    const parentSha = resolveSha(repo.dir, 'HEAD')!;
+    let firstFromWritten = false;
+    const emitCommit = (msg: string, files: Record<string, string>) => {
+      ts += 1800;
+      fastImportLines.push('commit refs/heads/main');
+      fastImportLines.push(`author Alice <alice@example.com> ${ts} +0000`);
+      fastImportLines.push(`committer Alice <alice@example.com> ${ts} +0000`);
+      const msgBuf = Buffer.from(msg, 'utf8');
+      fastImportLines.push(`data ${msgBuf.length}`);
+      fastImportLines.push(msg);
+      if (!firstFromWritten) {
+        fastImportLines.push(`from ${parentSha}`);
+        firstFromWritten = true;
+      }
+      for (const [p, content] of Object.entries(files)) {
+        const b = Buffer.from(content, 'utf8');
+        fastImportLines.push(`M 100644 inline ${p}`);
+        fastImportLines.push(`data ${b.length}`);
+        fastImportLines.push(content);
+      }
+      fastImportLines.push('');
+    };
+    for (let i = 1; i <= 155; i++) {
+      emitCommit(`feat: filler ${i}`, { 'src/filler.ts': `export const f = ${i};\n` });
+    }
+    for (let i = 1; i <= 35; i++) {
+      emitCommit(`feat: noise pair ${i}`, {
+        'src/n1.ts': `export const n1 = ${i};\n`,
+        'src/n2.ts': `export const n2 = ${i};\n`,
+      });
+    }
+    for (let i = 1; i <= 55; i++) {
+      emitCommit(`chore: lone n1 ${i}`, { 'src/n1.ts': `export const n1 = ${1000 + i};\n` });
+    }
+    childProcess.execFileSync('git', ['fast-import', '--quiet'], {
+      cwd: repo.dir,
+      input: fastImportLines.join('\n') + '\n',
+    });
+    git(repo.dir, ['reset', '--hard', 'refs/heads/main']);
+
+    // Now on main (where calibration is 'measured' < 0.25), create squash PR #30 at 2026-02-01
+    repo.write({ 'src/a.ts': 'export const a = 30;\n' });
+    commitWithMeta(repo, 'feat: pr 30 on late main (#30)', { dateIso: '2026-02-01T00:00:00Z' });
+    const pr30Base = resolveSha(repo.dir, 'HEAD~1')!;
+
+    // Next, merge `long-lived-pr` as PR #31 at 2026-02-02!
+    // Notice: PR #31 is merged AFTER PR #30, so in chronological evaluation order PR #30 is idx=0 and PR #31 is idx=1.
+    // However, PR #31's base is `earlyBase`, and `pr30Base` is NOT an ancestor of `earlyBase`!
+    repo.git('merge', '--no-ff', '-X', 'ours', '--no-commit', 'long-lived-pr');
+    repo.write({ 'src/a.ts': 'export const a = 501;\n' });
+    commitWithMeta(repo, 'Merge pull request #31 from org/long-lived-pr', { dateIso: '2026-02-02T00:00:00Z' });
+
+    // And one more PR #32 on main at 2026-02-03 (whose base IS a descendant of pr30Base)
+    repo.write({ 'src/a.ts': 'export const a = 32;\n' });
+    commitWithMeta(repo, 'feat: pr 32 on late main (#32)', { dateIso: '2026-02-03T00:00:00Z' });
+
+    const fixedNow = new Date('2026-11-08T12:00:00Z');
+    const fullBench = await runBench({
+      cwd: repo.dir,
+      outDir: outFull,
+      prs: 3,
+      calibrationEvery: 3,
+      now: fixedNow,
+    });
+
+    const pr30 = fullBench.prs.find((p) => p.prNumber === 30)!;
+    const pr31 = fullBench.prs.find((p) => p.prNumber === 31)!;
+    const pr32 = fullBench.prs.find((p) => p.prNumber === 32)!;
+    assert.equal(pr30.policies.production.calibrationCheckpointBaseSha, pr30Base);
+    assert.equal(pr30.policies.production.calibrationStatus, 'measured');
+    // PR #31 (`base = earlyBase`) must NOT reuse `pr30Base` (which is not its ancestor); it must compute at `earlyBase`!
+    assert.equal(pr31.policies.production.calibrationCheckpointBaseSha, earlyBase);
+    assert.equal(pr31.policies.production.calibrationStatus, 'unavailable');
+    assert.ok(
+      pr31.policies.production.questions.some((q) => q.kind === 'forgotten-companion'),
+      'PR #31 on older base must not be suppressed by non-ancestor PR #30 calibration',
+    );
+    // PR #32's base has both `earlyBase` and `pr30Base` as ancestors; within cadence 3 it reuses the newest ancestor checkpoint
+    assert.ok(pr32);
+
+    // Test --resume with calibrationEvery: 3 after crashing at 1 PR
+    await assert.rejects(
+      () =>
+        runBench({
+          cwd: repo.dir,
+          outDir: outResume,
+          prs: 3,
+          calibrationEvery: 3,
+          failAfterPrs: 1,
+          now: fixedNow,
+        }),
+      /Simulated crash after 1 PR/,
+    );
+    const resumedBench = await runBench({
+      cwd: repo.dir,
+      outDir: outResume,
+      prs: 3,
+      calibrationEvery: 3,
+      resume: true,
+      now: fixedNow,
+    });
+    assert.deepEqual(resumedBench.prs, fullBench.prs);
+    assert.deepEqual(resumedBench.aggregates, fullBench.aggregates);
+  } finally {
+    repo.cleanup();
+    rmSync(outFull, { recursive: true, force: true });
+    rmSync(outResume, { recursive: true, force: true });
+  }
+});
+
+test('non-monotonic timestamps, snapshot .repo-archaeology.json baseline filters, and within-PR file-level deduplication', async () => {
+  const repo = new TempRepo();
+  try {
+    repo.write({
+      '.repo-archaeology.json': JSON.stringify({ ignore: ['src/ignored-busy.ts'] }),
+      'src/a.ts': 'export const a = 0;\n',
+      'src/b.ts': 'export const b = 0;\n',
+      'src/ignored-busy.ts': 'export const busy = 0;\n',
+      'src/allowed-busy.ts': 'export const allowed = 0;\n',
+    });
+    commitWithMeta(repo, 'init', { dateIso: '2026-01-01T00:00:00Z' });
+
+    for (let i = 1; i <= 8; i++) {
+      repo.write({
+        'src/a.ts': `export const a = ${i};\n`,
+        'src/b.ts': `export const b = ${i};\n`,
+      });
+      commitWithMeta(repo, `feat: co-change ${i}`, { dateIso: `2026-01-0${i + 1}T00:00:00Z` });
+    }
+    // Make ignored-busy.ts (13 changes) and allowed-busy.ts (11 changes) both busier than src/b.ts (9 changes)
+    for (let i = 1; i <= 10; i++) {
+      repo.write({
+        'src/ignored-busy.ts': `export const busy = ${i};\n`,
+        'src/allowed-busy.ts': `export const allowed = ${i};\n`,
+      });
+      commitWithMeta(repo, `chore: touch busy files ${i}`, { dateIso: `2026-01-${String(9 + i).padStart(2, '0')}T00:00:00Z` });
+    }
+    for (let i = 1; i <= 2; i++) {
+      repo.write({ 'src/ignored-busy.ts': `export const busy = ${100 + i};\n` });
+      commitWithMeta(repo, `chore: touch ignored-busy extra ${i}`, { dateIso: `2026-01-19T0${i}:00:00Z` });
+    }
+
+    // PR #40 at 2026-01-20T12:00:00Z touches src/a.ts (suggesting src/b.ts)
+    repo.write({ 'src/a.ts': 'export const a = 40;\n' });
+    commitWithMeta(repo, 'feat: pr 40 edits a (#40)', { dateIso: '2026-01-20T12:00:00Z' });
+
+    // 1. Post-merge commit with a backdated timestamp BEFORE PR #40's mergedAt (2026-01-19 < 2026-01-20T12:00:00Z)
+    // touching src/b.ts — must NOT count as followedUp!
+    repo.write({ 'src/b.ts': 'export const b = 400;\n' });
+    commitWithMeta(repo, 'chore: backdated edit to b', { dateIso: '2026-01-19T00:00:00Z' });
+
+    // 2. Post-merge commit with an out-of-window future timestamp (2026-02-10 > 2026-01-27T12:00:00Z) on an unrelated file
+    repo.write({ 'README.md': '# Future timestamp commit\n' });
+    commitWithMeta(repo, 'docs: future dated commit', { dateIso: '2026-02-10T00:00:00Z' });
+
+    // 3. Subsequent commit on first-parent stream whose timestamp IS inside PR #40's 7-day window (2026-01-22T12:00:00Z)
+    // modifying src/b.ts — must be detected despite the earlier out-of-window commit!
+    repo.write({ 'src/b.ts': 'export const b = 401;\n' });
+    commitWithMeta(repo, 'fix: in-window follow-up to b (#41)', { dateIso: '2026-01-22T12:00:00Z' });
+    const inWindowCommitSha = resolveSha(repo.dir, 'HEAD')!;
+
+    const bench = await runBench({ cwd: repo.dir, windowDays: 7 });
+    const pr40 = bench.prs.find((p) => p.prNumber === 40)!;
+    assert.ok(pr40);
+
+    const compQ = pr40.policies.production.questions.find((q) => q.id === 'check:companion:src/b.ts')!;
+    assert.ok(compQ);
+    assert.equal(compQ.status, 'followedUp');
+    assert.equal(compQ.targets[0]!.commitSha, inWindowCommitSha, 'must skip backdated commit and not break early on out-of-window commit');
+    assert.equal(compQ.targets[0]!.delayHours, 48);
+
+    // Check that snapshot .repo-archaeology.json `ignore: ["src/ignored-busy.ts"]` excluded src/ignored-busy.ts from all baselines!
+    for (const bName of ['popular', 'popular-near', 'recent'] as const) {
+      const bTargets = pr40.policies.production.baselines[bName].targets.map((t) => t.targetFile);
+      assert.ok(
+        !bTargets.includes('src/ignored-busy.ts'),
+        `Baseline ${bName} must honor snapshot .repo-archaeology.json ignore rules, got: ${bTargets.join(', ')}`,
+      );
+      assert.ok(bTargets.includes('src/allowed-busy.ts'));
+    }
+
+    // Verify within-PR file-level deduplication when two questions on the same PR target the same file `src/b.ts`
+    const syntheticPr: BenchPrRecord = structuredClone(pr40);
+    const baseTarget = structuredClone(compQ.targets[0]!);
+    syntheticPr.policies.production.questions = [
+      {
+        id: 'check:companion:src/b.ts',
+        kind: 'forgotten-companion',
+        question: 'Companion question for src/b.ts',
+        intervalLow: 0.45,
+        intervalLowBucket: '0.3-0.5',
+        status: 'followedUp',
+        targets: [baseTarget],
+        sameAuthorHit: true,
+        matchesRaFollowUpHit: true,
+      },
+      {
+        id: 'check:family:family:0',
+        kind: 'family-drift',
+        question: 'Family drift question also targeting src/b.ts',
+        intervalLow: null,
+        intervalLowBucket: 'none',
+        status: 'followedUp',
+        targets: [structuredClone(baseTarget)],
+        sameAuthorHit: true,
+        matchesRaFollowUpHit: true,
+      },
+    ];
+    const dedupAgg = computePolicyAggregates([syntheticPr], 'production');
+    assert.equal(dedupAgg.accuracyProxy.questionLevelFollowUpRate.denominator, 2, 'question-level rate counts both questions');
+    assert.equal(dedupAgg.accuracyProxy.fileLevelFollowUpPrecision.denominator, 1, 'file-level precision deduplicates src/b.ts within the PR');
+    assert.equal(dedupAgg.accuracyProxy.fileLevelFollowUpPrecision.numerator, 1);
+    assert.equal(dedupAgg.outcomes.followedUp, 1);
+  } finally {
+    repo.cleanup();
   }
 });

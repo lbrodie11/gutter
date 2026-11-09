@@ -1,3 +1,4 @@
+import type { SafeRaRepoConfig } from '../config.ts';
 import { isAutomatedAuthor } from '../evidence/automation.ts';
 import { moduleOf } from '../evidence/changes.ts';
 import { git } from '../git.ts';
@@ -14,12 +15,80 @@ const IGNORED_EXT_RE = /\.(?:min\.js|min\.css|map|snap|tsbuildinfo)$|\.generated
 const AGENT_SUBJECT_OR_AUTHOR_RE =
   /\b(?:copilot|claude|cursor|devin|codex|dependabot|renovate|github-actions| release-please|semantic-release|greenkeeper|snyk-bot)\b/i;
 
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Minimal glob matcher matching `repo-archaeology`'s `PathMatcher` (`*`, `?`, `**`, `{a,b}`).
+ */
+export function globToRegExp(pattern: string): RegExp {
+  let g = pattern.trim().replace(/\\/g, '/');
+  if (g.startsWith('./')) g = g.slice(2);
+  if (g.startsWith('/')) g = g.slice(1);
+  else if (!g.slice(0, -1).includes('/')) g = `**/${g}`;
+  if (g.endsWith('/')) g += '**';
+
+  let re = '';
+  for (let i = 0; i < g.length; i++) {
+    const c = g[i]!;
+    if (c === '*') {
+      if (g[i + 1] === '*') {
+        const atSegmentStart = i === 0 || g[i - 1] === '/';
+        const followedBySlash = g[i + 2] === '/';
+        if (atSegmentStart && followedBySlash) {
+          re += '(?:.*/)?';
+          i += 2;
+        } else {
+          re += '.*';
+          i += 1;
+        }
+      } else {
+        re += '[^/]*';
+      }
+    } else if (c === '?') {
+      re += '[^/]';
+    } else if (c === '{') {
+      const end = g.indexOf('}', i);
+      if (end > i) {
+        re += `(?:${g
+          .slice(i + 1, end)
+          .split(',')
+          .map(escapeRegExp)
+          .join('|')})`;
+        i = end;
+      } else {
+        re += '\\{';
+      }
+    } else {
+      re += escapeRegExp(c);
+    }
+  }
+  return new RegExp(`^${re}$`);
+}
+
 export function isEligibleCandidateFile(path: string): boolean {
   if (!path) return false;
   if (IGNORED_PATH_RE.test(path)) return false;
   if (IGNORED_DIR_RE.test(path)) return false;
   if (IGNORED_EXT_RE.test(path)) return false;
   return true;
+}
+
+export function buildCandidateFilter(raSettings?: SafeRaRepoConfig): (path: string) => boolean {
+  const useDefaultIgnores = raSettings?.useDefaultIgnores !== false;
+  const customPatterns = (raSettings?.ignore ?? []).filter((p) => p.trim() !== '').map(globToRegExp);
+  if (useDefaultIgnores && customPatterns.length === 0) {
+    return isEligibleCandidateFile;
+  }
+  return (path: string): boolean => {
+    if (!path) return false;
+    if (useDefaultIgnores && !isEligibleCandidateFile(path)) return false;
+    for (const rx of customPatterns) {
+      if (rx.test(path)) return false;
+    }
+    return true;
+  };
 }
 
 export function isGeneratedOrLockfilePath(path: string): boolean {
@@ -55,7 +124,9 @@ export interface HistoryGraphCommit {
   sha: string;
   parents: string[];
   committerTimeSec: number;
+  subject: string;
   isAutomated: boolean;
+  rawFiles: string[];
   eligibleFiles: string[];
   isMergeOrSweep: boolean;
 }
@@ -98,20 +169,26 @@ export function loadHistoryGraph(root: string, branchHeadSha: string): HistoryGr
 
     const parents = parentsStr.trim().split(/\s+/).filter(Boolean);
     const ct = Number(ctStr);
-    const files = body
-      .split('\0')
-      .map((f) => f.trim())
-      .filter((f) => f.length > 0 && isEligibleCandidateFile(f));
-
-    const uniqueFiles = [...new Set(files)];
+    const rawUniqueFiles = [
+      ...new Set(
+        body
+          .split('\0')
+          .map((f) => f.trim())
+          .filter((f) => f.length > 0),
+      ),
+    ];
+    const uniqueFiles = rawUniqueFiles.filter((f) => isEligibleCandidateFile(f));
     const isAutomated = isBotOrAgentStrings([aName, aEmail], [subject]);
-    const isMergeOrSweep = parents.length > 1 || uniqueFiles.length === 0 || uniqueFiles.length > MAX_FILES_PER_HISTORY_COMMIT;
+    const isMergeOrSweep =
+      parents.length > 1 || uniqueFiles.length === 0 || uniqueFiles.length > MAX_FILES_PER_HISTORY_COMMIT;
 
     commitsBySha.set(cleanSha, {
       sha: cleanSha,
       parents,
       committerTimeSec: ct,
+      subject: subject.trim(),
       isAutomated,
+      rawFiles: rawUniqueFiles,
       eligibleFiles: uniqueFiles,
       isMergeOrSweep,
     });
@@ -121,13 +198,78 @@ export function loadHistoryGraph(root: string, branchHeadSha: string): HistoryGr
 }
 
 /**
- * Return usable non-merge, non-bot, non-sweep commits in the exact git ancestry of `baseSha`.
+ * Check whether `ancestorSha` is in the git ancestry of `descendantSha`
+ * (using the in-memory `HistoryGraph` parent pointers when available).
+ */
+export function isAncestorInHistoryGraph(
+  root: string,
+  graph: HistoryGraph,
+  ancestorSha: string,
+  descendantSha: string,
+): boolean {
+  if (ancestorSha === descendantSha) return true;
+  if (!graph.commitsBySha.has(ancestorSha) || !graph.commitsBySha.has(descendantSha)) {
+    try {
+      git(root, ['merge-base', '--is-ancestor', ancestorSha, descendantSha]);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  const visited = new Set<string>([descendantSha]);
+  const queue: string[] = [descendantSha];
+  let idx = 0;
+  while (idx < queue.length) {
+    const sha = queue[idx++]!;
+    if (sha === ancestorSha) return true;
+    const node = graph.commitsBySha.get(sha);
+    if (!node) continue;
+    for (const p of node.parents) {
+      if (p === ancestorSha) return true;
+      if (!visited.has(p)) {
+        visited.add(p);
+        queue.push(p);
+      }
+    }
+  }
+  return false;
+}
+
+function hasCustomRaHistorySettings(raSettings?: SafeRaRepoConfig): boolean {
+  if (!raSettings) return false;
+  return (
+    raSettings.maxCommits !== undefined ||
+    raSettings.maxFilesPerCommit !== undefined ||
+    raSettings.since !== undefined ||
+    (raSettings.ignore !== undefined && raSettings.ignore.length > 0) ||
+    raSettings.useDefaultIgnores === false ||
+    (raSettings.skipCommits !== undefined && raSettings.skipCommits.length > 0) ||
+    (raSettings.skipCommitPrefixes !== undefined && raSettings.skipCommitPrefixes.length > 0)
+  );
+}
+
+/**
+ * Return usable non-merge, non-bot, non-sweep commits in the exact git ancestry of `baseSha`,
+ * applying any snapshot `.repo-archaeology.json` filter settings (`ignore`, `useDefaultIgnores`,
+ * `maxCommits`, `maxFilesPerCommit`, `since`, `skipCommits`, `skipCommitPrefixes`).
  */
 export function getUsableAncestorsAtBase(
   graph: HistoryGraph,
   baseSha: string,
-  maxCommits: number = MAX_HISTORY_COMMITS,
+  maxCommits?: number,
+  raSettings?: SafeRaRepoConfig,
 ): HistoryGraphCommit[] {
+  const effectiveMaxCommits = maxCommits ?? raSettings?.maxCommits ?? MAX_HISTORY_COMMITS;
+  const custom = hasCustomRaHistorySettings(raSettings);
+  const candidateFilter = custom ? buildCandidateFilter(raSettings) : isEligibleCandidateFile;
+  const maxFilesPerCommit = raSettings?.maxFilesPerCommit ?? MAX_FILES_PER_HISTORY_COMMIT;
+  const skipCommitsLower = (raSettings?.skipCommits ?? []).map((s) => s.toLowerCase());
+  const skipPrefixesLower = (raSettings?.skipCommitPrefixes ?? []).map((s) => s.toLowerCase());
+  const sinceSec =
+    raSettings?.since && Number.isFinite(Date.parse(raSettings.since))
+      ? Math.floor(Date.parse(raSettings.since) / 1000)
+      : undefined;
+
   const visited = new Set<string>();
   const queue: string[] = [baseSha];
   visited.add(baseSha);
@@ -140,8 +282,26 @@ export function getUsableAncestorsAtBase(
     const node = graph.commitsBySha.get(sha);
     if (!node) continue;
 
-    if (!node.isMergeOrSweep && !node.isAutomated) {
-      usable.push(node);
+    if (!custom) {
+      if (!node.isMergeOrSweep && !node.isAutomated) {
+        usable.push(node);
+      }
+    } else if (node.parents.length <= 1 && !node.isAutomated) {
+      const shaLower = node.sha.toLowerCase();
+      const subjLower = node.subject.toLowerCase();
+      const skippedBySha = skipCommitsLower.some((prefix) => shaLower.startsWith(prefix));
+      const skippedBySubject = skipPrefixesLower.some((prefix) => subjLower.startsWith(prefix));
+      const skippedBySince = sinceSec !== undefined && node.committerTimeSec < sinceSec;
+      if (!skippedBySha && !skippedBySubject && !skippedBySince) {
+        const filteredFiles = node.rawFiles.filter(candidateFilter);
+        if (filteredFiles.length > 0 && filteredFiles.length <= maxFilesPerCommit) {
+          usable.push({
+            ...node,
+            eligibleFiles: filteredFiles,
+            isMergeOrSweep: false,
+          });
+        }
+      }
     }
 
     for (const p of node.parents) {
@@ -153,7 +313,7 @@ export function getUsableAncestorsAtBase(
   }
 
   usable.sort((a, b) => b.committerTimeSec - a.committerTimeSec || a.sha.localeCompare(b.sha));
-  return usable.slice(0, maxCommits);
+  return usable.slice(0, effectiveMaxCommits);
 }
 
 export interface AsOfHistoryStats {
@@ -172,12 +332,13 @@ export function computeAsOfHistoryStats(
   graph: HistoryGraph,
   baseSha: string,
   prTouchedFiles: ReadonlySet<string>,
+  raSettings?: SafeRaRepoConfig,
 ): AsOfHistoryStats {
   const baseNode = graph.commitsBySha.get(baseSha);
   const baseTimeSec = baseNode?.committerTimeSec ?? 0;
   const recentCutoffSec = baseTimeSec - 30 * 86400;
 
-  const ancestors = getUsableAncestorsAtBase(graph, baseSha);
+  const ancestors = getUsableAncestorsAtBase(graph, baseSha, raSettings?.maxCommits, raSettings);
   const changeCountByFile = new Map<string, number>();
   const lastChangedSecByFile = new Map<string, number>();
   const recent30dCountByFile = new Map<string, number>();
@@ -227,8 +388,9 @@ export function computeAndScoreBaselines(opts: {
   prChangedFiles: ReadonlySet<string>;
   stats: AsOfHistoryStats;
   scoreCtx: Omit<ScoreTargetContext, 'brokenImportPath'>;
+  raSettings?: SafeRaRepoConfig;
 }): Record<BaselineName, BaselineProposalSet> {
-  const { k, headFiles, prChangedFiles, stats, scoreCtx } = opts;
+  const { k, headFiles, prChangedFiles, stats, scoreCtx, raSettings } = opts;
 
   if (k <= 0) {
     const empty = (baseline: BaselineName): BaselineProposalSet => ({
@@ -246,14 +408,17 @@ export function computeAndScoreBaselines(opts: {
     };
   }
 
-  // Eligible candidate pool at `head`: exists at `head`, not touched by PR, passes filters.
-  const candidates = headFiles.filter((f) => !prChangedFiles.has(f) && isEligibleCandidateFile(f));
+  const isEligible = buildCandidateFilter(raSettings);
+  // Eligible candidate pool at `head`: exists at `head`, not touched by PR, passes snapshot RA filters.
+  const candidates = headFiles.filter((f) => !prChangedFiles.has(f) && isEligible(f));
 
   const touchedTopDirs = new Set<string>();
   const touchedModules = new Set<string>();
   for (const f of prChangedFiles) {
-    touchedTopDirs.add(topDirectoryKey(f));
-    touchedModules.add(moduleOf(f));
+    if (isEligible(f)) {
+      touchedTopDirs.add(topDirectoryKey(f));
+      touchedModules.add(moduleOf(f));
+    }
   }
 
   const compareByPopularity = (a: string, b: string): number => {
@@ -323,8 +488,10 @@ export function computeMissedFollowUpFiles(opts: {
   stats: AsOfHistoryStats;
   scoreCtx: Omit<ScoreTargetContext, 'brokenImportPath'>;
   minShared?: number;
+  raSettings?: SafeRaRepoConfig;
 }): string[] {
-  const minShared = opts.minShared ?? 3;
+  const minShared = opts.minShared ?? opts.raSettings?.minShared ?? 3;
+  const isEligible = buildCandidateFilter(opts.raSettings);
   const headFileSet = new Set(opts.headFiles);
   const missed: string[] = [];
 
@@ -333,7 +500,7 @@ export function computeMissedFollowUpFiles(opts: {
     if (opts.prChangedFiles.has(candidate)) continue;
     if (opts.askedTargetFiles.has(candidate)) continue;
     if (!headFileSet.has(candidate)) continue;
-    if (!isEligibleCandidateFile(candidate)) continue;
+    if (!isEligible(candidate)) continue;
 
     const outcome = scoreSingleTarget(candidate, opts.scoreCtx);
     if (outcome.status === 'followedUp') {

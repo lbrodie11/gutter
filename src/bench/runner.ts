@@ -12,6 +12,7 @@ import {
   computeAndScoreBaselines,
   computeAsOfHistoryStats,
   computeMissedFollowUpFiles,
+  isAncestorInHistoryGraph,
   isBotOrAgentStrings,
   isDependencyOrVersionPath,
   isGeneratedOrLockfilePath,
@@ -63,10 +64,17 @@ interface PartialHeaderLine {
   runIdentity: RunIdentity;
 }
 
+interface CalibrationCheckpointState {
+  unitIndex: number;
+  baseSha: string;
+  backtest: RaBacktest | null;
+}
+
 interface PartialRecordLine {
   type: 'pr';
   bucket: 'pr' | 'change-unit';
   record: BenchPrRecord;
+  calibrationCheckpoint?: CalibrationCheckpointState;
   timingsMs: {
     sessionOpen: number;
     staticAnalysis: number;
@@ -321,14 +329,16 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
     const chronologicalUnits = [...unitsNewestFirst].reverse();
     const resultsById = new Map<string, BenchPrRecord>();
 
-    let lastCheckpointBaseSha: string | undefined;
-    let lastCheckpointBacktest: RaBacktest | null | undefined;
+    const checkpoints: CalibrationCheckpointState[] = [];
     let newlyWrittenCount = 0;
 
     for (let idx = 0; idx < chronologicalUnits.length; idx++) {
       const unit = chronologicalUnits[idx]!;
       const resumed = resumedMap.get(unit.id);
       if (resumed) {
+        if (resumed.calibrationCheckpoint) {
+          checkpoints.push(resumed.calibrationCheckpoint);
+        }
         resultsById.set(unit.id, resumed.record);
         sessionOpenSamples.push(resumed.timingsMs.sessionOpen);
         staticAnalysisSamples.push(resumed.timingsMs.staticAnalysis);
@@ -338,11 +348,18 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         continue;
       }
 
-      const useCachedCalibration =
-        settings.calibrationEvery > 1 &&
-        idx % settings.calibrationEvery !== 0 &&
-        lastCheckpointBaseSha !== undefined &&
-        lastCheckpointBacktest !== undefined;
+      let chosenCheckpoint: CalibrationCheckpointState | undefined;
+      if (settings.calibrationEvery > 1 && idx % settings.calibrationEvery !== 0) {
+        for (let c = checkpoints.length - 1; c >= 0; c--) {
+          const cp = checkpoints[c]!;
+          if (idx - cp.unitIndex >= settings.calibrationEvery) continue;
+          if (isAncestorInHistoryGraph(root, historyGraph, cp.baseSha, unit.base)) {
+            chosenCheckpoint = cp;
+            break;
+          }
+        }
+      }
+      const useCachedCalibration = chosenCheckpoint !== undefined;
 
       const replayRes = await replayBriefWithMeta({
         cwd: root,
@@ -353,15 +370,20 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         prNumber: unit.prNumber ?? undefined,
         raLib: opts.raLib,
         raSettings: settings.raCacheEnabled ? undefined : { cache: { enabled: false } },
-        raBacktest: useCachedCalibration ? lastCheckpointBacktest : undefined,
+        raBacktest: chosenCheckpoint ? chosenCheckpoint.backtest : undefined,
         config: settings.configOverrides,
         now: opts.now,
       });
 
-      const calibrationCheckpointBaseSha = useCachedCalibration ? lastCheckpointBaseSha! : unit.base;
+      const calibrationCheckpointBaseSha = chosenCheckpoint ? chosenCheckpoint.baseSha : unit.base;
+      let createdCheckpoint: CalibrationCheckpointState | undefined;
       if (!useCachedCalibration) {
-        lastCheckpointBaseSha = unit.base;
-        lastCheckpointBacktest = replayRes.meta.raBacktest;
+        createdCheckpoint = {
+          unitIndex: idx,
+          baseSha: unit.base,
+          backtest: replayRes.meta.raBacktest ?? null,
+        };
+        checkpoints.push(createdCheckpoint);
       }
 
       const tScoreStart = performance.now();
@@ -395,7 +417,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
 
       const historyStats =
         meta.history === 'available'
-          ? computeAsOfHistoryStats(historyGraph, unit.base, prChangedFiles)
+          ? computeAsOfHistoryStats(historyGraph, unit.base, prChangedFiles, meta.raSettings)
           : {
               baseTimeSec: unit.mergedAtSec,
               changeCountByFile: new Map<string, number>(),
@@ -413,6 +435,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         prChangedFiles,
         stats: historyStats,
         scoreCtx,
+        raSettings: meta.raSettings,
       });
       const ungatedBaselines = computeAndScoreBaselines({
         k: ungatedScorableTargets.length,
@@ -420,6 +443,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         prChangedFiles,
         stats: historyStats,
         scoreCtx,
+        raSettings: meta.raSettings,
       });
 
       const prodMissed =
@@ -430,6 +454,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
               askedTargetFiles: allSuggestedTargetFilesOf(prodQuestions),
               stats: historyStats,
               scoreCtx,
+              raSettings: meta.raSettings,
             })
           : [];
       const ungatedMissed =
@@ -440,6 +465,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
               askedTargetFiles: allSuggestedTargetFilesOf(ungatedQuestions),
               stats: historyStats,
               scoreCtx,
+              raSettings: meta.raSettings,
             })
           : [];
 
@@ -514,6 +540,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
           type: 'pr',
           bucket,
           record,
+          ...(createdCheckpoint ? { calibrationCheckpoint: createdCheckpoint } : {}),
           timingsMs,
         };
         appendFileSync(partialPath, JSON.stringify(lineObj) + '\n', 'utf8');

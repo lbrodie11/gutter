@@ -240,11 +240,28 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
     let prHits = 0;
     let prTotal = 0;
     const prCompanionScoredTargets: TargetOutcomeRecord[] = [];
+    const seenCompanionFiles = new Set<string>();
+    const seenKindTargetFiles = new Map<ChecklistKind, Set<string>>();
+    const uniquePrTargets = new Map<
+      string,
+      {
+        target: TargetOutcomeRecord;
+        kind: ChecklistKind;
+        question: string;
+        intervalLow: number | null;
+        intervalLowBucket: '0-0.3' | '0.3-0.5' | '0.5+' | 'none';
+      }
+    >();
 
     for (const q of evalPol.questions) {
       const ks = kindStats.get(q.kind) ?? { questions: 0, qHits: 0, qDen: 0, tHits: 0, tSame: 0, tDen: 0 };
       ks.questions++;
       kindStats.set(q.kind, ks);
+      let kindSeen = seenKindTargetFiles.get(q.kind);
+      if (!kindSeen) {
+        kindSeen = new Set<string>();
+        seenKindTargetFiles.set(q.kind, kindSeen);
+      }
 
       if (q.status === 'unscorable') {
         outcomes.unscorable++;
@@ -259,67 +276,103 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
       }
 
       for (const t of q.targets) {
-        if (t.status === 'followedUp') outcomes.followedUp++;
-        else if (t.status === 'notFollowedUp') outcomes.notFollowedUp++;
-        else if (t.status === 'censored') outcomes.censored++;
-        else if (t.status === 'targetDeleted') outcomes.targetDeleted++;
-        else if (t.status === 'targetRenamed') outcomes.targetRenamed++;
-        else if (t.status === 'resolvedAtMerge') outcomes.resolvedAtMerge++;
-        else if (t.status === 'unscorable') outcomes.unscorable++;
-
-        if (q.intervalLowBucket !== 'none') {
-          bucketStats[q.intervalLowBucket].targets++;
+        if (!kindSeen.has(t.targetFile) && isScoredStatus(t.status)) {
+          kindSeen.add(t.targetFile);
+          ks.tDen++;
+          if (t.status === 'followedUp') {
+            ks.tHits++;
+            if (t.sameAuthor) {
+              ks.tSame++;
+            }
+          }
         }
 
-        if (isScoredStatus(t.status)) {
-          scoredTargetsDen++;
-          prTotal++;
-          ks.tDen++;
-          if (q.intervalLowBucket !== 'none') {
-            bucketStats[q.intervalLowBucket].den++;
-          }
-          if (q.kind === 'forgotten-companion') {
-            prCompanionScoredTargets.push(t);
-          }
-
+        if (q.kind === 'forgotten-companion' && isScoredStatus(t.status) && !seenCompanionFiles.has(t.targetFile)) {
+          seenCompanionFiles.add(t.targetFile);
+          prCompanionScoredTargets.push(t);
           if (t.status === 'followedUp') {
-            scoredTargetsNum++;
-            prHits++;
-            ks.tHits++;
-            if (q.kind === 'forgotten-companion') {
-              companionFollowedUpCount++;
-            }
-            if (q.intervalLowBucket !== 'none') {
-              bucketStats[q.intervalLowBucket].hits++;
-            }
-            if (t.sameAuthor) {
-              sameAuthorHits++;
-              ks.tSame++;
-              if (q.intervalLowBucket !== 'none') {
-                bucketStats[q.intervalLowBucket].same++;
-              }
-            }
-            if (t.matchesRaFollowUp) {
-              raSignalHits++;
-            }
+            companionFollowedUpCount++;
           }
+        }
 
-          allCandidateExemplars.push({
-            prId: pr.id,
-            prNumber: pr.prNumber,
-            headSha: pr.head,
-            subject: pr.subject,
-            authorNames: pr.authorNames,
+        const existing = uniquePrTargets.get(t.targetFile);
+        if (!existing) {
+          uniquePrTargets.set(t.targetFile, {
+            target: t,
             kind: q.kind,
             question: q.question,
-            targetFile: t.targetFile,
             intervalLow: q.intervalLow,
-            status: t.status,
-            followUpCommitSha: t.commitSha,
-            delayHours: t.delayHours,
-            sameAuthor: t.sameAuthor,
+            intervalLowBucket: q.intervalLowBucket,
           });
+        } else {
+          // If a later question on the same PR carries a Wilson interval (e.g. forgotten-companion)
+          // or upgrades status to followedUp, merge that metadata onto the unique file observation.
+          if (existing.intervalLow === null && q.intervalLow !== null) {
+            existing.intervalLow = q.intervalLow;
+            existing.intervalLowBucket = q.intervalLowBucket;
+            existing.kind = q.kind;
+            existing.question = q.question;
+          }
+          if (existing.target.status !== 'followedUp' && t.status === 'followedUp') {
+            existing.target = t;
+          }
         }
+      }
+    }
+
+    for (const entry of uniquePrTargets.values()) {
+      const t = entry.target;
+      if (t.status === 'followedUp') outcomes.followedUp++;
+      else if (t.status === 'notFollowedUp') outcomes.notFollowedUp++;
+      else if (t.status === 'censored') outcomes.censored++;
+      else if (t.status === 'targetDeleted') outcomes.targetDeleted++;
+      else if (t.status === 'targetRenamed') outcomes.targetRenamed++;
+      else if (t.status === 'resolvedAtMerge') outcomes.resolvedAtMerge++;
+      else if (t.status === 'unscorable') outcomes.unscorable++;
+
+      if (entry.intervalLowBucket !== 'none') {
+        bucketStats[entry.intervalLowBucket].targets++;
+      }
+
+      if (isScoredStatus(t.status)) {
+        scoredTargetsDen++;
+        prTotal++;
+        if (entry.intervalLowBucket !== 'none') {
+          bucketStats[entry.intervalLowBucket].den++;
+        }
+
+        if (t.status === 'followedUp') {
+          scoredTargetsNum++;
+          prHits++;
+          if (entry.intervalLowBucket !== 'none') {
+            bucketStats[entry.intervalLowBucket].hits++;
+          }
+          if (t.sameAuthor) {
+            sameAuthorHits++;
+            if (entry.intervalLowBucket !== 'none') {
+              bucketStats[entry.intervalLowBucket].same++;
+            }
+          }
+          if (t.matchesRaFollowUp) {
+            raSignalHits++;
+          }
+        }
+
+        allCandidateExemplars.push({
+          prId: pr.id,
+          prNumber: pr.prNumber,
+          headSha: pr.head,
+          subject: pr.subject,
+          authorNames: pr.authorNames,
+          kind: entry.kind,
+          question: entry.question,
+          targetFile: t.targetFile,
+          intervalLow: entry.intervalLow,
+          status: t.status,
+          followUpCommitSha: t.commitSha,
+          delayHours: t.delayHours,
+          sameAuthor: t.sameAuthor,
+        });
       }
     }
 
@@ -553,7 +606,9 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
     .slice(0, 5);
 
   const sampleStatus: PolicyAggregateSummary['sampleStatus'] =
-    scoredQuestionsDen >= SAMPLE_SIZE_FLOOR ? 'sufficient' : 'insufficient-sample (< 30 scored)';
+    prsScoredCount >= SAMPLE_SIZE_FLOOR && scoredQuestionsDen >= SAMPLE_SIZE_FLOOR
+      ? 'sufficient'
+      : 'insufficient-sample (< 30 scored)';
 
   return {
     policy,
@@ -647,8 +702,12 @@ export function buildGateSummary(
       : `Follow-up proxy ${proxyRate.toFixed(2)} [${proxyInterval.low.toFixed(2)}–${proxyInterval.high.toFixed(2)}]`;
   const liftPart =
     lift === null || !strongest ? 'lift N/A' : `lift ×${lift.toFixed(2)} vs ${strongest}`;
+  const sampleSuffix =
+    production.sampleStatus !== 'sufficient'
+      ? ` (insufficient sample: N=${production.coverage.prsScored} < ${SAMPLE_SIZE_FLOOR})`
+      : '';
 
-  const gateALine = `Question usefulness (Gate A): UNVERIFIED. ${proxyPart}, ${liftPart}. Human labels: GU-04.`;
+  const gateALine = `Question usefulness (Gate A): UNVERIFIED${sampleSuffix}. ${proxyPart}, ${liftPart}. Human labels: GU-04.`;
 
   return {
     fullSalienceShare: {
