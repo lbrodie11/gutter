@@ -71,6 +71,7 @@ export interface QuestionOutcomeRecord {
   id: string;
   kind: ChecklistKind;
   question: string;
+  authorNames: string[];
   intervalLow: number | null;
   intervalLowBucket: '0-0.3' | '0.3-0.5' | '0.5+' | 'none';
   status: TargetOutcomeStatus;
@@ -117,7 +118,6 @@ export interface BenchPrRecord {
   mergeCommitSha: string;
   mergedAt: string;
   subject: string;
-  authorNames: string[];
   changedFilesCount: number;
   timestampAnomaly: boolean;
   history: 'available' | 'unavailable';
