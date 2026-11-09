@@ -1,8 +1,8 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
 import { isBuiltin } from 'node:module';
-import { join, posix } from 'node:path';
-import { git } from '../git.ts';
+import { posix } from 'node:path';
 import type { ChangeStructure, DependentsEntry, DependentsLayer } from '../contract.ts';
+import type { SourceReader } from '../source/reader.ts';
+import { MAX_FILE_BYTES, WorkingTreeReader } from '../source/reader.ts';
 
 /**
  * Static dependents for TS/JS via relative-import scanning.
@@ -28,7 +28,6 @@ const STRING_OR_COMMENT =
   /'(?:\\[\s\S]|[^'\\\r\n])*'|"(?:\\[\s\S]|[^"\\\r\n])*"|`(?:\\[\s\S]|[^`\\])*`|(\/\*[\s\S]*?\*\/|\/\/[^\r\n]*)/g;
 const MAX_SPECIFIER_LEN = 160;
 const MAX_SAMPLE_LEN = 200;
-const MAX_FILE_BYTES = 512 * 1024;
 const MAX_FILES = 25_000;
 const MAX_UNRESOLVED_SAMPLES = 5;
 
@@ -96,18 +95,20 @@ export function isAliasSpecifier(spec: string, customPrefixes: readonly string[]
 }
 
 /** Read custom path-alias prefixes from tsconfig/jsconfig `compilerOptions.paths`, if present. */
-export function readTsconfigAliasPrefixes(root: string, trackedConfigs?: readonly string[]): string[] {
+export function readTsconfigAliasPrefixes(
+  root: string,
+  trackedConfigs?: readonly string[],
+  reader: SourceReader = new WorkingTreeReader(root),
+): string[] {
   const prefixes = new Set<string>();
   const candidates = trackedConfigs
     ? trackedConfigs.filter((f) => /(?:^|\/)(?:tsconfig(?:\.[^/]+)?|jsconfig)\.json$/.test(f))
     : ['tsconfig.json', 'tsconfig.base.json', 'jsconfig.json'];
   for (const name of candidates) {
-    const abs = join(root, name);
-    if (!existsSync(abs)) continue;
     try {
-      const st = statSync(abs);
-      if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
-      const raw = stripComments(readFileSync(abs, 'utf8'));
+      const content = reader.readText(name, MAX_FILE_BYTES);
+      if (content === undefined) continue;
+      const raw = stripComments(content);
       const pathsBlock = /"paths"\s*:\s*\{([\s\S]*?)\}/.exec(raw)?.[1];
       if (!pathsBlock) continue;
       for (const m of pathsBlock.matchAll(/^\s*"([^"]+)"\s*:/gm)) {
@@ -160,22 +161,23 @@ interface RepoPackageInfo {
 }
 
 /** Collect declared external dependencies and repo-local/workspace package names across all tracked `package.json` files. */
-function readRepoPackageInfo(root: string, trackedAll: readonly string[]): RepoPackageInfo {
+function readRepoPackageInfo(
+  trackedAll: readonly string[],
+  reader: SourceReader,
+): RepoPackageInfo {
   const declaredExternal = new Set<string>();
   const workspacePackages = new Set<string>();
   const pkgFiles = trackedAll.filter((rel) => rel === 'package.json' || rel.endsWith('/package.json'));
-  if (!pkgFiles.includes('package.json') && existsSync(join(root, 'package.json'))) {
+  if (!pkgFiles.includes('package.json') && reader.hasFile('package.json')) {
     pkgFiles.push('package.json');
   }
 
   const parsedFiles: Record<string, unknown>[] = [];
   for (const rel of pkgFiles) {
-    const abs = join(root, rel);
-    if (!existsSync(abs)) continue;
     try {
-      const st = statSync(abs);
-      if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
-      const parsed = JSON.parse(readFileSync(abs, 'utf8')) as Record<string, unknown>;
+      const content = reader.readText(rel, MAX_FILE_BYTES);
+      if (content === undefined) continue;
+      const parsed = JSON.parse(content) as Record<string, unknown>;
       parsedFiles.push(parsed);
       if (typeof parsed.name === 'string' && parsed.name.trim()) {
         workspacePackages.add(parsed.name.trim());
@@ -221,15 +223,19 @@ export function resolveRelative(fromFile: string, spec: string, known: Set<strin
   return undefined;
 }
 
-export function buildDependents(root: string, changes: ChangeStructure): DependentsLayer {
-  const trackedAll = git(root, ['ls-files', '-z']).split('\0').filter(Boolean);
+export function buildDependents(
+  root: string,
+  changes: ChangeStructure,
+  reader: SourceReader = new WorkingTreeReader(root),
+): DependentsLayer {
+  const trackedAll = reader.listFiles();
   const tracked = trackedAll.filter((p) => SCRIPT_EXT.test(p));
   const known = new Set(tracked);
   const changedPaths = new Set(changes.files.map((f) => f.path));
   const deleted = new Set(changes.files.filter((f) => f.status === 'deleted').map((f) => f.path));
   const targets = changes.files.filter((f) => SCRIPT_EXT.test(f.path));
-  const aliasPrefixes = readTsconfigAliasPrefixes(root, trackedAll);
-  const { declaredExternal, workspacePackages } = readRepoPackageInfo(root, trackedAll);
+  const aliasPrefixes = readTsconfigAliasPrefixes(root, trackedAll, reader);
+  const { declaredExternal, workspacePackages } = readRepoPackageInfo(trackedAll, reader);
 
   const importersOf = new Map<string, Set<string>>();
   for (const t of targets) importersOf.set(t.path, new Set());
@@ -245,12 +251,9 @@ export function buildDependents(root: string, changes: ChangeStructure): Depende
 
   if (importersOf.size > 0) {
     for (const file of tracked.slice(0, MAX_FILES)) {
-      const abs = join(root, file);
-      if (!existsSync(abs)) continue;
-      const st = statSync(abs);
-      if (!st.isFile() || st.size > MAX_FILE_BYTES) continue;
+      const src = reader.readText(file, MAX_FILE_BYTES);
+      if (src === undefined) continue;
       scanned++;
-      const src = readFileSync(abs, 'utf8');
       for (const spec of extractSpecifiers(src)) {
         if (spec.startsWith('.')) {
           const hit = resolveRelative(file, spec, known, deleted);

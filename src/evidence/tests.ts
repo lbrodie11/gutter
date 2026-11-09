@@ -1,6 +1,7 @@
 import { posix } from 'node:path';
-import { git } from '../git.ts';
 import type { ChangeStructure, TestLink } from '../contract.ts';
+import type { SourceReader } from '../source/reader.ts';
+import { WorkingTreeReader } from '../source/reader.ts';
 import { isTestPath } from './changes.ts';
 
 /**
@@ -44,8 +45,12 @@ export function candidateTestNames(source: string): string[] {
 
 const SOURCE_EXT = /\.([cm]?[jt]sx?|go|py)$/;
 
-export function linkTests(root: string, changes: ChangeStructure): TestLink[] {
-  const tracked = new Set(git(root, ['ls-files', '-z']).split('\0').filter(Boolean));
+export function linkTests(
+  root: string,
+  changes: ChangeStructure,
+  reader: SourceReader = new WorkingTreeReader(root),
+): TestLink[] {
+  const tracked = new Set(reader.listFiles());
   const changed = new Set(changes.files.map((f) => f.path));
   const links: TestLink[] = [];
   for (const f of changes.files) {

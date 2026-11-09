@@ -28,6 +28,37 @@ export function resolveSha(cwd: string, ref: string): string | undefined {
   return out || undefined;
 }
 
+export function resolveMergeBase(cwd: string, refA: string, refB: string): string | undefined {
+  const out = git(cwd, ['merge-base', refA, refB], { allowFail: true }).trim();
+  return out || undefined;
+}
+
+export function isShallowRepo(cwd: string): boolean {
+  const out = git(cwd, ['rev-parse', '--is-shallow-repository'], { allowFail: true }).trim();
+  return out === 'true';
+}
+
+/** Check whether `commitSha` or any of its parents has a committer timestamp earlier than its parent's. */
+export function hasTimestampAnomaly(cwd: string, commitSha: string, extraAncestorSha?: string): boolean {
+  const line = git(cwd, ['log', '-1', '--format=%ct%x1f%P', commitSha], { allowFail: true }).trim();
+  if (!line) return false;
+  const [ctRaw = '', parentsRaw = ''] = line.split('\x1f');
+  const ct = Number(ctRaw);
+  if (!Number.isFinite(ct)) return false;
+  const parents = parentsRaw.trim().split(/\s+/).filter(Boolean);
+  if (extraAncestorSha && !parents.includes(extraAncestorSha)) {
+    parents.push(extraAncestorSha);
+  }
+  for (const p of parents) {
+    const pCtRaw = git(cwd, ['log', '-1', '--format=%ct', p], { allowFail: true }).trim();
+    const pCt = Number(pCtRaw);
+    if (Number.isFinite(pCt) && ct < pCt) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /** Turn a remote URL into an https browse URL, or undefined. */
 export function browseUrlFromRemote(remote: string): string | undefined {
   const r = remote.trim();
