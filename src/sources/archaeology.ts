@@ -75,7 +75,7 @@ export interface RaRunner {
   spec?: string;
 }
 
-export const DEFAULT_RA_SPEC = '^0.3.0';
+export const DEFAULT_RA_SPEC = '^0.4.0';
 
 export interface RaCommandContext {
   env?: NodeJS.ProcessEnv;

@@ -130,10 +130,10 @@ To help reviewers calibrate trust on *their specific repository*, Gutter runs Re
 | Input | Default | Behavior |
 |---|---|---|
 | `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
-| `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.3.0`) |
+| `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.4.0`) |
 | `calibrate` | `true` | Backtest warning accuracy on this repo (~0.3s on 1,900 commits) |
 | `max-forgotten` | `3` | Maximum historical companions to display (`0` disables companion rows) |
-| `archaeology-version` | `^0.3.0` | npm version range of `repo-archaeology` to execute |
+| `archaeology-version` | `^0.4.0` | npm version range of `repo-archaeology` to execute |
 | `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
 
 Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count`, `forgotten-count`, `json-path`, `html-path`.
@@ -147,6 +147,8 @@ npx gutter-brief render .gutter/gutter.json --format html > page.html
 ```
 
 Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
+
+**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
 
 ### Option 3 · Run locally from source
 
@@ -192,7 +194,7 @@ repo-archaeology       ┘
 ```
 
 - **Privacy & data handling:** Analysis runs entirely on your local machine or your GitHub Actions runner. Gutter never transmits source code, diffs, or git history to any Gutter-operated service. When run in GitHub Actions, the Markdown comment (`post: auto|always`) and optional `gutter-brief` artifact (`upload-page: true`) are stored by GitHub in your repository's pull request and workflow run.
-- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty). When co-change history is enabled (the default), Gutter invokes [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) via `npx --yes repo-archaeology@^0.3.0` (or a pre-installed binary via `--ra-bin` / `GUTTER_RA_BIN`). Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
+- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty). When co-change history is enabled (the default), Gutter invokes [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) via `npx --yes repo-archaeology@^0.4.0` (or a pre-installed binary via `--ra-bin` / `GUTTER_RA_BIN`, or the `repo-archaeology >= 0.4.0` library API during historical replay). Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
 - **Security:** Designed for `pull_request`, **never `pull_request_target`**. All PR-derived text is escaped per output format; links are built only from `http(s)` base URLs and hex SHAs; git is invoked strictly with argument vectors. See [SECURITY.md](SECURITY.md) for the full threat model.
 
 ## Development

@@ -34,7 +34,7 @@ inputs:
   archaeology-version:
     description: 'npm version spec of repo-archaeology to run.'
     required: false
-    default: '^0.3.0'
+    default: '^0.4.0'
   working-directory:
     description: 'Directory inside GITHUB_WORKSPACE to analyze.'
     required: false

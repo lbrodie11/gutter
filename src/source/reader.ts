@@ -19,6 +19,8 @@ export interface SourceReader {
   listFiles(): readonly string[];
   /** True when `relPath` exists as a regular (non-symlink) file in this snapshot. */
   hasFile(relPath: string): boolean;
+  /** Optional check for whether `relPath` is a non-regular entry (symlink/submodule). */
+  isNonRegularEntry?(relPath: string): boolean;
   /**
    * Read a UTF-8 text file up to `maxBytes` (default 512 KiB).
    * Returns `undefined` when missing, a symlink/submodule, larger than `maxBytes`,

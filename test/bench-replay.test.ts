@@ -1,10 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import childProcess from 'node:child_process';
-import { mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { buildBrief, replayBrief, replayBriefWithMeta } from '../src/brief.ts';
+import { validateRaRepoConfig } from '../src/config.ts';
 import { analyzeMergeResolution, discoverChangeUnits } from '../src/bench/discover.ts';
 import { GitTreeReader, WorkingTreeReader } from '../src/source/reader.ts';
 import { loadRaLibrary, RaLibUnavailableError } from '../src/sources/archaeology-lib.ts';
@@ -442,5 +443,132 @@ test('offline dependency rule: missing or old repo-archaeology library throws ex
     (childProcess as unknown as { spawn: typeof origSpawn }).spawn = origSpawn;
     (childProcess as unknown as { execFileSync: typeof origExecFileSync }).execFileSync = origExecFileSync;
     rmSync(fakeModDir, { recursive: true, force: true });
+  }
+});
+
+test('config safety: replayBrief rejects unsafe .repo-archaeology.json cache.dir / maxFilesPerCommit and never writes outside the repo', async () => {
+  const repo = new TempRepo();
+  const outsideCacheDir = mkdtempSync(join(tmpdir(), 'gutter-outside-cache-'));
+  const targetOutsideSubdir = join(outsideCacheDir, 'pwn-cache');
+  try {
+    // Unit-check validateRaRepoConfig boundaries
+    assert.equal(validateRaRepoConfig(JSON.stringify({ cache: { dir: targetOutsideSubdir } })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ cache: { dir: '../escape' } })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ maxFilesPerCommit: 5000 })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommitPrefixes: ['a'] })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ skipCommitPrefixes: ['merge'] })).valid, false);
+    assert.equal(validateRaRepoConfig(JSON.stringify({ unknownKey: true })).valid, false);
+    assert.equal(
+      validateRaRepoConfig(JSON.stringify({ minShared: 2, cache: { enabled: true, dir: '.ra-cache' } })).valid,
+      true,
+    );
+
+    repo.write({
+      'src/a.ts': 'export const a = 1;\n',
+      'src/b.ts': 'export const b = 1;\n',
+    }).commit('init');
+
+    for (let i = 1; i <= 6; i++) {
+      repo.write({
+        'src/a.ts': `export const a = ${i + 1};\n`,
+        'src/b.ts': `export const b = ${i + 1};\n`,
+      }).commit(`feat: pair ${i}`);
+    }
+
+    const baseSha = resolveSha(repo.dir, 'HEAD')!;
+    // PR commits a hostile .repo-archaeology.json pointing cache.dir outside the repo
+    repo.write({
+      '.repo-archaeology.json': JSON.stringify({
+        cache: { enabled: true, dir: targetOutsideSubdir },
+        maxFilesPerCommit: 5000,
+      }),
+      'src/a.ts': `export const a = 999;\n${lines(10)}`,
+    }).commit('feat: pr with hostile .repo-archaeology.json (#77)');
+    const headSha = resolveSha(repo.dir, 'HEAD')!;
+
+    const res = await replayBriefWithMeta({
+      cwd: repo.dir,
+      base: baseSha,
+      head: headSha,
+    });
+    assert.equal(res.meta.raSettings, undefined, 'invalid .repo-archaeology.json must be rejected');
+    assert.equal(existsSync(targetOutsideSubdir), false, 'must never create cache dir outside repo');
+    assert.equal(readdirSync(outsideCacheDir).length, 0, 'outside temp dir must remain completely empty');
+  } finally {
+    repo.cleanup();
+    rmSync(outsideCacheDir, { recursive: true, force: true });
+  }
+});
+
+test('config precedence: CLI gutter brief matches replayBrief on .gutter.json and Action configRef reads base tree', async () => {
+  const repo = new TempRepo();
+  try {
+    repo.write({
+      'src/a.ts': 'export const a = 1;\n',
+      'src/b.ts': 'export const b = 1;\n',
+    }).commit('init');
+
+    for (let i = 1; i <= 8; i++) {
+      repo.write({
+        'src/a.ts': `export const a = ${i + 1};\n`,
+        'src/b.ts': `export const b = ${i + 1};\n`,
+      }).commit(`feat: co-change ${i}`);
+    }
+
+    const baseSha = resolveSha(repo.dir, 'HEAD')!;
+    repo.write({
+      '.gutter.json': JSON.stringify({ maxForgotten: 0, maxChecklist: 0 }),
+      'src/a.ts': `export const a = 100;\n${lines(15)}`,
+    }).commit('feat: edit a with .gutter.json (#88)');
+    const headSha = resolveSha(repo.dir, 'HEAD')!;
+
+    const localRaCli = join(process.cwd(), 'node_modules', 'repo-archaeology', 'dist', 'cli.js');
+    const cliPath = join(process.cwd(), 'src', 'cli.ts');
+
+    // 1. CLI `gutter brief` without --max-forgotten honors `.gutter.json` (`maxForgotten: 0, maxChecklist: 0`), matching `replayBrief`
+    const cliOut = childProcess.execFileSync(
+      process.execPath,
+      ['--experimental-strip-types', cliPath, 'brief', '--base', baseSha, '--ra-bin', localRaCli, '--print', 'json'],
+      { cwd: repo.dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    const cliBrief = JSON.parse(cliOut);
+    const replayed = await replayBrief({ cwd: repo.dir, base: baseSha, head: headSha });
+
+    assert.equal(cliBrief.forgotten.items.length, 0, 'CLI brief must honor .gutter.json maxForgotten: 0');
+    assert.equal(cliBrief.checklist.length, 0, 'CLI brief must honor .gutter.json maxChecklist: 0');
+    assert.deepEqual(cliBrief.checklist, replayed.checklist);
+    assert.deepEqual(cliBrief.forgotten.items, replayed.forgotten.items);
+
+    // 2. Explicit CLI `--max-forgotten 2` overrides `.gutter.json` (`maxForgotten: 0`)
+    const cliOverrideOut = childProcess.execFileSync(
+      process.execPath,
+      [
+        '--experimental-strip-types',
+        cliPath,
+        'brief',
+        '--base',
+        baseSha,
+        '--ra-bin',
+        localRaCli,
+        '--max-forgotten',
+        '2',
+        '--print',
+        'json',
+      ],
+      { cwd: repo.dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    const cliOverrideBrief = JSON.parse(cliOverrideOut);
+    assert.equal(cliOverrideBrief.forgotten.items.length, 1, 'Explicit --max-forgotten flag must override .gutter.json');
+
+    // 3. Action `configRef: baseSha` reads `.gutter.json` from `base`, so a PR adding `.gutter.json` cannot silence Gutter on itself
+    const actionBrief = buildBrief({
+      cwd: repo.dir,
+      base: baseSha,
+      configRef: baseSha,
+      runner: { bin: localRaCli },
+    });
+    assert.ok(actionBrief.checklist.length > 0, 'Action configRef: base must ignore PR-added .gutter.json');
+  } finally {
+    repo.cleanup();
   }
 });

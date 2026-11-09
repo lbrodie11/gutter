@@ -335,7 +335,7 @@ export function lintPage(page: string): string[] {
 
   for (const m of allStyles.matchAll(/#[0-9a-f]{3,8}\b/gi)) problems.push(`color-literal: ${m[0]}`);
   for (const m of allStyles.matchAll(/\b(rgba?|hsla?|oklch|oklab)\(/gi)) problems.push(`color-literal: ${m[0]}`);
-  if (/gradient\(/i.test(outsideTokens)) problems.push('gradient: gradients are forbidden; use screentone patterns');
+  if (/gradient\(/i.test(allStyles)) problems.push('gradient: gradients are forbidden; use screentone patterns');
   for (const m of allStyles.matchAll(/font-family:\s*([^;}]+)/g)) {
     if (!/^var\(--font-f-/.test(m[1]!.trim())) problems.push(`font-literal: ${m[1]!.trim()}`);
   }

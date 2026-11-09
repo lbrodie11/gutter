@@ -29,7 +29,7 @@ brief options
   --ra-diff <file>        use a saved \`repo-archaeology diff --json\` result
   --ra-backtest <file>    use a saved \`repo-archaeology backtest --json\` result
   --ra-bin <path>         repo-archaeology binary or dist/cli.js (or set GUTTER_RA_BIN)
-  --ra-version <spec>     npm version spec when running repo-archaeology via npx (default ^0.3.0)
+  --ra-version <spec>     npm version spec when running repo-archaeology via npx (default ^0.4.0)
   --no-history            skip co-change history entirely
   --no-calibration        skip the per-repo accuracy backtest
   --max-forgotten <n>     companions to show (default 3)
@@ -67,9 +67,9 @@ function brief(args: string[]): number {
       'ra-backtest': { type: 'string' },
       'ra-bin': { type: 'string' },
       'ra-version': { type: 'string' },
-      'no-history': { type: 'boolean', default: false },
-      'no-calibration': { type: 'boolean', default: false },
-      'max-forgotten': { type: 'string', default: '3' },
+      'no-history': { type: 'boolean' },
+      'no-calibration': { type: 'boolean' },
+      'max-forgotten': { type: 'string' },
     },
     strict: true,
   });
@@ -91,9 +91,15 @@ function brief(args: string[]): number {
       ...(values['ra-bin'] ? { bin: resolve(values['ra-bin']) } : {}),
       ...(values['ra-version'] ? { spec: values['ra-version'] } : {}),
     },
-    noHistory: values['no-history'],
-    noCalibration: values['no-calibration'],
-    maxForgotten: Number.isFinite(Number(values['max-forgotten'])) ? Math.max(0, Math.trunc(Number(values['max-forgotten']))) : 3,
+    ...(values['no-history'] !== undefined ? { noHistory: values['no-history'] } : {}),
+    ...(values['no-calibration'] !== undefined ? { noCalibration: values['no-calibration'] } : {}),
+    ...(values['max-forgotten'] !== undefined
+      ? {
+          maxForgotten: Number.isFinite(Number(values['max-forgotten']))
+            ? Math.max(0, Math.trunc(Number(values['max-forgotten'])))
+            : 3,
+        }
+      : {}),
   });
 
   const paths = writeBrief(result, resolve(values.out));

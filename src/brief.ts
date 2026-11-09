@@ -1,6 +1,6 @@
 import type { ChangeStructure, DependentsLayer, GutterBrief, TestLink } from './contract.ts';
 import { SCHEMA_VERSION } from './contract.ts';
-import type { GutterConfig } from './config.ts';
+import type { GutterConfig, SafeRaRepoConfig } from './config.ts';
 import { readSnapshotAuxConfigs } from './config.ts';
 import { browseUrlFromRemote, git, hasTimestampAnomaly, isShallowRepo, repoRoot, resolveSha } from './git.ts';
 import { headCommits, readChanges } from './evidence/changes.ts';
@@ -31,6 +31,8 @@ export interface BriefOptions {
   noCalibration?: boolean;
   maxForgotten?: number;
   config?: GutterConfig;
+  /** Optional git ref/SHA from which to read `.gutter.json` (used by GitHub Action to read from `base`). */
+  configRef?: string;
   reader?: SourceReader;
   now?: Date;
 }
@@ -62,6 +64,7 @@ export interface ReplayMeta {
   raDiff?: RaDiff;
   raBacktest?: RaBacktest | null;
   raVersion?: string;
+  raSettings?: SafeRaRepoConfig;
   stageTimingsMs: {
     sessionOpen: number;
     staticAnalysis: number;
@@ -95,6 +98,8 @@ export interface AssembleBriefInput {
   noCalibration?: boolean;
   maxForgotten?: number;
   config?: GutterConfig;
+  /** Optional git ref/SHA from which to read `.gutter.json` (used by GitHub Action to read from `base`). */
+  configRef?: string;
   reader?: SourceReader;
   now?: Date;
 }
@@ -181,7 +186,18 @@ export function buildBrief(opts: BriefOptions): GutterBrief {
   const ownReader = !opts.reader;
   const reader = opts.reader ?? new WorkingTreeReader(root);
   try {
-    const { gutterConfig } = readSnapshotAuxConfigs(reader);
+    let gutterConfig: GutterConfig;
+    if (opts.configRef) {
+      const cfgSha = resolveSha(root, opts.configRef) ?? baseSha;
+      const cfgReader = new GitTreeReader(root, cfgSha);
+      try {
+        gutterConfig = readSnapshotAuxConfigs(cfgReader).gutterConfig;
+      } finally {
+        cfgReader.close();
+      }
+    } else {
+      gutterConfig = readSnapshotAuxConfigs(reader).gutterConfig;
+    }
     const mergedConfig: GutterConfig = {
       ...gutterConfig,
       ...opts.config,
@@ -341,7 +357,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
   const reader = new GitTreeReader(root, headSha);
   try {
     const tStaticStart = performance.now();
-    const { gutterConfig, raSettings: headRaSettings } = readSnapshotAuxConfigs(reader);
+    const { gutterConfig, raSettings: headRaSettings, raConfigValid } = readSnapshotAuxConfigs(reader);
     const mergedConfig: GutterConfig = {
       ...gutterConfig,
       ...opts.config,
@@ -373,18 +389,14 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
       const raLib = await loadRaLibrary(opts.raLib);
       raVersion = raLib.version;
       const tSessionStart = performance.now();
-      const combinedSettings: Record<string, unknown> = {
-        ...(headRaSettings ?? {}),
-        ...(opts.raSettings ?? {}),
-      };
       let repo;
       try {
         repo = await raLib.openRepository({
           cwd: root,
           head: headSha,
           base: opts.base,
-          settings: combinedSettings,
-          useConfigFile: false,
+          settings: opts.raSettings ?? {},
+          useConfigFile: raConfigValid,
         });
       } catch {
         repo = await raLib.openRepository({
@@ -477,6 +489,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
         raDiff,
         raBacktest: raBacktest ?? null,
         raVersion,
+        ...(headRaSettings ? { raSettings: headRaSettings } : {}),
         stageTimingsMs: {
           sessionOpen: sessionOpenMs,
           staticAnalysis: staticAnalysisMs,
