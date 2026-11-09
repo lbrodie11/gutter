@@ -225,7 +225,7 @@ function renderExemplarList(
 /**
  * Render `bench.md` strictly from the schema-validated `BenchResultsModel`.
  */
-export function renderBenchMarkdown(model: BenchResultsModel): string {
+export function renderBenchMarkdown(model: BenchResultsModel, maxBytes: number = MAX_BENCH_MD_BYTES): string {
   assertValidBenchResults(model);
 
   const repoName = mdText(sanitizeText(model.repo.name, 100));
@@ -362,8 +362,13 @@ export function renderBenchMarkdown(model: BenchResultsModel): string {
   );
 
   let output = lines.join('\n') + '\n';
-  if (Buffer.byteLength(output, 'utf8') > MAX_BENCH_MD_BYTES) {
-    output = output.slice(0, MAX_BENCH_MD_BYTES - 64) + '\n\n_[Report truncated to size cap.]_\n';
+  if (Buffer.byteLength(output, 'utf8') > maxBytes) {
+    const suffix = '\n\n_[Report truncated to size cap.]_\n';
+    const trimmedLines = [...lines];
+    while (trimmedLines.length > 0 && Buffer.byteLength(trimmedLines.join('\n') + suffix, 'utf8') > maxBytes) {
+      trimmedLines.pop();
+    }
+    output = trimmedLines.join('\n') + suffix;
   }
   return output;
 }

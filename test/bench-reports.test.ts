@@ -114,8 +114,8 @@ test('reports & schema: bench.json conforms to schema/bench.schema.json, bench.h
     assert.deepEqual(grammarProblems, []);
 
     // 3. Verify Gate A never claims PASS and ungated is labeled "research: not product behavior"
-    assert.match(mdText, /Question usefulness \(Gate A\): UNVERIFIED\./);
-    assert.match(htmlText, /Question usefulness \(Gate A\): UNVERIFIED\./);
+    assert.match(mdText, /Question usefulness \(Gate A\): UNVERIFIED \(insufficient sample: N=\d+ < 30\)\./);
+    assert.match(htmlText, /Question usefulness \(Gate A\): UNVERIFIED \(insufficient sample: N=\d+ &lt; 30\)\./);
     assert.doesNotMatch(mdText, /Gate A.*PASS/i);
     assert.doesNotMatch(htmlText, /Gate A.*PASS/i);
     assert.match(mdText, /research: not product behavior/);
@@ -176,10 +176,10 @@ test('security: malicious paths, subjects, HTML, control/bidi chars, emails, tok
       commitAt(repo, `feat: sync ${i} (#${i})`, { dateSec: BASE_TIME + i * DAY_SEC });
     }
 
-    // PR #11 with hostile subject, bidi override (\u202E), control char (\u0007), token, email, and local path
+    // PR #11 with hostile subject, bidi override (\u202E), control char (\u0007), token, email, local path, and CSS-like text linear-gradient()
     repo.write({ 'src/a.ts': 'export const a = 11;\n' });
     const hostileSubject =
-      'feat: \u202E\u0007<script>alert("xss")</script><img src=x onerror=alert(1)> | `break` @victim leak@example.com ghp_1234567890abcdef /Users/secret/file.ts (#11)';
+      'feat: fix linear-gradient() \u202E\u0007<script>alert("xss")</script><img src=x onerror=alert(1)> | `break` @victim leak@example.com ghp_1234567890abcdef AKIA1234567890ABCDEF sk-proj-1234567890abcdefghijklmnop Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 /Users/secret/file.ts (#11)';
     commitAt(repo, hostileSubject, {
       dateSec: BASE_TIME + 11 * DAY_SEC,
       authorName: 'Mallory <mallory@example.com> \u202E<script>',
@@ -224,9 +224,28 @@ test('security: malicious paths, subjects, HTML, control/bidi chars, emails, tok
       assert.ok(!text.includes('mallory@example.com'), 'author emails must never appear in outputs');
       assert.ok(!text.includes('leak@example.com'), 'emails in subjects must be redacted');
       assert.ok(!text.includes('ghp_1234567890abcdef'), 'tokens must be redacted');
+      assert.ok(!text.includes('AKIA1234567890ABCDEF'), 'AWS access key IDs must be redacted');
+      assert.ok(!text.includes('sk-proj-1234567890abcdefghijklmnop'), 'sk- API keys must be redacted');
+      assert.ok(!text.includes('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'), 'Bearer tokens must be redacted');
       assert.ok(!text.includes('/Users/secret/file.ts'), 'absolute local paths must be redacted');
       assert.ok(!text.includes(repo.dir), 'local temp repo path must never appear in outputs');
     }
+
+    // Verify linear-gradient() in visible report text does not trigger the CSS grammar lint, whereas CSS gradient() in <style> does
+    assert.ok(htmlText.includes('linear-gradient()'), 'visible PR title text containing linear-gradient() is preserved');
+    assert.deepEqual(lintPage(htmlText), []);
+    const badCssHtml = htmlText.replace('<style>', '<style>.bad{background:linear-gradient(#000,#fff)}');
+    assert.ok(lintPage(badCssHtml).some((p) => p.startsWith('gradient:')));
+
+    // Verify consistent byte-cap truncation for Markdown and HTML without throwing or breaking lintPage()
+    const cappedMd = renderBenchMarkdown(model, 1800);
+    assert.ok(Buffer.byteLength(cappedMd, 'utf8') <= 1800, 'truncated Markdown must stay within byte cap');
+    assert.ok(cappedMd.endsWith('_[Report truncated to size cap.]_\n'));
+
+    const fullHtmlBytes = Buffer.byteLength(htmlText, 'utf8');
+    const cappedHtml = renderBenchHtml(model, fullHtmlBytes - 200);
+    assert.ok(Buffer.byteLength(cappedHtml, 'utf8') <= fullHtmlBytes - 200, 'truncated HTML must stay within byte cap');
+    assert.deepEqual(lintPage(cappedHtml), [], 'truncated HTML must still pass FRAME/12 grammar lint');
 
     // 3. Author names appear only in per-question detail (not on top-level PR records or baseline targets)
     for (const pr of model.prs) {
@@ -282,7 +301,7 @@ test('CLI: gutter bench prints the two gate check lines and exits 2 with a singl
     const stdoutLines = okOut.trim().split('\n');
     assert.equal(stdoutLines.length, 2);
     assert.match(stdoutLines[0]!, /^Full-salience share:/);
-    assert.match(stdoutLines[1]!, /^Question usefulness \(Gate A\): UNVERIFIED\./);
+    assert.match(stdoutLines[1]!, /^Question usefulness \(Gate A\): UNVERIFIED \(insufficient sample: N=\d+ < 30\)\./);
     assert.ok(existsSync(join(outDir, 'bench.json')));
     assert.ok(existsSync(join(outDir, 'bench.md')));
     assert.ok(existsSync(join(outDir, 'bench.html')));

@@ -16,9 +16,9 @@ const BIDI_CHARS_RE = /[\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/g;
 // Email addresses
 const EMAIL_RE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
 
-// Common credential tokens and URL userinfo
+// Common credential tokens, AWS access keys, API keys, Bearer tokens, and URL userinfo
 const TOKEN_RE =
-  /\b(?:gh[pousr]_[A-Za-z0-9_]{8,}|github_pat_[A-Za-z0-9_]{8,}|glpat-[A-Za-z0-9_-]{8,}|xox[baprs]-[A-Za-z0-9-]{8,}|npm_[A-Za-z0-9]{8,})\b/g;
+  /\b(?:gh[pousr]_[A-Za-z0-9_]{8,}|github_pat_[A-Za-z0-9_]{8,}|glpat-[A-Za-z0-9_-]{8,}|xox[baprs]-[A-Za-z0-9-]{8,}|npm_[A-Za-z0-9]{8,}|(?:AKIA|ASIA)[0-9A-Z]{16}|sk-(?:proj-|ant-)?[A-Za-z0-9_-]{12,}|Bearer\s+[A-Za-z0-9._~+/=-]{8,})\b/g;
 const URL_CREDENTIALS_RE = /((?:https?|git|ssh):\/\/)([^/\s@]+@)/gi;
 
 // Absolute local filesystem paths on macOS/Linux/Windows

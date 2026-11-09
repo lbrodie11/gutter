@@ -147,6 +147,10 @@ node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
    - `popular-near`: most frequently changed files sharing a top-level directory or module with a file touched by the PR.
    - `recent`: most frequently changed files in the 30 days prior to `base`.
    Headline lift is reported against the **strongest** baseline on the repository, with 95% Wilson intervals and a seeded 1,000-resample PR-clustered bootstrap.
+6. **Why same-commit backtest lift (`6.8×`) and 7-day post-merge follow-up proxy (`×0.36` vs. `recent`) differ:**
+   - **Same-commit backtest (`repo-archaeology backtest`):** Holds out files *within a single commit* and asks whether historical co-change predicts the other files modified in that same commit (`73%` hit rate, `6.8×` lift over popularity on Hono). This measures whether the files genuinely form a coupled pair when a change is complete.
+   - **Post-merge follow-up proxy (`gutter bench`):** Replays merged PRs where a companion or test was left *untouched* in the PR and observes whether that file is edited in a *separate* commit within the next 7 days (`0.23` follow-up proxy on Hono). Over a 7-day post-merge window on an active repository, central/recently-busy files (`recent`, `popular`) naturally accumulate unrelated feature edits at a high rate (`0.65` on Hono), whereas specific companion/test targets change later only when a follow-up test or fix commit lands.
+   - Because 7-day post-merge edits conflate genuine omissions with background churn on busy files, `gutter bench` always marks Roadmap Gate A as `UNVERIFIED` and defers usefulness verdicts to human review labels in **GU-04**.
 
 Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](docs/benchmark/METHOD.md).
 

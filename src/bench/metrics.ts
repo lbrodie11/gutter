@@ -248,6 +248,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
         target: TargetOutcomeRecord;
         kind: ChecklistKind;
         question: string;
+        authorNames: string[];
         intervalLow: number | null;
         intervalLowBucket: '0-0.3' | '0.3-0.5' | '0.5+' | 'none';
       }
@@ -301,6 +302,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
             target: t,
             kind: q.kind,
             question: q.question,
+            authorNames: q.authorNames,
             intervalLow: q.intervalLow,
             intervalLowBucket: q.intervalLowBucket,
           });
@@ -363,7 +365,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
           prNumber: pr.prNumber,
           headSha: pr.head,
           subject: pr.subject,
-          authorNames: pr.authorNames,
+          authorNames: entry.authorNames,
           kind: entry.kind,
           question: entry.question,
           targetFile: t.targetFile,

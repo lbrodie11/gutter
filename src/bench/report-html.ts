@@ -134,7 +134,7 @@ function renderBaselinesTableHtml(summary: PolicyAggregateSummary): string {
  * Render `bench.html` in FRAME/12's panel grammar (`C-01`..`C-06`) strictly
  * from the schema-validated `BenchResultsModel`.
  */
-export function renderBenchHtml(model: BenchResultsModel): string {
+export function renderBenchHtml(model: BenchResultsModel, maxBytes: number = MAX_BENCH_HTML_BYTES): string {
   assertValidBenchResults(model);
 
   const repoName = html(sanitizeText(model.repo.name, 100));
@@ -142,9 +142,8 @@ export function renderBenchHtml(model: BenchResultsModel): string {
   const headShort = html(short(model.repo.headSha));
   const issue = `${repoName} · ${branchName} · ${headShort} · ${html(model.generatedAt)} · schemaVersion ${model.schemaVersion}`;
 
-  let cut = 0;
   const panel = (n: number, title: string, body: string, opts: { area: string; hero?: boolean }) => {
-    const cutId = `C-${String(++cut).padStart(2, '0')}`;
+    const cutId = `C-${String(n).padStart(2, '0')}`;
     return `<section class="panel area-${opts.area}${opts.hero ? ' hero' : ''}" data-cut="${cutId}" aria-labelledby="p${n}">
   <h2 id="p${n}" class="cap${opts.hero ? ' marker' : ''}"><span class="num">${cutId}</span> ${html(title)}</h2>
   ${body}
@@ -250,20 +249,29 @@ export function renderBenchHtml(model: BenchResultsModel): string {
       return `<tr><td><code class="path">${html(st)}</code></td><td>${r.count}</td><td>${r.totalMs}</td><td>${r.p50Ms}</td><td>${r.p95Ms}</td></tr>`;
     })
     .join('\n');
-  const c06Body = `
-  <p class="stat"><b>Best Questions (followedUp)</b></p>
-  ${renderExemplarHtml(prod.exemplars.bestQuestions, model.repo.remoteUrl)}
+  const buildC06Body = (exemplarLimit: number | null): string => {
+    const bestSlice = exemplarLimit === null ? [] : prod.exemplars.bestQuestions.slice(0, exemplarLimit);
+    const worstSlice = exemplarLimit === null ? [] : prod.exemplars.worstQuestions.slice(0, exemplarLimit);
+    const exemplarSection =
+      exemplarLimit === null
+        ? `<p class="small"><em>[Exemplars omitted to stay within HTML size cap.]</em></p>`
+        : `<p class="stat"><b>Best Questions (followedUp)</b></p>
+  ${renderExemplarHtml(bestSlice, model.repo.remoteUrl)}
   <p class="stat"><b>Worst Questions (notFollowedUp)</b></p>
-  ${renderExemplarHtml(prod.exemplars.worstQuestions, model.repo.remoteUrl)}
+  ${renderExemplarHtml(worstSlice, model.repo.remoteUrl)}`;
+    return `
+  ${exemplarSection}
   <p class="stat"><b>Runtime per Stage</b> (Total wall: ${model.timings.totalWallMs} ms · windowDays: ${model.settings.windowDays} · prsLimit: ${model.settings.prsLimit} · calibrationEvery: ${model.settings.calibrationEvery})</p>
   <table class="bench-table">
     <thead><tr><th>Stage</th><th>Count</th><th>Total (ms)</th><th>p50 (ms)</th><th>p95 (ms)</th></tr></thead>
     <tbody>${stageRows}</tbody>
   </table>
   <p class="small">Methodology limits: first-parent commits approximate PRs; follow-ups are observational outcomes within ${model.settings.windowDays} day(s), not ground-truth defects; Gate A remains UNVERIFIED pending human review labels in GU-04.</p>`;
-  panels.push(panel(6, 'Exemplars, Timings & Limits', c06Body, { area: 'exemplars' }));
+  };
 
-  const out = `<!doctype html>
+  const assembleHtml = (c06Html: string): string => {
+    const allPanels = [...panels, panel(6, 'Exemplars, Timings & Limits', c06Html, { area: 'exemplars' })];
+    return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -286,7 +294,7 @@ export function renderBenchHtml(model: BenchResultsModel): string {
     <p class="issue">${issue}</p>
   </header>
   <div class="page">
-${panels.join('\n')}
+${allPanels.join('\n')}
   </div>
   <footer class="colophon">
     <p class="small">Deterministic replay benchmark: no future leakage, no AI. Gutter ${html(model.tools.gutter)} + Repo Archaeology ${html(model.tools.repoArchaeology)} · scoringVersion ${model.scoringVersion}.</p>
@@ -297,9 +305,14 @@ ${panels.join('\n')}
 </body>
 </html>
 `;
+  };
 
-  if (Buffer.byteLength(out, 'utf8') > MAX_BENCH_HTML_BYTES) {
-    throw new Error(`Rendered bench.html exceeded MAX_BENCH_HTML_BYTES (${MAX_BENCH_HTML_BYTES})`);
+  let out = assembleHtml(buildC06Body(5));
+  for (let limit = 4; limit >= 0 && Buffer.byteLength(out, 'utf8') > maxBytes; limit--) {
+    out = assembleHtml(buildC06Body(limit));
+  }
+  if (Buffer.byteLength(out, 'utf8') > maxBytes) {
+    out = assembleHtml(buildC06Body(null));
   }
   return out;
 }
