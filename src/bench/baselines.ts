@@ -1,4 +1,4 @@
-import type { SafeRaRepoConfig } from '../config.ts';
+import { compileRaSkipPattern, type SafeRaRepoConfig } from '../config.ts';
 import { isAutomatedAuthor } from '../evidence/automation.ts';
 import { moduleOf } from '../evidence/changes.ts';
 import { git } from '../git.ts';
@@ -198,6 +198,45 @@ export function loadHistoryGraph(root: string, branchHeadSha: string): HistoryGr
 }
 
 /**
+ * Return the shortest parent-hop distance from `descendantSha` back to `ancestorSha`
+ * (`0` when equal, `null` when `ancestorSha` is not in the ancestry of `descendantSha`).
+ */
+export function ancestryDistanceInHistoryGraph(
+  root: string,
+  graph: HistoryGraph,
+  ancestorSha: string,
+  descendantSha: string,
+): number | null {
+  if (ancestorSha === descendantSha) return 0;
+  if (!graph.commitsBySha.has(ancestorSha) || !graph.commitsBySha.has(descendantSha)) {
+    try {
+      git(root, ['merge-base', '--is-ancestor', ancestorSha, descendantSha]);
+      return 1;
+    } catch {
+      return null;
+    }
+  }
+  const distBySha = new Map<string, number>([[descendantSha, 0]]);
+  const queue: string[] = [descendantSha];
+  let idx = 0;
+  while (idx < queue.length) {
+    const sha = queue[idx++]!;
+    const dist = distBySha.get(sha)!;
+    if (sha === ancestorSha) return dist;
+    const node = graph.commitsBySha.get(sha);
+    if (!node) continue;
+    for (const p of node.parents) {
+      if (p === ancestorSha) return dist + 1;
+      if (!distBySha.has(p)) {
+        distBySha.set(p, dist + 1);
+        queue.push(p);
+      }
+    }
+  }
+  return null;
+}
+
+/**
  * Check whether `ancestorSha` is in the git ancestry of `descendantSha`
  * (using the in-memory `HistoryGraph` parent pointers when available).
  */
@@ -207,32 +246,7 @@ export function isAncestorInHistoryGraph(
   ancestorSha: string,
   descendantSha: string,
 ): boolean {
-  if (ancestorSha === descendantSha) return true;
-  if (!graph.commitsBySha.has(ancestorSha) || !graph.commitsBySha.has(descendantSha)) {
-    try {
-      git(root, ['merge-base', '--is-ancestor', ancestorSha, descendantSha]);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-  const visited = new Set<string>([descendantSha]);
-  const queue: string[] = [descendantSha];
-  let idx = 0;
-  while (idx < queue.length) {
-    const sha = queue[idx++]!;
-    if (sha === ancestorSha) return true;
-    const node = graph.commitsBySha.get(sha);
-    if (!node) continue;
-    for (const p of node.parents) {
-      if (p === ancestorSha) return true;
-      if (!visited.has(p)) {
-        visited.add(p);
-        queue.push(p);
-      }
-    }
-  }
-  return false;
+  return ancestryDistanceInHistoryGraph(root, graph, ancestorSha, descendantSha) !== null;
 }
 
 function hasCustomRaHistorySettings(raSettings?: SafeRaRepoConfig): boolean {
@@ -263,8 +277,12 @@ export function getUsableAncestorsAtBase(
   const custom = hasCustomRaHistorySettings(raSettings);
   const candidateFilter = custom ? buildCandidateFilter(raSettings) : isEligibleCandidateFile;
   const maxFilesPerCommit = raSettings?.maxFilesPerCommit ?? MAX_FILES_PER_HISTORY_COMMIT;
-  const skipCommitsLower = (raSettings?.skipCommits ?? []).map((s) => s.toLowerCase());
-  const skipPrefixesLower = (raSettings?.skipCommitPrefixes ?? []).map((s) => s.toLowerCase());
+  let skipFilter: RegExp | undefined;
+  try {
+    skipFilter = compileRaSkipPattern(raSettings?.skipCommits, raSettings?.skipCommitPrefixes);
+  } catch {
+    skipFilter = undefined;
+  }
   const sinceSec =
     raSettings?.since && Number.isFinite(Date.parse(raSettings.since))
       ? Math.floor(Date.parse(raSettings.since) / 1000)
@@ -287,12 +305,9 @@ export function getUsableAncestorsAtBase(
         usable.push(node);
       }
     } else if (node.parents.length <= 1 && !node.isAutomated) {
-      const shaLower = node.sha.toLowerCase();
-      const subjLower = node.subject.toLowerCase();
-      const skippedBySha = skipCommitsLower.some((prefix) => shaLower.startsWith(prefix));
-      const skippedBySubject = skipPrefixesLower.some((prefix) => subjLower.startsWith(prefix));
+      const skippedBySubject = skipFilter ? skipFilter.test(node.subject) : false;
       const skippedBySince = sinceSec !== undefined && node.committerTimeSec < sinceSec;
-      if (!skippedBySha && !skippedBySubject && !skippedBySince) {
+      if (!skippedBySubject && !skippedBySince) {
         const filteredFiles = node.rawFiles.filter(candidateFilter);
         if (filteredFiles.length > 0 && filteredFiles.length <= maxFilesPerCommit) {
           usable.push({

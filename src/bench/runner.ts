@@ -9,6 +9,7 @@ import type { RaBacktest } from '../sources/archaeology.ts';
 import { loadRaLibrary } from '../sources/archaeology-lib.ts';
 import { GUTTER_VERSION } from '../version.ts';
 import {
+  ancestryDistanceInHistoryGraph,
   computeAndScoreBaselines,
   computeAsOfHistoryStats,
   computeMissedFollowUpFiles,
@@ -350,13 +351,34 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
 
       let chosenCheckpoint: CalibrationCheckpointState | undefined;
       if (settings.calibrationEvery > 1 && idx % settings.calibrationEvery !== 0) {
-        for (let c = checkpoints.length - 1; c >= 0; c--) {
-          const cp = checkpoints[c]!;
+        const candidates: { cp: CalibrationCheckpointState; dist: number; commitSec: number }[] = [];
+        for (const cp of checkpoints) {
           if (idx - cp.unitIndex >= settings.calibrationEvery) continue;
-          if (isAncestorInHistoryGraph(root, historyGraph, cp.baseSha, unit.base)) {
-            chosenCheckpoint = cp;
-            break;
+          const dist = ancestryDistanceInHistoryGraph(root, historyGraph, cp.baseSha, unit.base);
+          if (dist !== null) {
+            const commitSec = historyGraph.commitsBySha.get(cp.baseSha)?.committerTimeSec ?? 0;
+            candidates.push({ cp, dist, commitSec });
           }
+        }
+        if (candidates.length > 0) {
+          // Prefer checkpoints whose baseSha is not a strict ancestor of any other eligible checkpoint's baseSha
+          // (i.e. the most recent applicable training base in git ancestry order), breaking ties by shortest
+          // parent-hop distance from unit.base, newer commit timestamp, and most recent unitIndex.
+          const nonDominated = candidates.filter(
+            (cand) =>
+              !candidates.some(
+                (other) =>
+                  other.cp.baseSha !== cand.cp.baseSha &&
+                  isAncestorInHistoryGraph(root, historyGraph, cand.cp.baseSha, other.cp.baseSha),
+              ),
+          );
+          const pool = nonDominated.length > 0 ? nonDominated : candidates;
+          pool.sort((a, b) => {
+            if (a.dist !== b.dist) return a.dist - b.dist;
+            if (a.commitSec !== b.commitSec) return b.commitSec - a.commitSec;
+            return b.cp.unitIndex - a.cp.unitIndex;
+          });
+          chosenCheckpoint = pool[0]!.cp;
         }
       }
       const useCachedCalibration = chosenCheckpoint !== undefined;

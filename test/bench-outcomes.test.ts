@@ -182,7 +182,7 @@ test('calibration equivalence: present-day poor measured calibration (< 0.25) ne
       cwd: repo.dir,
       input: fastImportLines.join('\n') + '\n',
     });
-    git(repo.dir, ['reset', '--hard', 'refs/heads/main']);
+    repo.git('reset', '--hard', 'refs/heads/main');
 
     // Verify that at HEAD, backtest is 'measured' with precision < 0.25 (so present-day calibration WOULD suppress co-change)
     const headBase = resolveSha(repo.dir, 'HEAD~1')!;
@@ -502,11 +502,12 @@ test('cache equivalence and resumability: cache on vs off produces identical res
   }
 });
 
-test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reuse and restores checkpoint state on --resume', async () => {
+test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reuse, selects newest ancestral base over later-merged old branch, and restores checkpoint state on --resume', async () => {
   const repo = new TempRepo();
   const outFull = mkdtempSync(join(tmpdir(), 'gutter-cal-full-'));
   const outResume = mkdtempSync(join(tmpdir(), 'gutter-cal-resume-'));
   try {
+    repo.git('config', 'core.autocrlf', 'false');
     repo.write({
       'src/a.ts': 'export const a = 0;\n',
       'src/b.ts': 'export const b = 0;\n',
@@ -523,69 +524,104 @@ test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reu
       commitWithMeta(repo, `feat: pair ${i}`, { dateIso: `2026-01-0${i + 1}T00:00:00Z` });
     }
 
-    // Branch `long-lived-pr` off this early commit (`earlyBase`), where history is small (calibration = unavailable)
-    const earlyBase = resolveSha(repo.dir, 'HEAD')!;
-    repo.branch('long-lived-pr');
-    repo.write({ 'src/a.ts': 'export const a = 500;\n' });
-    commitWithMeta(repo, 'feat: long-lived branch edits a', { dateIso: '2026-01-10T00:00:00Z' });
-
-    // Back on main, advance history with enough noise commits that calibration becomes 'measured' with precision 0 (< 0.25)
-    repo.git('checkout', '-q', 'main');
-    const fastImportLines: string[] = [];
-    let ts = Math.floor(Date.parse('2026-01-11T00:00:00Z') / 1000);
-    const parentSha = resolveSha(repo.dir, 'HEAD')!;
-    let firstFromWritten = false;
-    const emitCommit = (msg: string, files: Record<string, string>) => {
+    // Build history up to `earlyBase` where held-out 20% window is lone n1.ts edits -> measured precision 0 (< 0.25)
+    const fastImportEarly: string[] = [];
+    let ts = Math.floor(Date.parse('2026-01-10T00:00:00Z') / 1000);
+    const parentSha0 = resolveSha(repo.dir, 'HEAD')!;
+    let firstFrom0 = false;
+    const emitEarly = (msg: string, files: Record<string, string>) => {
       ts += 1800;
-      fastImportLines.push('commit refs/heads/main');
-      fastImportLines.push(`author Alice <alice@example.com> ${ts} +0000`);
-      fastImportLines.push(`committer Alice <alice@example.com> ${ts} +0000`);
+      fastImportEarly.push('commit refs/heads/main');
+      fastImportEarly.push(`author Alice <alice@example.com> ${ts} +0000`);
+      fastImportEarly.push(`committer Alice <alice@example.com> ${ts} +0000`);
       const msgBuf = Buffer.from(msg, 'utf8');
-      fastImportLines.push(`data ${msgBuf.length}`);
-      fastImportLines.push(msg);
-      if (!firstFromWritten) {
-        fastImportLines.push(`from ${parentSha}`);
-        firstFromWritten = true;
+      fastImportEarly.push(`data ${msgBuf.length}`);
+      fastImportEarly.push(msg);
+      if (!firstFrom0) {
+        fastImportEarly.push(`from ${parentSha0}`);
+        firstFrom0 = true;
       }
       for (const [p, content] of Object.entries(files)) {
         const b = Buffer.from(content, 'utf8');
-        fastImportLines.push(`M 100644 inline ${p}`);
-        fastImportLines.push(`data ${b.length}`);
-        fastImportLines.push(content);
+        fastImportEarly.push(`M 100644 inline ${p}`);
+        fastImportEarly.push(`data ${b.length}`);
+        fastImportEarly.push(content);
       }
-      fastImportLines.push('');
+      fastImportEarly.push('');
     };
     for (let i = 1; i <= 155; i++) {
-      emitCommit(`feat: filler ${i}`, { 'src/filler.ts': `export const f = ${i};\n` });
+      emitEarly(`feat: filler ${i}`, { 'src/filler.ts': `export const f = ${i};\n` });
     }
     for (let i = 1; i <= 35; i++) {
-      emitCommit(`feat: noise pair ${i}`, {
+      emitEarly(`feat: noise pair ${i}`, {
         'src/n1.ts': `export const n1 = ${i};\n`,
         'src/n2.ts': `export const n2 = ${i};\n`,
       });
     }
     for (let i = 1; i <= 55; i++) {
-      emitCommit(`chore: lone n1 ${i}`, { 'src/n1.ts': `export const n1 = ${1000 + i};\n` });
+      emitEarly(`chore: lone n1 ${i}`, { 'src/n1.ts': `export const n1 = ${1000 + i};\n` });
     }
     childProcess.execFileSync('git', ['fast-import', '--quiet'], {
       cwd: repo.dir,
-      input: fastImportLines.join('\n') + '\n',
+      input: fastImportEarly.join('\n') + '\n',
     });
-    git(repo.dir, ['reset', '--hard', 'refs/heads/main']);
+    repo.git('reset', '--hard', 'refs/heads/main');
 
-    // Now on main (where calibration is 'measured' < 0.25), create squash PR #30 at 2026-02-01
+    // Branch `long-lived-pr` off `earlyBase` (where measured precision is 0 < 0.25)
+    const earlyBase = resolveSha(repo.dir, 'HEAD')!;
+    repo.branch('long-lived-pr');
+    repo.write({ 'src/a.ts': 'export const a = 500;\n' });
+    commitWithMeta(repo, 'feat: long-lived branch edits a', { dateIso: '2026-01-20T00:00:00Z' });
+
+    // Back on main, add 70 clean co-change pairs of (src/a.ts, src/b.ts) so the held-out 20% window
+    // at `pr30Base` has measured precision = 1.0 (>= 0.25)!
+    repo.git('checkout', '-q', 'main');
+    const fastImportLate: string[] = [];
+    const parentSha1 = resolveSha(repo.dir, 'HEAD')!;
+    let firstFrom1 = false;
+    const emitLate = (msg: string, files: Record<string, string>) => {
+      ts += 1800;
+      fastImportLate.push('commit refs/heads/main');
+      fastImportLate.push(`author Alice <alice@example.com> ${ts} +0000`);
+      fastImportLate.push(`committer Alice <alice@example.com> ${ts} +0000`);
+      const msgBuf = Buffer.from(msg, 'utf8');
+      fastImportLate.push(`data ${msgBuf.length}`);
+      fastImportLate.push(msg);
+      if (!firstFrom1) {
+        fastImportLate.push(`from ${parentSha1}`);
+        firstFrom1 = true;
+      }
+      for (const [p, content] of Object.entries(files)) {
+        const b = Buffer.from(content, 'utf8');
+        fastImportLate.push(`M 100644 inline ${p}`);
+        fastImportLate.push(`data ${b.length}`);
+        fastImportLate.push(content);
+      }
+      fastImportLate.push('');
+    };
+    for (let i = 1; i <= 70; i++) {
+      emitLate(`feat: late pair ${i}`, {
+        'src/a.ts': `export const a = ${100 + i};\n`,
+        'src/b.ts': `export const b = ${100 + i};\n`,
+      });
+    }
+    childProcess.execFileSync('git', ['fast-import', '--quiet'], {
+      cwd: repo.dir,
+      input: fastImportLate.join('\n') + '\n',
+    });
+    repo.git('reset', '--hard', 'refs/heads/main');
+
+    // 1. PR #30 on late main (`pr30Base`, high precision >= 0.25) at 2026-02-01 (idx=0)
     repo.write({ 'src/a.ts': 'export const a = 30;\n' });
     commitWithMeta(repo, 'feat: pr 30 on late main (#30)', { dateIso: '2026-02-01T00:00:00Z' });
     const pr30Base = resolveSha(repo.dir, 'HEAD~1')!;
 
-    // Next, merge `long-lived-pr` as PR #31 at 2026-02-02!
-    // Notice: PR #31 is merged AFTER PR #30, so in chronological evaluation order PR #30 is idx=0 and PR #31 is idx=1.
-    // However, PR #31's base is `earlyBase`, and `pr30Base` is NOT an ancestor of `earlyBase`!
+    // 2. Merge `long-lived-pr` as PR #31 at 2026-02-02 (idx=1, `base = earlyBase`, low precision < 0.25)
     repo.git('merge', '--no-ff', '-X', 'ours', '--no-commit', 'long-lived-pr');
     repo.write({ 'src/a.ts': 'export const a = 501;\n' });
     commitWithMeta(repo, 'Merge pull request #31 from org/long-lived-pr', { dateIso: '2026-02-02T00:00:00Z' });
 
-    // And one more PR #32 on main at 2026-02-03 (whose base IS a descendant of pr30Base)
+    // 3. PR #32 on main at 2026-02-03 (idx=2; both `earlyBase` and `pr30Base` are in its ancestry)
     repo.write({ 'src/a.ts': 'export const a = 32;\n' });
     commitWithMeta(repo, 'feat: pr 32 on late main (#32)', { dateIso: '2026-02-03T00:00:00Z' });
 
@@ -601,17 +637,36 @@ test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reu
     const pr30 = fullBench.prs.find((p) => p.prNumber === 30)!;
     const pr31 = fullBench.prs.find((p) => p.prNumber === 31)!;
     const pr32 = fullBench.prs.find((p) => p.prNumber === 32)!;
+
+    // PR #30 (`idx = 0`) creates checkpoint at `pr30Base` (high precision) and emits companion question
     assert.equal(pr30.policies.production.calibrationCheckpointBaseSha, pr30Base);
     assert.equal(pr30.policies.production.calibrationStatus, 'measured');
-    // PR #31 (`base = earlyBase`) must NOT reuse `pr30Base` (which is not its ancestor); it must compute at `earlyBase`!
-    assert.equal(pr31.policies.production.calibrationCheckpointBaseSha, earlyBase);
-    assert.equal(pr31.policies.production.calibrationStatus, 'unavailable');
     assert.ok(
-      pr31.policies.production.questions.some((q) => q.kind === 'forgotten-companion'),
-      'PR #31 on older base must not be suppressed by non-ancestor PR #30 calibration',
+      pr30.policies.production.questions.some((q) => q.kind === 'forgotten-companion'),
+      'PR #30 at high-precision pr30Base must emit forgotten-companion question',
     );
-    // PR #32's base has both `earlyBase` and `pr30Base` as ancestors; within cadence 3 it reuses the newest ancestor checkpoint
-    assert.ok(pr32);
+
+    // PR #31 (`idx = 1`, `base = earlyBase`) cannot reuse `pr30Base` (not its ancestor); computes at `earlyBase` (low precision < 0.25) and suppresses companion question
+    assert.equal(pr31.policies.production.calibrationCheckpointBaseSha, earlyBase);
+    assert.equal(pr31.policies.production.calibrationStatus, 'measured');
+    assert.equal(
+      pr31.policies.production.questions.some((q) => q.kind === 'forgotten-companion'),
+      false,
+      'PR #31 at low-precision earlyBase must suppress forgotten-companion question',
+    );
+
+    // PR #32 (`idx = 2`) has both `earlyBase` and `pr30Base` in its ancestry within cadence 3.
+    // It MUST select the newest ancestral base (`pr30Base`), NOT the last-created checkpoint (`earlyBase`),
+    // and therefore emit its companion question!
+    assert.equal(
+      pr32.policies.production.calibrationCheckpointBaseSha,
+      pr30Base,
+      'PR #32 must select newest ancestral checkpoint pr30Base rather than older ancestor earlyBase',
+    );
+    assert.ok(
+      pr32.policies.production.questions.some((q) => q.kind === 'forgotten-companion'),
+      'PR #32 must emit forgotten-companion question using checkpoint pr30Base',
+    );
 
     // Test --resume with calibrationEvery: 3 after crashing at 1 PR
     await assert.rejects(
