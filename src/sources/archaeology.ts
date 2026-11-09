@@ -43,14 +43,21 @@ export interface RaFamily {
 export interface RaDiff {
   schemaVersion: 1;
   tool: { name: string; version: string };
-  meta: { commitsAnalyzed: number; warnings: string[] };
-  totalSuggestions: number;
+  meta: { commitsAnalyzed: number; warnings: string[]; shallow?: boolean };
+  totalSuggestions?: number;
   suggestions: RaSuggestion[];
-  families: RaFamily[];
+  families?: RaFamily[];
   silence?: { primaryReason: string; details?: string[] };
 }
 
-export interface RaStrategy { name: string; fired: number; precision: number; hitRate: number }
+export interface RaStrategy {
+  name: string;
+  fired: number;
+  precision: number;
+  hitRate: number;
+  followUpPrecision?: number;
+  followUpHitRate?: number;
+}
 
 export interface RaBacktest {
   schemaVersion: 1;
@@ -68,7 +75,7 @@ export interface RaRunner {
   spec?: string;
 }
 
-export const DEFAULT_RA_SPEC = '^0.3.0';
+export const DEFAULT_RA_SPEC = '^0.4.0';
 
 export interface RaCommandContext {
   env?: NodeJS.ProcessEnv;
@@ -178,7 +185,7 @@ export function toForgotten(diff: RaDiff | undefined, opts: ForgottenOptions, un
     };
   });
 
-  const families: FamilyItem[] = diff.families.map((f, i) => {
+  const families: FamilyItem[] = (diff.families ?? []).map((f, i) => {
     const members = f.members.map((m) => m.path);
     const changed = new Set(f.changedMembers ?? []);
     return {
@@ -197,7 +204,7 @@ export function toForgotten(diff: RaDiff | undefined, opts: ForgottenOptions, un
     status: insufficient ? 'insufficient-history' : 'analyzed',
     ...(items.length === 0 && reason ? { note: SILENCE_NOTES[reason] ?? reason } : {}),
     items,
-    total: diff.totalSuggestions,
+    total: diff.totalSuggestions ?? diff.suggestions.length,
     families,
     commitsAnalyzed: diff.meta.commitsAnalyzed,
     warnings: diff.meta.warnings ?? [],

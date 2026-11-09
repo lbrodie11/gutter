@@ -12,6 +12,7 @@ Gutter is designed to run safely on untrusted pull requests in CI:
    - Repository links are emitted only when built from `http(s)://` base URLs and validated hexadecimal commit SHAs
 4. **Argument-vector subprocesses.** Git and Repo Archaeology are invoked via `execFileSync` argument arrays, never shell strings.
 5. **No external telemetry.** Gutter does not transmit source code, diffs, or git history to any Gutter-operated server.
+6. **Repository configuration boundaries.** In the GitHub Action, `.gutter.json` is read from the target `base` commit tree so an untrusted pull request cannot silence checklist questions on itself. During historical replay (`replayBrief` / `gutter bench`), `.repo-archaeology.json` at `head` is validated against `repo-archaeology`'s file-config safety bounds (rejecting out-of-repo or symlinked `cache.dir`, `maxFilesPerCommit > 1000`, risky commit-skip prefixes, unknown keys, or files `> 64 KB`) and loaded as untrusted file config rather than trusted API flags.
 
 ## Supported Versions
 

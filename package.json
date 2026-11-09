@@ -39,7 +39,7 @@
     "frame12"
   ],
   "peerDependencies": {
-    "repo-archaeology": ">=0.3.0"
+    "repo-archaeology": ">=0.4.0"
   },
   "peerDependenciesMeta": {
     "repo-archaeology": {
@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "repo-archaeology": "^0.4.0",
     "typescript": "^6.0.0"
   }
 }

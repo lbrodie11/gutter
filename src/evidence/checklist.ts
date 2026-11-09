@@ -1,6 +1,7 @@
 import type {
   Calibration, ChangeStructure, ChecklistItem, DependentsLayer, ForgottenLayer, Salience, TestLink,
 } from '../contract.ts';
+import type { GutterConfig } from '../config.ts';
 import { pct } from '../stats/wilson.ts';
 
 /**
@@ -22,11 +23,12 @@ export interface ChecklistInput {
   forgotten: ForgottenLayer;
   tests: TestLink[];
   calibration: Calibration;
+  config?: GutterConfig;
 }
 
 /** Co-change questions are suppressed when this repo's measured precision is poor. */
-export function coChangeTrusted(cal: Calibration): boolean {
-  return !(cal.status === 'measured' && (cal.precision ?? 0) < MIN_CALIBRATED_PRECISION);
+export function coChangeTrusted(cal: Calibration, minCalibratedPrecision: number = MIN_CALIBRATED_PRECISION): boolean {
+  return !(cal.status === 'measured' && (cal.precision ?? 0) < minCalibratedPrecision);
 }
 
 /** Paths are wrapped in backticks; a backtick inside a path is swapped so the delimiters stay unambiguous. */
@@ -35,7 +37,13 @@ const more = (n: number) => (n > 0 ? ` (+${n} more)` : '');
 
 export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
   const items: ChecklistItem[] = [];
-  const { changes, dependents, forgotten, tests, calibration } = input;
+  const { changes, dependents, forgotten, tests, calibration, config } = input;
+  const maxChecklist = config?.maxChecklist ?? MAX_CHECKLIST;
+  const maxCompanionQuestions = config?.maxCompanionQuestions ?? MAX_COMPANION_QUESTIONS;
+  const minIntervalLow = config?.minIntervalLow ?? MIN_INTERVAL_LOW;
+  const minCalibratedPrecision = config?.minCalibratedPrecision ?? MIN_CALIBRATED_PRECISION;
+  const minChurnForTestQuestion = config?.minChurnForTestQuestion ?? MIN_CHURN_FOR_TEST_QUESTION;
+  const wideSurfaceImporters = config?.wideSurfaceImporters ?? WIDE_SURFACE_IMPORTERS;
   const churn = new Map(changes.files.map((f) => [f.path, f.additions + f.deletions]));
 
   for (const d of dependents.entries) {
@@ -51,12 +59,12 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
     });
   }
 
-  if (coChangeTrusted(calibration)) {
+  if (coChangeTrusted(calibration, minCalibratedPrecision)) {
     const seenFiles = new Set<string>();
     const strong = forgotten.items
-      .filter((f) => f.interval.low >= MIN_INTERVAL_LOW && f.automationShare < 0.5)
+      .filter((f) => f.interval.low >= minIntervalLow && f.automationShare < 0.5)
       .filter((f) => (seenFiles.has(f.file) ? false : (seenFiles.add(f.file), true)))
-      .slice(0, MAX_COMPANION_QUESTIONS);
+      .slice(0, maxCompanionQuestions);
     for (const f of strong) {
       items.push({
         id: `check:companion:${f.file}`,
@@ -89,7 +97,7 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
   }
 
   const untested = tests
-    .filter((t) => t.status === 'test-untouched' && (churn.get(t.source) ?? 0) >= MIN_CHURN_FOR_TEST_QUESTION)
+    .filter((t) => t.status === 'test-untouched' && (churn.get(t.source) ?? 0) >= minChurnForTestQuestion)
     .filter((t) => !t.candidates.some((c) => asked.has(c.path)))
     .sort((a, b) => (churn.get(b.source) ?? 0) - (churn.get(a.source) ?? 0))
     .slice(0, 1);
@@ -105,7 +113,7 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
   }
 
   const wide = dependents.entries
-    .filter((d) => !d.deleted && d.untouchedImporters.length >= WIDE_SURFACE_IMPORTERS)
+    .filter((d) => !d.deleted && d.untouchedImporters.length >= wideSurfaceImporters)
     .slice(0, 1);
   for (const d of wide) {
     items.push({
@@ -117,7 +125,7 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
     });
   }
 
-  return items.sort((a, b) => a.priority - b.priority).slice(0, MAX_CHECKLIST);
+  return items.sort((a, b) => a.priority - b.priority).slice(0, maxChecklist);
 }
 
 export function salienceOf(changes: ChangeStructure, checklist: ChecklistItem[]): Salience {
