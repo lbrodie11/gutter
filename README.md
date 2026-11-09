@@ -4,7 +4,7 @@
 
 Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, and which historically related files deserve another look — with clickable commit receipts.
 
-`Experimental · v0.2.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+`Experimental · v0.2.1` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -72,7 +72,7 @@ Before you read a line of the diff, Gutter raises three evidence-backed question
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (a pinned example generated with gutter 0.1.0 + repo-archaeology 0.3.0; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
@@ -160,7 +160,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
 
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.2.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.2.0^{commit}`), never an unbuilt `main` branch commit SHA.
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.2.1`, always pin to the **release tag's commit SHA** (`git rev-parse v0.2.1^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|

@@ -20,6 +20,7 @@ Usage
   gutter bench [options]                  replay merged PRs as-of each PR and write bench.json, bench.md, bench.html
   gutter render <gutter.json> [--format md|html]   re-render a saved brief to stdout
   gutter --version
+  gutter <command> --help                 show this help
 
 brief options
   --base <ref>            branch or commit the change is going into (required)
@@ -55,6 +56,8 @@ bench options
   --cwd <dir>             repository directory to benchmark (default: cwd)
 `;
 
+const COMMANDS = new Set(['brief', 'bench', 'render']);
+
 async function main(argv: string[]): Promise<number> {
   const [cmd, ...rest] = argv;
   if (!cmd || cmd === '-h' || cmd === '--help' || cmd === 'help') {
@@ -63,6 +66,10 @@ async function main(argv: string[]): Promise<number> {
   }
   if (cmd === '-v' || cmd === '--version') {
     process.stdout.write(`${GUTTER_VERSION}\n`);
+    return 0;
+  }
+  if (COMMANDS.has(cmd) && rest.some((a) => a === '-h' || a === '--help')) {
+    process.stdout.write(HELP);
     return 0;
   }
   if (cmd === 'brief') return brief(rest);

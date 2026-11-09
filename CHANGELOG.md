@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 · 2026-11-09
+
+- `gutter <command> --help` / `-h` (`brief`, `bench`, `render`) now prints usage and exits 0 instead of failing with `Unknown option '--help'`.
+- README notes that the sample PR comment is a pinned example generated with gutter 0.1.0 + repo-archaeology 0.3.0.
+
 ## 0.2.0 · 2026-11-09
 
 - `gutter bench` (`GU-03`): historical pull-request replay benchmark (`src/bench/*`), replaying merged PRs strictly as-of each PR via `replayBrief()` and `GitTreeReader(sha)` (`git ls-tree -r -z` + persistent `git cat-file --batch`) with zero future leakage and offline `repo-archaeology` ≥ 0.4.0 library sessions (`openRepository`).
