@@ -291,3 +291,34 @@ test('bench: the GU-05 report reproduces results.json and the STAGE0.md block ex
   assert.ok(committed.legacy.deltas.maxIntervalDelta <= 0.0001);
   assert.equal(committed.legacy.summary.fullSalienceShare.numerator, committed.legacy.stage0b.fullSalienceShare.numerator);
 });
+
+// ---- Review fixes (PR #17) --------------------------------------------------------------------
+
+/** base: src/c.ts imports src/old.ts. PR: deletes src/old.ts, optionally adds its own .repo-archaeology.json. */
+function configBoundaryRepo(opts: { baseConfig?: object; prConfig?: object }): TempRepo {
+  const r = new TempRepo().write({
+    'src/old.ts': 'export const old = 1;\n',
+    'src/c.ts': "import { old } from './old.js';\nexport const c = old;\n",
+    ...(opts.baseConfig ? { '.repo-archaeology.json': JSON.stringify(opts.baseConfig) } : {}),
+  }).commit('init').branch('pr');
+  repos.push(r);
+  r.rm('src/old.ts');
+  if (opts.prConfig) r.write({ '.repo-archaeology.json': JSON.stringify(opts.prConfig) });
+  r.commit('drop old');
+  return r;
+}
+
+test('review P1: with configRef (the Action), a PR cannot hide its own broken import through .repo-archaeology.json', async () => {
+  const r = configBoundaryRepo({ prConfig: { ignore: ['src/c.ts'] } });
+  const b = await buildBriefAsync({ cwd: r.dir, base: 'main', configRef: 'main', noCalibration: true, now: NOW });
+  assert.equal(b.provenance.engines.length >= 1 && b.dependents.analyzers[0], 'ra-import-graph');
+  assert.deepEqual(b.checklist.map((c) => c.kind), ['broken-import']);
+  assert.notEqual(b.salience.level, 'quiet');
+});
+
+test('review P1: the base tree\'s own .repo-archaeology.json still applies under configRef', async () => {
+  const r = configBoundaryRepo({ baseConfig: { ignore: ['src/c.ts'] } });
+  const b = await buildBriefAsync({ cwd: r.dir, base: 'main', configRef: 'main', noCalibration: true, now: NOW });
+  assert.equal(b.dependents.analyzers[0], 'ra-import-graph');
+  assert.deepEqual(b.checklist, [], 'the repository\'s own ignore rules are honored');
+});

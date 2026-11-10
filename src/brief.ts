@@ -216,6 +216,12 @@ interface PreparedBrief {
   commits: { sha: string; subject: string }[];
   tests: TestLink[];
   repoUrl?: string;
+  /**
+   * Repo Archaeology settings fixed by the caller's config boundary. With `configRef` (the Action reads
+   * config from `base`), the base tree's validated `.repo-archaeology.json` is passed explicitly and the
+   * session must not read the PR's copy, so a pull request cannot change its own ignore rules (GU-05).
+   */
+  raConfig?: { settings: SafeRaRepoConfig | undefined };
 }
 
 /** Everything a live brief needs before co-change history and dependents (shared by sync and async paths). */
@@ -232,11 +238,14 @@ function prepareBrief(opts: BriefOptions): PreparedBrief {
   try {
     const checkedOut = resolveSha(root, 'HEAD');
     let gutterConfig: GutterConfig;
+    let raConfig: PreparedBrief['raConfig'];
     if (opts.configRef) {
       const cfgSha = resolveSha(root, opts.configRef) ?? baseSha;
       const cfgReader = new GitTreeReader(root, cfgSha);
       try {
-        gutterConfig = readSnapshotAuxConfigs(cfgReader).gutterConfig;
+        const aux = readSnapshotAuxConfigs(cfgReader);
+        gutterConfig = aux.gutterConfig;
+        raConfig = { settings: aux.raConfigValid ? aux.raSettings : undefined };
       } finally {
         cfgReader.close();
       }
@@ -265,7 +274,7 @@ function prepareBrief(opts: BriefOptions): PreparedBrief {
     const tests = linkTests(root, changes, reader);
     const remote = git(root, ['remote', 'get-url', 'origin'], { allowFail: true });
     const repoUrl = opts.repoUrl ?? browseUrlFromRemote(remote);
-    return { root, head, baseSha, headSha, reader, ownReader, mergedConfig, changes, commits, tests, ...(repoUrl ? { repoUrl } : {}) };
+    return { root, head, baseSha, headSha, reader, ownReader, mergedConfig, changes, commits, tests, ...(repoUrl ? { repoUrl } : {}), ...(raConfig ? { raConfig } : {}) };
   } catch (err) {
     if (ownReader) reader.close();
     throw err;
@@ -395,6 +404,8 @@ export async function buildBriefAsync(opts: BriefOptions & { raLib?: string | fa
           headFiles,
           noCalibration: Boolean(p.mergedConfig.noCalibration) || Boolean(opts.raBacktest),
           skipDiff: Boolean(opts.raDiff),
+          // Config boundary: with `configRef`, only the base tree's settings apply, never the PR's file.
+          ...(p.raConfig ? { settings: { ...p.raConfig.settings }, useConfigFile: false } : {}),
           ...(opts.onProgress ? { onProgress: opts.onProgress } : {}),
         });
         opts.onSession?.(a.sessions);
