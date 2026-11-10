@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "repo-archaeology",
+    "version": "0.10.0"
+  },
+  "k": 3,
+  "train": {
+    "commits": 1523,
+    "from": "2025-03-18",
+    "to": "2025-08-18"
+  },
+  "test": {
+    "commits": 389,
+    "from": "2025-08-18",
+    "to": "2026-09-06"
+  },
+  "queries": 821,
+  "soloQueries": 124,
+  "strategies": [
+    {
+      "name": "co-change",
+      "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+      "fired": 321,
+      "coverage": 0.3909866017052375,
+      "precision": 0.47938931297709925,
+      "hitRate": 0.6137071651090342,
+      "falseAlarmRate": 0.3862928348909657,
+      "recall": 0.04804896710022953
+    },
+    {
+      "name": "co-change, no thresholds",
+      "description": "same ranking, always suggests something it has seen",
+      "fired": 803,
+      "coverage": 0.9780755176613886,
+      "precision": 0.261493040911008,
+      "hitRate": 0.47571606475716066,
+      "falseAlarmRate": 0.5242839352428393,
+      "recall": 0.09487375669472073
+    },
+    {
+      "name": "popularity baseline",
+      "description": "always suggests the 3 most frequently changed files",
+      "fired": 821,
+      "coverage": 1,
+      "precision": 0.10881039382866423,
+      "hitRate": 0.2740560292326431,
+      "falseAlarmRate": 0.7259439707673568,
+      "recall": 0.04100994644223412
+    },
+    {
+      "name": "popularity, same changes",
+      "description": "the popularity guess, scored only where co-change spoke up",
+      "fired": 321,
+      "coverage": 0.3909866017052375,
+      "precision": 0.12461059190031153,
+      "hitRate": 0.27414330218068533,
+      "falseAlarmRate": 0.7258566978193146,
+      "recall": 0.018362662586074982
+    }
+  ],
+  "notes": [
+    "When it speaks up it is 2.2× more often right than guessing popular files on the same changes.",
+    "To tune settings without overfitting, experiment with --before <date> (an older window), then report one final run without it."
+  ],
+  "meta": {
+    "tool": "repo-archaeology",
+    "root": "/Users/brodie/.cache/gutter-bench/slymnoyann__hey.xyz",
+    "commitsRead": 2001,
+    "commitsAnalyzed": 1904,
+    "sweepsSkipped": 46,
+    "subjectSkipped": 0,
+    "revertsSkipped": 15,
+    "renamesFollowed": 916,
+    "files": 1288,
+    "oldestCommit": "2025-03-18",
+    "newestCommit": "2026-09-06",
+    "origins": {
+      "human": 1877,
+      "agent": 5,
+      "bot": 22
+    },
+    "verdicts": {
+      "loaded": 0,
+      "active": 0,
+      "expired": 0,
+      "file": ".repo-archaeology.verdicts.json"
+    },
+    "settings": {
+      "maxCommits": 5000,
+      "maxFilesPerCommit": 25,
+      "minShared": 3,
+      "minConfidence": 0.4,
+      "ignore": [],
+      "useDefaultIgnores": true
+    },
+    "warnings": [],
+    "cache": {
+      "enabled": true,
+      "hits": 1999,
+      "misses": 2,
+      "dir": ".git/repo-archaeology/cache"
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "repo-archaeology",
+    "version": "0.10.0"
+  },
+  "k": 3,
+  "train": {
+    "commits": 1134,
+    "from": "2021-08-12",
+    "to": "2026-07-21"
+  },
+  "test": {
+    "commits": 294,
+    "from": "2026-07-21",
+    "to": "2026-10-27"
+  },
+  "queries": 520,
+  "soloQueries": 196,
+  "strategies": [
+    {
+      "name": "co-change",
+      "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+      "fired": 181,
+      "coverage": 0.34807692307692306,
+      "precision": 0.7484787018255578,
+      "hitRate": 1,
+      "falseAlarmRate": 0,
+      "recall": 0.13452424352898287
+    },
+    {
+      "name": "co-change, no thresholds",
+      "description": "same ranking, always suggests something it has seen",
+      "fired": 510,
+      "coverage": 0.9807692307692307,
+      "precision": 0.42147117296222664,
+      "hitRate": 0.6,
+      "falseAlarmRate": 0.4,
+      "recall": 0.23186292380605178
+    },
+    {
+      "name": "popularity baseline",
+      "description": "always suggests the 3 most frequently changed files",
+      "fired": 520,
+      "coverage": 1,
+      "precision": 0.05641025641025641,
+      "hitRate": 0.16923076923076924,
+      "falseAlarmRate": 0.8307692307692308,
+      "recall": 0.032081662413415965
+    },
+    {
+      "name": "popularity, same changes",
+      "description": "the popularity guess, scored only where co-change spoke up",
+      "fired": 181,
+      "coverage": 0.34807692307692306,
+      "precision": 0.11786372007366483,
+      "hitRate": 0.35359116022099446,
+      "falseAlarmRate": 0.6464088397790055,
+      "recall": 0.023332118118847976
+    }
+  ],
+  "notes": [
+    "When it speaks up it is 2.8× more often right than guessing popular files on the same changes.",
+    "To tune settings without overfitting, experiment with --before <date> (an older window), then report one final run without it."
+  ],
+  "meta": {
+    "tool": "repo-archaeology",
+    "root": "/Users/brodie/.cache/gutter-bench/binance__binance-connector-js",
+    "commitsRead": 1533,
+    "commitsAnalyzed": 1428,
+    "sweepsSkipped": 91,
+    "subjectSkipped": 0,
+    "revertsSkipped": 0,
+    "renamesFollowed": 332,
+    "files": 1662,
+    "oldestCommit": "2021-07-28",
+    "newestCommit": "2026-10-27",
+    "origins": {
+      "human": 244,
+      "agent": 0,
+      "bot": 1184
+    },
+    "verdicts": {
+      "loaded": 0,
+      "active": 0,
+      "expired": 0,
+      "file": ".repo-archaeology.verdicts.json"
+    },
+    "settings": {
+      "maxCommits": 5000,
+      "maxFilesPerCommit": 25,
+      "minShared": 3,
+      "minConfidence": 0.4,
+      "ignore": [],
+      "useDefaultIgnores": true
+    },
+    "warnings": [],
+    "cache": {
+      "enabled": true,
+      "hits": 404,
+      "misses": 1129,
+      "dir": ".git/repo-archaeology/cache"
+    }
+  }
+}

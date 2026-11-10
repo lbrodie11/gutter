@@ -1,0 +1,4010 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-corpus-results",
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  },
+  "timeoutMin": 45,
+  "verdict": {
+    "result": "FAIL",
+    "missing": [],
+    "completed": 20,
+    "total": 20,
+    "a": {
+      "medianFullShare": 0,
+      "met": true
+    },
+    "b": {
+      "basis": "seeded mutations",
+      "realItems": 0,
+      "realConfirmed": 0,
+      "pooled": {
+        "precision": {
+          "numerator": 361,
+          "denominator": 367,
+          "rate": 0.9836512261580381,
+          "interval": {
+            "low": 0.9647961716630579,
+            "high": 0.9924862237005263
+          }
+        },
+        "recall": {
+          "numerator": 366,
+          "denominator": 579,
+          "rate": 0.6321243523316062,
+          "interval": {
+            "low": 0.592094489218543,
+            "high": 0.6704125745541271
+          }
+        },
+        "falsePositiveRate": {
+          "numerator": 1,
+          "denominator": 600,
+          "rate": 0.0016666666666666668,
+          "interval": {
+            "low": 0.000294268200849565,
+            "high": 0.00937956047613881
+          }
+        }
+      },
+      "reposBelowPrecision": [],
+      "untestedChange": {
+        "exercised": 10,
+        "notExercised": 10,
+        "wrong": [],
+        "met": true
+      },
+      "testHistory": {
+        "exercised": 16,
+        "notExercised": 4,
+        "wrong": [],
+        "met": true
+      },
+      "met": false,
+      "groups": {
+        "TS/JS": {
+          "positives": 408,
+          "computable": true
+        },
+        "Go": {
+          "positives": 81,
+          "computable": true
+        },
+        "Python": {
+          "positives": 90,
+          "computable": true
+        }
+      }
+    },
+    "c": {
+      "hits": 0,
+      "met": true
+    },
+    "failureClasses": [
+      {
+        "class": "missed positive: Python, rename, partial",
+        "count": 43
+      },
+      {
+        "class": "missed positive: Go, delete, partial",
+        "count": 41
+      },
+      {
+        "class": "missed positive: Go, rename, partial",
+        "count": 40
+      },
+      {
+        "class": "missed positive: Python, delete, partial",
+        "count": 37
+      },
+      {
+        "class": "missed positive: TS/JS, rename, partial",
+        "count": 24
+      },
+      {
+        "class": "missed positive: TS/JS, delete, partial",
+        "count": 18
+      },
+      {
+        "class": "missed positive: Python, delete, missed",
+        "count": 8
+      },
+      {
+        "class": "unconfirmed item: TS/JS",
+        "count": 6
+      },
+      {
+        "class": "missed positive: Python, rename, missed",
+        "count": 2
+      },
+      {
+        "class": "false positive: TS/JS, rename-updated",
+        "count": 1
+      }
+    ]
+  },
+  "median": {
+    "fullShare": 0,
+    "briefShare": 0.44,
+    "quietShare": 0.56,
+    "itemsPerPr": 0.27,
+    "wideSurfaceShare": 0.2,
+    "partialShare": 1,
+    "seededRecall": 0.95,
+    "replayP50Ms": 853.5,
+    "replayP95Ms": 1561
+  },
+  "byGroup": {
+    "TS/JS": {
+      "repos": 14,
+      "partial": {
+        "numerator": 2364,
+        "denominator": 2800,
+        "rate": 0.8442857142857143,
+        "interval": {
+          "low": 0.830384873129892,
+          "high": 0.8572431644450015
+        }
+      },
+      "unresolvedByReason": {
+        "target-missing": 89397,
+        "unknown-package": 34626,
+        "not-exported": 16600,
+        "unsupported-config": 3782,
+        "alias-unmatched": 3409,
+        "invalid-target": 6400
+      },
+      "seededRecall": {
+        "numerator": 366,
+        "denominator": 408,
+        "rate": 0.8970588235294118,
+        "interval": {
+          "low": 0.8637738447885822,
+          "high": 0.922936655236773
+        }
+      },
+      "seededPrecision": {
+        "numerator": 361,
+        "denominator": 367,
+        "rate": 0.9836512261580381,
+        "interval": {
+          "low": 0.9647961716630579,
+          "high": 0.9924862237005263
+        }
+      }
+    },
+    "Go": {
+      "repos": 3,
+      "partial": {
+        "numerator": 199,
+        "denominator": 600,
+        "rate": 0.33166666666666667,
+        "interval": {
+          "low": 0.29517019770455494,
+          "high": 0.3703049083033911
+        }
+      },
+      "unresolvedByReason": {
+        "unknown-package": 796
+      },
+      "seededRecall": {
+        "numerator": 0,
+        "denominator": 81,
+        "rate": 0,
+        "interval": {
+          "low": 0,
+          "high": 0.045278085432415204
+        }
+      },
+      "seededPrecision": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null,
+        "interval": null
+      }
+    },
+    "Python": {
+      "repos": 3,
+      "partial": {
+        "numerator": 400,
+        "denominator": 600,
+        "rate": 0.6666666666666666,
+        "interval": {
+          "low": 0.6279920835233803,
+          "high": 0.7032206828053861
+        }
+      },
+      "unresolvedByReason": {
+        "target-missing": 400,
+        "unknown-package": 1000
+      },
+      "seededRecall": {
+        "numerator": 0,
+        "denominator": 90,
+        "rate": 0,
+        "interval": {
+          "low": 0,
+          "high": 0.04093562556432678
+        }
+      },
+      "seededPrecision": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null,
+        "interval": null
+      }
+    }
+  },
+  "worst": {
+    "fullShare": [
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat",
+      "colbymchenry/codegraph",
+      "DayuanJiang/next-ai-draw-io"
+    ],
+    "wideSurfaceShare": [
+      "colbymchenry/codegraph",
+      "ollama/ollama",
+      "fatedier/frp",
+      "team-telnyx/telnyx-node",
+      "ChatGPTNextWeb/NextChat"
+    ],
+    "seededRecall": [
+      "fatedier/frp",
+      "gin-gonic/gin",
+      "github/spec-kit",
+      "ollama/ollama",
+      "TheAlgorithms/Python"
+    ],
+    "seededPrecision": [
+      "colbymchenry/codegraph",
+      "binance/binance-connector-js",
+      "lerna/lerna",
+      "matrix-org/matrix-appservice-bridge",
+      "team-telnyx/telnyx-node"
+    ],
+    "falsePositiveRate": [
+      "colbymchenry/codegraph",
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat",
+      "DayuanJiang/next-ai-draw-io"
+    ],
+    "partialShare": [
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat",
+      "colbymchenry/codegraph",
+      "faastjs/faast.js"
+    ],
+    "replayP95Ms": [
+      "hypit-ai/hypit",
+      "slymnoyann/hey.xyz",
+      "colbymchenry/codegraph",
+      "allianz/ng-aquila",
+      "binance/binance-connector-js"
+    ]
+  },
+  "repos": [
+    {
+      "repo": "honojs/hono",
+      "slug": "honojs__hono",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "continuity",
+      "expected": "good",
+      "pinnedSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 4.5,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 119,
+          "denominator": 200,
+          "rate": 0.595,
+          "interval": {
+            "low": 0.5257971008133869,
+            "high": 0.6606222871749323
+          }
+        },
+        "brief": {
+          "numerator": 81,
+          "denominator": 200,
+          "rate": 0.405,
+          "interval": {
+            "low": 0.3393777128250676,
+            "high": 0.47420289918661307
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.345,
+        "items": 69,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 59,
+            "denominator": 200,
+            "rate": 0.295,
+            "interval": {
+              "low": 0.2361394385684915,
+              "high": 0.36158714524618774
+            }
+          },
+          "untested-change": {
+            "numerator": 10,
+            "denominator": 200,
+            "rate": 0.05,
+            "interval": {
+              "low": 0.027382645600763932,
+              "high": 0.08957814813877599
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 344,
+          "unknown-package": 1250
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 495,
+        "replayP95Ms": 686,
+        "sessionP50Ms": 451,
+        "sessionP95Ms": 626
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 10,
+          "confirmed": 10,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 43,
+          "confirmed": 43,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 561,
+          "fired": 700,
+          "precision": 0.5711340206185567,
+          "hitRate": 0.72,
+          "lift": 6.146341463414633
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 695,
+          "precision": 0.5760755508919203,
+          "hitRate": 0.7179856115107913,
+          "lift": 6.237499999999999,
+          "deltas": {
+            "fired": -5,
+            "coverage": -0.004325259515570834,
+            "precision": 0.004941530273363637,
+            "hitRate": -0.0020143884892086517,
+            "falseAlarmRate": 0.002014388489208596,
+            "recall": -0.0014100394811054906,
+            "lift": 0.09115853658536555
+          }
+        }
+      }
+    },
+    {
+      "repo": "remarkablemark/html-react-parser",
+      "slug": "remarkablemark__html-react-parser",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "46e79e4cf4ef6cd7a5c280ed9c8885ac4fad6632",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 4.2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 193,
+          "denominator": 200,
+          "rate": 0.965,
+          "interval": {
+            "low": 0.9295293884777093,
+            "high": 0.9829444579914328
+          }
+        },
+        "brief": {
+          "numerator": 7,
+          "denominator": 200,
+          "rate": 0.035,
+          "interval": {
+            "low": 0.017055542008567195,
+            "high": 0.07047061152229074
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.01,
+        "items": 2,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 2,
+            "denominator": 200,
+            "rate": 0.01,
+            "interval": {
+              "low": 0.0027466581335444384,
+              "high": 0.0357217617161768
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 2000,
+          "unknown-package": 98
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 571,
+        "replayP95Ms": 752,
+        "sessionP50Ms": 184,
+        "sessionP95Ms": 272
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 2,
+          "confirmed": 2,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 18,
+        "negatives": 30,
+        "reported": 18,
+        "confirmed": 18,
+        "precision": 1,
+        "detected": 18,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {
+          "positives": 12
+        },
+        "classes": {}
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 553,
+          "fired": 62,
+          "precision": 0.5916666666666667,
+          "hitRate": 0.5806451612903226,
+          "lift": 1.7142857142857144
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 57,
+          "precision": 0.5533980582524272,
+          "hitRate": 0.5789473684210527,
+          "lift": 1.9411764705882355,
+          "deltas": {
+            "fired": -5,
+            "coverage": -0.007923930269413626,
+            "precision": -0.03826860841423951,
+            "hitRate": -0.001697792869269965,
+            "falseAlarmRate": 0.0016977928692699096,
+            "recall": -0.016706443914081145,
+            "lift": 0.2268907563025211
+          }
+        }
+      }
+    },
+    {
+      "repo": "faastjs/faast.js",
+      "slug": "faastjs__faast.js",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "0038379bf4669c7abcc93d2b821f62313c0f6210",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 4.4,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "brief": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0,
+        "items": 0,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 1000,
+          "target-missing": 600
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 660,
+        "replayP95Ms": 873,
+        "sessionP50Ms": 230,
+        "sessionP95Ms": 290
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 558,
+          "fired": 7,
+          "precision": 0.3076923076923077,
+          "hitRate": 0.42857142857142855,
+          "lift": 0.6
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 7,
+          "precision": 0.3076923076923077,
+          "hitRate": 0.42857142857142855,
+          "lift": 0.6,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "binance/binance-connector-js",
+      "slug": "binance__binance-connector-js",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "62a2ec1a164f8e2238b81f5163b5d08f073d56f5",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 23.2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 85,
+          "denominator": 200,
+          "rate": 0.425,
+          "interval": {
+            "low": 0.3585361254351385,
+            "high": 0.49429067352145145
+          }
+        },
+        "brief": {
+          "numerator": 115,
+          "denominator": 200,
+          "rate": 0.575,
+          "interval": {
+            "low": 0.5057093264785485,
+            "high": 0.6414638745648615
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.215,
+        "items": 43,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 43,
+            "denominator": 200,
+            "rate": 0.215,
+            "interval": {
+              "low": 0.1637187625450758,
+              "high": 0.27702307348996613
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 28235,
+          "target-missing": 54183
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 1371,
+        "replayP95Ms": 2274,
+        "sessionP50Ms": 953,
+        "sessionP95Ms": 1201
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 4,
+          "confirmed": 4,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 29,
+        "confirmed": 28,
+        "precision": 0.9655172413793104,
+        "detected": 29,
+        "recall": 0.9666666666666667,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 1,
+        "skippedShare": 0.03333333333333333,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 1,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, rename, partial": 1,
+          "unconfirmed item: TS/JS": 1
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 294,
+          "fired": 181,
+          "precision": 0.7484787018255578,
+          "hitRate": 1,
+          "lift": 2.828125
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 108,
+          "precision": 0.4528301886792453,
+          "hitRate": 0.5,
+          "lift": 1.7419354838709677,
+          "deltas": {
+            "fired": -73,
+            "coverage": -0.14038461538461536,
+            "precision": -0.29564851314631246,
+            "hitRate": -0.5,
+            "falseAlarmRate": 0.5,
+            "recall": -0.10827561064527891,
+            "lift": -1.0861895161290323
+          }
+        }
+      }
+    },
+    {
+      "repo": "allianz/ng-aquila",
+      "slug": "allianz__ng-aquila",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "5b23a36e0b47a1dd90a6ffe36e50e7b2cbf7a9a4",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 12.8,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 73,
+          "denominator": 200,
+          "rate": 0.365,
+          "interval": {
+            "low": 0.301405264649268,
+            "high": 0.433682973472594
+          }
+        },
+        "brief": {
+          "numerator": 127,
+          "denominator": 200,
+          "rate": 0.635,
+          "interval": {
+            "low": 0.566317026527406,
+            "high": 0.698594735350732
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.27,
+        "items": 54,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 34,
+            "denominator": 200,
+            "rate": 0.17,
+            "interval": {
+              "low": 0.1242790791258697,
+              "high": 0.22815883628312622
+            }
+          },
+          "untested-change": {
+            "numerator": 20,
+            "denominator": 200,
+            "rate": 0.1,
+            "interval": {
+              "low": 0.0656704486690959,
+              "high": 0.1494058124327174
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 1599,
+          "not-exported": 16600,
+          "target-missing": 616
+        },
+        "uncheckedLanguages": {
+          "css": 105
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 1378,
+        "replayP95Ms": 2364,
+        "sessionP50Ms": 991,
+        "sessionP95Ms": 1465
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 20,
+          "confirmed": 20,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 24,
+          "confirmed": 24,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 28,
+        "confirmed": 28,
+        "precision": 1,
+        "detected": 28,
+        "recall": 0.9333333333333333,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 2,
+        "skippedShare": 0.06666666666666667,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 2,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, rename, partial": 2
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 345,
+          "fired": 541,
+          "precision": 0.5590551181102362,
+          "hitRate": 0.7134935304990758,
+          "lift": 1.7625570776255708
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 541,
+          "precision": 0.5590551181102362,
+          "hitRate": 0.7134935304990758,
+          "lift": 1.7625570776255708,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "matrix-org/matrix-appservice-bridge",
+      "slug": "matrix-org__matrix-appservice-bridge",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "6392ab0550e23fffa9f014411148c667ba2e77da",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 4.6,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 111,
+          "denominator": 200,
+          "rate": 0.555,
+          "interval": {
+            "low": 0.48573302412803426,
+            "high": 0.6221939899704665
+          }
+        },
+        "brief": {
+          "numerator": 89,
+          "denominator": 200,
+          "rate": 0.445,
+          "interval": {
+            "low": 0.37780601002953357,
+            "high": 0.5142669758719659
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.095,
+        "items": 19,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 19,
+            "denominator": 200,
+            "rate": 0.095,
+            "interval": {
+              "low": 0.06166310271738653,
+              "high": 0.1436016116481994
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 4358,
+          "unknown-package": 141
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 583,
+        "replayP95Ms": 1265,
+        "sessionP50Ms": 197,
+        "sessionP95Ms": 680
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 29,
+        "precision": 0.9666666666666667,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "unconfirmed item: TS/JS": 1
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 288,
+          "fired": 22,
+          "precision": 0.5185185185185185,
+          "hitRate": 0.5454545454545454,
+          "lift": 0.7499999999999999
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 22,
+          "precision": 0.5185185185185185,
+          "hitRate": 0.5454545454545454,
+          "lift": 0.7499999999999999,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "ChatGPTNextWeb/NextChat",
+      "slug": "ChatGPTNextWeb__NextChat",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-app-paths",
+      "expected": "good",
+      "pinnedSha": "1d3dc331512929a4b1d3e82354e72acce33b5c7a",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 5.7,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 113,
+          "denominator": 200,
+          "rate": 0.565,
+          "interval": {
+            "low": 0.495707362597946,
+            "high": 0.6318427449730092
+          }
+        },
+        "brief": {
+          "numerator": 87,
+          "denominator": 200,
+          "rate": 0.435,
+          "interval": {
+            "low": 0.36815725502699076,
+            "high": 0.5042926374020539
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.38,
+        "items": 76,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 76,
+            "denominator": 200,
+            "rate": 0.38,
+            "interval": {
+              "low": 0.3155900584867362,
+              "high": 0.4489328198438078
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 720
+        },
+        "uncheckedLanguages": {
+          "css": 8,
+          "rust": 2
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 659,
+        "replayP95Ms": 1641,
+        "sessionP50Ms": 267,
+        "sessionP95Ms": 726
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 29,
+        "confirmed": 29,
+        "precision": 1,
+        "detected": 29,
+        "recall": 0.9666666666666667,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 1,
+        "skippedShare": 0.03333333333333333,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 1,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, delete, partial": 1
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 418,
+          "fired": 296,
+          "precision": 0.5844155844155844,
+          "hitRate": 0.6216216216216216,
+          "lift": 1.3237410071942446
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 296,
+          "precision": 0.5844155844155844,
+          "hitRate": 0.6216216216216216,
+          "lift": 1.3237410071942446,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "DayuanJiang/next-ai-draw-io",
+      "slug": "DayuanJiang__next-ai-draw-io",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-app-paths",
+      "expected": "good",
+      "pinnedSha": "c9dc5f5cc62e7e5a327a62b39027d80033e1548c",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 5.2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 102,
+          "denominator": 200,
+          "rate": 0.51,
+          "interval": {
+            "low": 0.4411858767845865,
+            "high": 0.5784372166878683
+          }
+        },
+        "brief": {
+          "numerator": 98,
+          "denominator": 200,
+          "rate": 0.49,
+          "interval": {
+            "low": 0.4215627833121318,
+            "high": 0.5588141232154136
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.27,
+        "items": 54,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 51,
+            "denominator": 200,
+            "rate": 0.255,
+            "interval": {
+              "low": 0.19960495172031348,
+              "high": 0.3196292582045472
+            }
+          },
+          "untested-change": {
+            "numerator": 3,
+            "denominator": 200,
+            "rate": 0.015,
+            "interval": {
+              "low": 0.005114237793258312,
+              "high": 0.04316572879269027
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 79,
+          "denominator": 200,
+          "rate": 0.395,
+          "interval": {
+            "low": 0.32984101013207967,
+            "high": 0.46411650840714636
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 79
+        },
+        "uncheckedLanguages": {
+          "css": 7
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 674,
+        "replayP95Ms": 1168,
+        "sessionP50Ms": 282,
+        "sessionP95Ms": 528
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 3,
+          "confirmed": 3,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 2,
+          "confirmed": 2,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 12,
+        "confirmed": 12,
+        "precision": 1,
+        "detected": 12,
+        "recall": 0.4,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 18,
+        "skippedShare": 0.6,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 18,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, delete, partial": 8,
+          "missed positive: TS/JS, rename, partial": 10
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 135,
+          "fired": 245,
+          "precision": 0.7112810707456979,
+          "hitRate": 0.7551020408163265,
+          "lift": 2.078651685393258
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 249,
+          "precision": 0.7012987012987013,
+          "hitRate": 0.7630522088353414,
+          "lift": 2.111111111111111,
+          "deltas": {
+            "fired": 4,
+            "coverage": 0.010638297872340496,
+            "precision": -0.009982369446996597,
+            "hitRate": 0.007950168019014936,
+            "falseAlarmRate": -0.007950168019014825,
+            "recall": 0.002071108042802916,
+            "lift": 0.03245942571785321
+          }
+        }
+      }
+    },
+    {
+      "repo": "slymnoyann/hey.xyz",
+      "slug": "slymnoyann__hey.xyz",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-app-paths",
+      "expected": "good",
+      "pinnedSha": "44dee0c1223b9202699915fd3e92e670fd8e34e6",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 7.8,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 134,
+          "denominator": 200,
+          "rate": 0.67,
+          "interval": {
+            "low": 0.6021668477377689,
+            "high": 0.7314257412939605
+          }
+        },
+        "brief": {
+          "numerator": 66,
+          "denominator": 200,
+          "rate": 0.33,
+          "interval": {
+            "low": 0.26857425870603957,
+            "high": 0.39783315226223115
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.155,
+        "items": 31,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 31,
+            "denominator": 200,
+            "rate": 0.155,
+            "interval": {
+              "low": 0.11139636927689313,
+              "high": 0.2116069059234208
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 4,
+          "denominator": 200,
+          "rate": 0.02,
+          "interval": {
+            "low": 0.007804426416349469,
+            "high": 0.05028708690582644
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 4
+        },
+        "uncheckedLanguages": {
+          "css": 9,
+          "sql": 2
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 678,
+        "replayP95Ms": 3530,
+        "sessionP50Ms": 341,
+        "sessionP95Ms": 2957
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 18,
+        "confirmed": 18,
+        "precision": 1,
+        "detected": 18,
+        "recall": 0.6,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 12,
+        "skippedShare": 0.4,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 12,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, rename, partial": 6,
+          "missed positive: TS/JS, delete, partial": 6
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 389,
+          "fired": 321,
+          "precision": 0.47938931297709925,
+          "hitRate": 0.6137071651090342,
+          "lift": 2.2386363636363638
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 321,
+          "precision": 0.47938931297709925,
+          "hitRate": 0.6137071651090342,
+          "lift": 2.2386363636363638,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "lerna/lerna",
+      "slug": "lerna__lerna",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-monorepo",
+      "expected": "good",
+      "pinnedSha": "d6226111673016062ba099b2876334069407ef41",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 9,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 150,
+          "denominator": 200,
+          "rate": 0.75,
+          "interval": {
+            "low": 0.6856590168795417,
+            "high": 0.804918319931825
+          }
+        },
+        "brief": {
+          "numerator": 50,
+          "denominator": 200,
+          "rate": 0.25,
+          "interval": {
+            "low": 0.195081680068175,
+            "high": 0.31434098312045833
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.135,
+        "items": 27,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 18,
+            "denominator": 200,
+            "rate": 0.09,
+            "interval": {
+              "low": 0.057687448862193166,
+              "high": 0.1377657187671654
+            }
+          },
+          "untested-change": {
+            "numerator": 9,
+            "denominator": 200,
+            "rate": 0.045,
+            "interval": {
+              "low": 0.023852543001492994,
+              "high": 0.08329670400181959
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unsupported-config": 3200,
+          "unknown-package": 883,
+          "target-missing": 10
+        },
+        "uncheckedLanguages": {
+          "css": 1
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 1104,
+        "replayP95Ms": 1553,
+        "sessionP50Ms": 596,
+        "sessionP95Ms": 801
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 9,
+          "confirmed": 9,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 15,
+          "confirmed": 15,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 29,
+        "confirmed": 28,
+        "precision": 0.9655172413793104,
+        "detected": 29,
+        "recall": 0.9666666666666667,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 1,
+        "skippedShare": 0.03333333333333333,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 1,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "unconfirmed item: TS/JS": 1,
+          "missed positive: TS/JS, delete, partial": 1
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 525,
+          "fired": 573,
+          "precision": 0.35294117647058826,
+          "hitRate": 0.4572425828970332,
+          "lift": 1.5595238095238098
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 573,
+          "precision": 0.35294117647058826,
+          "hitRate": 0.4572425828970332,
+          "lift": 1.5595238095238098,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "vbenjs/vue-vben-admin",
+      "slug": "vbenjs__vue-vben-admin",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-monorepo",
+      "expected": "good",
+      "pinnedSha": "71dc5ac59dcd832e45df861a283746a3cd143125",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 8.2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 122,
+          "denominator": 200,
+          "rate": 0.61,
+          "interval": {
+            "low": 0.5409374595716976,
+            "high": 0.6749165686253038
+          }
+        },
+        "brief": {
+          "numerator": 78,
+          "denominator": 200,
+          "rate": 0.39,
+          "interval": {
+            "low": 0.3250834313746962,
+            "high": 0.4590625404283025
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.145,
+        "items": 29,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 24,
+            "denominator": 200,
+            "rate": 0.12,
+            "interval": {
+              "low": 0.08197992706375512,
+              "high": 0.17234252098296746
+            }
+          },
+          "untested-change": {
+            "numerator": 5,
+            "denominator": 200,
+            "rate": 0.025,
+            "interval": {
+              "low": 0.010724719651761264,
+              "high": 0.05717834040664198
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 19841,
+          "unknown-package": 153,
+          "alias-unmatched": 3409
+        },
+        "uncheckedLanguages": {
+          "css": 10
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 832,
+        "replayP95Ms": 1857,
+        "sessionP50Ms": 485,
+        "sessionP95Ms": 1281
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 5,
+          "confirmed": 5,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 1,
+          "confirmed": 1,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 24,
+        "confirmed": 24,
+        "precision": 1,
+        "detected": 24,
+        "recall": 0.8,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 6,
+        "skippedShare": 0.2,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 6,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, rename, partial": 4,
+          "missed positive: TS/JS, delete, partial": 2
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 357,
+          "fired": 397,
+          "precision": 0.42209302325581394,
+          "hitRate": 0.6095717884130982,
+          "lift": 3.9032258064516125
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 401,
+          "precision": 0.4243845252051583,
+          "hitRate": 0.6034912718204489,
+          "lift": 3.903225806451613,
+          "deltas": {
+            "fired": 4,
+            "coverage": 0.004634994206257237,
+            "precision": 0.0022915019493443545,
+            "hitRate": -0.006080516592649299,
+            "falseAlarmRate": 0.006080516592649354,
+            "recall": -0.0001646090534979383,
+            "lift": 4.440892098500626e-16
+          }
+        }
+      }
+    },
+    {
+      "repo": "hypit-ai/hypit",
+      "slug": "hypit-ai__hypit",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-monorepo",
+      "expected": "good",
+      "pinnedSha": "0762c6be56c0af43fff3cdbdb285e21414dd249b",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 23.4,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 69,
+          "denominator": 200,
+          "rate": 0.345,
+          "interval": {
+            "low": 0.2825979437674894,
+            "high": 0.4132441074094632
+          }
+        },
+        "brief": {
+          "numerator": 131,
+          "denominator": 200,
+          "rate": 0.655,
+          "interval": {
+            "low": 0.5867558925905368,
+            "high": 0.7174020562325105
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.375,
+        "items": 75,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 37,
+            "denominator": 200,
+            "rate": 0.185,
+            "interval": {
+              "low": 0.13730192800616042,
+              "high": 0.2445706276115175
+            }
+          },
+          "untested-change": {
+            "numerator": 38,
+            "denominator": 200,
+            "rate": 0.19,
+            "interval": {
+              "low": 0.14167171527790673,
+              "high": 0.25001238707599854
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 81,
+          "denominator": 200,
+          "rate": 0.405,
+          "interval": {
+            "low": 0.3393777128250676,
+            "high": 0.47420289918661307
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 161
+        },
+        "uncheckedLanguages": {
+          "css": 8
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 1229,
+        "replayP95Ms": 17017,
+        "sessionP50Ms": 889,
+        "sessionP95Ms": 16541
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 38,
+          "confirmed": 38,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 29,
+          "confirmed": 29,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 29,
+        "confirmed": 29,
+        "precision": 1,
+        "detected": 29,
+        "recall": 0.9666666666666667,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 1,
+        "skippedShare": 0.03333333333333333,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 1,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: TS/JS, rename, partial": 1
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 228,
+          "fired": 294,
+          "precision": 0.4868651488616462,
+          "hitRate": 0.7346938775510204,
+          "lift": 1.7560975609756098
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 274,
+          "precision": 0.48722986247544203,
+          "hitRate": 0.7262773722627737,
+          "lift": 1.6178861788617884,
+          "deltas": {
+            "fired": -20,
+            "coverage": -0.03883495145631066,
+            "precision": 0.00036471361379580847,
+            "hitRate": -0.008416505288246778,
+            "falseAlarmRate": 0.008416505288246667,
+            "recall": -0.007543374402816196,
+            "lift": -0.13821138211382133
+          }
+        }
+      }
+    },
+    {
+      "repo": "ollama/ollama",
+      "slug": "ollama__ollama",
+      "language": "go",
+      "group": "Go",
+      "category": "go",
+      "expected": "good",
+      "pinnedSha": "e9fde36d75fea66579d84099956ce1430792737a",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 10.2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 53,
+          "denominator": 200,
+          "rate": 0.265,
+          "interval": {
+            "low": 0.20868154147109114,
+            "high": 0.3301757619262242
+          }
+        },
+        "brief": {
+          "numerator": 147,
+          "denominator": 200,
+          "rate": 0.735,
+          "interval": {
+            "low": 0.6698242380737758,
+            "high": 0.7913184585289089
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.84,
+        "items": 168,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 106,
+            "denominator": 200,
+            "rate": 0.53,
+            "interval": {
+              "low": 0.4609168291500183,
+              "high": 0.5979524512673458
+            }
+          },
+          "untested-change": {
+            "numerator": 62,
+            "denominator": 200,
+            "rate": 0.31,
+            "interval": {
+              "low": 0.2499894483607809,
+              "high": 0.3771717756625804
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 199,
+          "denominator": 200,
+          "rate": 0.995,
+          "interval": {
+            "low": 0.9722262956021069,
+            "high": 0.9991168312843989
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 796
+        },
+        "uncheckedLanguages": {
+          "css": 2
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 875,
+        "replayP95Ms": 1767,
+        "sessionP50Ms": 519,
+        "sessionP95Ms": 1199
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 62,
+          "confirmed": 62,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 51,
+          "confirmed": 51,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 0,
+        "confirmed": 0,
+        "precision": null,
+        "detected": 0,
+        "recall": 0,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 30,
+        "skippedShare": 1,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 30,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: Go, delete, partial": 15,
+          "missed positive: Go, rename, partial": 15
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 949,
+          "fired": 447,
+          "precision": 0.5181058495821727,
+          "hitRate": 0.6890380313199105,
+          "lift": 1.9012345679012346
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 447,
+          "precision": 0.5181058495821727,
+          "hitRate": 0.6890380313199105,
+          "lift": 1.9012345679012346,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "fatedier/frp",
+      "slug": "fatedier__frp",
+      "language": "go",
+      "group": "Go",
+      "category": "go",
+      "expected": "good",
+      "pinnedSha": "331abd5aa144e3f105abba29a22af701acf1a298",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 5.8,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 73,
+          "denominator": 200,
+          "rate": 0.365,
+          "interval": {
+            "low": 0.301405264649268,
+            "high": 0.433682973472594
+          }
+        },
+        "brief": {
+          "numerator": 127,
+          "denominator": 200,
+          "rate": 0.635,
+          "interval": {
+            "low": 0.566317026527406,
+            "high": 0.698594735350732
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.585,
+        "items": 117,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 92,
+            "denominator": 200,
+            "rate": 0.46,
+            "interval": {
+              "low": 0.3923305179997147,
+              "high": 0.5291771081104667
+            }
+          },
+          "untested-change": {
+            "numerator": 25,
+            "denominator": 200,
+            "rate": 0.125,
+            "interval": {
+              "low": 0.08611974475712646,
+              "high": 0.17801425002582344
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "unresolvedByReason": {},
+        "uncheckedLanguages": {
+          "css": 9
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 563,
+        "replayP95Ms": 1097,
+        "sessionP50Ms": 255,
+        "sessionP95Ms": 632
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 25,
+          "confirmed": 25,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 2,
+          "confirmed": 2,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 0,
+        "confirmed": 0,
+        "precision": null,
+        "detected": 0,
+        "recall": 0,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 30,
+        "skippedShare": 1,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 30,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: Go, delete, partial": 15,
+          "missed positive: Go, rename, partial": 15
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 238,
+          "fired": 420,
+          "precision": 0.358600583090379,
+          "hitRate": 0.49523809523809526,
+          "lift": 1.9622641509433965
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 420,
+          "precision": 0.358600583090379,
+          "hitRate": 0.49523809523809526,
+          "lift": 1.9622641509433965,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "gin-gonic/gin",
+      "slug": "gin-gonic__gin",
+      "language": "go",
+      "group": "Go",
+      "category": "go",
+      "expected": "good",
+      "pinnedSha": "0f09c3a9b4626d9fe9979cf4d0521d6ae32ab646",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 3.4,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 159,
+          "denominator": 200,
+          "rate": 0.795,
+          "interval": {
+            "low": 0.7337430194757748,
+            "high": 0.845138237961638
+          }
+        },
+        "brief": {
+          "numerator": 41,
+          "denominator": 200,
+          "rate": 0.205,
+          "interval": {
+            "low": 0.15486176203836208,
+            "high": 0.26625698052422514
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.105,
+        "items": 21,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 15,
+            "denominator": 200,
+            "rate": 0.075,
+            "interval": {
+              "low": 0.045974917184382014,
+              "high": 0.12004361023629458
+            }
+          },
+          "untested-change": {
+            "numerator": 6,
+            "denominator": 200,
+            "rate": 0.03,
+            "interval": {
+              "low": 0.013820314340111344,
+              "high": 0.06389429245451923
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "unresolvedByReason": {},
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 493,
+        "replayP95Ms": 901,
+        "sessionP50Ms": 163,
+        "sessionP95Ms": 196
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 6,
+          "confirmed": 6,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 24,
+          "confirmed": 24,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 21,
+        "negatives": 30,
+        "reported": 0,
+        "confirmed": 0,
+        "precision": null,
+        "detected": 0,
+        "recall": 0,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 21,
+        "skippedShare": 1,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 21,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {
+          "positives": 9
+        },
+        "classes": {
+          "missed positive: Go, delete, partial": 11,
+          "missed positive: Go, rename, partial": 10
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 352,
+          "fired": 203,
+          "precision": 0.4263565891472868,
+          "hitRate": 0.5369458128078818,
+          "lift": 1.6029411764705883
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 203,
+          "precision": 0.4263565891472868,
+          "hitRate": 0.5369458128078818,
+          "lift": 1.6029411764705883,
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
+        }
+      }
+    },
+    {
+      "repo": "TheAlgorithms/Python",
+      "slug": "TheAlgorithms__Python",
+      "language": "python",
+      "group": "Python",
+      "category": "python",
+      "expected": "good",
+      "pinnedSha": "574d100b7181956e9c8384552fd078165e4cc326",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 2.8,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 193,
+          "denominator": 200,
+          "rate": 0.965,
+          "interval": {
+            "low": 0.9295293884777093,
+            "high": 0.9829444579914328
+          }
+        },
+        "brief": {
+          "numerator": 7,
+          "denominator": 200,
+          "rate": 0.035,
+          "interval": {
+            "low": 0.017055542008567195,
+            "high": 0.07047061152229074
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0,
+        "items": 0,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "unresolvedByReason": {},
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 898,
+        "replayP95Ms": 1472,
+        "sessionP50Ms": 562,
+        "sessionP95Ms": 661
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 1,
+          "confirmed": 1,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 0,
+        "confirmed": 0,
+        "precision": null,
+        "detected": 0,
+        "recall": 0,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 20,
+        "skippedShare": 0.6666666666666666,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 20,
+          "missed": 10
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: Python, delete, missed": 8,
+          "missed positive: Python, rename, partial": 13,
+          "missed positive: Python, delete, partial": 7,
+          "missed positive: Python, rename, missed": 2
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 774,
+          "fired": 84,
+          "precision": 0.5242718446601942,
+          "hitRate": 0.6071428571428571,
+          "lift": 2.55
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 61,
+          "precision": 0.45569620253164556,
+          "hitRate": 0.5573770491803278,
+          "lift": 2.2666666666666666,
+          "deltas": {
+            "fired": -23,
+            "coverage": -0.026018099547511303,
+            "precision": -0.06857564212854861,
+            "hitRate": -0.049765807962529274,
+            "falseAlarmRate": 0.049765807962529274,
+            "recall": -0.004868812550716797,
+            "lift": -0.2833333333333332
+          }
+        }
+      }
+    },
+    {
+      "repo": "yt-dlp/yt-dlp",
+      "slug": "yt-dlp__yt-dlp",
+      "language": "python",
+      "group": "Python",
+      "category": "python",
+      "expected": "good",
+      "pinnedSha": "b77c9304e1c4220cca450c583491904daf8455af",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 7.4,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 115,
+          "denominator": 200,
+          "rate": 0.575,
+          "interval": {
+            "low": 0.5057093264785485,
+            "high": 0.6414638745648615
+          }
+        },
+        "brief": {
+          "numerator": 85,
+          "denominator": 200,
+          "rate": 0.425,
+          "interval": {
+            "low": 0.3585361254351385,
+            "high": 0.49429067352145145
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.315,
+        "items": 63,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 63,
+            "denominator": 200,
+            "rate": 0.315,
+            "interval": {
+              "low": 0.2546232099022851,
+              "high": 0.38234956085730354
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 400
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 1170,
+        "replayP95Ms": 1611,
+        "sessionP50Ms": 842,
+        "sessionP95Ms": 1107
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 13,
+          "confirmed": 13,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 0,
+        "confirmed": 0,
+        "precision": null,
+        "detected": 0,
+        "recall": 0,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 30,
+        "skippedShare": 1,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 30,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: Python, delete, partial": 15,
+          "missed positive: Python, rename, partial": 15
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 992,
+          "fired": 547,
+          "precision": 0.5571984435797666,
+          "hitRate": 0.7586837294332724,
+          "lift": 2.4850299401197606
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 513,
+          "precision": 0.5638207945900253,
+          "hitRate": 0.746588693957115,
+          "lift": 2.37888198757764,
+          "deltas": {
+            "fired": -34,
+            "coverage": -0.019439679817038313,
+            "precision": 0.006622351010258765,
+            "hitRate": -0.012095035476157423,
+            "falseAlarmRate": 0.012095035476157368,
+            "recall": -0.006886858749121566,
+            "lift": -0.10614795254212073
+          }
+        }
+      }
+    },
+    {
+      "repo": "github/spec-kit",
+      "slug": "github__spec-kit",
+      "language": "python",
+      "group": "Python",
+      "category": "python",
+      "expected": "good",
+      "pinnedSha": "a227e38315cd38172b04f2fb8f06ce8b69b38331",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 7.9,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 107,
+          "denominator": 200,
+          "rate": 0.535,
+          "interval": {
+            "low": 0.4658664687236315,
+            "high": 0.6028143584299599
+          }
+        },
+        "brief": {
+          "numerator": 93,
+          "denominator": 200,
+          "rate": 0.465,
+          "interval": {
+            "low": 0.3971856415700402,
+            "high": 0.5341335312763684
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.28,
+        "items": 56,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 56,
+            "denominator": 200,
+            "rate": 0.28,
+            "interval": {
+              "low": 0.2223688977394903,
+              "high": 0.3459230458665071
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 1000
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 1029,
+        "replayP95Ms": 1197,
+        "sessionP50Ms": 690,
+        "sessionP95Ms": 735
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 31,
+          "confirmed": 31,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 0,
+        "confirmed": 0,
+        "precision": null,
+        "detected": 0,
+        "recall": 0,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 30,
+        "skippedShare": 1,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 30,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: Python, delete, partial": 15,
+          "missed positive: Python, rename, partial": 15
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 418,
+          "fired": 669,
+          "precision": 0.5865019011406845,
+          "hitRate": 0.7100149476831091,
+          "lift": 5
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 621,
+          "precision": 0.55,
+          "hitRate": 0.607085346215781,
+          "lift": 4.053763440860215,
+          "deltas": {
+            "fired": -48,
+            "coverage": -0.04043807919123843,
+            "precision": -0.03650190114068441,
+            "hitRate": -0.1029296014673281,
+            "falseAlarmRate": 0.10292960146732816,
+            "recall": -0.01014476233899464,
+            "lift": -0.946236559139785
+          }
+        }
+      }
+    },
+    {
+      "repo": "colbymchenry/codegraph",
+      "slug": "colbymchenry__codegraph",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "young",
+      "expected": "hard",
+      "pinnedSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 15.9,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 24,
+          "denominator": 200,
+          "rate": 0.12,
+          "interval": {
+            "low": 0.08197992706375512,
+            "high": 0.17234252098296746
+          }
+        },
+        "brief": {
+          "numerator": 176,
+          "denominator": 200,
+          "rate": 0.88,
+          "interval": {
+            "low": 0.8276574790170325,
+            "high": 0.9180200729362449
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.815,
+        "items": 163,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 163,
+            "denominator": 200,
+            "rate": 0.815,
+            "interval": {
+              "low": 0.7554293723884824,
+              "high": 0.8626980719938395
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unsupported-config": 400,
+          "target-missing": 3072,
+          "unknown-package": 200
+        },
+        "uncheckedLanguages": {
+          "rust": 16,
+          "java": 2,
+          "kotlin": 1,
+          "sql": 1
+        }
+      },
+      "runtime": {
+        "replayP50Ms": 2039,
+        "replayP95Ms": 3222,
+        "sessionP50Ms": 1550,
+        "sessionP95Ms": 2627
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 30,
+          "confirmed": 30,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 31,
+        "confirmed": 29,
+        "precision": 0.9354838709677419,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 1,
+        "falsePositiveRate": 0.03333333333333333,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "false positive: TS/JS, rename-updated": 1,
+          "unconfirmed item: TS/JS": 2
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 347,
+          "fired": 514,
+          "precision": 0.4781216648879402,
+          "hitRate": 0.6284046692607004,
+          "lift": 1.2666666666666666
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 430,
+          "precision": 0.5143288084464555,
+          "hitRate": 0.6186046511627907,
+          "lift": 1.2090909090909092,
+          "deltas": {
+            "fired": -84,
+            "coverage": -0.08267716535433067,
+            "precision": 0.03620714355851523,
+            "hitRate": -0.009800018097909646,
+            "falseAlarmRate": 0.009800018097909702,
+            "recall": -0.02004120621839295,
+            "lift": -0.05757575757575739
+          }
+        }
+      }
+    },
+    {
+      "repo": "team-telnyx/telnyx-node",
+      "slug": "team-telnyx__telnyx-node",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "generated",
+      "expected": "hard",
+      "pinnedSha": "db3dd007839c35b3adb454606c23f216f98deb7c",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 8.9,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 46,
+          "denominator": 200,
+          "rate": 0.23,
+          "interval": {
+            "low": 0.17709343259068808,
+            "high": 0.2930830436530359
+          }
+        },
+        "brief": {
+          "numerator": 154,
+          "denominator": 200,
+          "rate": 0.77,
+          "interval": {
+            "low": 0.7069169563469642,
+            "high": 0.8229065674093119
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.45,
+        "items": 90,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 83,
+            "denominator": 200,
+            "rate": 0.415,
+            "interval": {
+              "low": 0.3489428544975757,
+              "high": 0.4842608509865596
+            }
+          },
+          "untested-change": {
+            "numerator": 7,
+            "denominator": 200,
+            "rate": 0.035,
+            "interval": {
+              "low": 0.017055542008567195,
+              "high": 0.07047061152229074
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 103,
+          "target-missing": 4373,
+          "invalid-target": 6400,
+          "unsupported-config": 182
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "replayP50Ms": 923,
+        "replayP95Ms": 1569,
+        "sessionP50Ms": 547,
+        "sessionP95Ms": 885
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 7,
+          "confirmed": 7,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 17,
+          "confirmed": 17,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 29,
+        "precision": 0.9666666666666667,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "unconfirmed item: TS/JS": 1
+        }
+      },
+      "backtests": {
+        "plain": {
+          "testCommits": 64,
+          "fired": 136,
+          "precision": 0.8029556650246306,
+          "hitRate": 0.9411764705882353,
+          "lift": 1
+        },
+        "originWeighted": {
+          "spec": "bot=0,agent=0.5",
+          "fired": 1,
+          "precision": 1,
+          "hitRate": 1,
+          "lift": 1,
+          "deltas": {
+            "fired": -135,
+            "coverage": -0.823170731707317,
+            "precision": 0.19704433497536944,
+            "hitRate": 0.05882352941176472,
+            "falseAlarmRate": -0.058823529411764705,
+            "recall": -0.14719202898550723,
+            "lift": 0
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "repo": "fatedier/frp",
+  "pinnedSha": "331abd5aa144e3f105abba29a22af701acf1a298",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 865
+    },
+    "bench": {
+      "status": "done",
+      "ms": 227325,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 85477
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 34647
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 308
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 272
+    }
+  },
+  "timedMs": 347449,
+  "wallMs": 348898,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

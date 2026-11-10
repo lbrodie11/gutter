@@ -1,3 +1,4 @@
+import type { GutterBrief } from '../contract.ts';
 import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
@@ -150,6 +151,16 @@ function scorableTargetFilesOf(questions: readonly QuestionOutcomeRecord[]): str
     }
   }
   return [...out];
+}
+
+/** GU-30: the production brief's dependents coverage, for the bench record (additive). */
+export function coverageFields(brief: GutterBrief): Pick<BenchPrRecord, 'coverage' | 'unresolvedByReason' | 'uncheckedLanguages'> {
+  const lang = new Map(brief.changes.files.map((f) => [f.path, f.language ?? 'unknown']));
+  return {
+    coverage: brief.dependents.coverage,
+    unresolvedByReason: { ...(brief.dependents.unresolved.byReason ?? {}) },
+    uncheckedLanguages: [...new Set(brief.dependents.unchecked.map((p) => lang.get(p) ?? 'unknown'))].sort(),
+  };
 }
 
 /** GU-28: copy RA-06 track records onto `forgotten-companion` question records (bench-internal). */
@@ -560,6 +571,7 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
           deletions: f.deletions,
         })),
         timestampAnomaly: unit.timestampAnomaly || meta.timestampAnomaly,
+        ...coverageFields(brief),
         history: meta.history,
         mergeDiffers: mergeResolution.mergeDiffers,
         mergeDifferingFiles: mergeResolution.mergeDifferingFiles.map((f) => sanitizePath(f)),

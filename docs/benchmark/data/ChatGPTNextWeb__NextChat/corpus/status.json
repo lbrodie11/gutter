@@ -1,0 +1,49 @@
+{
+  "repo": "ChatGPTNextWeb/NextChat",
+  "pinnedSha": "1d3dc331512929a4b1d3e82354e72acce33b5c7a",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 940
+    },
+    "bench": {
+      "status": "done",
+      "ms": 239104,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 73290
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 25513
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 247
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 267
+    }
+  },
+  "timedMs": 337907,
+  "wallMs": 339363,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "repo": "slymnoyann/hey.xyz",
+  "pinnedSha": "44dee0c1223b9202699915fd3e92e670fd8e34e6",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 742
+    },
+    "bench": {
+      "status": "done",
+      "ms": 341595,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 92815
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 32943
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 318
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 364
+    }
+  },
+  "timedMs": 467353,
+  "wallMs": 468780,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

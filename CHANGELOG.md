@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **`GU-30` Gate A′ on a preregistered 20-repository corpus: FAIL** ([`docs/benchmark/README.md`](docs/benchmark/README.md), [DECISIONS #19](docs/DECISIONS.md#19-gate-a-is-measured-on-a-preregistered-corpus-with-seeded-prs-for-the-facts-real-prs-never-produce-gu-30)). Quiet (median full share 0.00) and no prediction wording, but seeded `broken-import` recall is 0.63 (TS/JS 0.90; Go and Python 0) at precision 0.98. No product default changed.
+  - Preregistration [`docs/benchmark/CORPUS.md`](docs/benchmark/CORPUS.md) §1–§5 and the ROADMAP amendment under Gate A′(b), committed before any result; one dated erratum (directory specifiers in the TypeScript oracles), fixed before any result.
+  - New bench tooling: `bench/corpus.json` (+ schema, selection rule and saved candidates), `bench/run-corpus.mjs` (resumable, 45-minute timeout, versions recorded), `bench/seeded.ts` (seeded mutations, module-resolution oracle for TS/JS, Go and Python), `bench/aggregate.mjs` (metrics, mechanical verdict, "Where Gutter did badly"), [`docs/benchmark/REPRODUCE.md`](docs/benchmark/REPRODUCE.md).
+  - Bench records gain optional `coverage`, `unresolvedByReason` and `uncheckedLanguages` (`schema/bench.schema.json`); `gutter.json` is unchanged.
+  - `bench/gate-a-prime.ts` resolves directory specifiers like `import '.'` (its broken-import re-check missed them).
+
 ## 0.4.0 · 2026-11-10
 
 - **`GU-05` Repo Archaeology as a library, one session per brief ([DECISIONS #18](docs/DECISIONS.md#18-repo-archaeology-is-loaded-as-a-library-one-session-per-brief-gu-05)).**

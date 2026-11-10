@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lbrodie11/gutter/bench/corpus.schema.json",
+  "title": "Gutter benchmark corpus (GU-30)",
+  "description": "The preregistered repositories for the Gate A′ corpus run. Fixed by the preregistration commit of docs/benchmark/CORPUS.md.",
+  "type": "object",
+  "required": ["schemaVersion", "selectionDate", "repos"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "selectionDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "repos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["url", "pinnedSha", "branch", "language", "mergeStyle", "why", "expected", "category"],
+        "additionalProperties": false,
+        "properties": {
+          "url": { "type": "string", "pattern": "^https://github\\.com/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$" },
+          "pinnedSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "branch": { "type": "string", "minLength": 1 },
+          "language": { "enum": ["typescript", "go", "python"] },
+          "category": { "enum": ["continuity", "ts-library", "ts-app-paths", "ts-monorepo", "go", "python", "young", "generated"] },
+          "mergeStyle": { "enum": ["merge", "squash", "mixed"] },
+          "expected": { "enum": ["good", "hard"] },
+          "botShare": { "type": "number", "minimum": 0, "maximum": 1 },
+          "why": { "type": "string", "minLength": 10 }
+        }
+      }
+    }
+  }
+}

@@ -6,20 +6,22 @@ Proof before platform. Each milestone has an exit test. If a milestone's exit te
 
 The question, since GU-29 ([DECISIONS #17](DECISIONS.md#17-explain-dont-predict-gu-29)): **is Gutter quiet, true and non-predictive?** (It used to be "is panel 4 right often enough to be worth a reviewer's attention?"; on hono it was not, see [`STAGE0.md`](benchmark/STAGE0.md).)
 
-- [ ] Run `repo-archaeology backtest` across 15–20 active OSS repos (mixed TS, Go, Python, monorepos) and publish the table: precision, hit rate, lift, test-window size.
+- [x] Run `repo-archaeology backtest` across 15–20 active OSS repos (mixed TS, Go, Python, monorepos) and publish the table: precision, hit rate, lift, test-window size (`GU-30`, [`benchmark/README.md`](benchmark/README.md)).
 - [x] Build `gutter bench` (`GU-03`) to replay a repo's merged PRs strictly as of each PR (`quiet` / `brief` / `full`, questions per PR, 7-day post-merge follow-up proxy vs. matched baselines).
-- [ ] Replay Gutter over each repo's last 200 merged PRs across the multi-repo benchmark corpus (`GU-18`).
+- [x] Replay Gutter over each repo's last 200 merged PRs across the multi-repo benchmark corpus (`GU-30`: 20 repositories, preregistered in [`benchmark/CORPUS.md`](benchmark/CORPUS.md)).
 - [ ] Hand-review 50 flagged PRs (`GU-04`): was the question useful, irrelevant, or wrong? *(Optional since GU-29: the 60 Stage 0 labels can no longer reverse DECISIONS #17; they only inform whether "Usually changes with" stays visible by default.)*
 - [x] Stop predicting omissions by default; keep the old behavior behind `legacyPredictions` (`GU-29`).
-- [ ] Agent-commit weighting: measure whether bot- and agent-authored sweeping commits inflate co-change, and tune upstream in Repo Archaeology.
+- [x] Agent-commit weighting: measure whether bot- and agent-authored sweeping commits inflate co-change (`GU-30`, reported: with `bot=0,agent=0.5`, backtest precision changes by a median of 0.00 across 20 repositories, from −0.30 to +0.20). Tuning upstream in Repo Archaeology is not justified by this data.
 
 **Exit test (Gate A′, replaces Gate A):** checkable by an agent without human labels, on hono now and on the corpus when it exists ([`bench/gate-a-prime.ts`](../bench/gate-a-prime.ts)):
 
 - **(a) Quiet enough:** `full` share ≤ 1/3 on the median repo.
-- **(b) Facts are true:** an independent re-check confirms ≥ 95% of `broken-import` items. The re-check resolves each specifier with TypeScript's own `ts.resolveModuleName` and the repo's tsconfig at that PR's head; for non-TS files it re-checks file existence. Every `untested-change` and test-history fact matches git at that SHA (100%: these are deterministic).
+- **(b) Facts are true:** an independent re-check confirms ≥ 95% of `broken-import` items. The re-check resolves each specifier with TypeScript's own `ts.resolveModuleName` and the repo's tsconfig at that PR's head; for non-TS files it re-checks file existence. Every `untested-change` and test-history fact matches git at that SHA (100%: these are deterministic). When real PRs in the corpus produce fewer than 20 `broken-import` items, (b) is evaluated on the preregistered seeded mutations in `CORPUS.md`.
 - **(c) No predictions:** the banned-words test (`forgot`, `likely forgotten`, `you may have missed`, `untested`, `not covered`) passes on every fixture and every replayed bench page.
 
 A criterion with no items on a repository is reported as *not exercised*, never as met. **hono (2026-11-10): PASS on what hono exercises**; `broken-import` is not exercised (0 items in 200 PRs). See [`STAGE0.md`, After GU-29](benchmark/STAGE0.md#after-gu-29--explain-dont-predict-2026-11-10).
+
+**Corpus (GU-30, 2026-11-10): Gate A′ FAIL** on the preregistered rule ([`benchmark/README.md`](benchmark/README.md)). (a) met: the median repository's full share is 0.00. (c) met: no banned words. (b) not met: seeded `broken-import` recall is 0.63 (needs 0.90) at precision 0.98, because Gutter reports no broken import for removed Go packages, Python modules or TS/JS alias imports. `untested-change` and test-history facts were 100% correct. M0 stays open until a follow-up fixes the language coverage and a fresh preregistered run passes.
 
 *Former exit test (Gate A, retired by GU-29): warnings that become questions are right ≥ 70% of the time on the median repo, and fewer than 1 in 3 PRs get a `full` page.*
 

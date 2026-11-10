@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "selectionDate": "2026-11-10",
+  "repos": [
+    {
+      "url": "https://github.com/honojs/hono",
+      "pinnedSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "branch": "main",
+      "language": "typescript",
+      "category": "continuity",
+      "expected": "good",
+      "why": "Continuity with Stage 0, GU-29 and GU-05 (same pin and PRs).",
+      "mergeStyle": "squash",
+      "botShare": 0
+    },
+    {
+      "url": "https://github.com/remarkablemark/html-react-parser",
+      "pinnedSha": "46e79e4cf4ef6cd7a5c280ed9c8885ac4fad6632",
+      "branch": "master",
+      "language": "typescript",
+      "category": "ts-library",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.98,
+      "why": "TypeScript/JavaScript library: rank 7 by stars in its category search that passed the structural check and has 2116 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/faastjs/faast.js",
+      "pinnedSha": "0038379bf4669c7abcc93d2b821f62313c0f6210",
+      "branch": "master",
+      "language": "typescript",
+      "category": "ts-library",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 1,
+      "why": "TypeScript/JavaScript library: rank 10 by stars in its category search that passed the structural check and has 824 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/binance/binance-connector-js",
+      "pinnedSha": "62a2ec1a164f8e2238b81f5163b5d08f073d56f5",
+      "branch": "master",
+      "language": "typescript",
+      "category": "ts-library",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0,
+      "why": "TypeScript/JavaScript library: rank 15 by stars in its category search that passed the structural check and has 304 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/allianz/ng-aquila",
+      "pinnedSha": "5b23a36e0b47a1dd90a6ffe36e50e7b2cbf7a9a4",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-library",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.01,
+      "why": "TypeScript/JavaScript library: rank 34 by stars in its category search that passed the structural check and has 1845 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/matrix-org/matrix-appservice-bridge",
+      "pinnedSha": "6392ab0550e23fffa9f014411148c667ba2e77da",
+      "branch": "develop",
+      "language": "typescript",
+      "category": "ts-library",
+      "mergeStyle": "mixed",
+      "expected": "good",
+      "botShare": 0.09,
+      "why": "TypeScript/JavaScript library: rank 38 by stars in its category search that passed the structural check and has 304 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/ChatGPTNextWeb/NextChat",
+      "pinnedSha": "1d3dc331512929a4b1d3e82354e72acce33b5c7a",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-app-paths",
+      "mergeStyle": "merge",
+      "expected": "good",
+      "botShare": 0.035,
+      "why": "TypeScript app with tsconfig paths aliases: rank 2 by stars in its category search that passed the structural check and has 897 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/DayuanJiang/next-ai-draw-io",
+      "pinnedSha": "c9dc5f5cc62e7e5a327a62b39027d80033e1548c",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-app-paths",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.13,
+      "why": "TypeScript app with tsconfig paths aliases: rank 7 by stars in its category search that passed the structural check and has 536 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/slymnoyann/hey.xyz",
+      "pinnedSha": "44dee0c1223b9202699915fd3e92e670fd8e34e6",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-app-paths",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.115,
+      "why": "TypeScript app with tsconfig paths aliases: rank 9 by stars in its category search that passed the structural check and has 503 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/lerna/lerna",
+      "pinnedSha": "d6226111673016062ba099b2876334069407ef41",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-monorepo",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.615,
+      "why": "Workspace monorepo: rank 1 by stars in its category search that passed the structural check and has 1126 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/vbenjs/vue-vben-admin",
+      "pinnedSha": "71dc5ac59dcd832e45df861a283746a3cd143125",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-monorepo",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.03,
+      "why": "Workspace monorepo: rank 2 by stars in its category search that passed the structural check and has 977 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/hypit-ai/hypit",
+      "pinnedSha": "0762c6be56c0af43fff3cdbdb285e21414dd249b",
+      "branch": "main",
+      "language": "typescript",
+      "category": "ts-monorepo",
+      "mergeStyle": "mixed",
+      "expected": "good",
+      "botShare": 0.15,
+      "why": "Workspace monorepo: rank 3 by stars in its category search that passed the structural check and has 203 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/ollama/ollama",
+      "pinnedSha": "e9fde36d75fea66579d84099956ce1430792737a",
+      "branch": "main",
+      "language": "go",
+      "category": "go",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.11,
+      "why": "Go: rank 2 by stars in its category search that passed the structural check and has 3434 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/fatedier/frp",
+      "pinnedSha": "331abd5aa144e3f105abba29a22af701acf1a298",
+      "branch": "dev",
+      "language": "go",
+      "category": "go",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.005,
+      "why": "Go: rank 4 by stars in its category search that passed the structural check and has 343 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/gin-gonic/gin",
+      "pinnedSha": "0f09c3a9b4626d9fe9979cf4d0521d6ae32ab646",
+      "branch": "master",
+      "language": "go",
+      "category": "go",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.235,
+      "why": "Go: rank 5 by stars in its category search that passed the structural check and has 1149 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/TheAlgorithms/Python",
+      "pinnedSha": "574d100b7181956e9c8384552fd078165e4cc326",
+      "branch": "master",
+      "language": "python",
+      "category": "python",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.1,
+      "why": "Python: rank 6 by stars in its category search that passed the structural check and has 3581 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/yt-dlp/yt-dlp",
+      "pinnedSha": "b77c9304e1c4220cca450c583491904daf8455af",
+      "branch": "master",
+      "language": "python",
+      "category": "python",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0,
+      "why": "Python: rank 7 by stars in its category search that passed the structural check and has 5568 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/github/spec-kit",
+      "pinnedSha": "a227e38315cd38172b04f2fb8f06ce8b69b38331",
+      "branch": "main",
+      "language": "python",
+      "category": "python",
+      "mergeStyle": "squash",
+      "expected": "good",
+      "botShare": 0.27,
+      "why": "Python: rank 11 by stars in its category search that passed the structural check and has 1902 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/colbymchenry/codegraph",
+      "pinnedSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+      "branch": "main",
+      "language": "typescript",
+      "category": "young",
+      "mergeStyle": "squash",
+      "expected": "hard",
+      "botShare": 0.01,
+      "why": "Very young (created within the last 12 months): rank 2 by stars in its category search that passed the structural check and has 1231 reachable merged PRs."
+    },
+    {
+      "url": "https://github.com/team-telnyx/telnyx-node",
+      "pinnedSha": "db3dd007839c35b3adb454606c23f216f98deb7c",
+      "branch": "master",
+      "language": "typescript",
+      "category": "generated",
+      "mergeStyle": "squash",
+      "expected": "hard",
+      "botShare": 0.645,
+      "why": "Generated code (Stainless-generated SDK): rank 7 by stars in its category search that passed the structural check and has 381 reachable merged PRs."
+    }
+  ]
+}

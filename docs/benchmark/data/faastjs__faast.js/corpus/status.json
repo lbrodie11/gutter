@@ -1,0 +1,49 @@
+{
+  "repo": "faastjs/faast.js",
+  "pinnedSha": "0038379bf4669c7abcc93d2b821f62313c0f6210",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 873
+    },
+    "bench": {
+      "status": "done",
+      "ms": 176560,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 64161
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 22254
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 276
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 277
+    }
+  },
+  "timedMs": 262975,
+  "wallMs": 264402,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

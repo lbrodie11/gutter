@@ -1,0 +1,123 @@
+{
+  "seed": 20261110,
+  "repoSeed": 3083792610,
+  "hosts": [
+    "2d63f6b1f90549c420d3d16e68eff2ab21c78308",
+    "585fdc5b83ee13df78f21fbfaa909eba96c79094",
+    "a75320ef2fcbb6103c06bbd5b4ad85f9c35b4cc3"
+  ],
+  "meta": [
+    {
+      "host": "2d63f6b1f90549c420d3d16e68eff2ab21c78308",
+      "eligiblePositive": 84,
+      "eligibleNegative": {
+        "rename-updated": 84,
+        "delete-unimported": 179,
+        "move-reexport": 0,
+        "test-only": 126
+      },
+      "negativesTaken": {
+        "rename-updated": 4,
+        "delete-unimported": 3,
+        "test-only": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "585fdc5b83ee13df78f21fbfaa909eba96c79094",
+      "eligiblePositive": 84,
+      "eligibleNegative": {
+        "rename-updated": 84,
+        "delete-unimported": 182,
+        "move-reexport": 0,
+        "test-only": 153
+      },
+      "negativesTaken": {
+        "delete-unimported": 4,
+        "test-only": 3,
+        "rename-updated": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "a75320ef2fcbb6103c06bbd5b4ad85f9c35b4cc3",
+      "eligiblePositive": 70,
+      "eligibleNegative": {
+        "rename-updated": 70,
+        "delete-unimported": 141,
+        "move-reexport": 0,
+        "test-only": 77
+      },
+      "negativesTaken": {
+        "test-only": 4,
+        "rename-updated": 3,
+        "delete-unimported": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    }
+  ],
+  "positives": 30,
+  "negatives": 30,
+  "reportedItems": 0,
+  "confirmedItems": 0,
+  "precision": null,
+  "detected": 0,
+  "recall": 0,
+  "falsePositives": 0,
+  "falsePositiveRate": 0,
+  "skippedUncheckedOrPartial": 30,
+  "skippedShare": 1,
+  "errors": 0,
+  "byKind": {
+    "delete": {
+      "n": 15,
+      "detected": 0,
+      "withReport": 0
+    },
+    "rename": {
+      "n": 15,
+      "detected": 0,
+      "withReport": 0
+    },
+    "rename-updated": {
+      "n": 10,
+      "detected": 0,
+      "withReport": 0
+    },
+    "delete-unimported": {
+      "n": 10,
+      "detected": 0,
+      "withReport": 0
+    },
+    "move-reexport": {
+      "n": 0,
+      "detected": 0,
+      "withReport": 0
+    },
+    "test-only": {
+      "n": 10,
+      "detected": 0,
+      "withReport": 0
+    }
+  },
+  "missReasons": {
+    "unchecked": 0,
+    "partial": 30,
+    "missed": 0
+  }
+}

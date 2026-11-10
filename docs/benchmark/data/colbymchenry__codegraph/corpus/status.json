@@ -1,0 +1,49 @@
+{
+  "repo": "colbymchenry/codegraph",
+  "pinnedSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 2596
+    },
+    "bench": {
+      "status": "done",
+      "ms": 505714,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 346624
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 98540
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 452
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 431
+    }
+  },
+  "timedMs": 950878,
+  "wallMs": 954358,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

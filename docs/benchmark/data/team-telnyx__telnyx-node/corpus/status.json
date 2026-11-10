@@ -1,0 +1,49 @@
+{
+  "repo": "team-telnyx/telnyx-node",
+  "pinnedSha": "db3dd007839c35b3adb454606c23f216f98deb7c",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 1116
+    },
+    "bench": {
+      "status": "done",
+      "ms": 331230,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 153994
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 46431
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 341
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 274
+    }
+  },
+  "timedMs": 531655,
+  "wallMs": 533390,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

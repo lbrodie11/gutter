@@ -1,0 +1,589 @@
+{
+  "selectionDate": "2026-11-10",
+  "pinBefore": "2026-11-03T23:59:59Z",
+  "botShareHeavy": 0.2,
+  "log": [
+    {
+      "category": "ts-library",
+      "fullName": "ibelick/motion-primitives",
+      "stars": 6929,
+      "decision": "skip",
+      "reason": "only 75 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "rolldown/tsdown",
+      "stars": 4339,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "heroui-inc/heroui-native",
+      "stars": 3716,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "coder/ghostty-web",
+      "stars": 3053,
+      "decision": "skip",
+      "reason": "only 97 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "intlify/vue-i18n",
+      "stars": 2714,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "margelo/react-native-graph",
+      "stars": 2641,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "remarkablemark/html-react-parser",
+      "stars": 2431,
+      "decision": "take",
+      "reachable": 2116,
+      "pinnedSha": "46e79e4cf4ef6cd7a5c280ed9c8885ac4fad6632",
+      "mergeStyle": "squash",
+      "botShare": 0.98
+    },
+    {
+      "category": "ts-library",
+      "fullName": "margelo/nitro",
+      "stars": 1975,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "saas-js/saas-ui",
+      "stars": 1657,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "faastjs/faast.js",
+      "stars": 1483,
+      "decision": "take",
+      "reachable": 824,
+      "pinnedSha": "0038379bf4669c7abcc93d2b821f62313c0f6210",
+      "mergeStyle": "squash",
+      "botShare": 1
+    },
+    {
+      "category": "ts-library",
+      "fullName": "web-infra-dev/rslib",
+      "stars": 1043,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "ilyashubin/scrollbooster",
+      "stars": 1005,
+      "decision": "skip",
+      "reason": "only 11 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "discordeno/discordeno",
+      "stars": 941,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "lukasbach/headless-tree",
+      "stars": 910,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "binance/binance-connector-js",
+      "stars": 755,
+      "decision": "take",
+      "reachable": 304,
+      "pinnedSha": "62a2ec1a164f8e2238b81f5163b5d08f073d56f5",
+      "mergeStyle": "squash",
+      "botShare": 0
+    },
+    {
+      "category": "ts-library",
+      "fullName": "AxaFrance/oidc-client",
+      "stars": 681,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "AnandChowdhary/calendar-link",
+      "stars": 629,
+      "decision": "skip",
+      "reason": "fewer than 20 TS/JS files"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "shadcn-labs/snapcn",
+      "stars": 605,
+      "decision": "skip",
+      "reason": "only 80 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "LouisMazel/maz-ui",
+      "stars": 565,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "doodlewind/beam",
+      "stars": 528,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "devmikets/hyperliquid-sdk",
+      "stars": 484,
+      "decision": "skip",
+      "reason": "only 0 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "solidstate-network/solidstate-solidity",
+      "stars": 472,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "nktkas/hyperliquid",
+      "stars": 454,
+      "decision": "skip",
+      "reason": "no root package.json"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "cubing/cubing.js",
+      "stars": 373,
+      "decision": "skip",
+      "reason": "only 139 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "bjerkio/oidc-react",
+      "stars": 360,
+      "decision": "skip",
+      "reason": "fewer than 20 TS/JS files"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "rodrigogs/xvideos",
+      "stars": 309,
+      "decision": "skip",
+      "reason": "fewer than 20 TS/JS files"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "nivandres/intl-t",
+      "stars": 293,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "WINOFFRG/limeplay",
+      "stars": 289,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "stoatchat/javascript-client-sdk",
+      "stars": 287,
+      "decision": "skip",
+      "reason": "only 100 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "EinAeffchen/Omoide",
+      "stars": 277,
+      "decision": "skip",
+      "reason": "no root package.json"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "massive-com/client-js",
+      "stars": 272,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "sandstone-mc/sandstone",
+      "stars": 256,
+      "decision": "skip",
+      "reason": "only 101 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "sagold/json-schema-library",
+      "stars": 255,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "allianz/ng-aquila",
+      "stars": 250,
+      "decision": "take",
+      "reachable": 1845,
+      "pinnedSha": "5b23a36e0b47a1dd90a6ffe36e50e7b2cbf7a9a4",
+      "mergeStyle": "squash",
+      "botShare": 0.01
+    },
+    {
+      "category": "ts-library",
+      "fullName": "petera2c/simple-table",
+      "stars": 233,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "kash/cubedesk",
+      "stars": 224,
+      "decision": "skip",
+      "reason": "only 66 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "docgeni/docgeni",
+      "stars": 201,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-library",
+      "fullName": "matrix-org/matrix-appservice-bridge",
+      "stars": 187,
+      "decision": "take",
+      "reachable": 304,
+      "pinnedSha": "6392ab0550e23fffa9f014411148c667ba2e77da",
+      "mergeStyle": "mixed",
+      "botShare": 0.09
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "shadcn-ui/ui",
+      "stars": 127819,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "ChatGPTNextWeb/NextChat",
+      "stars": 88944,
+      "decision": "take",
+      "reachable": 897,
+      "pinnedSha": "1d3dc331512929a4b1d3e82354e72acce33b5c7a",
+      "mergeStyle": "merge",
+      "botShare": 0.035
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "AykutSarac/jsoncrack.com",
+      "stars": 44591,
+      "decision": "skip",
+      "reason": "no tsconfig with compilerOptions.paths"
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "gitroomhq/postiz-app",
+      "stars": 41258,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "JCodesMore/ai-website-cloner-template",
+      "stars": 38948,
+      "decision": "skip",
+      "reason": "only 13 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "Dokploy/dokploy",
+      "stars": 38388,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "DayuanJiang/next-ai-draw-io",
+      "stars": 36861,
+      "decision": "take",
+      "reachable": 536,
+      "pinnedSha": "c9dc5f5cc62e7e5a327a62b39027d80033e1548c",
+      "mergeStyle": "squash",
+      "botShare": 0.13
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "vercel/swr",
+      "stars": 32488,
+      "decision": "skip",
+      "reason": "workspace monorepo (other category)"
+    },
+    {
+      "category": "ts-app-paths",
+      "fullName": "slymnoyann/hey.xyz",
+      "stars": 29346,
+      "decision": "take",
+      "reachable": 503,
+      "pinnedSha": "44dee0c1223b9202699915fd3e92e670fd8e34e6",
+      "mergeStyle": "squash",
+      "botShare": 0.115
+    },
+    {
+      "category": "ts-monorepo",
+      "fullName": "lerna/lerna",
+      "stars": 36029,
+      "decision": "take",
+      "reachable": 1126,
+      "pinnedSha": "d6226111673016062ba099b2876334069407ef41",
+      "mergeStyle": "squash",
+      "botShare": 0.615
+    },
+    {
+      "category": "ts-monorepo",
+      "fullName": "vbenjs/vue-vben-admin",
+      "stars": 33782,
+      "decision": "take",
+      "reachable": 977,
+      "pinnedSha": "71dc5ac59dcd832e45df861a283746a3cd143125",
+      "mergeStyle": "squash",
+      "botShare": 0.03
+    },
+    {
+      "category": "ts-monorepo",
+      "fullName": "hypit-ai/hypit",
+      "stars": 29000,
+      "decision": "take",
+      "reachable": 203,
+      "pinnedSha": "0762c6be56c0af43fff3cdbdb285e21414dd249b",
+      "mergeStyle": "mixed",
+      "botShare": 0.15
+    },
+    {
+      "category": "go",
+      "fullName": "avelino/awesome-go",
+      "stars": 193100,
+      "decision": "skip",
+      "reason": "fewer than 50 .go files"
+    },
+    {
+      "category": "go",
+      "fullName": "ollama/ollama",
+      "stars": 186534,
+      "decision": "take",
+      "reachable": 3434,
+      "pinnedSha": "e9fde36d75fea66579d84099956ce1430792737a",
+      "mergeStyle": "squash",
+      "botShare": 0.11
+    },
+    {
+      "category": "go",
+      "fullName": "JuliusBrussee/caveman",
+      "stars": 118811,
+      "decision": "skip",
+      "reason": "only 132 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "go",
+      "fullName": "fatedier/frp",
+      "stars": 110508,
+      "decision": "take",
+      "reachable": 343,
+      "pinnedSha": "331abd5aa144e3f105abba29a22af701acf1a298",
+      "mergeStyle": "squash",
+      "botShare": 0.005
+    },
+    {
+      "category": "go",
+      "fullName": "gin-gonic/gin",
+      "stars": 89617,
+      "decision": "take",
+      "reachable": 1149,
+      "pinnedSha": "0f09c3a9b4626d9fe9979cf4d0521d6ae32ab646",
+      "mergeStyle": "squash",
+      "botShare": 0.235
+    },
+    {
+      "category": "python",
+      "fullName": "public-apis/public-apis",
+      "stars": 497833,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "EbookFoundation/free-programming-books",
+      "stars": 401436,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "donnemartin/system-design-primer",
+      "stars": 377544,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "vinta/awesome-python",
+      "stars": 333757,
+      "decision": "skip",
+      "reason": "fewer than 50 .py files"
+    },
+    {
+      "category": "python",
+      "fullName": "practical-tutorials/project-based-learning",
+      "stars": 289463,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "TheAlgorithms/Python",
+      "stars": 225986,
+      "decision": "take",
+      "reachable": 3581,
+      "pinnedSha": "574d100b7181956e9c8384552fd078165e4cc326",
+      "mergeStyle": "squash",
+      "botShare": 0.1
+    },
+    {
+      "category": "python",
+      "fullName": "yt-dlp/yt-dlp",
+      "stars": 206651,
+      "decision": "take",
+      "reachable": 5568,
+      "pinnedSha": "b77c9304e1c4220cca450c583491904daf8455af",
+      "mergeStyle": "squash",
+      "botShare": 0
+    },
+    {
+      "category": "python",
+      "fullName": "microsoft/markitdown",
+      "stars": 194737,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "anthropics/skills",
+      "stars": 191916,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "521xueweihan/HelloGitHub",
+      "stars": 187971,
+      "decision": "skip",
+      "reason": "no root pyproject.toml or setup.py"
+    },
+    {
+      "category": "python",
+      "fullName": "github/spec-kit",
+      "stars": 149146,
+      "decision": "take",
+      "reachable": 1902,
+      "pinnedSha": "a227e38315cd38172b04f2fb8f06ce8b69b38331",
+      "mergeStyle": "squash",
+      "botShare": 0.27
+    },
+    {
+      "category": "young",
+      "fullName": "Egonex-AI/Understand-Anything",
+      "stars": 91841,
+      "decision": "skip",
+      "reason": "only 144 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "young",
+      "fullName": "colbymchenry/codegraph",
+      "stars": 77276,
+      "decision": "take",
+      "reachable": 1231,
+      "pinnedSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+      "mergeStyle": "squash",
+      "botShare": 0.01
+    },
+    {
+      "category": "generated",
+      "fullName": "cloudflare/cloudflare-typescript",
+      "stars": 832,
+      "decision": "skip",
+      "reason": "only 9 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "generated",
+      "fullName": "ivo-toby/mcp-openapi-server",
+      "stars": 301,
+      "decision": "skip",
+      "reason": "only 41 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "generated",
+      "fullName": "DMontgomery40/bambu-printer-mcp",
+      "stars": 300,
+      "decision": "skip",
+      "reason": "only 50 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "generated",
+      "fullName": "groq/groq-typescript",
+      "stars": 269,
+      "decision": "skip",
+      "reason": "only 74 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "generated",
+      "fullName": "AtlasCloudAI/awesome-seedance-2.5-prompts-skills",
+      "stars": 263,
+      "decision": "skip",
+      "reason": "fewer than 20 TS/JS files"
+    },
+    {
+      "category": "generated",
+      "fullName": "DMontgomery40/mcp-3D-printer-server",
+      "stars": 261,
+      "decision": "skip",
+      "reason": "only 27 merged PRs reachable by the discovery funnel (needs 200)"
+    },
+    {
+      "category": "generated",
+      "fullName": "team-telnyx/telnyx-node",
+      "stars": 198,
+      "decision": "take",
+      "reachable": 381,
+      "pinnedSha": "db3dd007839c35b3adb454606c23f216f98deb7c",
+      "mergeStyle": "squash",
+      "botShare": 0.645
+    }
+  ]
+}

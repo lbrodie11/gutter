@@ -1,0 +1,49 @@
+{
+  "repo": "lerna/lerna",
+  "pinnedSha": "d6226111673016062ba099b2876334069407ef41",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 957
+    },
+    "bench": {
+      "status": "done",
+      "ms": 355635,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 138735
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 46309
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 555
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 541
+    }
+  },
+  "timedMs": 540679,
+  "wallMs": 542734,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "repo": "allianz/ng-aquila",
+  "pinnedSha": "5b23a36e0b47a1dd90a6ffe36e50e7b2cbf7a9a4",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 2117
+    },
+    "bench": {
+      "status": "done",
+      "ms": 461525,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 226442
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 75325
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 661
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 746
+    }
+  },
+  "timedMs": 763292,
+  "wallMs": 766820,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

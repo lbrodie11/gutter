@@ -140,6 +140,15 @@ export interface BenchPrRecord {
    */
   changedFiles?: BenchChangedFile[];
   timestampAnomaly: boolean;
+  /**
+   * GU-30, additive: the production brief's dependents coverage at this PR's head, so coverage honesty is
+   * measured on every PR. Absent in pre-GU-30 files.
+   */
+  coverage?: 'full' | 'partial';
+  /** GU-30, additive: `dependents.unresolved.byReason` (empty when the fallback scanner produced the layer). */
+  unresolvedByReason?: Record<string, number>;
+  /** GU-30, additive: sorted languages of changed files listed in `dependents.unchecked`. */
+  uncheckedLanguages?: string[];
   history: 'available' | 'unavailable';
   mergeDiffers: boolean;
   mergeDifferingFiles: string[];
