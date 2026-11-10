@@ -1,6 +1,7 @@
 import type {
-  Calibration, ChangeStructure, ChecklistItem, DependentsLayer, ForgottenLayer, Salience, TestLink,
+  Calibration, ChangeStructure, ChecklistItem, DependentsLayer, ForgottenItem, ForgottenLayer, Salience, TestLink,
 } from '../contract.ts';
+import type { CompanionTrackRecord } from '../sources/archaeology.ts';
 import type { GutterConfig } from '../config.ts';
 import { pct } from '../stats/wilson.ts';
 
@@ -24,6 +25,25 @@ export interface ChecklistInput {
   tests: TestLink[];
   calibration: Calibration;
   config?: GutterConfig;
+  /** Internal: RA-06 track records keyed by suggested file, for `companionMinTrackRecordFired`. */
+  trackRecords?: ReadonlyMap<string, CompanionTrackRecord>;
+}
+
+/**
+ * Opt-in "proven pairs" gate for companion questions (GU-28 Stage 0b, option 2). With neither
+ * `companionRequireGhost` nor `companionMinTrackRecordFired` set, every item passes, as before.
+ */
+export function passesProvenPairGate(
+  item: Pick<ForgottenItem, 'relationship'>,
+  trackRecord: CompanionTrackRecord | undefined,
+  config: GutterConfig | undefined,
+): boolean {
+  if (config?.companionRequireGhost && item.relationship !== 'ghost') return false;
+  const minFired = config?.companionMinTrackRecordFired;
+  if (minFired !== undefined) {
+    if (!trackRecord || trackRecord.fired === null || trackRecord.fired < minFired) return false;
+  }
+  return true;
 }
 
 /** Co-change questions are suppressed when this repo's measured precision is poor. */
@@ -37,7 +57,7 @@ const more = (n: number) => (n > 0 ? ` (+${n} more)` : '');
 
 export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
   const items: ChecklistItem[] = [];
-  const { changes, dependents, forgotten, tests, calibration, config } = input;
+  const { changes, dependents, forgotten, tests, calibration, config, trackRecords } = input;
   const maxChecklist = config?.maxChecklist ?? MAX_CHECKLIST;
   const maxCompanionQuestions = config?.maxCompanionQuestions ?? MAX_COMPANION_QUESTIONS;
   const minIntervalLow = config?.minIntervalLow ?? MIN_INTERVAL_LOW;
@@ -63,6 +83,7 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
     const seenFiles = new Set<string>();
     const strong = forgotten.items
       .filter((f) => f.interval.low >= minIntervalLow && f.automationShare < 0.5)
+      .filter((f) => passesProvenPairGate(f, trackRecords?.get(f.file), config))
       .filter((f) => (seenFiles.has(f.file) ? false : (seenFiles.add(f.file), true)))
       .slice(0, maxCompanionQuestions);
     for (const f of strong) {

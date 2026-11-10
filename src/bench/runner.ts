@@ -5,7 +5,7 @@ import type { GutterConfig } from '../config.ts';
 import { replayBriefWithMeta } from '../brief.ts';
 import { browseUrlFromRemote, git, repoRoot } from '../git.ts';
 import { GitTreeReader } from '../source/reader.ts';
-import type { RaBacktest } from '../sources/archaeology.ts';
+import { trackRecordsByTarget, type CompanionTrackRecord, type RaBacktest } from '../sources/archaeology.ts';
 import { loadRaLibrary } from '../sources/archaeology-lib.ts';
 import { GUTTER_VERSION } from '../version.ts';
 import {
@@ -150,6 +150,20 @@ function scorableTargetFilesOf(questions: readonly QuestionOutcomeRecord[]): str
     }
   }
   return [...out];
+}
+
+/** GU-28: copy RA-06 track records onto `forgotten-companion` question records (bench-internal). */
+export function attachTrackRecords(
+  questions: QuestionOutcomeRecord[],
+  trackRecords: ReadonlyMap<string, CompanionTrackRecord>,
+): QuestionOutcomeRecord[] {
+  for (const q of questions) {
+    if (q.kind !== 'forgotten-companion') continue;
+    const file = q.targets[0]?.targetFile;
+    const tr = file !== undefined ? trackRecords.get(file) : undefined;
+    if (tr) q.trackRecord = { ...tr };
+  }
+  return questions;
 }
 
 function allSuggestedTargetFilesOf(questions: readonly QuestionOutcomeRecord[]): Set<string> {
@@ -440,8 +454,9 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         windowDays: settings.windowDays,
       };
 
-      const prodQuestions = scoreBriefQuestions(brief, scoreCtx);
-      const ungatedQuestions = scoreBriefQuestions(ungatedBrief, scoreCtx);
+      const trackRecords = trackRecordsByTarget(meta.raDiff);
+      const prodQuestions = attachTrackRecords(scoreBriefQuestions(brief, scoreCtx), trackRecords);
+      const ungatedQuestions = attachTrackRecords(scoreBriefQuestions(ungatedBrief, scoreCtx), trackRecords);
 
       const historyStats =
         meta.history === 'available'

@@ -1,5 +1,5 @@
 /**
- * Adapter for Repo Archaeology's v1 JSON contract (repo-archaeology >= 0.3.0).
+ * Adapter for Repo Archaeology's v1 JSON contract (repo-archaeology >= 0.3.0; `trackRecord` needs >= 0.10.0).
  *
  * Gutter does not re-implement co-change mining. Repo Archaeology owns the
  * statistics (directional confidence, Wilson ranking, sweep filtering, rename
@@ -29,6 +29,54 @@ export interface RaSuggestion {
   lastTogether?: string;
   evidence: RaEvidence[];
   alsoLinkedFrom?: string[];
+  /** repo-archaeology >= 0.10.0 (RA-06). Read only through `normalizeTrackRecord`. */
+  trackRecord?: unknown;
+}
+
+/**
+ * Gutter's internal view of RA-06's per-pair `trackRecord` for one suggestion (`from -> to`).
+ * Internal only: it never enters `gutter.json` (schema v1 is frozen; GU-06 decides on exposure).
+ *  - `fired >= 1`: completed episodes, with `confirmed` and `precision` (an observed follow-up rate, not accuracy).
+ *  - `never_fired`: `fired: 0`.
+ *  - `limited_history`: `fired: null`; too little history to replay.
+ */
+export interface CompanionTrackRecord {
+  fired: number | null;
+  confirmed: number | null;
+  precision: number | null;
+  reason: 'never_fired' | 'limited_history' | null;
+}
+
+const nonNegInt = (x: unknown): x is number => typeof x === 'number' && Number.isInteger(x) && x >= 0;
+
+/**
+ * Validate an untrusted `trackRecord` against the three RA 0.10 shapes; anything else is `undefined`
+ * (treated like "no track record"), so a malformed or future shape can never pass a `fired` filter.
+ */
+export function normalizeTrackRecord(raw: unknown): CompanionTrackRecord | undefined {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const r = raw as Record<string, unknown>;
+  if (r.reason === 'limited_history') {
+    return { fired: null, confirmed: null, precision: null, reason: 'limited_history' };
+  }
+  if (r.reason === 'never_fired') {
+    return r.fired === 0 ? { fired: 0, confirmed: null, precision: null, reason: 'never_fired' } : undefined;
+  }
+  if (r.reason !== undefined) return undefined;
+  if (!nonNegInt(r.fired) || r.fired < 1 || !nonNegInt(r.confirmed) || r.confirmed > r.fired) return undefined;
+  const precision = typeof r.precision === 'number' && r.precision >= 0 && r.precision <= 1 ? r.precision : null;
+  return { fired: r.fired, confirmed: r.confirmed, precision, reason: null };
+}
+
+/** Track records keyed by suggested file (`to`); `diff` emits one suggestion per untouched file. */
+export function trackRecordsByTarget(diff: RaDiff | undefined): Map<string, CompanionTrackRecord> {
+  const out = new Map<string, CompanionTrackRecord>();
+  for (const s of diff?.suggestions ?? []) {
+    if (out.has(s.to)) continue;
+    const tr = normalizeTrackRecord(s.trackRecord);
+    if (tr) out.set(s.to, tr);
+  }
+  return out;
 }
 
 export interface RaFamily {

@@ -10,7 +10,7 @@ import { buildChecklist, salienceOf } from './evidence/checklist.ts';
 import type { SourceReader } from './source/reader.ts';
 import { GitTreeReader, WorkingTreeReader } from './source/reader.ts';
 import type { RaBacktest, RaDiff, RaRunner } from './sources/archaeology.ts';
-import { runBacktest, runDiff, toCalibration, toForgotten } from './sources/archaeology.ts';
+import { runBacktest, runDiff, toCalibration, toForgotten, trackRecordsByTarget } from './sources/archaeology.ts';
 import { loadRaLibrary } from './sources/archaeology-lib.ts';
 import { GUTTER_VERSION } from './version.ts';
 
@@ -140,6 +140,7 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
     tests: input.tests,
     calibration,
     config: mergedConfig,
+    trackRecords: noHistory ? undefined : trackRecordsByTarget(input.raDiff),
   });
   const salience = salienceOf(input.changes, checklist, mergedConfig);
 

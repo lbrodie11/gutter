@@ -1,5 +1,6 @@
 import type { Calibration, ChecklistKind, Salience } from '../contract.ts';
 import type { GutterConfig } from '../config.ts';
+import type { CompanionTrackRecord } from '../sources/archaeology.ts';
 import { wilsonInterval } from '../stats/wilson.ts';
 import type { BenchFunnel, DetectionConfidence, DetectionKind } from './discover.ts';
 
@@ -78,6 +79,11 @@ export interface QuestionOutcomeRecord {
   targets: TargetOutcomeRecord[];
   sameAuthorHit: boolean;
   matchesRaFollowUpHit: boolean;
+  /**
+   * GU-28: Repo Archaeology's per-pair track record (>= 0.10.0) behind a `forgotten-companion`
+   * question, as Gutter read it. Internal to the bench; never part of `gutter.json`.
+   */
+  trackRecord?: CompanionTrackRecord;
 }
 
 export interface BaselineProposalSet {
