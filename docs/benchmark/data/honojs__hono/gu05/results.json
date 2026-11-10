@@ -3,7 +3,7 @@
   "kind": "gutter-gu05-results",
   "repo": "honojs/hono",
   "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
-  "gutterVersion": "0.3.0",
+  "gutterVersion": "0.4.0",
   "raVersion": "0.10.0",
   "gu29": {
     "default": {
@@ -176,7 +176,7 @@
   },
   "gate": {
     "tools": {
-      "gutter": "0.3.0",
+      "gutter": "0.4.0",
       "repoArchaeology": "0.10.0",
       "typescript": "6.0.3"
     },
@@ -500,7 +500,7 @@
       "configOverrides": {
         "legacyPredictions": true
       },
-      "gutterVersion": "0.3.0",
+      "gutterVersion": "0.4.0",
       "raVersion": "0.10.0",
       "prsEvaluated": 200,
       "prsScored": 70,
@@ -673,7 +673,7 @@
           }
         }
       },
-      "totalWallMs": 103365.79,
+      "totalWallMs": 107033.98,
       "companionCoverage": {
         "numerator": 69,
         "denominator": 200,

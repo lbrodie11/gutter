@@ -4,7 +4,7 @@
 
 Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, what the tests show, and what the history says — with clickable commit receipts. You decide what matters.
 
-`Experimental · v0.3.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+`Experimental · v0.4.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -80,7 +80,7 @@ None of these is a verdict. The test row is a historical fact; whether this chan
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.3.0 + repo-archaeology 0.10.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.4.0 + repo-archaeology 0.10.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
@@ -93,7 +93,7 @@ GitHub pull request comments cannot render custom CSS, so Gutter posts **one com
 >
 > *(Plus collapsed `<details>` sections: **Usually changes with** (history, not a prediction), **What it touches**, **Tests**, and **What changed**.)*
 >
-> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.3.0 + repo-archaeology 0.10.0</sub>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.4.0 + repo-archaeology 0.10.0</sub>
 
 ### 3 · The full six-panel page (`gutter.html` artifact)
 
@@ -174,7 +174,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
 
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.3.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.3.0^{commit}`), never an unbuilt `main` branch commit SHA.
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.4.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.4.0^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|
@@ -197,7 +197,7 @@ npx gutter-brief render .gutter/gutter.json --format html > page.html
 
 Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-lib <path>` (a local Repo Archaeology library), `--ra-bin <path>` (a Repo Archaeology binary, used when no library loads), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
 
-**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
+**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` and `.repo-archaeology.json` are read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
 
 **How loud a page is (salience).** Each checklist item with priority ≤ 2 counts as one signal, and breadth (≥ 8 files or ≥ 3 modules) counts as one more when `salienceBreadthFull` is `true` (the default). A page is `full` when it has at least `salienceFullMinSignals` signals (default `2`). By default only `broken-import` has priority ≤ 2, so a page is `full` when it has **two or more broken imports, or one broken import plus breadth**. Breadth alone is never `full`. Any checklist item makes a page at least `brief`, and so does a change to more than three files; otherwise it is `quiet`. Co-change history and test history never count.
 

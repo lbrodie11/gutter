@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scoringVersion": 1,
-  "generatedAt": "2026-11-10T14:11:52.261Z",
+  "generatedAt": "2026-11-10T14:40:41.728Z",
   "repo": {
     "name": "honojs/hono",
     "remoteUrl": "https://github.com/honojs/hono",
@@ -10,7 +10,7 @@
     "shallow": false
   },
   "tools": {
-    "gutter": "0.3.0",
+    "gutter": "0.4.0",
     "repoArchaeology": "0.10.0"
   },
   "settings": {
@@ -29,7 +29,7 @@
     "repo": "https://github.com/honojs/hono",
     "branchHeadSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
     "settingsHash": "63a836d7b4058728",
-    "gutterVersion": "0.3.0",
+    "gutterVersion": "0.4.0",
     "raVersion": "0.10.0",
     "scoringVersion": 1,
     "schemaVersion": 1
@@ -30215,43 +30215,43 @@
     "aggregates": null
   },
   "timings": {
-    "totalWallMs": 106914.69,
+    "totalWallMs": 107725.2,
     "stages": {
       "discovery": {
         "count": 1,
-        "totalMs": 1038.05,
-        "p50Ms": 1038.05,
-        "p95Ms": 1038.05
+        "totalMs": 1313.06,
+        "p50Ms": 1313.06,
+        "p95Ms": 1313.06
       },
       "sessionOpen": {
         "count": 200,
-        "totalMs": 85509.15,
-        "p50Ms": 415.5,
-        "p95Ms": 535.82
+        "totalMs": 85928.52,
+        "p50Ms": 416.92,
+        "p95Ms": 534.87
       },
       "staticAnalysis": {
         "count": 200,
-        "totalMs": 6686.43,
-        "p50Ms": 32.17,
-        "p95Ms": 39.08
+        "totalMs": 6818.03,
+        "p50Ms": 31.75,
+        "p95Ms": 40.88
       },
       "brief": {
         "count": 200,
-        "totalMs": 1816.17,
-        "p50Ms": 8.75,
-        "p95Ms": 10.6
+        "totalMs": 1819.49,
+        "p50Ms": 8.76,
+        "p95Ms": 10.99
       },
       "scoring": {
         "count": 200,
-        "totalMs": 2276.14,
-        "p50Ms": 10.68,
-        "p95Ms": 15
+        "totalMs": 2247.97,
+        "p50Ms": 10.51,
+        "p95Ms": 14.01
       },
       "report": {
         "count": 1,
-        "totalMs": 21.46,
-        "p50Ms": 21.46,
-        "p95Ms": 21.46
+        "totalMs": 20.37,
+        "p50Ms": 20.37,
+        "p95Ms": 20.37
       }
     }
   }

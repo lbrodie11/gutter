@@ -4,7 +4,7 @@
   "repo": "honojs/hono",
   "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
   "tools": {
-    "gutter": "0.3.0",
+    "gutter": "0.4.0",
     "repoArchaeology": "0.10.0",
     "typescript": "6.0.3"
   },
