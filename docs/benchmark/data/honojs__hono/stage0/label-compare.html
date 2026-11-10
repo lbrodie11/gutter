@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Gutter Labels · honojs/hono</title>
+<style id="f12-tokens">
+:root {
+  --font-f-display: "Dela Gothic One", "Arial Black", "Helvetica Neue", sans-serif;
+  --font-f-body: "Zen Kaku Gothic New", "Hiragino Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-f-mono: "M PLUS 1 Code", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --f-gutter-pair: 12px;
+  --f-gutter-scene: 20px;
+  --f-gutter-change: 32px;
+  --f-stroke: 2.5px;
+  --f-pose: 83.33ms;
+  --f-shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.05), 0 18px 40px -26px rgba(0, 0, 0, 0.5);
+  --f-desk: #e2e3e5;
+  --f-sheet: #ffffff;
+  --f-panel: #ffffff;
+  --f-ink: #121212;
+  --f-ink-2: #4b4b4b;
+  --f-rule: #121212;
+  --f-tone: #121212;
+  --f-grid: #e3e3e3;
+  --f-marker: #ffd60a;
+  --f-marker-ink: #121212;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --f-desk: #000000;
+    --f-sheet: #050505;
+    --f-panel: #19191a;
+    --f-ink: #f1f0ea;
+    --f-ink-2: #b9b8b1;
+    --f-rule: #f1f0ea;
+    --f-tone: #f1f0ea;
+    --f-grid: #2c2c2d;
+    --f-marker: #ffd60a;
+    --f-marker-ink: #121212;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --f-desk: #000000;
+  --f-sheet: #050505;
+  --f-panel: #19191a;
+  --f-ink: #f1f0ea;
+  --f-ink-2: #b9b8b1;
+  --f-rule: #f1f0ea;
+  --f-tone: #f1f0ea;
+  --f-grid: #2c2c2d;
+  --f-marker: #ffd60a;
+  --f-marker-ink: #121212;
+  color-scheme: dark;
+}
+</style>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--f-desk)}
+body{margin:0;background:var(--f-desk);color:var(--f-ink);font-family:var(--font-f-body);font-size:15px;line-height:1.5}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:var(--f-stroke) solid var(--f-marker);outline-offset:2px}
+.desk{padding:var(--f-gutter-change) 16px}
+.sheet{max-width:880px;margin:0 auto;background:var(--f-sheet);padding:var(--f-gutter-scene);box-shadow:var(--f-shadow-sheet)}
+.masthead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--f-gutter-pair);border-bottom:calc(var(--f-stroke) * 2) solid var(--f-rule);padding-bottom:var(--f-gutter-pair);margin-bottom:var(--f-gutter-scene)}
+.wordmark{margin:0;font-family:var(--font-f-display);font-size:30px;letter-spacing:.02em;line-height:1}
+.slash{color:var(--f-ink-2);margin:0 6px}
+.kicker{font-family:var(--font-f-mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.issue{margin:0;font-family:var(--font-f-mono);font-size:12px;color:var(--f-ink-2)}
+.page{display:grid;gap:var(--f-gutter-scene)}
+.panel{position:relative;background:var(--f-panel);border:var(--f-stroke) solid var(--f-rule);padding:0 16px 16px;min-width:0}
+.panel.done{border-style:dashed}
+.cap{display:inline-flex;align-items:center;margin:0 0 14px -16px;padding:5px 12px 5px 0;background:var(--f-ink);color:var(--f-sheet);font-family:var(--font-f-display);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
+.cap .num{display:inline-block;min-width:28px;text-align:center;border-right:1px solid currentColor;padding:0 8px;margin-right:8px}
+.cap.marker{background:var(--f-marker);color:var(--f-marker-ink)}
+.said{margin:0 0 8px;font-family:var(--font-f-display);font-size:18px;line-height:1.3;overflow-wrap:anywhere}
+.pr{margin:0 0 8px;overflow-wrap:anywhere}
+.path{font-family:var(--font-f-mono);font-size:12px;padding:1px 5px;border:1px solid var(--f-rule);background:var(--f-panel);overflow-wrap:anywhere}
+.diff{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:var(--f-gutter-pair);max-height:220px;overflow:auto}
+.delta,.sha,.stat{font-family:var(--font-f-mono);font-size:12px}
+.stat{margin:8px 0}
+.small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
+.rules{margin:0 0 8px;padding-left:20px}
+.choices{display:flex;flex-wrap:wrap;gap:var(--f-gutter-pair);margin:8px 0}
+button{font:inherit;font-family:var(--font-f-display);font-size:13px;letter-spacing:.04em;text-transform:uppercase;padding:6px 14px;border:var(--f-stroke) solid var(--f-rule);background:var(--f-panel);color:var(--f-ink);cursor:pointer}
+button[aria-pressed="true"]{background:var(--f-marker);color:var(--f-marker-ink)}
+input,textarea{font:inherit;font-size:14px;width:100%;padding:6px 8px;border:1.5px solid var(--f-rule);background:var(--f-sheet);color:var(--f-ink)}
+.note,.labeler{display:block;font-family:var(--font-f-mono);font-size:12px;margin:8px 0}
+.reveal{border-top:1.5px dashed var(--f-rule);margin-top:12px;padding-top:8px}
+.evidence{margin:4px 0;overflow-wrap:anywhere}
+.stamp{font-family:var(--font-f-display);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 6px;display:inline-block}
+.colophon{margin-top:var(--f-gutter-scene)}
+@media (max-width:560px){.sheet{padding:var(--f-gutter-pair)}.wordmark{font-size:24px}}
+</style>
+</head>
+<body>
+<main class="desk">
+<article class="sheet">
+  <header class="masthead">
+    <p class="wordmark">GUTTER<span class="slash">/</span><span class="kicker">blinded labeling</span></p>
+    <p class="issue">honojs/hono · eb754bd · sample 55dc4b4e4b5e · seed 1</p>
+  </header>
+  <div class="page">
+<section class="panel" data-cut="C-01" aria-labelledby="h-intro">
+  <h2 id="h-intro" class="cap marker"><span class="num">C-01</span> How to label</h2>
+  <p>Each item asks whether a merged PR should also have changed one more file. Some items come from Gutter and some from simple baselines; they look the same on purpose. Judge from the PR title and the changed files only.</p>
+  <ul class="rules">
+    <li><b>Useful</b>: a reviewer would have wanted to be asked this.</li>
+    <li><b>Irrelevant</b>: plausible file, but the question would not help review this PR.</li>
+    <li><b>Wrong</b>: the file clearly has nothing to do with this change.</li>
+  </ul>
+  <p class="small">After you choose, the item reveals where it came from, its evidence, and whether the file actually changed within 7 day(s). Please don't open developer tools: the answers are in this file, encoded but not encrypted. Progress is saved in this browser; export when done.</p>
+  <label class="labeler">Your name or handle <input type="text" data-labeler maxlength="80" autocomplete="off"></label>
+  <p class="stat" data-progress aria-live="polite">0 / 60 labeled</p>
+  <button type="button" data-export>Export labels.json</button>
+  <p class="small" data-storage-warning hidden>This browser blocked local storage, so progress will not survive a reload. Export before closing.</p>
+</section>
+<section class="panel item" data-cut="C-02" data-item="c01" data-reveal="eyJxdWVzdGlvbklkIjoiIzQ5NzE6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC84M2JmYjNiYjRhMTJjMWQ5MmMxNjNhMzllOTA3ZGY1ZDY2MmZmNzhkXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPjgzYmZiM2I8L2E+LCAwLjEgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogeWVzIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IHllczwvcD4ifQ==" aria-labelledby="h-c01">
+  <h2 id="h-c01" class="cap"><span class="num">C-02</span> Item c01</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/4971" rel="noopener noreferrer">#4971</a> · fix(utils/ipaddr): do not compress a single 0 group to `::` (#4971)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/utils/ipaddr.test.ts" rel="noopener noreferrer"><code class="path">src/utils/ipaddr.test.ts</code></a> <span class="delta">+4/−0</span></li><li><a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/utils/ipaddr.ts" rel="noopener noreferrer"><code class="path">src/utils/ipaddr.ts</code></a> <span class="delta">+2/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c01">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-03" data-item="c02" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0ODU6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L2luZGV4LnRlc3QudHN4OjpzcmMvanN4L2luZGV4LnRlc3QudHN4Iiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9pbmRleC50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9iYXNlLnRzPC9jb2RlPiBpbiAxNyBvZiBpdHMgMjggY29tbWl0cyAoOTUlIENJIDQyJeKAkzc2JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjQyPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c02">
+  <h2 id="h-c02" class="cap"><span class="num">C-03</span> Item c02</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/src/jsx/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/index.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5485" rel="noopener noreferrer">#5485</a> · fix(build): keep internal types private in bundled d.ts and avoid a self-referencing JSX.IntrinsicElements (#5485)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/aws-lambda/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/bun/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/bun/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/cloudflare-workers/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/cloudflare-workers/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/deno/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/deno/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/lambda-edge/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/lambda-edge/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/netlify/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/netlify/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/service-worker/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/service-worker/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/adapters/vercel/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/vercel/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/build/dts-plugins.ts" rel="noopener noreferrer"><code class="path">build/dts-plugins.ts</code></a> <span class="delta">+55/−0</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+4/−5</span></li><li><a href="https://github.com/honojs/hono/blob/be1f7498fed269544a3c544db0a5a727048462a8/vite.config.ts" rel="noopener noreferrer"><code class="path">vite.config.ts</code></a> <span class="delta">+2/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c02">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-04" data-item="c03" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0OTU6OmNoZWNrOmNvbXBhbmlvbjpzcmMvcmVxdWVzdC50czo6c3JjL3JlcXVlc3QudHMiLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5zcmMvcmVxdWVzdC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL3JlcXVlc3QudGVzdC50czwvY29kZT4gaW4gMjQgb2YgaXRzIDI5IGNvbW1pdHMgKDk1JSBDSSA2NSXigJM5MiUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC42NTwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c03">
+  <h2 id="h-c03" class="cap"><span class="num">C-04</span> Item c03</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/eb78ecaabe26baa8addc053cf8a94b5b7603c001/src/request.ts" rel="noopener noreferrer"><code class="path">src/request.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5495" rel="noopener noreferrer">#5495</a> · fix(utils/url): preserve encoded duplicate query order (#5495)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/eb78ecaabe26baa8addc053cf8a94b5b7603c001/src/request.test.ts" rel="noopener noreferrer"><code class="path">src/request.test.ts</code></a> <span class="delta">+8/−0</span></li><li><a href="https://github.com/honojs/hono/blob/eb78ecaabe26baa8addc053cf8a94b5b7603c001/src/utils/url.test.ts" rel="noopener noreferrer"><code class="path">src/utils/url.test.ts</code></a> <span class="delta">+16/−0</span></li><li><a href="https://github.com/honojs/hono/blob/eb78ecaabe26baa8addc053cf8a94b5b7603c001/src/utils/url.ts" rel="noopener noreferrer"><code class="path">src/utils/url.ts</code></a> <span class="delta">+15/−6</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c03">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-05" data-item="c04" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzMTQ6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c04">
+  <h2 id="h-c04" class="cap"><span class="num">C-05</span> Item c04</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5314" rel="noopener noreferrer">#5314</a> · fix(jsx): preserve self-closing void elements in cloneElement (#5314)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/base.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/base.test.tsx</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c04">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-06" data-item="c05" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0MjM6OmJhc2VsaW5lOnJlY2VudDo6dml0ZS5jb25maWcudHMiLCJzb3VyY2UiOiJyZWNlbnQiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHJlY2VudDwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5yZWNlbnQ8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2gsIG9uZSBvZiB0aGUgZmlsZXMgY2hhbmdlZCBtb3N0IG9mdGVuIGluIHRoZSAzMCBkYXlzIGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c05">
+  <h2 id="h-c05" class="cap"><span class="num">C-06</span> Item c05</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/vite.config.ts" rel="noopener noreferrer"><code class="path">vite.config.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5423" rel="noopener noreferrer">#5423</a> · fix(trie-router): keep first value for duplicate path params (#5422) (#5423)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/hono.test.ts" rel="noopener noreferrer"><code class="path">src/hono.test.ts</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/common.case.test.ts" rel="noopener noreferrer"><code class="path">src/router/common.case.test.ts</code></a> <span class="delta">+16/−0</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/pattern-router/router.test.ts" rel="noopener noreferrer"><code class="path">src/router/pattern-router/router.test.ts</code></a> <span class="delta">+5/−1</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/trie-router/node.test.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.test.ts</code></a> <span class="delta">+27/−0</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/trie-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.ts</code></a> <span class="delta">+6/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c05">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-07" data-item="c06" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxNTQ6OmNoZWNrOmNvbXBhbmlvbjpzcmMvY2xpZW50L2NsaWVudC50ZXN0LnRzOjpzcmMvY2xpZW50L2NsaWVudC50ZXN0LnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC9jbGllbnQudGVzdC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC90eXBlcy50czwvY29kZT4gaW4gMzQgb2YgaXRzIDUyIGNvbW1pdHMgKDk1JSBDSSA1MiXigJM3NyUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC41MjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC9mMmE3MmQzMzNhZWQzN2IxYmYyYzE4NTQwYTBhMWRmOWZkYjVjNThjXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPmYyYTcyZDM8L2E+LCAxMzAuMiBoIGFmdGVyIG1lcmdlIMK3IHNhbWUgYXV0aG9yOiBubyDCtyBSQSBmb2xsb3ctdXAgc2lnbmFsOiBubzwvcD4ifQ==" aria-labelledby="h-c06">
+  <h2 id="h-c06" class="cap"><span class="num">C-07</span> Item c06</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5154" rel="noopener noreferrer">#5154</a> · Merge pull request #5154 from honojs/next</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/benchmarks/fetch/bench.mts" rel="noopener noreferrer"><code class="path">benchmarks/fetch/bench.mts</code></a> <span class="delta">+41/−12</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/jsr.json" rel="noopener noreferrer"><code class="path">jsr.json</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+8/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/client/types.test.ts" rel="noopener noreferrer"><code class="path">src/client/types.test.ts</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/client/types.ts" rel="noopener noreferrer"><code class="path">src/client/types.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a> <span class="delta">+29/−16</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/hono-base.ts" rel="noopener noreferrer"><code class="path">src/hono-base.ts</code></a> <span class="delta">+4/−3</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/hono.test.ts" rel="noopener noreferrer"><code class="path">src/hono.test.ts</code></a> <span class="delta">+41/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+41/−18</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/dom/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/dom/index.test.tsx</code></a> <span class="delta">+53/−4</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/dom/intrinsic-element/components.ts" rel="noopener noreferrer"><code class="path">src/jsx/dom/intrinsic-element/components.ts</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/dom/render.ts" rel="noopener noreferrer"><code class="path">src/jsx/dom/render.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/hooks/index.ts" rel="noopener noreferrer"><code class="path">src/jsx/hooks/index.ts</code></a> <span class="delta">+11/−7</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/index.test.tsx</code></a> <span class="delta">+95/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/intrinsic-element/components.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/intrinsic-element/components.test.tsx</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/jsx/streaming.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/streaming.test.tsx</code></a> <span class="delta">+40/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/cache/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/cache/index.test.ts</code></a> <span class="delta">+394/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/cache/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/cache/index.ts</code></a> <span class="delta">+153/−13</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/compress/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/compress/index.test.ts</code></a> <span class="delta">+87/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/compress/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/compress/index.ts</code></a> <span class="delta">+14/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/cors/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/cors/index.test.ts</code></a> <span class="delta">+16/−3</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/cors/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/cors/index.ts</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/etag/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.test.ts</code></a> <span class="delta">+47/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/etag/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/jsx-renderer/index.test.tsx" rel="noopener noreferrer"><code class="path">src/middleware/jsx-renderer/index.test.tsx</code></a> <span class="delta">+16/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/jsx-renderer/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/jsx-renderer/index.ts</code></a> <span class="delta">+4/−6</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/jwk/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwk/index.test.ts</code></a> <span class="delta">+55/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/jwk/jwk.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwk/jwk.ts</code></a> <span class="delta">+14/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/jwt/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwt/index.test.ts</code></a> <span class="delta">+55/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/jwt/jwt.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwt/jwt.ts</code></a> <span class="delta">+13/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/method-not-allowed/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/method-not-allowed/index.test.ts</code></a> <span class="delta">+292/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/middleware/method-not-allowed/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/method-not-allowed/index.ts</code></a> <span class="delta">+141/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/request.ts" rel="noopener noreferrer"><code class="path">src/request.ts</code></a> <span class="delta">+7/−11</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/router.ts" rel="noopener noreferrer"><code class="path">src/router.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/router/reg-exp-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/node.ts</code></a> <span class="delta">+88/−82</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/router/reg-exp-router/router.test.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/router.test.ts</code></a> <span class="delta">+159/−35</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/router/reg-exp-router/router.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/router.ts</code></a> <span class="delta">+73/−114</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/router/reg-exp-router/trie.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/trie.ts</code></a> <span class="delta">+15/−6</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/utils/cookie.ts" rel="noopener noreferrer"><code class="path">src/utils/cookie.ts</code></a> <span class="delta">+2/−3</span></li><li><a href="https://github.com/honojs/hono/blob/8f0702827002f0ada02434d908853458c17f862d/src/utils/headers.ts" rel="noopener noreferrer"><code class="path">src/utils/headers.ts</code></a> <span class="delta">+23/−1</span></li></ul><p class="small">…and 1 more file(s).</p>
+  <div class="choices" role="group" aria-label="Label for item c06">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-08" data-item="c07" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0MzU6OmJhc2VsaW5lOnJlY2VudDo6c3JjL2FkYXB0ZXIvYXdzLWxhbWJkYS9oYW5kbGVyLnRzIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC9iODc3ODI3ZmNjZGUwYmU0ZWU3ODQ1N2FlOGI2NWRiMjQzNjEzOWY5XCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPmI4Nzc4Mjc8L2E+LCAxMDAuNiBoIGFmdGVyIG1lcmdlIMK3IHNhbWUgYXV0aG9yOiB5ZXMgwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogeWVzPC9wPiJ9" aria-labelledby="h-c07">
+  <h2 id="h-c07" class="cap"><span class="num">C-08</span> Item c07</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/adapter/aws-lambda/handler.ts" rel="noopener noreferrer"><code class="path">src/adapter/aws-lambda/handler.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5435" rel="noopener noreferrer">#5435</a> · chore: replace prettier with oxfmt (#5435)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/.oxfmtrc.json" rel="noopener noreferrer"><code class="path">.oxfmtrc.json</code></a> <span class="delta">+16/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/.prettierrc" rel="noopener noreferrer"><code class="path">.prettierrc</code></a> <span class="delta">+0/−9</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+225/−10</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/router/reg-exp-router/trie.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/trie.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/types.ts" rel="noopener noreferrer"><code class="path">src/types.ts</code></a> <span class="delta">+10/−6</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/utils/types.ts" rel="noopener noreferrer"><code class="path">src/utils/types.ts</code></a> <span class="delta">+3/−3</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c07">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-09" data-item="c08" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NzY6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L2luZGV4LnRlc3QudHN4OjpzcmMvanN4L2luZGV4LnRlc3QudHN4Iiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9pbmRleC50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9iYXNlLnRzPC9jb2RlPiBpbiAxNyBvZiBpdHMgMjkgY29tbWl0cyAoOTUlIENJIDQxJeKAkzc0JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjQxPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c08">
+  <h2 id="h-c08" class="cap"><span class="num">C-09</span> Item c08</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/f23b146afcec63606144cde50b5fbd360dd60238/src/jsx/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/index.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5476" rel="noopener noreferrer">#5476</a> · fix(jsx): allow JSXNode function component results (#5476)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/f23b146afcec63606144cde50b5fbd360dd60238/src/jsx/base.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/base.test.tsx</code></a> <span class="delta">+6/−0</span></li><li><a href="https://github.com/honojs/hono/blob/f23b146afcec63606144cde50b5fbd360dd60238/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+2/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c08">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-10" data-item="c09" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDM6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6UkVBRE1FLm1kIiwic291cmNlIjoicG9wdWxhci1uZWFyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiBwb3B1bGFyLW5lYXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cG9wdWxhci1uZWFyPC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoIHRoYXQgc2hhcmUgYSB0b3AtbGV2ZWwgZGlyZWN0b3J5IHdpdGggYSBmaWxlIGl0IGRpZCB0b3VjaCwgb25lIG9mIHRoZSBtb3N0IGZyZXF1ZW50bHkgY2hhbmdlZCBpbiBhbGwgaGlzdG9yeSBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c09">
+  <h2 id="h-c09" class="cap"><span class="num">C-10</span> Item c09</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/README.md" rel="noopener noreferrer"><code class="path">README.md</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5443" rel="noopener noreferrer">#5443</a> · chore: replace eslint with oxlint (#5443)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/.oxlintrc.json" rel="noopener noreferrer"><code class="path">.oxlintrc.json</code></a> <span class="delta">+260/−0</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/.vscode/settings.json" rel="noopener noreferrer"><code class="path">.vscode/settings.json</code></a> <span class="delta">+1/−2</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/benchmarks/routers-deno/.vscode/settings.json" rel="noopener noreferrer"><code class="path">benchmarks/routers-deno/.vscode/settings.json</code></a> <span class="delta">+1/−2</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/eslint.config.mjs" rel="noopener noreferrer"><code class="path">eslint.config.mjs</code></a> <span class="delta">+0/−85</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+3/−4</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+238/−1154</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/runtime-tests/deno/.vscode/settings.json" rel="noopener noreferrer"><code class="path">runtime-tests/deno/.vscode/settings.json</code></a> <span class="delta">+1/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c09">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-11" data-item="c10" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzMTQ6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L2luZGV4LnRlc3QudHN4OjpzcmMvanN4L2luZGV4LnRlc3QudHN4Iiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9pbmRleC50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9iYXNlLnRzPC9jb2RlPiBpbiAxNyBvZiBpdHMgMzAgY29tbWl0cyAoOTUlIENJIDM5JeKAkzczJSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjM5PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c10">
+  <h2 id="h-c10" class="cap"><span class="num">C-11</span> Item c10</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/index.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5314" rel="noopener noreferrer">#5314</a> · fix(jsx): preserve self-closing void elements in cloneElement (#5314)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/base.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/base.test.tsx</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c10">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-12" data-item="c11" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0Mzk6OmNoZWNrOmNvbXBhbmlvbjpzcmMvY2xpZW50L3V0aWxzLnRzOjpzcmMvY2xpZW50L3V0aWxzLnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC91dGlscy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC91dGlscy50ZXN0LnRzPC9jb2RlPiBpbiAxNiBvZiBpdHMgMjAgY29tbWl0cyAoOTUlIENJIDU4JeKAkzkyJSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjU4PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c11">
+  <h2 id="h-c11" class="cap"><span class="num">C-12</span> Item c11</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/deff529656cff775b35956f7f9071388d4eb55ae/src/client/utils.ts" rel="noopener noreferrer"><code class="path">src/client/utils.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5439" rel="noopener noreferrer">#5439</a> · test(client): simulate network error for undefined route in parseResponse test (#5439)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/deff529656cff775b35956f7f9071388d4eb55ae/src/client/utils.test.ts" rel="noopener noreferrer"><code class="path">src/client/utils.test.ts</code></a> <span class="delta">+4/−3</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c11">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-13" data-item="c12" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDc6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2hvbm8udGVzdC50cyIsInNvdXJjZSI6InBvcHVsYXItbmVhciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5CYXNlbGluZTogcG9wdWxhci1uZWFyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+UHJvcG9zZWQgYnkgdGhlIDxiPnBvcHVsYXItbmVhcjwvYj4gYmFzZWxpbmU6IGFtb25nIGZpbGVzIHRoaXMgUFIgZGlkIG5vdCB0b3VjaCB0aGF0IHNoYXJlIGEgdG9wLWxldmVsIGRpcmVjdG9yeSB3aXRoIGEgZmlsZSBpdCBkaWQgdG91Y2gsIG9uZSBvZiB0aGUgbW9zdCBmcmVxdWVudGx5IGNoYW5nZWQgaW4gYWxsIGhpc3RvcnkgYmVmb3JlIHRoZSBQUuKAmXMgYmFzZS4gSXQgcHJvcG9zZXMgYXMgbWFueSBmaWxlcyBhcyBHdXR0ZXIgYXNrZWQgYWJvdXQgb24gdGhpcyBQUi48L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c12">
+  <h2 id="h-c12" class="cap"><span class="num">C-13</span> Item c12</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/hono.test.ts" rel="noopener noreferrer"><code class="path">src/hono.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5447" rel="noopener noreferrer">#5447</a> · feat(adapters): add @hono/bun as a workspace package (#5447)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/.github/workflows/ci-adapters.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci-adapters.yml</code></a> <span class="delta">+48/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/.github/workflows/ci.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci.yml</code></a> <span class="delta">+3/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/.github/workflows/release.yml" rel="noopener noreferrer"><code class="path">.github/workflows/release.yml</code></a> <span class="delta">+43/−1</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/README.md" rel="noopener noreferrer"><code class="path">adapters/bun/README.md</code></a> <span class="delta">+22/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/package.json" rel="noopener noreferrer"><code class="path">adapters/bun/package.json</code></a> <span class="delta">+39/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/conninfo.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/conninfo.test.ts</code></a> <span class="delta">+85/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/conninfo.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/conninfo.ts</code></a> <span class="delta">+43/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/index.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/index.ts</code></a> <span class="delta">+11/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/serve-static.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/serve-static.ts</code></a> <span class="delta">+32/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/server.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/server.test.ts</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/server.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/server.ts</code></a> <span class="delta">+14/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/ssg.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/ssg.ts</code></a> <span class="delta">+27/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/websocket.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/websocket.test.ts</code></a> <span class="delta">+167/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/websocket.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/websocket.ts</code></a> <span class="delta">+113/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/tsconfig.json" rel="noopener noreferrer"><code class="path">adapters/bun/tsconfig.json</code></a> <span class="delta">+11/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/bun/vite.config.ts</code></a> <span class="delta">+34/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/build/release-adapter.ts" rel="noopener noreferrer"><code class="path">build/release-adapter.ts</code></a> <span class="delta">+68/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/docs/MAINTAINING.md" rel="noopener noreferrer"><code class="path">docs/MAINTAINING.md</code></a> <span class="delta">+62/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+8/−5</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+12/−6</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/pnpm-workspace.yaml" rel="noopener noreferrer"><code class="path">pnpm-workspace.yaml</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/conninfo.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/conninfo.ts</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/index.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/index.ts</code></a> <span class="delta">+4/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/serve-static.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/serve-static.ts</code></a> <span class="delta">+3/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/server.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/server.ts</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/ssg.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/ssg.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/websocket.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/websocket.ts</code></a> <span class="delta">+14/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c12">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-14" data-item="c13" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDc6OmJhc2VsaW5lOnJlY2VudDo6c3JjL3JlcXVlc3QudGVzdC50cyIsInNvdXJjZSI6InJlY2VudCIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5CYXNlbGluZTogcmVjZW50PC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+UHJvcG9zZWQgYnkgdGhlIDxiPnJlY2VudDwvYj4gYmFzZWxpbmU6IGFtb25nIGZpbGVzIHRoaXMgUFIgZGlkIG5vdCB0b3VjaCwgb25lIG9mIHRoZSBmaWxlcyBjaGFuZ2VkIG1vc3Qgb2Z0ZW4gaW4gdGhlIDMwIGRheXMgYmVmb3JlIHRoZSBQUuKAmXMgYmFzZS4gSXQgcHJvcG9zZXMgYXMgbWFueSBmaWxlcyBhcyBHdXR0ZXIgYXNrZWQgYWJvdXQgb24gdGhpcyBQUi48L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c13">
+  <h2 id="h-c13" class="cap"><span class="num">C-14</span> Item c13</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/request.test.ts" rel="noopener noreferrer"><code class="path">src/request.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5447" rel="noopener noreferrer">#5447</a> · feat(adapters): add @hono/bun as a workspace package (#5447)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/.github/workflows/ci-adapters.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci-adapters.yml</code></a> <span class="delta">+48/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/.github/workflows/ci.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci.yml</code></a> <span class="delta">+3/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/.github/workflows/release.yml" rel="noopener noreferrer"><code class="path">.github/workflows/release.yml</code></a> <span class="delta">+43/−1</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/README.md" rel="noopener noreferrer"><code class="path">adapters/bun/README.md</code></a> <span class="delta">+22/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/package.json" rel="noopener noreferrer"><code class="path">adapters/bun/package.json</code></a> <span class="delta">+39/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/conninfo.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/conninfo.test.ts</code></a> <span class="delta">+85/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/conninfo.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/conninfo.ts</code></a> <span class="delta">+43/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/index.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/index.ts</code></a> <span class="delta">+11/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/serve-static.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/serve-static.ts</code></a> <span class="delta">+32/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/server.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/server.test.ts</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/server.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/server.ts</code></a> <span class="delta">+14/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/ssg.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/ssg.ts</code></a> <span class="delta">+27/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/websocket.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/websocket.test.ts</code></a> <span class="delta">+167/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/src/websocket.ts" rel="noopener noreferrer"><code class="path">adapters/bun/src/websocket.ts</code></a> <span class="delta">+113/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/tsconfig.json" rel="noopener noreferrer"><code class="path">adapters/bun/tsconfig.json</code></a> <span class="delta">+11/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/adapters/bun/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/bun/vite.config.ts</code></a> <span class="delta">+34/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/build/release-adapter.ts" rel="noopener noreferrer"><code class="path">build/release-adapter.ts</code></a> <span class="delta">+68/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/docs/MAINTAINING.md" rel="noopener noreferrer"><code class="path">docs/MAINTAINING.md</code></a> <span class="delta">+62/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+8/−5</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+12/−6</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/pnpm-workspace.yaml" rel="noopener noreferrer"><code class="path">pnpm-workspace.yaml</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/conninfo.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/conninfo.ts</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/index.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/index.ts</code></a> <span class="delta">+4/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/serve-static.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/serve-static.ts</code></a> <span class="delta">+3/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/server.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/server.ts</code></a> <span class="delta">+1/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/ssg.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/ssg.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/fc2343dbad8af7ab82bc4a6c6907e57416aed878/src/adapter/bun/websocket.ts" rel="noopener noreferrer"><code class="path">src/adapter/bun/websocket.ts</code></a> <span class="delta">+14/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c13">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-15" data-item="c14" data-reveal="eyJxdWVzdGlvbklkIjoiIzU1OTA6OmNoZWNrOmNvbXBhbmlvbjpzcmMvbWlkZGxld2FyZS9qd2svaW5kZXgudGVzdC50czo6c3JjL21pZGRsZXdhcmUvandrL2luZGV4LnRlc3QudHMiLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5zcmMvbWlkZGxld2FyZS9qd2svaW5kZXgudGVzdC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL21pZGRsZXdhcmUvandrL2p3ay50czwvY29kZT4gaW4gNyBvZiBpdHMgOCBjb21taXRzICg5NSUgQ0kgNTMl4oCTOTglKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuNTM8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c14">
+  <h2 id="h-c14" class="cap"><span class="num">C-15</span> Item c14</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/jwk/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwk/index.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5590" rel="noopener noreferrer">#5590</a> · fix(auth): escape backslashes in the WWW-Authenticate realm (#5590)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/basic-auth/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/basic-auth/index.test.ts</code></a> <span class="delta">+13/−0</span></li><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/basic-auth/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/basic-auth/index.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/bearer-auth/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/bearer-auth/index.test.ts</code></a> <span class="delta">+13/−0</span></li><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/bearer-auth/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/bearer-auth/index.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/jwk/jwk.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwk/jwk.ts</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/jwt/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwt/index.test.ts</code></a> <span class="delta">+13/−0</span></li><li><a href="https://github.com/honojs/hono/blob/ed1d5f72135ccf7e09c17d64dc4af7588dd3e491/src/middleware/jwt/jwt.ts" rel="noopener noreferrer"><code class="path">src/middleware/jwt/jwt.ts</code></a> <span class="delta">+2/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c14">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-16" data-item="c15" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyNjY6OmNoZWNrOmNvbXBhbmlvbjpzcmMvcm91dGVyL3JlZy1leHAtcm91dGVyL3RyaWUudHM6OnNyYy9yb3V0ZXIvcmVnLWV4cC1yb3V0ZXIvdHJpZS50cyIsInNvdXJjZSI6Imd1dHRlciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5HdXR0ZXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5HdXR0ZXIgYXNrZWQ6IDxjb2RlIGNsYXNzPVwicGF0aFwiPnNyYy9yb3V0ZXIvcmVnLWV4cC1yb3V0ZXIvdHJpZS50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL3JvdXRlci9yZWctZXhwLXJvdXRlci9ub2RlLnRzPC9jb2RlPiBpbiA3IG9mIGl0cyAxMiBjb21taXRzICg5NSUgQ0kgMzIl4oCTODElKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuMzI8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPmNoYW5nZWQ8L2I+IGluIDxhIGNsYXNzPVwic2hhXCIgaHJlZj1cImh0dHBzOi8vZ2l0aHViLmNvbS9ob25vanMvaG9uby9jb21taXQvNGI0NGFiZTFiNWM3NzU1YWFjODU1NWQ3OTQzNjExNTU1MTgzNDUwYlwiIHJlbD1cIm5vb3BlbmVyIG5vcmVmZXJyZXJcIj40YjQ0YWJlPC9hPiwgMTcuMCBoIGFmdGVyIG1lcmdlIMK3IHNhbWUgYXV0aG9yOiB5ZXMgwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogeWVzPC9wPiJ9" aria-labelledby="h-c15">
+  <h2 id="h-c15" class="cap"><span class="num">C-16</span> Item c15</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/a10592f3e1864cbe277619633db953450a6b1e4b/src/router/reg-exp-router/trie.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/trie.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5266" rel="noopener noreferrer">#5266</a> · fix(reg-exp-router): associate wildcard middleware with matching routes (#5266)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/a10592f3e1864cbe277619633db953450a6b1e4b/src/router/common.case.test.ts" rel="noopener noreferrer"><code class="path">src/router/common.case.test.ts</code></a> <span class="delta">+103/−0</span></li><li><a href="https://github.com/honojs/hono/blob/a10592f3e1864cbe277619633db953450a6b1e4b/src/router/linear-router/router.test.ts" rel="noopener noreferrer"><code class="path">src/router/linear-router/router.test.ts</code></a> <span class="delta">+9/−0</span></li><li><a href="https://github.com/honojs/hono/blob/a10592f3e1864cbe277619633db953450a6b1e4b/src/router/reg-exp-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/node.ts</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/a10592f3e1864cbe277619633db953450a6b1e4b/src/router/reg-exp-router/router.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/router.ts</code></a> <span class="delta">+60/−98</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c15">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-17" data-item="c16" data-reveal="eyJxdWVzdGlvbklkIjoiIzQ5NDc6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC9jNjU3YTM5Y2NjOGQzMTk0ZDM0NWQ5ZTgyYzg1ODdiZDI1YjViNmU4XCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPmM2NTdhMzk8L2E+LCAwLjEgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogbm8gwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogbm88L3A+In0=" aria-labelledby="h-c16">
+  <h2 id="h-c16" class="cap"><span class="num">C-17</span> Item c16</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/eb2d0c238adbcee5933d0f8c15f1a65a88f50565/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/4947" rel="noopener noreferrer">#4947</a> · fix(jsx): widen jsx and jsxFn children to Child[] (#4947)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/eb2d0c238adbcee5933d0f8c15f1a65a88f50565/src/jsx/base.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/base.test.tsx</code></a> <span class="delta">+7/−1</span></li><li><a href="https://github.com/honojs/hono/blob/eb2d0c238adbcee5933d0f8c15f1a65a88f50565/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+2/−10</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c16">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-18" data-item="c17" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzNDM6OmNoZWNrOmNvbXBhbmlvbjpzcmMvaGVscGVyL3JvdXRlL2luZGV4LnRlc3QudHM6OnNyYy9oZWxwZXIvcm91dGUvaW5kZXgudGVzdC50cyIsInNvdXJjZSI6Imd1dHRlciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5HdXR0ZXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5HdXR0ZXIgYXNrZWQ6IDxjb2RlIGNsYXNzPVwicGF0aFwiPnNyYy9oZWxwZXIvcm91dGUvaW5kZXgudGVzdC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2hlbHBlci9yb3V0ZS9pbmRleC50czwvY29kZT4gaW4gMyBvZiBpdHMgMyBjb21taXRzICg5NSUgQ0kgNDQl4oCTMTAwJSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjQ0PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c17">
+  <h2 id="h-c17" class="cap"><span class="num">C-18</span> Item c17</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/src/helper/route/index.test.ts" rel="noopener noreferrer"><code class="path">src/helper/route/index.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5343" rel="noopener noreferrer">#5343</a> · docs: fix typos in code comments and link third-party middleware section (#5343)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/README.md" rel="noopener noreferrer"><code class="path">README.md</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/src/helper/cookie/index.test.ts" rel="noopener noreferrer"><code class="path">src/helper/cookie/index.test.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/src/helper/proxy/index.ts" rel="noopener noreferrer"><code class="path">src/helper/proxy/index.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/src/helper/route/index.ts" rel="noopener noreferrer"><code class="path">src/helper/route/index.ts</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/e7b38ee42bfa41f20194ad20fb949b625346be62/src/utils/types.ts" rel="noopener noreferrer"><code class="path">src/utils/types.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c17">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-19" data-item="c18" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyOTc6OmNoZWNrOmNvbXBhbmlvbjpzcmMvY2xpZW50L3R5cGVzLnRzOjpzcmMvY2xpZW50L3R5cGVzLnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC90eXBlcy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC9jbGllbnQudGVzdC50czwvY29kZT4gaW4gMzQgb2YgaXRzIDc2IGNvbW1pdHMgKDk1JSBDSSAzNCXigJM1NiUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC4zNDwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c18">
+  <h2 id="h-c18" class="cap"><span class="num">C-19</span> Item c18</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/50b8788cf54cb60112b7cd93642bc5094901475c/src/client/types.ts" rel="noopener noreferrer"><code class="path">src/client/types.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5297" rel="noopener noreferrer">#5297</a> · fix(client): keep a param value of &quot;index&quot; in $url() and $path() (#5297)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/50b8788cf54cb60112b7cd93642bc5094901475c/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a> <span class="delta">+71/−7</span></li><li><a href="https://github.com/honojs/hono/blob/50b8788cf54cb60112b7cd93642bc5094901475c/src/client/client.ts" rel="noopener noreferrer"><code class="path">src/client/client.ts</code></a> <span class="delta">+4/−3</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c18">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-20" data-item="c19" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzODA6OmJhc2VsaW5lOnJlY2VudDo6c3JjL2NsaWVudC9jbGllbnQudGVzdC50cyIsInNvdXJjZSI6InJlY2VudCIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5CYXNlbGluZTogcmVjZW50PC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+UHJvcG9zZWQgYnkgdGhlIDxiPnJlY2VudDwvYj4gYmFzZWxpbmU6IGFtb25nIGZpbGVzIHRoaXMgUFIgZGlkIG5vdCB0b3VjaCwgb25lIG9mIHRoZSBmaWxlcyBjaGFuZ2VkIG1vc3Qgb2Z0ZW4gaW4gdGhlIDMwIGRheXMgYmVmb3JlIHRoZSBQUuKAmXMgYmFzZS4gSXQgcHJvcG9zZXMgYXMgbWFueSBmaWxlcyBhcyBHdXR0ZXIgYXNrZWQgYWJvdXQgb24gdGhpcyBQUi48L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c19">
+  <h2 id="h-c19" class="cap"><span class="num">C-20</span> Item c19</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5380" rel="noopener noreferrer">#5380</a> · fix(jsx): replace Suspense and ErrorBoundary content across newlines (#5380)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/helper/streaming/sse.test.tsx" rel="noopener noreferrer"><code class="path">src/helper/streaming/sse.test.tsx</code></a> <span class="delta">+127/−1</span></li><li><a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/jsx/components.ts" rel="noopener noreferrer"><code class="path">src/jsx/components.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/jsx/streaming.ts" rel="noopener noreferrer"><code class="path">src/jsx/streaming.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c19">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-21" data-item="c20" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxNDU6OmNoZWNrOmNvbXBhbmlvbjpzcmMvYWRhcHRlci9jbG91ZGZsYXJlLXdvcmtlcnMvd2Vic29ja2V0LnRzOjpzcmMvYWRhcHRlci9jbG91ZGZsYXJlLXdvcmtlcnMvd2Vic29ja2V0LnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2FkYXB0ZXIvY2xvdWRmbGFyZS13b3JrZXJzL3dlYnNvY2tldC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2FkYXB0ZXIvY2xvdWRmbGFyZS13b3JrZXJzL3dlYnNvY2tldC50ZXN0LnRzPC9jb2RlPiBpbiA0IG9mIGl0cyA1IGNvbW1pdHMgKDk1JSBDSSAzOCXigJM5NiUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC4zODwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c20">
+  <h2 id="h-c20" class="cap"><span class="num">C-21</span> Item c20</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/a88c89dac6e230cbb5f1bf627522d4914b81dffd/src/adapter/cloudflare-workers/websocket.ts" rel="noopener noreferrer"><code class="path">src/adapter/cloudflare-workers/websocket.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5145" rel="noopener noreferrer">#5145</a> · test(cloudflare-workers): add coverage for onClose, onError, send, and close in cloudflare-workers websocket adapter (#5145)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/a88c89dac6e230cbb5f1bf627522d4914b81dffd/src/adapter/cloudflare-workers/websocket.test.ts" rel="noopener noreferrer"><code class="path">src/adapter/cloudflare-workers/websocket.test.ts</code></a> <span class="delta">+104/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c20">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-22" data-item="c21" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzMTQ6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c21">
+  <h2 id="h-c21" class="cap"><span class="num">C-22</span> Item c21</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5314" rel="noopener noreferrer">#5314</a> · fix(jsx): preserve self-closing void elements in cloneElement (#5314)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/base.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/base.test.tsx</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/43379d93e23abaaa54ff85f2ce64a149f50d4295/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c21">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-23" data-item="c22" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NTA6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c22">
+  <h2 id="h-c22" class="cap"><span class="num">C-23</span> Item c22</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/2013fed5b21719bb1e6f44ce7f49757660946856/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5450" rel="noopener noreferrer">#5450</a> · fix(css): keep &quot;//&quot; inside an unquoted url() when minifying (#5450)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/2013fed5b21719bb1e6f44ce7f49757660946856/src/helper/css/common.ts" rel="noopener noreferrer"><code class="path">src/helper/css/common.ts</code></a> <span class="delta">+3/−1</span></li><li><a href="https://github.com/honojs/hono/blob/2013fed5b21719bb1e6f44ce7f49757660946856/src/helper/css/index.test.tsx" rel="noopener noreferrer"><code class="path">src/helper/css/index.test.tsx</code></a> <span class="delta">+9/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c22">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-24" data-item="c23" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDY6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2hvbm8udHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c23">
+  <h2 id="h-c23" class="cap"><span class="num">C-24</span> Item c23</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/hono.ts" rel="noopener noreferrer"><code class="path">src/hono.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5446" rel="noopener noreferrer">#5446</a> · fix(types): allow returning a Blob as a response body (#5446)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/context.test.ts" rel="noopener noreferrer"><code class="path">src/context.test.ts</code></a> <span class="delta">+10/−0</span></li><li><a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/middleware/serve-static/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/serve-static/index.test.ts</code></a> <span class="delta">+15/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c23">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-25" data-item="c24" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyMDU6OmNoZWNrOmNvbXBhbmlvbjpzcmMvbWlkZGxld2FyZS9ldGFnL2luZGV4LnRzOjpzcmMvbWlkZGxld2FyZS9ldGFnL2luZGV4LnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL21pZGRsZXdhcmUvZXRhZy9pbmRleC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL21pZGRsZXdhcmUvZXRhZy9pbmRleC50ZXN0LnRzPC9jb2RlPiBpbiAxNiBvZiBpdHMgMjIgY29tbWl0cyAoOTUlIENJIDUyJeKAkzg3JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjUyPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5jaGFuZ2VkPC9iPiBpbiA8YSBjbGFzcz1cInNoYVwiIGhyZWY9XCJodHRwczovL2dpdGh1Yi5jb20vaG9ub2pzL2hvbm8vY29tbWl0LzU0NmVjYTBjNDAyYTAzMWFhZWI0YTNiNDIyYzVkOWNiODdmZTE1NzZcIiByZWw9XCJub29wZW5lciBub3JlZmVycmVyXCI+NTQ2ZWNhMDwvYT4sIDE1Ni4yIGggYWZ0ZXIgbWVyZ2Ugwrcgc2FtZSBhdXRob3I6IG5vIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c24">
+  <h2 id="h-c24" class="cap"><span class="num">C-25</span> Item c24</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/26de73133b8552f56ba72e025ecd82b08900d796/src/middleware/etag/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5205" rel="noopener noreferrer">#5205</a> · fix(etag): stabilize digest across stream chunks (#5205)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/26de73133b8552f56ba72e025ecd82b08900d796/src/middleware/etag/digest.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/digest.ts</code></a> <span class="delta">+53/−1</span></li><li><a href="https://github.com/honojs/hono/blob/26de73133b8552f56ba72e025ecd82b08900d796/src/middleware/etag/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.test.ts</code></a> <span class="delta">+31/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c24">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-26" data-item="c25" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NTA6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L2RvbS9jc3MudHM6OnNyYy9qc3gvZG9tL2Nzcy50cyIsInNvdXJjZSI6Imd1dHRlciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5HdXR0ZXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5HdXR0ZXIgYXNrZWQ6IDxjb2RlIGNsYXNzPVwicGF0aFwiPnNyYy9qc3gvZG9tL2Nzcy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2hlbHBlci9jc3MvY29tbW9uLnRzPC9jb2RlPiBpbiAzIG9mIGl0cyA0IGNvbW1pdHMgKDk1JSBDSSAzMCXigJM5NSUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC4zMDwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c25">
+  <h2 id="h-c25" class="cap"><span class="num">C-26</span> Item c25</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/2013fed5b21719bb1e6f44ce7f49757660946856/src/jsx/dom/css.ts" rel="noopener noreferrer"><code class="path">src/jsx/dom/css.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5450" rel="noopener noreferrer">#5450</a> · fix(css): keep &quot;//&quot; inside an unquoted url() when minifying (#5450)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/2013fed5b21719bb1e6f44ce7f49757660946856/src/helper/css/common.ts" rel="noopener noreferrer"><code class="path">src/helper/css/common.ts</code></a> <span class="delta">+3/−1</span></li><li><a href="https://github.com/honojs/hono/blob/2013fed5b21719bb1e6f44ce7f49757660946856/src/helper/css/index.test.tsx" rel="noopener noreferrer"><code class="path">src/helper/css/index.test.tsx</code></a> <span class="delta">+9/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c25">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-27" data-item="c26" data-reveal="eyJxdWVzdGlvbklkIjoiIzQ5NTU6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c26">
+  <h2 id="h-c26" class="cap"><span class="num">C-27</span> Item c26</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/7e0555d14c72d4204347ac9afaae32ba5c013ab9/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/4955" rel="noopener noreferrer">#4955</a> · fix(deno): echo negotiated WebSocket subprotocol in upgrade response (#4955)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/7e0555d14c72d4204347ac9afaae32ba5c013ab9/src/adapter/deno/websocket.test.ts" rel="noopener noreferrer"><code class="path">src/adapter/deno/websocket.test.ts</code></a> <span class="delta">+69/−0</span></li><li><a href="https://github.com/honojs/hono/blob/7e0555d14c72d4204347ac9afaae32ba5c013ab9/src/adapter/deno/websocket.ts" rel="noopener noreferrer"><code class="path">src/adapter/deno/websocket.ts</code></a> <span class="delta">+9/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c26">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-28" data-item="c27" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxMzY6OmNoZWNrOmNvbXBhbmlvbjpzcmMvdmFsaWRhdG9yL3ZhbGlkYXRvci50czo6c3JjL3ZhbGlkYXRvci92YWxpZGF0b3IudHMiLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5zcmMvdmFsaWRhdG9yL3ZhbGlkYXRvci50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL3ZhbGlkYXRvci92YWxpZGF0b3IudGVzdC50czwvY29kZT4gaW4gMzkgb2YgaXRzIDU4IGNvbW1pdHMgKDk1JSBDSSA1NCXigJM3OCUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC41NDwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c27">
+  <h2 id="h-c27" class="cap"><span class="num">C-28</span> Item c27</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/64c613ab0f15526b0c0edb25ad0c2989eace2ea1/src/validator/validator.ts" rel="noopener noreferrer"><code class="path">src/validator/validator.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5136" rel="noopener noreferrer">#5136</a> · test(validator): fix misspelled identifier in transform type test (#5136)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/64c613ab0f15526b0c0edb25ad0c2989eace2ea1/src/validator/validator.test.ts" rel="noopener noreferrer"><code class="path">src/validator/validator.test.ts</code></a> <span class="delta">+6/−6</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c27">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-29" data-item="c28" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzNzk6OmNoZWNrOmNvbXBhbmlvbjpzcmMvdXRpbHMvand0L3R5cGVzLnRzOjpzcmMvdXRpbHMvand0L3R5cGVzLnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL3V0aWxzL2p3dC90eXBlcy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL3V0aWxzL2p3dC9qd3QudHM8L2NvZGU+IGluIDE1IG9mIGl0cyAzMSBjb21taXRzICg5NSUgQ0kgMzIl4oCTNjUlKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuMzI8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c28">
+  <h2 id="h-c28" class="cap"><span class="num">C-29</span> Item c28</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/52febbcc30bc509d5e4987577e63906fe08fc471/src/utils/jwt/types.ts" rel="noopener noreferrer"><code class="path">src/utils/jwt/types.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5379" rel="noopener noreferrer">#5379</a> · fix(jwt): throw JwtTokenInvalid when the signature is not valid base64url (#5379)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/52febbcc30bc509d5e4987577e63906fe08fc471/src/utils/jwt/jwt.test.ts" rel="noopener noreferrer"><code class="path">src/utils/jwt/jwt.test.ts</code></a> <span class="delta">+14/−0</span></li><li><a href="https://github.com/honojs/hono/blob/52febbcc30bc509d5e4987577e63906fe08fc471/src/utils/jwt/jwt.ts" rel="noopener noreferrer"><code class="path">src/utils/jwt/jwt.ts</code></a> <span class="delta">+7/−6</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c28">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-30" data-item="c29" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0Mzc6OmJhc2VsaW5lOnJlY2VudDo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJyZWNlbnQiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHJlY2VudDwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5yZWNlbnQ8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2gsIG9uZSBvZiB0aGUgZmlsZXMgY2hhbmdlZCBtb3N0IG9mdGVuIGluIHRoZSAzMCBkYXlzIGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5jaGFuZ2VkPC9iPiBpbiA8YSBjbGFzcz1cInNoYVwiIGhyZWY9XCJodHRwczovL2dpdGh1Yi5jb20vaG9ub2pzL2hvbm8vY29tbWl0LzkwZDAyZmIxNjQ1YzEyYTY1ZDI3ZjM5NTk0ZDIxMjlkYjIwNjViYTdcIiByZWw9XCJub29wZW5lciBub3JlZmVycmVyXCI+OTBkMDJmYjwvYT4sIDIzLjQgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogeWVzIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IHllczwvcD4ifQ==" aria-labelledby="h-c29">
+  <h2 id="h-c29" class="cap"><span class="num">C-30</span> Item c29</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/57ba76a2a45d0573ed8f1c1e4a9d11dda9c6ab11/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5437" rel="noopener noreferrer">#5437</a> · chore(deps): upgrade vitest to 5.0.1 (#5437)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/57ba76a2a45d0573ed8f1c1e4a9d11dda9c6ab11/.tool-versions" rel="noopener noreferrer"><code class="path">.tool-versions</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/57ba76a2a45d0573ed8f1c1e4a9d11dda9c6ab11/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/57ba76a2a45d0573ed8f1c1e4a9d11dda9c6ab11/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+277/−122</span></li><li><a href="https://github.com/honojs/hono/blob/57ba76a2a45d0573ed8f1c1e4a9d11dda9c6ab11/src/helper/websocket/index.test.ts" rel="noopener noreferrer"><code class="path">src/helper/websocket/index.test.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/57ba76a2a45d0573ed8f1c1e4a9d11dda9c6ab11/src/request.test.ts" rel="noopener noreferrer"><code class="path">src/request.test.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c29">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-31" data-item="c30" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxNDU6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC8yNmQ4ZTQyYmZmZjdlYjc4ZmMzMjNhMDFlMWQwMmQ2M2I5ZGJjYzcyXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPjI2ZDhlNDI8L2E+LCA3LjIgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogbm8gwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogbm88L3A+In0=" aria-labelledby="h-c30">
+  <h2 id="h-c30" class="cap"><span class="num">C-31</span> Item c30</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/a88c89dac6e230cbb5f1bf627522d4914b81dffd/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5145" rel="noopener noreferrer">#5145</a> · test(cloudflare-workers): add coverage for onClose, onError, send, and close in cloudflare-workers websocket adapter (#5145)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/a88c89dac6e230cbb5f1bf627522d4914b81dffd/src/adapter/cloudflare-workers/websocket.test.ts" rel="noopener noreferrer"><code class="path">src/adapter/cloudflare-workers/websocket.test.ts</code></a> <span class="delta">+104/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c30">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-32" data-item="c31" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyMzk6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5jaGFuZ2VkPC9iPiBpbiA8YSBjbGFzcz1cInNoYVwiIGhyZWY9XCJodHRwczovL2dpdGh1Yi5jb20vaG9ub2pzL2hvbm8vY29tbWl0L2VmMDczOWQ1ZjZlODMyNDJiYTJiNjRjMTM2NWM5Zjk2NzM4OTMzYTFcIiByZWw9XCJub29wZW5lciBub3JlZmVycmVyXCI+ZWYwNzM5ZDwvYT4sIDEwLjIgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogbm8gwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogbm88L3A+In0=" aria-labelledby="h-c31">
+  <h2 id="h-c31" class="cap"><span class="num">C-32</span> Item c31</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5239" rel="noopener noreferrer">#5239</a> · fix(etag): copy pending stream bytes (#5239)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/digest.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/digest.test.ts</code></a> <span class="delta">+21/−0</span></li><li><a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/digest.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/digest.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.test.ts</code></a> <span class="delta">+25/−5</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c31">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-33" data-item="c32" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDM6OmNoZWNrOmNvbXBhbmlvbjpydW50aW1lLXRlc3RzL2Rlbm8vbWlkZGxld2FyZS50ZXN0LnRzeDo6cnVudGltZS10ZXN0cy9kZW5vL21pZGRsZXdhcmUudGVzdC50c3giLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5ydW50aW1lLXRlc3RzL2Rlbm8vbWlkZGxld2FyZS50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+cnVudGltZS10ZXN0cy9kZW5vLy52c2NvZGUvc2V0dGluZ3MuanNvbjwvY29kZT4gaW4gNCBvZiBpdHMgNSBjb21taXRzICg5NSUgQ0kgMzgl4oCTOTYlKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuMzg8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPmNoYW5nZWQ8L2I+IGluIDxhIGNsYXNzPVwic2hhXCIgaHJlZj1cImh0dHBzOi8vZ2l0aHViLmNvbS9ob25vanMvaG9uby9jb21taXQvNjQ1ZGRkNmU2Y2ViMGNmNWJkOWM0OWRmZTAzODUwZjg3NDQwOTE1MVwiIHJlbD1cIm5vb3BlbmVyIG5vcmVmZXJyZXJcIj42NDVkZGQ2PC9hPiwgNzguNCBoIGFmdGVyIG1lcmdlIMK3IHNhbWUgYXV0aG9yOiB5ZXMgwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogeWVzPC9wPiJ9" aria-labelledby="h-c32">
+  <h2 id="h-c32" class="cap"><span class="num">C-33</span> Item c32</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/runtime-tests/deno/middleware.test.tsx" rel="noopener noreferrer"><code class="path">runtime-tests/deno/middleware.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5443" rel="noopener noreferrer">#5443</a> · chore: replace eslint with oxlint (#5443)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/.oxlintrc.json" rel="noopener noreferrer"><code class="path">.oxlintrc.json</code></a> <span class="delta">+260/−0</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/.vscode/settings.json" rel="noopener noreferrer"><code class="path">.vscode/settings.json</code></a> <span class="delta">+1/−2</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/benchmarks/routers-deno/.vscode/settings.json" rel="noopener noreferrer"><code class="path">benchmarks/routers-deno/.vscode/settings.json</code></a> <span class="delta">+1/−2</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/eslint.config.mjs" rel="noopener noreferrer"><code class="path">eslint.config.mjs</code></a> <span class="delta">+0/−85</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+3/−4</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+238/−1154</span></li><li><a href="https://github.com/honojs/hono/blob/3ed3a14f6d47f3a000f6f0206912261fc0e4b6cd/runtime-tests/deno/.vscode/settings.json" rel="noopener noreferrer"><code class="path">runtime-tests/deno/.vscode/settings.json</code></a> <span class="delta">+1/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c32">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-34" data-item="c33" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NTE6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c33">
+  <h2 id="h-c33" class="cap"><span class="num">C-34</span> Item c33</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/ae401f080004872678100e890fd3398d3df09e67/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5451" rel="noopener noreferrer">#5451</a> · fix(css): keep the descendant combinator before a pseudo-class when minifying (#5451)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/ae401f080004872678100e890fd3398d3df09e67/src/helper/css/common.ts" rel="noopener noreferrer"><code class="path">src/helper/css/common.ts</code></a> <span class="delta">+5/−3</span></li><li><a href="https://github.com/honojs/hono/blob/ae401f080004872678100e890fd3398d3df09e67/src/helper/css/index.test.tsx" rel="noopener noreferrer"><code class="path">src/helper/css/index.test.tsx</code></a> <span class="delta">+12/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c33">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-35" data-item="c34" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyMzk6OmNoZWNrOmNvbXBhbmlvbjpzcmMvbWlkZGxld2FyZS9ldGFnL2luZGV4LnRzOjpzcmMvbWlkZGxld2FyZS9ldGFnL2luZGV4LnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL21pZGRsZXdhcmUvZXRhZy9pbmRleC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL21pZGRsZXdhcmUvZXRhZy9pbmRleC50ZXN0LnRzPC9jb2RlPiBpbiAxNiBvZiBpdHMgMjMgY29tbWl0cyAoOTUlIENJIDQ5JeKAkzg0JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjQ5PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5jaGFuZ2VkPC9iPiBpbiA8YSBjbGFzcz1cInNoYVwiIGhyZWY9XCJodHRwczovL2dpdGh1Yi5jb20vaG9ub2pzL2hvbm8vY29tbWl0LzU0NmVjYTBjNDAyYTAzMWFhZWI0YTNiNDIyYzVkOWNiODdmZTE1NzZcIiByZWw9XCJub29wZW5lciBub3JlZmVycmVyXCI+NTQ2ZWNhMDwvYT4sIDAuMiBoIGFmdGVyIG1lcmdlIMK3IHNhbWUgYXV0aG9yOiBubyDCtyBSQSBmb2xsb3ctdXAgc2lnbmFsOiBubzwvcD4ifQ==" aria-labelledby="h-c34">
+  <h2 id="h-c34" class="cap"><span class="num">C-35</span> Item c34</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/index.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5239" rel="noopener noreferrer">#5239</a> · fix(etag): copy pending stream bytes (#5239)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/digest.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/digest.test.ts</code></a> <span class="delta">+21/−0</span></li><li><a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/digest.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/digest.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/7195c2486037a2caa51355a33f2ff31f6d1279c9/src/middleware/etag/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/etag/index.test.ts</code></a> <span class="delta">+25/−5</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c34">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-36" data-item="c35" data-reveal="eyJxdWVzdGlvbklkIjoiIzUwMzY6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L2NvbXBvbmVudHMudGVzdC50c3g6OnNyYy9qc3gvY29tcG9uZW50cy50ZXN0LnRzeCIsInNvdXJjZSI6Imd1dHRlciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5HdXR0ZXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5HdXR0ZXIgYXNrZWQ6IDxjb2RlIGNsYXNzPVwicGF0aFwiPnNyYy9qc3gvY29tcG9uZW50cy50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9jb21wb25lbnRzLnRzPC9jb2RlPiBpbiA4IG9mIGl0cyAxMCBjb21taXRzICg5NSUgQ0kgNDkl4oCTOTQlKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuNDk8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPmNoYW5nZWQ8L2I+IGluIDxhIGNsYXNzPVwic2hhXCIgaHJlZj1cImh0dHBzOi8vZ2l0aHViLmNvbS9ob25vanMvaG9uby9jb21taXQvZDQ4NTNhOGYyNzk0Y2U5ODI4MTg3ODNmMTIzZTM4OGE2ZGVkZDk2NlwiIHJlbD1cIm5vb3BlbmVyIG5vcmVmZXJyZXJcIj5kNDg1M2E4PC9hPiwgMC4yIGggYWZ0ZXIgbWVyZ2Ugwrcgc2FtZSBhdXRob3I6IHllcyDCtyBSQSBmb2xsb3ctdXAgc2lnbmFsOiB5ZXM8L3A+In0=" aria-labelledby="h-c35">
+  <h2 id="h-c35" class="cap"><span class="num">C-36</span> Item c35</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/6735fea78db8ca72e8606001f57b10ee6a96b349/src/jsx/components.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/components.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5036" rel="noopener noreferrer">#5036</a> · fix(jsx): cast awaitedFallback through unknown to fix Deno type check (#5036)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/6735fea78db8ca72e8606001f57b10ee6a96b349/src/jsx/components.ts" rel="noopener noreferrer"><code class="path">src/jsx/components.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c35">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-37" data-item="c36" data-reveal="eyJxdWVzdGlvbklkIjoiIzUwMTI6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6cnVudGltZS10ZXN0cy9idW4vaW5kZXgudGVzdC50c3giLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c36">
+  <h2 id="h-c36" class="cap"><span class="num">C-37</span> Item c36</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/74c2cf8ef4f5cc29a876380df1ba230ff7128b3f/runtime-tests/bun/index.test.tsx" rel="noopener noreferrer"><code class="path">runtime-tests/bun/index.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5012" rel="noopener noreferrer">#5012</a> · test(aws-lambda): update integration tests (#5012)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/74c2cf8ef4f5cc29a876380df1ba230ff7128b3f/runtime-tests/lambda/index.test.ts" rel="noopener noreferrer"><code class="path">runtime-tests/lambda/index.test.ts</code></a> <span class="delta">+5/−7</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c36">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-38" data-item="c37" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NTE6OmNoZWNrOmNvbXBhbmlvbjpzcmMvaGVscGVyL2Nzcy9pbmRleC50czo6c3JjL2hlbHBlci9jc3MvaW5kZXgudHMiLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5zcmMvaGVscGVyL2Nzcy9pbmRleC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2hlbHBlci9jc3MvaW5kZXgudGVzdC50c3g8L2NvZGU+IGluIDYgb2YgaXRzIDEwIGNvbW1pdHMgKDk1JSBDSSAzMSXigJM4MyUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC4zMTwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC81Y2E0OWIwNzIwNzU1YzU4NWM5YTk4MzVmMGE0NzljZWVhMzZmYjUyXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPjVjYTQ5YjA8L2E+LCAyNy41IGggYWZ0ZXIgbWVyZ2Ugwrcgc2FtZSBhdXRob3I6IG5vIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c37">
+  <h2 id="h-c37" class="cap"><span class="num">C-38</span> Item c37</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/ae401f080004872678100e890fd3398d3df09e67/src/helper/css/index.ts" rel="noopener noreferrer"><code class="path">src/helper/css/index.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5451" rel="noopener noreferrer">#5451</a> · fix(css): keep the descendant combinator before a pseudo-class when minifying (#5451)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/ae401f080004872678100e890fd3398d3df09e67/src/helper/css/common.ts" rel="noopener noreferrer"><code class="path">src/helper/css/common.ts</code></a> <span class="delta">+5/−3</span></li><li><a href="https://github.com/honojs/hono/blob/ae401f080004872678100e890fd3398d3df09e67/src/helper/css/index.test.tsx" rel="noopener noreferrer"><code class="path">src/helper/css/index.test.tsx</code></a> <span class="delta">+12/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c37">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-39" data-item="c38" data-reveal="eyJxdWVzdGlvbklkIjoiIzQ5NzE6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c38">
+  <h2 id="h-c38" class="cap"><span class="num">C-39</span> Item c38</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/4971" rel="noopener noreferrer">#4971</a> · fix(utils/ipaddr): do not compress a single 0 group to `::` (#4971)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/utils/ipaddr.test.ts" rel="noopener noreferrer"><code class="path">src/utils/ipaddr.test.ts</code></a> <span class="delta">+4/−0</span></li><li><a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/utils/ipaddr.ts" rel="noopener noreferrer"><code class="path">src/utils/ipaddr.ts</code></a> <span class="delta">+2/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c38">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-40" data-item="c39" data-reveal="eyJxdWVzdGlvbklkIjoiIzUwMzc6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC85N2M2ZmUxZjEyMjk4YzcxNWViN2IyZGE2NWI0YjZlMGQ4MTY4MmJiXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPjk3YzZmZTE8L2E+LCAwLjEgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogeWVzIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c39">
+  <h2 id="h-c39" class="cap"><span class="num">C-40</span> Item c39</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/d4853a8f2794ce982818783f123e388a6dedd966/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5037" rel="noopener noreferrer">#5037</a> · fix(jsx): make merged context-isolation tests pass tsc type check (#5037)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/d4853a8f2794ce982818783f123e388a6dedd966/src/jsx/components.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/components.test.tsx</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/d4853a8f2794ce982818783f123e388a6dedd966/src/jsx/context-isolation.test.ts" rel="noopener noreferrer"><code class="path">src/jsx/context-isolation.test.ts</code></a> <span class="delta">+50/−37</span></li><li><a href="https://github.com/honojs/hono/blob/d4853a8f2794ce982818783f123e388a6dedd966/src/jsx/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/index.test.tsx</code></a> <span class="delta">+4/−4</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c39">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-41" data-item="c40" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyOTc6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5jaGFuZ2VkPC9iPiBpbiA8YSBjbGFzcz1cInNoYVwiIGhyZWY9XCJodHRwczovL2dpdGh1Yi5jb20vaG9ub2pzL2hvbm8vY29tbWl0L2UyNzQwZDVhMWJkMGI0MjU0ZTUxN2UzYWY4YjYwNzg5Mjg0YmM3YmRcIiByZWw9XCJub29wZW5lciBub3JlZmVycmVyXCI+ZTI3NDBkNTwvYT4sIDMwLjMgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogbm8gwrcgUkEgZm9sbG93LXVwIHNpZ25hbDogbm88L3A+In0=" aria-labelledby="h-c40">
+  <h2 id="h-c40" class="cap"><span class="num">C-41</span> Item c40</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/50b8788cf54cb60112b7cd93642bc5094901475c/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5297" rel="noopener noreferrer">#5297</a> · fix(client): keep a param value of &quot;index&quot; in $url() and $path() (#5297)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/50b8788cf54cb60112b7cd93642bc5094901475c/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a> <span class="delta">+71/−7</span></li><li><a href="https://github.com/honojs/hono/blob/50b8788cf54cb60112b7cd93642bc5094901475c/src/client/client.ts" rel="noopener noreferrer"><code class="path">src/client/client.ts</code></a> <span class="delta">+4/−3</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c40">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-42" data-item="c41" data-reveal="eyJxdWVzdGlvbklkIjoiIzU1NjM6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c41">
+  <h2 id="h-c41" class="cap"><span class="num">C-42</span> Item c41</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/e9c01079a932ffdfa269c0011075ac43fd8a1035/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5563" rel="noopener noreferrer">#5563</a> · fix(hono-base): disallow `getPath` when `strict` is `false` (#5563)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/e9c01079a932ffdfa269c0011075ac43fd8a1035/src/helper/factory/index.ts" rel="noopener noreferrer"><code class="path">src/helper/factory/index.ts</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/e9c01079a932ffdfa269c0011075ac43fd8a1035/src/hono-base.ts" rel="noopener noreferrer"><code class="path">src/hono-base.ts</code></a> <span class="delta">+45/−30</span></li><li><a href="https://github.com/honojs/hono/blob/e9c01079a932ffdfa269c0011075ac43fd8a1035/src/hono.test.ts" rel="noopener noreferrer"><code class="path">src/hono.test.ts</code></a> <span class="delta">+1/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c41">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-43" data-item="c42" data-reveal="eyJxdWVzdGlvbklkIjoiIzUwMTI6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC9mY2U0ODNlMTE0NjZiNzJkMjdlNjFkNDQ1MjNjN2U2ZWRlYjE5ZTUwXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPmZjZTQ4M2U8L2E+LCAwLjIgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogeWVzIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c42">
+  <h2 id="h-c42" class="cap"><span class="num">C-43</span> Item c42</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/74c2cf8ef4f5cc29a876380df1ba230ff7128b3f/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5012" rel="noopener noreferrer">#5012</a> · test(aws-lambda): update integration tests (#5012)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/74c2cf8ef4f5cc29a876380df1ba230ff7128b3f/runtime-tests/lambda/index.test.ts" rel="noopener noreferrer"><code class="path">runtime-tests/lambda/index.test.ts</code></a> <span class="delta">+5/−7</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c42">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-44" data-item="c43" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyMzY6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2hvbm8udHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c43">
+  <h2 id="h-c43" class="cap"><span class="num">C-44</span> Item c43</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/63bbcf508c74d9fe7a3e20f4dfe7ffacc566dcce/src/hono.ts" rel="noopener noreferrer"><code class="path">src/hono.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5236" rel="noopener noreferrer">#5236</a> · fix(trie-router): match suffix wildcard routes (#5236)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/63bbcf508c74d9fe7a3e20f4dfe7ffacc566dcce/src/hono.test.ts" rel="noopener noreferrer"><code class="path">src/hono.test.ts</code></a> <span class="delta">+14/−0</span></li><li><a href="https://github.com/honojs/hono/blob/63bbcf508c74d9fe7a3e20f4dfe7ffacc566dcce/src/router/trie-router/node.test.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.test.ts</code></a> <span class="delta">+27/−10</span></li><li><a href="https://github.com/honojs/hono/blob/63bbcf508c74d9fe7a3e20f4dfe7ffacc566dcce/src/router/trie-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.ts</code></a> <span class="delta">+49/−78</span></li><li><a href="https://github.com/honojs/hono/blob/63bbcf508c74d9fe7a3e20f4dfe7ffacc566dcce/src/router/trie-router/router.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/router.ts</code></a> <span class="delta">+3/−13</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c43">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-45" data-item="c44" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0MjM6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2hvbm8udHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c44">
+  <h2 id="h-c44" class="cap"><span class="num">C-45</span> Item c44</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/hono.ts" rel="noopener noreferrer"><code class="path">src/hono.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5423" rel="noopener noreferrer">#5423</a> · fix(trie-router): keep first value for duplicate path params (#5422) (#5423)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/hono.test.ts" rel="noopener noreferrer"><code class="path">src/hono.test.ts</code></a> <span class="delta">+18/−0</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/common.case.test.ts" rel="noopener noreferrer"><code class="path">src/router/common.case.test.ts</code></a> <span class="delta">+16/−0</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/pattern-router/router.test.ts" rel="noopener noreferrer"><code class="path">src/router/pattern-router/router.test.ts</code></a> <span class="delta">+5/−1</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/trie-router/node.test.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.test.ts</code></a> <span class="delta">+27/−0</span></li><li><a href="https://github.com/honojs/hono/blob/08807ce12aa3aa27c8c5adf63e677bbab6bceda9/src/router/trie-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.ts</code></a> <span class="delta">+6/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c44">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-46" data-item="c45" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxMDA6OmNoZWNrOmNvbXBhbmlvbjpwYWNrYWdlLmpzb246OnBhY2thZ2UuanNvbiIsInNvdXJjZSI6Imd1dHRlciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5HdXR0ZXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5HdXR0ZXIgYXNrZWQ6IDxjb2RlIGNsYXNzPVwicGF0aFwiPnBhY2thZ2UuanNvbjwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+cnVudGltZS10ZXN0cy93b3JrZXJkL2luZGV4LnRlc3QudHM8L2NvZGU+IGluIDUgb2YgaXRzIDYgY29tbWl0cyAoOTUlIENJIDQ0JeKAkzk3JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjQ0PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5jaGFuZ2VkPC9iPiBpbiA8YSBjbGFzcz1cInNoYVwiIGhyZWY9XCJodHRwczovL2dpdGh1Yi5jb20vaG9ub2pzL2hvbm8vY29tbWl0L2NkYTFhZjIwMDI1NmZhOWEwMTRiYmNjMmZkZjc5ZGIyMDFhNjI3YjZcIiByZWw9XCJub29wZW5lciBub3JlZmVycmVyXCI+Y2RhMWFmMjwvYT4sIDEzLjEgaCBhZnRlciBtZXJnZSDCtyBzYW1lIGF1dGhvcjogeWVzIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c45">
+  <h2 id="h-c45" class="cap"><span class="num">C-46</span> Item c45</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/ba89e973c71f83fc5f01025df6edc9e0f6b7463f/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5100" rel="noopener noreferrer">#5100</a> · test(workerd): add `compatibilityDate` (#5100)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/ba89e973c71f83fc5f01025df6edc9e0f6b7463f/runtime-tests/workerd/index.test.ts" rel="noopener noreferrer"><code class="path">runtime-tests/workerd/index.test.ts</code></a> <span class="delta">+3/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c45">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-47" data-item="c46" data-reveal="eyJxdWVzdGlvbklkIjoiIzUzODA6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L3N0cmVhbWluZy50ZXN0LnRzeDo6c3JjL2pzeC9zdHJlYW1pbmcudGVzdC50c3giLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5zcmMvanN4L3N0cmVhbWluZy50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9zdHJlYW1pbmcudHM8L2NvZGU+IGluIDE2IG9mIGl0cyAyMSBjb21taXRzICg5NSUgQ0kgNTUl4oCTODklKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuNTU8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c46">
+  <h2 id="h-c46" class="cap"><span class="num">C-47</span> Item c46</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/jsx/streaming.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/streaming.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5380" rel="noopener noreferrer">#5380</a> · fix(jsx): replace Suspense and ErrorBoundary content across newlines (#5380)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/helper/streaming/sse.test.tsx" rel="noopener noreferrer"><code class="path">src/helper/streaming/sse.test.tsx</code></a> <span class="delta">+127/−1</span></li><li><a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/jsx/components.ts" rel="noopener noreferrer"><code class="path">src/jsx/components.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/cb5bea3614e6591e8ab933ef9a38ce7addf1d09a/src/jsx/streaming.ts" rel="noopener noreferrer"><code class="path">src/jsx/streaming.ts</code></a> <span class="delta">+1/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c46">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-48" data-item="c47" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxMTY6OmNoZWNrOmNvbXBhbmlvbjpzcmMvY29udGV4dC50czo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5zcmMvY29udGV4dC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NvbnRleHQudGVzdC50czwvY29kZT4gaW4gNzEgb2YgaXRzIDgxIGNvbW1pdHMgKDk1JSBDSSA3OSXigJM5MyUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC43OTwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c47">
+  <h2 id="h-c47" class="cap"><span class="num">C-48</span> Item c47</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/fb9d7bf8fb0dd7b3c92a0c289d5dc685edf5f3a3/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5116" rel="noopener noreferrer">#5116</a> · test(context): assert case-insensitive header names in response helpers (#5116)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/fb9d7bf8fb0dd7b3c92a0c289d5dc685edf5f3a3/src/context.test.ts" rel="noopener noreferrer"><code class="path">src/context.test.ts</code></a> <span class="delta">+15/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c47">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-49" data-item="c48" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyNzI6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC8wMTcwMDBkNmFkNWJjNmE2NWRkMGY5MjE1YTRmZGZlYTZlYTgwYWVhXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPjAxNzAwMGQ8L2E+LCA1MS4zIGggYWZ0ZXIgbWVyZ2Ugwrcgc2FtZSBhdXRob3I6IG5vIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c48">
+  <h2 id="h-c48" class="cap"><span class="num">C-49</span> Item c48</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/2059584f84187a688354956e0647269834ccf3a6/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5272" rel="noopener noreferrer">#5272</a> · fix(client): skip an undefined entry inside a query array (#5272)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/2059584f84187a688354956e0647269834ccf3a6/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a> <span class="delta">+25/−0</span></li><li><a href="https://github.com/honojs/hono/blob/2059584f84187a688354956e0647269834ccf3a6/src/client/utils.test.ts" rel="noopener noreferrer"><code class="path">src/client/utils.test.ts</code></a> <span class="delta">+21/−0</span></li><li><a href="https://github.com/honojs/hono/blob/2059584f84187a688354956e0647269834ccf3a6/src/client/utils.ts" rel="noopener noreferrer"><code class="path">src/client/utils.ts</code></a> <span class="delta">+3/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c48">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-50" data-item="c49" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyODA6OmNoZWNrOmNvbXBhbmlvbjpzcmMvY2xpZW50L3R5cGVzLnRzOjpzcmMvY2xpZW50L3R5cGVzLnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC90eXBlcy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC9jbGllbnQudGVzdC50czwvY29kZT4gaW4gMzQgb2YgaXRzIDczIGNvbW1pdHMgKDk1JSBDSSAzNiXigJM1OCUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC4zNjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c49">
+  <h2 id="h-c49" class="cap"><span class="num">C-50</span> Item c49</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/c4a44071eee614c7317403f3534cd213d3f0e0b3/src/client/types.ts" rel="noopener noreferrer"><code class="path">src/client/types.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5280" rel="noopener noreferrer">#5280</a> · fix(client): skip an undefined entry inside a form array (#5280)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/c4a44071eee614c7317403f3534cd213d3f0e0b3/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a> <span class="delta">+32/−0</span></li><li><a href="https://github.com/honojs/hono/blob/c4a44071eee614c7317403f3534cd213d3f0e0b3/src/client/client.ts" rel="noopener noreferrer"><code class="path">src/client/client.ts</code></a> <span class="delta">+3/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c49">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-51" data-item="c50" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0MzU6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2hvbm8udHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c50">
+  <h2 id="h-c50" class="cap"><span class="num">C-51</span> Item c50</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/hono.ts" rel="noopener noreferrer"><code class="path">src/hono.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5435" rel="noopener noreferrer">#5435</a> · chore: replace prettier with oxfmt (#5435)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/.oxfmtrc.json" rel="noopener noreferrer"><code class="path">.oxfmtrc.json</code></a> <span class="delta">+16/−0</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/.prettierrc" rel="noopener noreferrer"><code class="path">.prettierrc</code></a> <span class="delta">+0/−9</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+225/−10</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/router/reg-exp-router/trie.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/trie.ts</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/types.ts" rel="noopener noreferrer"><code class="path">src/types.ts</code></a> <span class="delta">+10/−6</span></li><li><a href="https://github.com/honojs/hono/blob/8dcd52b92beada28962e818bdca8a137a6beb656/src/utils/types.ts" rel="noopener noreferrer"><code class="path">src/utils/types.ts</code></a> <span class="delta">+3/−3</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c50">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-52" data-item="c51" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDY6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC9lZTA2MjJlMTQ0ODc0NDQyMTE5NDJlZWMyZjZhYjdjY2VkZTRjNmFmXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPmVlMDYyMmU8L2E+LCAyMi4zIGggYWZ0ZXIgbWVyZ2Ugwrcgc2FtZSBhdXRob3I6IG5vIMK3IFJBIGZvbGxvdy11cCBzaWduYWw6IG5vPC9wPiJ9" aria-labelledby="h-c51">
+  <h2 id="h-c51" class="cap"><span class="num">C-52</span> Item c51</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5446" rel="noopener noreferrer">#5446</a> · fix(types): allow returning a Blob as a response body (#5446)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/context.test.ts" rel="noopener noreferrer"><code class="path">src/context.test.ts</code></a> <span class="delta">+10/−0</span></li><li><a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/90d02fb1645c12a65d27f39594d2129db2065ba7/src/middleware/serve-static/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/serve-static/index.test.ts</code></a> <span class="delta">+15/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c51">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-53" data-item="c52" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NjY6OmNoZWNrOmNvbXBhbmlvbjpydW50aW1lLXRlc3RzL25vZGUvdml0ZXN0LmNvbmZpZy50czo6cnVudGltZS10ZXN0cy9ub2RlL3ZpdGVzdC5jb25maWcudHMiLCJzb3VyY2UiOiJndXR0ZXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+R3V0dGVyPC9zcGFuPjwvcD48cCBjbGFzcz1cImV2aWRlbmNlXCI+R3V0dGVyIGFza2VkOiA8Y29kZSBjbGFzcz1cInBhdGhcIj5ydW50aW1lLXRlc3RzL25vZGUvdml0ZXN0LmNvbmZpZy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+cnVudGltZS10ZXN0cy9sYW1iZGEtZWRnZS92aXRlc3QuY29uZmlnLnRzPC9jb2RlPiBpbiA0IG9mIGl0cyA0IGNvbW1pdHMgKDk1JSBDSSA1MSXigJMxMDAlKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuNTE8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c52">
+  <h2 id="h-c52" class="cap"><span class="num">C-53</span> Item c52</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/runtime-tests/node/vitest.config.ts" rel="noopener noreferrer"><code class="path">runtime-tests/node/vitest.config.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5466" rel="noopener noreferrer">#5466</a> · test: move adapter runtime tests into `adapters/*` (#5466)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/.github/workflows/ci-adapters.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci-adapters.yml</code></a> <span class="delta">+4/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/.github/workflows/ci.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci.yml</code></a> <span class="delta">+0/−36</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/aws-lambda/test/index.test.ts" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/test/index.test.ts</code></a> <span class="delta">+7/−7</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/aws-lambda/test/mock.ts" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/test/mock.ts</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/aws-lambda/test/stream-backpressure.test.ts" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/test/stream-backpressure.test.ts</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/aws-lambda/test/stream-mock.ts" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/test/stream-mock.ts</code></a> <span class="delta">+2/−5</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/aws-lambda/test/stream.test.ts" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/test/stream.test.ts</code></a> <span class="delta">+4/−4</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/aws-lambda/tsconfig.json" rel="noopener noreferrer"><code class="path">adapters/aws-lambda/tsconfig.json</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/.static/plain.txt" rel="noopener noreferrer"><code class="path">adapters/bun/test/.static/plain.txt</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/favicon.ico" rel="noopener noreferrer"><code class="path">adapters/bun/test/favicon.ico</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/index.test.ts" rel="noopener noreferrer"><code class="path">adapters/bun/test/index.test.ts</code></a> <span class="delta">+150/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/static-absolute-root/plain.txt" rel="noopener noreferrer"><code class="path">adapters/bun/test/static-absolute-root/plain.txt</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/static/download" rel="noopener noreferrer"><code class="path">adapters/bun/test/static/download</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/static/hello.world/index.html" rel="noopener noreferrer"><code class="path">adapters/bun/test/static/hello.world/index.html</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/static/helloworld/index.html" rel="noopener noreferrer"><code class="path">adapters/bun/test/static/helloworld/index.html</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/test/static/plain.txt" rel="noopener noreferrer"><code class="path">adapters/bun/test/static/plain.txt</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/bun/tsconfig.json" rel="noopener noreferrer"><code class="path">adapters/bun/tsconfig.json</code></a> <span class="delta">+7/−3</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/cloudflare-workers/package.json" rel="noopener noreferrer"><code class="path">adapters/cloudflare-workers/package.json</code></a> <span class="delta">+4/−1</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/cloudflare-workers/test/websocket.test.ts" rel="noopener noreferrer"><code class="path">adapters/cloudflare-workers/test/websocket.test.ts</code></a> <span class="delta">+38/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/cloudflare-workers/test/worker.ts" rel="noopener noreferrer"><code class="path">adapters/cloudflare-workers/test/worker.ts</code></a> <span class="delta">+15/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/cloudflare-workers/tsconfig.json" rel="noopener noreferrer"><code class="path">adapters/cloudflare-workers/tsconfig.json</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/package.json" rel="noopener noreferrer"><code class="path">adapters/deno/package.json</code></a> <span class="delta">+2/−1</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/.static/plain.txt" rel="noopener noreferrer"><code class="path">adapters/deno/test/.static/plain.txt</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/assert.ts" rel="noopener noreferrer"><code class="path">adapters/deno/test/assert.ts</code></a> <span class="delta">+11/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/deno.json" rel="noopener noreferrer"><code class="path">adapters/deno/test/deno.json</code></a> <span class="delta">+21/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/favicon.ico" rel="noopener noreferrer"><code class="path">adapters/deno/test/favicon.ico</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/serve-static.test.ts" rel="noopener noreferrer"><code class="path">adapters/deno/test/serve-static.test.ts</code></a> <span class="delta">+94/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/ssg.test.ts" rel="noopener noreferrer"><code class="path">adapters/deno/test/ssg.test.ts</code></a> <span class="delta">+23/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/static-absolute-root/plain.txt" rel="noopener noreferrer"><code class="path">adapters/deno/test/static-absolute-root/plain.txt</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/static/download" rel="noopener noreferrer"><code class="path">adapters/deno/test/static/download</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/static/hello.world/index.html" rel="noopener noreferrer"><code class="path">adapters/deno/test/static/hello.world/index.html</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/static/helloworld/index.html" rel="noopener noreferrer"><code class="path">adapters/deno/test/static/helloworld/index.html</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/test/static/plain.txt" rel="noopener noreferrer"><code class="path">adapters/deno/test/static/plain.txt</code></a> <span class="delta">+0/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/deno/vite.config.ts" rel="noopener noreferrer"><code class="path">adapters/deno/vite.config.ts</code></a> <span class="delta">+2/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/lambda-edge/test/index.test.ts" rel="noopener noreferrer"><code class="path">adapters/lambda-edge/test/index.test.ts</code></a> <span class="delta">+4/−4</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/adapters/lambda-edge/tsconfig.json" rel="noopener noreferrer"><code class="path">adapters/lambda-edge/tsconfig.json</code></a> <span class="delta">+2/−2</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/docs/MAINTAINING.md" rel="noopener noreferrer"><code class="path">docs/MAINTAINING.md</code></a> <span class="delta">+3/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+0/−2</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+9/−0</span></li><li><a href="https://github.com/honojs/hono/blob/645ddd6e6ceb0cf5bd9c49dfe03850f874409151/runtime-tests/bun/index.test.tsx" rel="noopener noreferrer"><code class="path">runtime-tests/bun/index.test.tsx</code></a> <span class="delta">+1/−192</span></li></ul><p class="small">…and 9 more file(s).</p>
+  <div class="choices" role="group" aria-label="Label for item c52">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-54" data-item="c53" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NDQ6OmNoZWNrOmNvbXBhbmlvbjouZ2l0aHViL2FjdGlvbnMvcGVyZi1tZWFzdXJlcy9hY3Rpb24ueW1sOjouZ2l0aHViL2FjdGlvbnMvcGVyZi1tZWFzdXJlcy9hY3Rpb24ueW1sIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+LmdpdGh1Yi9hY3Rpb25zL3BlcmYtbWVhc3VyZXMvYWN0aW9uLnltbDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+LmdpdGh1Yi93b3JrZmxvd3MvYXV0b2ZpeC55bWw8L2NvZGU+IGluIDUgb2YgaXRzIDYgY29tbWl0cyAoOTUlIENJIDQ0JeKAkzk3JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjQ0PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c53">
+  <h2 id="h-c53" class="cap"><span class="num">C-54</span> Item c53</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/.github/actions/perf-measures/action.yml" rel="noopener noreferrer"><code class="path">.github/actions/perf-measures/action.yml</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5444" rel="noopener noreferrer">#5444</a> · chore: introduce Vite+ (#5444)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/.github/pull_request_template.md" rel="noopener noreferrer"><code class="path">.github/pull_request_template.md</code></a> <span class="delta">+1/−1</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/.github/workflows/autofix.yml" rel="noopener noreferrer"><code class="path">.github/workflows/autofix.yml</code></a> <span class="delta">+1/−2</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/.github/workflows/ci.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci.yml</code></a> <span class="delta">+1/−2</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/.oxfmtrc.json" rel="noopener noreferrer"><code class="path">.oxfmtrc.json</code></a> <span class="delta">+3/−1</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/build/build.ts" rel="noopener noreferrer"><code class="path">build/build.ts</code></a> <span class="delta">+0/−114</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/build/strip-private-fields.ts" rel="noopener noreferrer"><code class="path">build/strip-private-fields.ts</code></a> <span class="delta">+8/−0</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/build/validate-package-exports.ts" rel="noopener noreferrer"><code class="path">build/validate-package-exports.ts</code></a> <span class="delta">+9/−0</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a> <span class="delta">+19/−19</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/pnpm-lock.yaml" rel="noopener noreferrer"><code class="path">pnpm-lock.yaml</code></a> <span class="delta">+659/−49</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/vite.config.ts" rel="noopener noreferrer"><code class="path">vite.config.ts</code></a> <span class="delta">+39/−0</span></li><li><a href="https://github.com/honojs/hono/blob/5f31392d724cf98c9e48a3de119a55284583ad5f/vitest.config.ts" rel="noopener noreferrer"><code class="path">vitest.config.ts</code></a> <span class="delta">+0/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c53">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-55" data-item="c54" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxNDI6OmNoZWNrOmNvbXBhbmlvbjpydW50aW1lLXRlc3RzL2xhbWJkYS9pbmRleC50ZXN0LnRzOjpydW50aW1lLXRlc3RzL2xhbWJkYS9pbmRleC50ZXN0LnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+cnVudGltZS10ZXN0cy9sYW1iZGEvaW5kZXgudGVzdC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2FkYXB0ZXIvYXdzLWxhbWJkYS90eXBlcy50czwvY29kZT4gaW4gNCBvZiBpdHMgNCBjb21taXRzICg5NSUgQ0kgNTEl4oCTMTAwJSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjUxPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c54">
+  <h2 id="h-c54" class="cap"><span class="num">C-55</span> Item c54</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/e36f57dac0615c1bdd03ff1975b6ca8d3dc5917f/runtime-tests/lambda/index.test.ts" rel="noopener noreferrer"><code class="path">runtime-tests/lambda/index.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5142" rel="noopener noreferrer">#5142</a> · fix(aws-lambda): add jwt and lambda authorizer types for API Gateway v2 (#5142)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/e36f57dac0615c1bdd03ff1975b6ca8d3dc5917f/src/adapter/aws-lambda/handler.test.ts" rel="noopener noreferrer"><code class="path">src/adapter/aws-lambda/handler.test.ts</code></a> <span class="delta">+60/−1</span></li><li><a href="https://github.com/honojs/hono/blob/e36f57dac0615c1bdd03ff1975b6ca8d3dc5917f/src/adapter/aws-lambda/types.ts" rel="noopener noreferrer"><code class="path">src/adapter/aws-lambda/types.ts</code></a> <span class="delta">+9/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c54">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-56" data-item="c55" data-reveal="eyJxdWVzdGlvbklkIjoiIzQ5NzE6OmNoZWNrOmNvbXBhbmlvbjpzcmMvbWlkZGxld2FyZS9pcC1yZXN0cmljdGlvbi9pbmRleC50ZXN0LnRzOjpzcmMvbWlkZGxld2FyZS9pcC1yZXN0cmljdGlvbi9pbmRleC50ZXN0LnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL21pZGRsZXdhcmUvaXAtcmVzdHJpY3Rpb24vaW5kZXgudGVzdC50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL3V0aWxzL2lwYWRkci50czwvY29kZT4gaW4gNCBvZiBpdHMgNSBjb21taXRzICg5NSUgQ0kgMzgl4oCTOTYlKSBidXQgaXMgdW50b3VjaGVkIGhlcmUuIERvZXMgaXQgbmVlZCBhIG1hdGNoaW5nIGNoYW5nZT88L3A+PHAgY2xhc3M9XCJzbWFsbFwiPldpbHNvbiA5NSUgbG93ZXIgYm91bmQ6IDAuMzg8L3A+PHAgY2xhc3M9XCJzdGF0XCI+QXV0b21hdGljIG91dGNvbWU6IDxiPm5vdCBjaGFuZ2VkPC9iPiB3aXRoaW4gNyBkYXkocykgYWZ0ZXIgbWVyZ2UuPC9wPiJ9" aria-labelledby="h-c55">
+  <h2 id="h-c55" class="cap"><span class="num">C-56</span> Item c55</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/middleware/ip-restriction/index.test.ts" rel="noopener noreferrer"><code class="path">src/middleware/ip-restriction/index.test.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/4971" rel="noopener noreferrer">#4971</a> · fix(utils/ipaddr): do not compress a single 0 group to `::` (#4971)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/utils/ipaddr.test.ts" rel="noopener noreferrer"><code class="path">src/utils/ipaddr.test.ts</code></a> <span class="delta">+4/−0</span></li><li><a href="https://github.com/honojs/hono/blob/bcd290a64c0b392fd06d2bd1f256c5dc9835e4a4/src/utils/ipaddr.ts" rel="noopener noreferrer"><code class="path">src/utils/ipaddr.ts</code></a> <span class="delta">+2/−1</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c55">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-57" data-item="c56" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyMDI6OmNoZWNrOmNvbXBhbmlvbjpzcmMvY2xpZW50L3R5cGVzLnRzOjpzcmMvY2xpZW50L3R5cGVzLnRzIiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC90eXBlcy50czwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2NsaWVudC9jbGllbnQudGVzdC50czwvY29kZT4gaW4gMzQgb2YgaXRzIDY5IGNvbW1pdHMgKDk1JSBDSSAzOCXigJM2MSUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC4zODwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+bm90IGNoYW5nZWQ8L2I+IHdpdGhpbiA3IGRheShzKSBhZnRlciBtZXJnZS48L3A+In0=" aria-labelledby="h-c56">
+  <h2 id="h-c56" class="cap"><span class="num">C-57</span> Item c56</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/f2a72d333aed37b1bf2c18540a0a1df9fdb5c58c/src/client/types.ts" rel="noopener noreferrer"><code class="path">src/client/types.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5202" rel="noopener noreferrer">#5202</a> · fix(client): serialize multiple cookies correctly (#5202)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/f2a72d333aed37b1bf2c18540a0a1df9fdb5c58c/src/client/client.test.ts" rel="noopener noreferrer"><code class="path">src/client/client.test.ts</code></a> <span class="delta">+3/−3</span></li><li><a href="https://github.com/honojs/hono/blob/f2a72d333aed37b1bf2c18540a0a1df9fdb5c58c/src/client/client.ts" rel="noopener noreferrer"><code class="path">src/client/client.ts</code></a> <span class="delta">+2/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c56">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-58" data-item="c57" data-reveal="eyJxdWVzdGlvbklkIjoiIzUyNjc6OmJhc2VsaW5lOnJlY2VudDo6cGFja2FnZS5qc29uIiwic291cmNlIjoicmVjZW50IiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkJhc2VsaW5lOiByZWNlbnQ8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5Qcm9wb3NlZCBieSB0aGUgPGI+cmVjZW50PC9iPiBiYXNlbGluZTogYW1vbmcgZmlsZXMgdGhpcyBQUiBkaWQgbm90IHRvdWNoLCBvbmUgb2YgdGhlIGZpbGVzIGNoYW5nZWQgbW9zdCBvZnRlbiBpbiB0aGUgMzAgZGF5cyBiZWZvcmUgdGhlIFBS4oCZcyBiYXNlLiBJdCBwcm9wb3NlcyBhcyBtYW55IGZpbGVzIGFzIEd1dHRlciBhc2tlZCBhYm91dCBvbiB0aGlzIFBSLjwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC8wMTcwMDBkNmFkNWJjNmE2NWRkMGY5MjE1YTRmZGZlYTZlYTgwYWVhXCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPjAxNzAwMGQ8L2E+LCAxMDAuMiBoIGFmdGVyIG1lcmdlIMK3IHNhbWUgYXV0aG9yOiBubyDCtyBSQSBmb2xsb3ctdXAgc2lnbmFsOiBubzwvcD4ifQ==" aria-labelledby="h-c57">
+  <h2 id="h-c57" class="cap"><span class="num">C-58</span> Item c57</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/4b44abe1b5c7755aac8555d7943611555183450b/package.json" rel="noopener noreferrer"><code class="path">package.json</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5267" rel="noopener noreferrer">#5267</a> · perf(router): share null object creation (#5267)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/4b44abe1b5c7755aac8555d7943611555183450b/src/router/reg-exp-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/node.ts</code></a> <span class="delta">+3/−1</span></li><li><a href="https://github.com/honojs/hono/blob/4b44abe1b5c7755aac8555d7943611555183450b/src/router/reg-exp-router/router.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/router.ts</code></a> <span class="delta">+10/−9</span></li><li><a href="https://github.com/honojs/hono/blob/4b44abe1b5c7755aac8555d7943611555183450b/src/router/reg-exp-router/trie.ts" rel="noopener noreferrer"><code class="path">src/router/reg-exp-router/trie.ts</code></a> <span class="delta">+2/−1</span></li><li><a href="https://github.com/honojs/hono/blob/4b44abe1b5c7755aac8555d7943611555183450b/src/router/trie-router/node.ts" rel="noopener noreferrer"><code class="path">src/router/trie-router/node.ts</code></a> <span class="delta">+4/−3</span></li><li><a href="https://github.com/honojs/hono/blob/4b44abe1b5c7755aac8555d7943611555183450b/src/router/utils.ts" rel="noopener noreferrer"><code class="path">src/router/utils.ts</code></a> <span class="delta">+1/−0</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c57">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-59" data-item="c58" data-reveal="eyJxdWVzdGlvbklkIjoiIzUxMzY6OmJhc2VsaW5lOnBvcHVsYXItbmVhcjo6c3JjL2NvbnRleHQudHMiLCJzb3VyY2UiOiJwb3B1bGFyLW5lYXIiLCJodG1sIjoiPHAgY2xhc3M9XCJzb3VyY2VcIj48c3BhbiBjbGFzcz1cInN0YW1wXCI+QmFzZWxpbmU6IHBvcHVsYXItbmVhcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPlByb3Bvc2VkIGJ5IHRoZSA8Yj5wb3B1bGFyLW5lYXI8L2I+IGJhc2VsaW5lOiBhbW9uZyBmaWxlcyB0aGlzIFBSIGRpZCBub3QgdG91Y2ggdGhhdCBzaGFyZSBhIHRvcC1sZXZlbCBkaXJlY3Rvcnkgd2l0aCBhIGZpbGUgaXQgZGlkIHRvdWNoLCBvbmUgb2YgdGhlIG1vc3QgZnJlcXVlbnRseSBjaGFuZ2VkIGluIGFsbCBoaXN0b3J5IGJlZm9yZSB0aGUgUFLigJlzIGJhc2UuIEl0IHByb3Bvc2VzIGFzIG1hbnkgZmlsZXMgYXMgR3V0dGVyIGFza2VkIGFib3V0IG9uIHRoaXMgUFIuPC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c58">
+  <h2 id="h-c58" class="cap"><span class="num">C-59</span> Item c58</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/64c613ab0f15526b0c0edb25ad0c2989eace2ea1/src/context.ts" rel="noopener noreferrer"><code class="path">src/context.ts</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5136" rel="noopener noreferrer">#5136</a> · test(validator): fix misspelled identifier in transform type test (#5136)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/64c613ab0f15526b0c0edb25ad0c2989eace2ea1/src/validator/validator.test.ts" rel="noopener noreferrer"><code class="path">src/validator/validator.test.ts</code></a> <span class="delta">+6/−6</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c58">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-60" data-item="c59" data-reveal="eyJxdWVzdGlvbklkIjoiIzQ5NDc6OmNoZWNrOmNvbXBhbmlvbjpzcmMvanN4L2luZGV4LnRlc3QudHN4OjpzcmMvanN4L2luZGV4LnRlc3QudHN4Iiwic291cmNlIjoiZ3V0dGVyIiwiaHRtbCI6IjxwIGNsYXNzPVwic291cmNlXCI+PHNwYW4gY2xhc3M9XCJzdGFtcFwiPkd1dHRlcjwvc3Bhbj48L3A+PHAgY2xhc3M9XCJldmlkZW5jZVwiPkd1dHRlciBhc2tlZDogPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9pbmRleC50ZXN0LnRzeDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+c3JjL2pzeC9iYXNlLnRzPC9jb2RlPiBpbiAxMyBvZiBpdHMgMjMgY29tbWl0cyAoOTUlIENJIDM3JeKAkzc0JSkgYnV0IGlzIHVudG91Y2hlZCBoZXJlLiBEb2VzIGl0IG5lZWQgYSBtYXRjaGluZyBjaGFuZ2U/PC9wPjxwIGNsYXNzPVwic21hbGxcIj5XaWxzb24gOTUlIGxvd2VyIGJvdW5kOiAwLjM3PC9wPjxwIGNsYXNzPVwic3RhdFwiPkF1dG9tYXRpYyBvdXRjb21lOiA8Yj5ub3QgY2hhbmdlZDwvYj4gd2l0aGluIDcgZGF5KHMpIGFmdGVyIG1lcmdlLjwvcD4ifQ==" aria-labelledby="h-c59">
+  <h2 id="h-c59" class="cap"><span class="num">C-60</span> Item c59</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/eb2d0c238adbcee5933d0f8c15f1a65a88f50565/src/jsx/index.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/index.test.tsx</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/4947" rel="noopener noreferrer">#4947</a> · fix(jsx): widen jsx and jsxFn children to Child[] (#4947)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/eb2d0c238adbcee5933d0f8c15f1a65a88f50565/src/jsx/base.test.tsx" rel="noopener noreferrer"><code class="path">src/jsx/base.test.tsx</code></a> <span class="delta">+7/−1</span></li><li><a href="https://github.com/honojs/hono/blob/eb2d0c238adbcee5933d0f8c15f1a65a88f50565/src/jsx/base.ts" rel="noopener noreferrer"><code class="path">src/jsx/base.ts</code></a> <span class="delta">+2/−10</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c59">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+<section class="panel item" data-cut="C-61" data-item="c60" data-reveal="eyJxdWVzdGlvbklkIjoiIzU0NTY6OmNoZWNrOmNvbXBhbmlvbjouZ2l0aHViL3dvcmtmbG93cy9jaS55bWw6Oi5naXRodWIvd29ya2Zsb3dzL2NpLnltbCIsInNvdXJjZSI6Imd1dHRlciIsImh0bWwiOiI8cCBjbGFzcz1cInNvdXJjZVwiPjxzcGFuIGNsYXNzPVwic3RhbXBcIj5HdXR0ZXI8L3NwYW4+PC9wPjxwIGNsYXNzPVwiZXZpZGVuY2VcIj5HdXR0ZXIgYXNrZWQ6IDxjb2RlIGNsYXNzPVwicGF0aFwiPi5naXRodWIvd29ya2Zsb3dzL2NpLnltbDwvY29kZT4gY2hhbmdlZCBhbG9uZ3NpZGUgPGNvZGUgY2xhc3M9XCJwYXRoXCI+LmdpdGh1Yi93b3JrZmxvd3MvY3IueW1sPC9jb2RlPiBpbiA1IG9mIGl0cyA2IGNvbW1pdHMgKDk1JSBDSSA0NCXigJM5NyUpIGJ1dCBpcyB1bnRvdWNoZWQgaGVyZS4gRG9lcyBpdCBuZWVkIGEgbWF0Y2hpbmcgY2hhbmdlPzwvcD48cCBjbGFzcz1cInNtYWxsXCI+V2lsc29uIDk1JSBsb3dlciBib3VuZDogMC40NDwvcD48cCBjbGFzcz1cInN0YXRcIj5BdXRvbWF0aWMgb3V0Y29tZTogPGI+Y2hhbmdlZDwvYj4gaW4gPGEgY2xhc3M9XCJzaGFcIiBocmVmPVwiaHR0cHM6Ly9naXRodWIuY29tL2hvbm9qcy9ob25vL2NvbW1pdC9mYzIzNDNkYmFkOGFmN2FiODJiYzRhNmM2OTA3ZTU3NDE2YWVkODc4XCIgcmVsPVwibm9vcGVuZXIgbm9yZWZlcnJlclwiPmZjMjM0M2Q8L2E+LCAyNi40IGggYWZ0ZXIgbWVyZ2Ugwrcgc2FtZSBhdXRob3I6IHllcyDCtyBSQSBmb2xsb3ctdXAgc2lnbmFsOiBubzwvcD4ifQ==" aria-labelledby="h-c60">
+  <h2 id="h-c60" class="cap"><span class="num">C-61</span> Item c60</h2>
+  <p class="said">Should this PR also have changed <a href="https://github.com/honojs/hono/blob/52f6c7ec865b31001a14eed9b323a0235f0a3156/.github/workflows/ci.yml" rel="noopener noreferrer"><code class="path">.github/workflows/ci.yml</code></a>?</p>
+  <p class="pr"><a href="https://github.com/honojs/hono/pull/5456" rel="noopener noreferrer">#5456</a> · ci: remove empty step left in `cr.yml` by the pnpm migration (#5456)</p>
+  <ul class="diff"><li><a href="https://github.com/honojs/hono/blob/52f6c7ec865b31001a14eed9b323a0235f0a3156/.github/workflows/cr.yml" rel="noopener noreferrer"><code class="path">.github/workflows/cr.yml</code></a> <span class="delta">+0/−2</span></li></ul>
+  <div class="choices" role="group" aria-label="Label for item c60">
+    <button type="button" data-label="useful">Useful</button>
+    <button type="button" data-label="irrelevant">Irrelevant</button>
+    <button type="button" data-label="wrong">Wrong</button>
+  </div>
+  <label class="note">Note <textarea data-note rows="2" maxlength="1000"></textarea></label>
+  <div class="reveal" data-revealed hidden></div>
+</section>
+  </div>
+  <footer class="colophon">
+    <p class="small">Generated by gutter label --compare. Deterministic sample: no AI, no network.</p>
+  </footer>
+</article>
+</main>
+<script type="application/json" id="label-config">{"schemaVersion":1,"mode":"compare","sampleId":"55dc4b4e4b5e","seed":1,"bench":{"repo":"honojs/hono","remoteUrl":"https://github.com/honojs/hono","headSha":"eb754bd5ef22c63f1634a4c374a86be086f85710","settingsHash":"63a836d7b4058728","windowDays":7},"total":60}</script>
+<script>(function(){
+  var config = JSON.parse(document.getElementById('label-config').textContent);
+  var KEY = 'gutter-label:' + config.sampleId;
+  var state = { labeler: '', items: {} };
+  var storageOk = true;
+  try { var raw = window.localStorage.getItem(KEY); if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed === 'object' && parsed.items) state = parsed; } }
+  catch (e) { storageOk = false; }
+  function save() {
+    try { window.localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch (e) { if (storageOk) { storageOk = false; showStorageWarning(); } }
+  }
+  function showStorageWarning() { var w = document.querySelector('[data-storage-warning]'); if (w) w.hidden = false; }
+  if (!storageOk) showStorageWarning();
+  function decode(b64) {
+    var bin = atob(b64), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  var cards = Array.prototype.slice.call(document.querySelectorAll('[data-item]'));
+  var progress = document.querySelector('[data-progress]');
+  function updateProgress() {
+    var n = cards.filter(function (c) { var s = state.items[c.getAttribute('data-item')]; return s && s.label; }).length;
+    progress.textContent = n + ' / ' + config.total + ' labeled';
+  }
+  function reveal(card) {
+    var box = card.querySelector('[data-revealed]');
+    if (!box.hidden) return;
+    var payload = decode(card.getAttribute('data-reveal'));
+    box.innerHTML = payload.html;
+    box.hidden = false;
+    card.classList.add('done');
+  }
+  function paint(card) {
+    var s = state.items[card.getAttribute('data-item')];
+    Array.prototype.forEach.call(card.querySelectorAll('[data-label]'), function (b) {
+      b.setAttribute('aria-pressed', s && s.label === b.getAttribute('data-label') ? 'true' : 'false');
+    });
+    if (s && s.label) reveal(card);
+  }
+  cards.forEach(function (card) {
+    var id = card.getAttribute('data-item');
+    var note = card.querySelector('[data-note]');
+    if (state.items[id] && state.items[id].note) note.value = state.items[id].note;
+    Array.prototype.forEach.call(card.querySelectorAll('[data-label]'), function (b) {
+      b.addEventListener('click', function () {
+        var prev = state.items[id] || { note: '' };
+        var wasRevealed = Boolean(prev.label);
+        state.items[id] = {
+          label: b.getAttribute('data-label'),
+          note: note.value,
+          labeledAt: new Date().toISOString(),
+          firstLabel: prev.firstLabel || b.getAttribute('data-label'),
+          changedAfterReveal: Boolean(prev.changedAfterReveal) || (wasRevealed && prev.label !== b.getAttribute('data-label'))
+        };
+        save(); paint(card); updateProgress();
+      });
+    });
+    note.addEventListener('input', function () {
+      var s = state.items[id] || {};
+      s.note = note.value; state.items[id] = s; save();
+    });
+    paint(card);
+  });
+  var labelerInput = document.querySelector('[data-labeler]');
+  labelerInput.value = state.labeler || '';
+  labelerInput.addEventListener('input', function () { state.labeler = labelerInput.value; save(); });
+  updateProgress();
+  document.querySelector('[data-export]').addEventListener('click', function () {
+    var labels = [];
+    cards.forEach(function (card) {
+      var id = card.getAttribute('data-item');
+      var s = state.items[id];
+      if (!s || !s.label) return;
+      var p = decode(card.getAttribute('data-reveal'));
+      labels.push({
+        questionId: p.questionId, itemId: id, source: p.source, label: s.label, note: s.note || '',
+        labeler: state.labeler || '', labeledAt: s.labeledAt, firstLabel: s.firstLabel || s.label,
+        changedAfterReveal: Boolean(s.changedAfterReveal)
+      });
+    });
+    var doc = {
+      schemaVersion: config.schemaVersion, kind: 'gutter-labels', mode: config.mode,
+      sampleId: config.sampleId, seed: config.seed, bench: config.bench, total: config.total,
+      exportedAt: new Date().toISOString(), labels: labels
+    };
+    var blob = new Blob([JSON.stringify(doc, null, 2) + '\n'], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'labels.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  });
+})();</script>
+</body>
+</html>
