@@ -72,4 +72,4 @@ export function historyClause(row: TestRow): { before: string; after: string } {
 
 export const CONTEXT_TITLE = 'Usually changes with';
 export const CONTEXT_SUBTITLE = 'history, not a prediction';
-export const TESTS_LEGEND = 'A test row is a fact about this PR and the repository history. It does not say the test must change.';
+export const TESTS_LEGEND = 'Test rows are facts about this PR and past commits, not a request to change anything.';

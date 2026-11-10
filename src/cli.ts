@@ -9,7 +9,7 @@ import { renderCompareLabelHtml, sampleCompare, type CompareSource } from './ben
 import type { BenchResultsModel } from './bench/model.ts';
 import { runBench } from './bench/runner.ts';
 import { validateBenchResults } from './bench/validate.ts';
-import { writeBrief } from './output.ts';
+import { summaryLine, writeBrief } from './output.ts';
 import { renderComic, lintPage } from './render/comic.ts';
 import { renderMarkdown } from './render/markdown.ts';
 import { loadJson, type RaBacktest, type RaDiff } from './sources/archaeology.ts';
@@ -149,13 +149,7 @@ function brief(args: string[]): number {
   if (values.print === 'md') process.stdout.write(renderMarkdown(result));
   else if (values.print === 'json') process.stdout.write(JSON.stringify(result, null, 2) + '\n');
 
-  const fg = result.forgotten;
-  process.stderr.write(
-    `gutter: ${result.salience.level} · ${result.changes.totals.files} file${result.changes.totals.files === 1 ? '' : 's'} · ` +
-      `${result.checklist.length} checklist item${result.checklist.length === 1 ? '' : 's'} · ` +
-      `${fg.items.length} usually-changes-with pair${fg.items.length === 1 ? '' : 's'} (history ${fg.status}) · calibration ${result.calibration.status}\n` +
-      `  ${paths.json}\n  ${paths.markdown}\n  ${paths.html}\n`,
-  );
+  process.stderr.write(`${summaryLine(result)}\n  ${paths.json}\n  ${paths.markdown}\n  ${paths.html}\n`);
   return 0;
 }
 
