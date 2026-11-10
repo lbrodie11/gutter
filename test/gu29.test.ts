@@ -25,7 +25,7 @@ const legacy = (s: Scenario, extra: Record<string, unknown> = {}): GutterBrief =
 const kinds = (b: GutterBrief) => b.checklist.map((c) => c.kind);
 
 /** Every default-mode surface a reader sees: page, comment (with a page link), CLI summary. */
-function surfaces(b: GutterBrief): Record<string, string> {
+function surfaces(b: GutterBrief): { html: string; markdown: string; comment: string; cli: string } {
   return {
     html: renderComic(b),
     markdown: renderMarkdown(b),
