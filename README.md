@@ -2,7 +2,7 @@
 
 **Understand a pull request before you review it.**
 
-Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, and which historically related files deserve another look — with clickable commit receipts.
+Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, what the tests show, and what the history says — with clickable commit receipts. You decide what matters.
 
 `Experimental · v0.2.1` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
@@ -36,17 +36,23 @@ jobs:
 
 Gutter combines `git diff` structure, static import analysis, test-file conventions, and [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) co-change history into a compact, evidence-backed briefing for human reviewers.
 
-**Gutter doesn't replace your judgment.** It never writes AI verdicts, suggests code rewrites, or blocks a merge. Instead, it gives you verifiable repository evidence — with clickable commit receipts, 95% Wilson confidence intervals, and a per-repo accuracy backtest — so you can decide where to spend your attention.
+**Gutter doesn't replace your judgment.** It never writes AI verdicts, suggests code rewrites, guesses at omissions, or blocks a merge. Instead, it gives you verifiable repository evidence — with clickable commit receipts and a per-repo backtest of how reliable the history is — so you can decide where to spend your attention.
 
-![Focused view of Gutter's historical companion panel on Hono](docs/images/hono-hero-crop.png)
+![Focused view of Gutter's "Usually changes with" panel on Hono](docs/images/hono-hero-crop.png)
 
-<sub>Above: Panel 4 of Gutter's briefing on an illustrative [honojs/hono](https://github.com/honojs/hono) change. Touching `src/middleware/serve-static/index.ts` and `src/adapter/bun/serve-static.ts` surfaces the untouched middleware test (`17 of 20` commits together) and sibling Deno adapter (`9 of 11` commits together), with the exact commits behind each relationship.</sub>
+<sub>Above: panel C-04, "Usually changes with", on an illustrative [honojs/hono](https://github.com/honojs/hono) change. Touching `src/middleware/serve-static/index.ts` and `src/adapter/bun/serve-static.ts` shows that the middleware's test changed with it in `17 of 20` commits and the Deno adapter changed with the Bun adapter in `9 of 11`, with the exact commits behind each pair. It is history, not a prediction: Gutter doesn't say either file must change.</sub>
+
+### What Gutter does and doesn't claim
+
+- **It shows** what a PR touches (files, modules, importers outside the PR, imports of removed files), its tests (which related test files changed, which didn't, and how often they changed together before), and its history (files that usually change with these ones), with a receipt for every line.
+- **It doesn't** predict omissions or run your tests. It never claims a file was left out by mistake or that a change lacks test coverage: it can't know either.
+- **Here's the evidence.** Gutter used to ask "does this file need a matching change?" On hono, the files it asked about changed afterwards *less* often than a "recently busy files" guess (lift ×0.36 on any follow-up, ×0.42 on same-author follow-up). So since GU-29 the default output reports facts and shows co-change as context. The data, both readings and the rule for bringing a better prediction back are in [`docs/benchmark/STAGE0.md`](docs/benchmark/STAGE0.md) and [DECISIONS #17](docs/DECISIONS.md#17-explain-dont-predict-gu-29).
 
 ---
 
-## Example: Spotting overlooked relationships in Hono
+## Example: a Hono change, briefed
 
-> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,868` commits). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts, confidence intervals, and supporting commit receipts are genuine.
+> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,868` commits). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts and supporting commit receipts are genuine.
 >
 > **Reproduce locally:**
 > ```bash
@@ -58,35 +64,34 @@ Gutter combines `git diff` structure, static import analysis, test-file conventi
 > bash docs/example/reproduce.sh
 > ```
 
-### 1 · What Gutter surfaces
+### 1 · What Gutter reports
 
-Suppose a pull request adds a `cacheControl` option to Hono's shared static-file middleware ([`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts)) and updates the Bun adapter ([`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts)), touching 2 files (+10/−0).
+Suppose a pull request adds a `cacheControl` option to Hono's shared static-file middleware ([`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts), +12) and updates the Bun adapter ([`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts), +2), touching 2 files (+14/−0). The page is `brief`. Before you read a line of the diff, Gutter states:
 
-Before you read a line of the diff, Gutter raises three evidence-backed questions:
-
-| Reviewer question | Historical / static evidence | Supporting receipts |
+| Where | What Gutter says | Evidence |
 |---|---|---|
-| Does [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts) need a matching change? | Changed alongside `serve-static/index.ts` in **17 of its last 20 commits** (95% CI 64%–95%), untouched here | [`d54720d`](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) · [`588ec13`](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70) · [`8b05c77`](https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc) |
-| Does [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) need a matching change? | Changed alongside the Bun adapter in **9 of 11 commits** (95% CI 52%–95%), untouched here | [`26f8c33`](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) · [`1196f14`](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e) · [`246a06a`](https://github.com/honojs/hono/commit/246a06aa1d35aa206dcf11186b3aa90badb2de72) |
-| Should [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) (+1 more) follow? | PR changes **1 of 3 parallel implementations** (`serve-static.ts across src/adapter/*`) | [`cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) · [`deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) |
+| **Check these** | `src/middleware/serve-static/index.ts` changed (+12/−0); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR. | `git diff`, test-file naming |
+| **Tests** | [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts) — unchanged in this PR · changed together with `src/middleware/serve-static/index.ts` in **17 of 20** commits | [`d54720d`](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) · [`588ec13`](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70) · [`8b05c77`](https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc) |
+| **Usually changes with** | `src/adapter/bun/serve-static.ts` and [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) changed together in **9 of 11** commits; the Deno adapter isn't in this PR | [`26f8c33`](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) · [`1196f14`](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e) · [`246a06a`](https://github.com/honojs/hono/commit/246a06aa1d35aa206dcf11186b3aa90badb2de72) |
+| **Usually changes with** | This PR changes 1 of 3 parallel implementations (`serve-static.ts` across `src/adapter/*`); Cloudflare Workers and Deno aren't in this PR | [`cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) · [`deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) |
+
+None of these is a verdict. The test row is a historical fact; whether this change needs a test change is the reviewer's call.
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (a pinned example generated with gutter 0.1.0 + repo-archaeology 0.3.0; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.2.1 + repo-archaeology 0.3.0; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
-> **feat(serve-static): add cacheControl option**: 2 files across 2 modules (+10/−0)
+> **feat(serve-static): add cacheControl option**: 2 files across 2 modules (+14/−0)
 >
 > **Worth a look**
 >
-> 1. `src/middleware/serve-static/index.test.ts` changed alongside `src/middleware/serve-static/index.ts` in 17 of its 20 commits (95% CI 64%–95%) but is untouched here. Does it need a matching change?<br><sub>receipts: [d54720d](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) · [588ec13](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70)</sub>
-> 2. `src/adapter/deno/serve-static.ts` changed alongside `src/adapter/bun/serve-static.ts` in 9 of its 11 commits (95% CI 52%–95%) but is untouched here. Does it need a matching change?<br><sub>receipts: [26f8c33](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) · [1196f14](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e)</sub>
-> 3. This changes 1 of 3 parallel implementations (serve-static.ts across src/adapter/\*). Should `src/adapter/cloudflare-workers/serve-static.ts` (+1 more) follow?<br><sub>receipts: [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) · [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts)</sub>
+> 1. `src/middleware/serve-static/index.ts` changed (+12/−0); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR.<br><sub>receipts: [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts)</sub>
 >
-> *(Plus collapsible `<details>` tables for **Likely forgotten**, **What it touches**, **Tests**, and **What changed**.)*
+> *(Plus collapsed `<details>` sections: **Usually changes with** (history, not a prediction), **What it touches**, **Tests**, and **What changed**.)*
 >
-> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.1.0 + repo-archaeology 0.3.0</sub>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.2.1 + repo-archaeology 0.3.0</sub>
 
 ### 3 · The full six-panel page (`gutter.html` artifact)
 
@@ -99,25 +104,25 @@ Alongside the Markdown comment, Gutter writes a self-contained, offline HTML pag
 | **C-01 · Intent** | What is this change trying to do? | PR title/body, commit subjects |
 | **C-02 · What changed** | How big is it, and where? | `git diff` grouped into modules, churn as screentone |
 | **C-03 · What it touches** | Who depends on what changed? | Relative import scan for TS/JS; unresolved aliases or packages mark `dependents.coverage` as **`partial`** (with sample receipts), and other languages are reported as **`unchecked`** — never silently as "no dependents" |
-| **C-04 · Likely forgotten** | Which files historically change with these files? | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) directional co-change history with 95% Wilson intervals and commit receipts |
-| **C-05 · Tests** | Did conventional test files move with the code? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` convention links |
-| **C-06 · Check these** | Where should I focus first? | Up to 4 deterministic questions, each required to cite evidence IDs from panels C-03 to C-05 |
+| **C-04 · Usually changes with** | Which files historically change with these files? (History, not a prediction; never the page's hero) | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) directional co-change history with commit receipts |
+| **C-05 · Tests** | Which related test files changed, which didn't, and how often did they change together before? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` naming conventions, plus co-change pairs between a file and its test |
+| **C-06 · Check these** | Where should I focus first? | Up to 4 deterministic facts (broken imports, unchanged test files, wide import surfaces), each required to cite evidence IDs from panels C-03 to C-05. It is the hero panel when it has items; otherwise C-03 is |
 
 Every generated HTML page is verified against 6 [FRAME/12](https://github.com/lbrodie11/frame12) design-grammar rules in `lintPage()` (`color-literal`, `gradient`, `font-literal`, `marker-misuse`, `illegal-gutter` restricting CSS `gap`/`row-gap`/`column-gap`/`grid-gap` to `0`/`12px`/`20px`/`32px` or `--f-gutter-*` tokens, and `cut-order` enforcing sequential `C-01`…`C-0N` panel labels).
 
 ---
 
-## How accuracy calibration works (73% hit rate vs. 57% precision)
+## How much to trust the history (73% hit rate vs. 57% precision)
 
-Historical co-change is a probabilistic signal, not proof of a bug. Sometimes a companion file was genuinely overlooked; other times a change intentionally applies to only one adapter or module.
+Historical co-change is context, not proof of anything. Two files that usually change together sometimes should, and sometimes a change intentionally applies to only one adapter or module. That is why Gutter shows the history and leaves the call to you.
 
-To help reviewers calibrate trust on *their specific repository*, Gutter runs Repo Archaeology's walk-forward backtest on recent history and reports retrospective co-change prediction metrics (not the percentage of real-world omissions detected):
+To show how reliable the history is on *your specific repository*, Gutter runs Repo Archaeology's walk-forward backtest on recent history and prints the result under the page:
 
 - **Evaluated window (`375` held-out test commits on Hono):** Each held-out commit is replayed using only history prior to that commit.
 - **Query hit rate (`73%` across `516` fired file-level queries, `6.8×` lift over guessing busy files):** Among the `516` file-level queries where historical suggestions were returned, `73%` had at least one suggestion that genuinely changed in the same commit.
 - **Per-suggestion precision (`57%`):** Across all individual file suggestions emitted across those queries, `57%` matched files that changed in the same commit.
 
-**Automatic gating:** When a repository's measured per-suggestion precision falls below `25%`, Gutter suppresses co-change questions from the checklist while still keeping the raw table available for inspection. Weak matches (Wilson lower bound `< 30%`) and matches backed mostly by bot commits (`dependabot`, `renovate`, etc.) never become checklist questions.
+Pairs backed mostly by bot commits (`dependabot`, `renovate`, etc.) are marked as such. Co-change never becomes a checklist item and never makes a page louder. (Under the `legacyPredictions` research switch, measured precision below `25%` still suppresses the old companion questions, and weak or bot-backed pairs never become questions, exactly as before GU-29.)
 
 ---
 
@@ -156,7 +161,8 @@ node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
    Every baseline is also scored on same-author follow-up and on Repo Archaeology's follow-up signal, with Wilson and PR-clustered bootstrap intervals, and `bench.md` shows lift on each outcome against that outcome's strongest baseline. On Hono, `recent` still leads on all three (same-author `0.29` vs. Gutter `0.12`, lift `×0.42`), so the gap is not only busy-file churn. See [`docs/benchmark/STAGE0.md`](docs/benchmark/STAGE0.md).
 8. **Blinded comparison labeling (`gutter label --compare`):**
    `gutter label --compare bench.json` writes one self-contained HTML page (no server, works offline) that mixes Gutter companion questions with `recent` and `popular-near` proposals, renders them identically as "Should this PR also have changed `<file>`?", and reveals the source, evidence, and automatic outcome only after each label. Progress is kept in the browser; **Export labels.json** downloads the labels with their `source`.
-9. **Salience variants (`--config <variant.json>`):** a variant is any `.gutter.json`-shaped file; unknown or invalid keys are refused so a preregistered variant cannot silently run as the default. The Stage 0 variants live in [`bench/variants/`](bench/variants/).
+9. **Salience variants (`--config <variant.json>`):** a variant is any `.gutter.json`-shaped file; unknown or invalid keys are refused so a preregistered variant cannot silently run as the default. The Stage 0 variants live in [`bench/variants/`](bench/variants/). Stage 0 and 0b ran on the pre-GU-29 defaults; to reproduce them now, add `"legacyPredictions": true` ([`bench/variants/gu29-legacy.json`](bench/variants/gu29-legacy.json) reproduces Stage 0b's default run record for record).
+10. **Gate A′ (`GU-29`):** M0's exit test is now checkable without labels: `full` share ≤ 1/3, facts re-checked against git (broken imports with TypeScript's own resolver, unchanged-test and test-history facts at each PR's SHAs), and no prediction wording on any page. [`bench/gate-a-prime.ts`](bench/gate-a-prime.ts) runs it; hono's result is in [`STAGE0.md`](docs/benchmark/STAGE0.md#after-gu-29--explain-dont-predict-2026-11-10). The `Gate A` line that `gutter bench` still prints is the retired usefulness gate, kept for the research reports.
 
 Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](docs/benchmark/METHOD.md). Stage 0 go/no-go on Hono: [`docs/benchmark/STAGE0.md`](docs/benchmark/STAGE0.md).
 
@@ -173,11 +179,11 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 | `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
 | `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.4.0`) |
 | `calibrate` | `true` | Backtest warning accuracy on this repo (~0.3s on 1,900 commits) |
-| `max-forgotten` | `3` | Maximum historical companions to display (`0` disables companion rows) |
+| `max-forgotten` | `3` | Maximum "usually changes with" pairs to display (`0` hides them; the input keeps its v1 name) |
 | `archaeology-version` | `^0.4.0` | npm version range of `repo-archaeology` to execute |
 | `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
 
-Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count`, `forgotten-count`, `json-path`, `html-path`.
+Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count` (checklist items), `forgotten-count` ("usually changes with" pairs shown; the output keeps its v1 name), `json-path`, `html-path`.
 
 ### Option 2 · CLI (`gutter-brief` on npm, binary `gutter`)
 
@@ -189,7 +195,11 @@ npx gutter-brief render .gutter/gutter.json --format html > page.html
 
 Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
 
-**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). `salienceFullMinSignals` (default `1`) is how many independent signals a `full` page needs, where each high-signal question counts once and breadth (≥ 8 files or ≥ 3 modules) counts once; `salienceBreadthFull: false` stops breadth alone from making a page `full`. `companionRequireGhost: true` keeps a companion question only for `ghost` pairs, and `companionMinTrackRecordFired: <n>` keeps it only when Repo Archaeology's per-pair track record (`repo-archaeology` ≥ 0.10.0) has at least `n` earlier episodes; both are off by default and were added for the benchmark's Stage 0b. Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
+**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
+
+**How loud a page is (salience).** Each checklist item with priority ≤ 2 counts as one signal, and breadth (≥ 8 files or ≥ 3 modules) counts as one more when `salienceBreadthFull` is `true` (the default). A page is `full` when it has at least `salienceFullMinSignals` signals (default `2`). By default only `broken-import` has priority ≤ 2, so a page is `full` when it has **two or more broken imports, or one broken import plus breadth**. Breadth alone is never `full`. Any checklist item makes a page at least `brief`, and so does a change to more than three files; otherwise it is `quiet`. Co-change history and test history never count.
+
+**Research switch (not recommended).** `legacyPredictions: true` reproduces pre-GU-29 behavior for benchmarks: companion (`forgotten-companion`) and `family-drift` questions with their old wording, `salienceFullMinSignals` defaulting to `1` (an explicit value still wins), and no `forgotten.presentation` or `TestLink.history` in `gutter.json`. The keys `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `companionRequireGhost` and `companionMinTrackRecordFired` only matter under it. See [DECISIONS #17](docs/DECISIONS.md#17-explain-dont-predict-gu-29).
 
 ### Option 3 · Run locally from source
 
@@ -218,7 +228,7 @@ In comics, the *gutter* is the space between panels where the reader connects tw
 
 ## Principles
 
-1. **Explain, don't judge.** Gutter asks questions ("Does it need a matching change?"), never verdicts. It never fails a build.
+1. **Explain, don't judge, don't predict.** Gutter states facts ("its test file didn't change in this PR") and shows history as context ("changed together in 17 of 20 commits"). It never issues verdicts, never guesses at omissions, and never fails a build.
 2. **Evidence before narration.** Every surface renders from one deterministic document, [`gutter.json`](schema/gutter.schema.json) (`schemaVersion: 1`). Every checklist item must cite evidence IDs that exist in that document; the renderers throw if any reference is missing. The contract evolves additively within `schemaVersion: 1`: **consumers must ignore unknown fields and tolerate unknown enum values** (for example, new `checklist.kind` or `dependents.coverage` values).
 3. **Honest uncertainty.** Counts with denominators, 95% Wilson intervals, per-repo backtests, `partial` / `unchecked` notices instead of silent false negatives, and a badge when evidence comes mostly from bot commits.
 4. **Nothing to say is success.** Small, unremarkable PRs get one quiet line or no comment at all.

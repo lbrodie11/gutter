@@ -1,7 +1,7 @@
 {
   "name": "gutter-brief",
   "version": "0.2.1",
-  "description": "A one-page, evidence-backed briefing for every pull request: what changed, what it touches, and what it probably forgot — with receipts.",
+  "description": "A one-page, evidence-backed briefing for every pull request: what changed, what it touches, its tests and its history — with receipts.",
   "type": "module",
   "bin": {
     "gutter": "dist/cli.js"

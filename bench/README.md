@@ -79,6 +79,18 @@ node --experimental-strip-types bench/stage0b-funnel.ts $H $OUT/default/bench.js
 
 Merge Stage 0b's PR with a merge commit, not a squash: `test/stage0b-report.test.ts` checks that the preregistration commit precedes the data commit.
 
+## GU-29 · explain, don't predict (after Stage 0b)
+
+GU-29 stops Gutter's default output from predicting omissions ([DECISIONS #17](../docs/DECISIONS.md#17-explain-dont-predict-gu-29)). Stage 0 and 0b now reproduce only under the research switch: add `--config bench/variants/gu29-legacy.json` (`{ "legacyPredictions": true }`), which reproduces Stage 0b's default run record for record. Results: STAGE0.md "After GU-29"; data: [`docs/benchmark/data/honojs__hono/gu29/`](../docs/benchmark/data/honojs__hono/gu29/).
+
+| File | What it is |
+|---|---|
+| [`variants/gu29-legacy.json`](variants/gu29-legacy.json) | `legacyPredictions: true`: pre-GU-29 behavior, for benchmarks only |
+| [`gate-a-prime.ts`](gate-a-prime.ts) | Gate A′ (ROADMAP M0 exit test): replays every PR of a default-mode `bench.json` and re-checks each fact against git (TypeScript's `ts.resolveModuleName` for broken imports; `git diff`/`git log --follow` for unchanged tests and test history), plus the banned-words check on every rendered page. Needs the `typescript` devDependency, so it lives here, not in `src/` |
+| [`gu29-report.mjs`](gu29-report.mjs) | Builds `results.json` and regenerates the "After GU-29" block in STAGE0.md |
+
+The exact commands are in STAGE0.md, "After GU-29".
+
 ## Stage 1 · corpus (not built)
 
-`corpus.json`, `run-corpus.mjs`, `aggregate.mjs`, the per-question labeling mode, and the Gate A report are built only if Stage 0's preregistered rule says continue and a human confirms. As of 2026-11-10 the rule outcome is **STOP**; see STAGE0.md section 5 for the options awaiting a decision.
+`corpus.json`, `run-corpus.mjs`, `aggregate.mjs`, the per-question labeling mode, and the Gate A report are built only if Stage 0's preregistered rule says continue and a human confirms. As of 2026-11-10 the rule outcome is **STOP**, and GU-29 took option 1 (DECISIONS #17). The corpus is still needed for Gate A′ and for DECISIONS #17's reopen rule (a predictive rule must beat the strongest baseline on ≥ 3 corpus repos).
