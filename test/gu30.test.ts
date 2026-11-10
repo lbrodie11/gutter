@@ -238,3 +238,19 @@ test('oracle (erratum 1): directory specifiers like "." and "./dir" resolve in b
   const map = resolveSpecifiers("import { m } from '.';\n", 'src/m/index.test.ts', host, host.compilerOptions());
   assert.equal(map.get('.'), 'src/m/index.ts');
 });
+
+test('generator: negative kinds are taken round robin, starting at a different kind per host', () => {
+  const counts = (offset: number) => {
+    const r = generate('typescript', 'a'.repeat(40), tsFixture(), mulberry32(7), { positives: 2, negatives: 8 }, offset);
+    const c: Record<string, number> = {};
+    for (const m of r.mutations.filter((x) => !x.positive)) c[m.kind] = (c[m.kind] ?? 0) + 1;
+    return { c, first: r.mutations.find((x) => !x.positive)!.kind, firstPositive: r.mutations.find((x) => x.positive)!.kind };
+  };
+  const a = counts(0);
+  assert.deepEqual(a.c, { 'rename-updated': 2, 'delete-unimported': 2, 'move-reexport': 2, 'test-only': 2 });
+  assert.equal(a.first, 'rename-updated');
+  assert.equal(a.firstPositive, 'delete');
+  const b = counts(1);
+  assert.equal(b.first, 'delete-unimported');
+  assert.equal(b.firstPositive, 'rename');
+});

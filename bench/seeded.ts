@@ -501,14 +501,14 @@ const withStem = (p: string, suffix: string) => posix.join(posix.dirname(p), `${
 
 export interface GenerateResult {
   mutations: Mutation[];
-  meta: { eligiblePositive: number; eligibleNegative: Record<string, number>; rejected: Record<string, number>; shortfalls: Record<string, number> };
+  meta: { eligiblePositive: number; eligibleNegative: Record<string, number>; negativesTaken: Record<string, number>; rejected: Record<string, number>; shortfalls: Record<string, number> };
 }
 
 /**
  * Deterministic for (tree, seed): candidates are shuffled with the seed and taken in order; each candidate
  * is verified by the oracle (positives must break ≥ 1 untouched importer at head; negatives must break none).
  */
-export function generate(lang: Lang, host: string, tree: Tree, rand: () => number, want: { positives: number; negatives: number }): GenerateResult {
+export function generate(lang: Lang, host: string, tree: Tree, rand: () => number, want: { positives: number; negatives: number }, offset = 0): GenerateResult {
   const { oracle, sources } = oracleFor(lang, tree);
   const edges = oracle.edges(sources);
   const rejected: Record<string, number> = {};
@@ -535,7 +535,7 @@ export function generate(lang: Lang, host: string, tree: Tree, rand: () => numbe
   const posCandidates = shuffle(unitsWithImporters, rand);
   for (const t of posCandidates) {
     if (mutations.filter((m) => m.positive).length >= want.positives) break;
-    const kind = POSITIVE_KINDS[pk % POSITIVE_KINDS.length]!;
+    const kind = POSITIVE_KINDS[(pk + offset) % POSITIVE_KINDS.length]!;
     const changes = new Map<string, string | null>();
     for (const f of filesOfUnit(t)) {
       changes.set(f, null);
@@ -562,7 +562,8 @@ export function generate(lang: Lang, host: string, tree: Tree, rand: () => numbe
     'test-only': shuffle(sources.filter(isTestFile).sort(), rand),
   };
   const eligibleNegative = Object.fromEntries(Object.entries(pools).map(([k, v]) => [k, v.length]));
-  const quota = Math.ceil(want.negatives / NEGATIVE_KINDS.length);
+  // Round robin over the kinds, starting at a different kind per host (`offset`), so the corpus-wide split
+  // is close to even; an exhausted kind is skipped and the others fill the shortfall (CORPUS.md §3).
   const taken: Record<string, number> = {};
   const cursor: Record<string, number> = {};
   const tryKind = (kind: Kind): boolean => {
@@ -584,19 +585,21 @@ export function generate(lang: Lang, host: string, tree: Tree, rand: () => numbe
     }
     return false;
   };
-  for (const kind of NEGATIVE_KINDS) for (let i = 0; i < quota && mutations.filter((m) => !m.positive).length < want.negatives; i++) if (!tryKind(kind)) break;
-  let progress = true;
-  while (mutations.filter((m) => !m.positive).length < want.negatives && progress) {
-    progress = false;
-    for (const kind of NEGATIVE_KINDS) {
+  const order = NEGATIVE_KINDS.map((_, i) => NEGATIVE_KINDS[(i + offset) % NEGATIVE_KINDS.length]!);
+  const exhausted = new Set<Kind>();
+  while (mutations.filter((m) => !m.positive).length < want.negatives && exhausted.size < order.length) {
+    for (const kind of order) {
       if (mutations.filter((m) => !m.positive).length >= want.negatives) break;
-      if (tryKind(kind)) progress = true;
+      if (exhausted.has(kind)) continue;
+      if (!tryKind(kind)) exhausted.add(kind);
     }
   }
-  const shortfalls = Object.fromEntries(NEGATIVE_KINDS.map((k) => [k, Math.max(0, quota - (taken[k] ?? 0))]).filter(([, n]) => (n as number) > 0));
+  const shortfalls: Record<string, number> = {};
   const posShort = want.positives - mutations.filter((m) => m.positive).length;
+  const negShort = want.negatives - mutations.filter((m) => !m.positive).length;
   if (posShort > 0) shortfalls.positives = posShort;
-  return { mutations, meta: { eligiblePositive: unitsWithImporters.length, eligibleNegative, rejected, shortfalls } };
+  if (negShort > 0) shortfalls.negatives = negShort;
+  return { mutations, meta: { eligiblePositive: unitsWithImporters.length, eligibleNegative, negativesTaken: taken, rejected, shortfalls } };
 }
 
 /** Whether an import edge can be rewritten to follow a rename (relative TS/JS, Go import paths, Python `from`). */
@@ -772,7 +775,7 @@ export async function runSeeded(opts: { cwd: string; lang: Lang; repoName: strin
     const tree = gitTree(opts.cwd, host);
     let gen: GenerateResult;
     try {
-      gen = generate(opts.lang, host, tree, rand, { positives: perHost(opts.positives ?? POSITIVES, i), negatives: perHost(opts.negatives ?? NEGATIVES, i) });
+      gen = generate(opts.lang, host, tree, rand, { positives: perHost(opts.positives ?? POSITIVES, i), negatives: perHost(opts.negatives ?? NEGATIVES, i) }, i);
     } finally {
       tree.close();
     }
