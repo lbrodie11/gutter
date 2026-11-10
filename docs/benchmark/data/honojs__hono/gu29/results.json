@@ -1,0 +1,667 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu29-results",
+  "repo": "honojs/hono",
+  "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+  "gutterVersion": "0.2.1",
+  "raVersion": "0.10.0",
+  "before": {
+    "prsEvaluated": 200,
+    "configOverrides": {},
+    "salience": {
+      "quiet": {
+        "numerator": 81,
+        "denominator": 200,
+        "rate": 0.405,
+        "interval": {
+          "low": 0.3393777128250676,
+          "high": 0.47420289918661307
+        }
+      },
+      "brief": {
+        "numerator": 39,
+        "denominator": 200,
+        "rate": 0.195,
+        "interval": {
+          "low": 0.14605520534400512,
+          "high": 0.25544044374612745
+        }
+      },
+      "full": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      }
+    },
+    "checklistItems": 161,
+    "checklistItemsPerPr": 0.805,
+    "prsWithItems": {
+      "numerator": 108,
+      "denominator": 200,
+      "rate": 0.54,
+      "interval": {
+        "low": 0.47082289188953336,
+        "high": 0.6076694820002854
+      }
+    },
+    "byKind": {
+      "broken-import": 0,
+      "forgotten-companion": 90,
+      "family-drift": 9,
+      "untested-change": 7,
+      "wide-surface": 55
+    },
+    "prsWithKind": {
+      "broken-import": 0,
+      "forgotten-companion": 69,
+      "family-drift": 8,
+      "untested-change": 7,
+      "wide-surface": 55
+    }
+  },
+  "default": {
+    "prsEvaluated": 200,
+    "configOverrides": {},
+    "salience": {
+      "quiet": {
+        "numerator": 121,
+        "denominator": 200,
+        "rate": 0.605,
+        "interval": {
+          "low": 0.5358834915928536,
+          "high": 0.6701589898679203
+        }
+      },
+      "brief": {
+        "numerator": 79,
+        "denominator": 200,
+        "rate": 0.395,
+        "interval": {
+          "low": 0.32984101013207967,
+          "high": 0.46411650840714636
+        }
+      },
+      "full": {
+        "numerator": 0,
+        "denominator": 200,
+        "rate": 0,
+        "interval": {
+          "low": 1.7020320458977177e-18,
+          "high": 0.018845326377266575
+        }
+      }
+    },
+    "checklistItems": 66,
+    "checklistItemsPerPr": 0.33,
+    "prsWithItems": {
+      "numerator": 60,
+      "denominator": 200,
+      "rate": 0.3,
+      "interval": {
+        "low": 0.24074744682371402,
+        "high": 0.3667906837271926
+      }
+    },
+    "byKind": {
+      "broken-import": 0,
+      "forgotten-companion": 0,
+      "family-drift": 0,
+      "untested-change": 10,
+      "wide-surface": 56
+    },
+    "prsWithKind": {
+      "broken-import": 0,
+      "forgotten-companion": 0,
+      "family-drift": 0,
+      "untested-change": 10,
+      "wide-surface": 56
+    }
+  },
+  "legacy": {
+    "prsEvaluated": 200,
+    "configOverrides": {
+      "legacyPredictions": true
+    },
+    "salience": {
+      "quiet": {
+        "numerator": 81,
+        "denominator": 200,
+        "rate": 0.405,
+        "interval": {
+          "low": 0.3393777128250676,
+          "high": 0.47420289918661307
+        }
+      },
+      "brief": {
+        "numerator": 39,
+        "denominator": 200,
+        "rate": 0.195,
+        "interval": {
+          "low": 0.14605520534400512,
+          "high": 0.25544044374612745
+        }
+      },
+      "full": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      }
+    },
+    "checklistItems": 161,
+    "checklistItemsPerPr": 0.805,
+    "prsWithItems": {
+      "numerator": 108,
+      "denominator": 200,
+      "rate": 0.54,
+      "interval": {
+        "low": 0.47082289188953336,
+        "high": 0.6076694820002854
+      }
+    },
+    "byKind": {
+      "broken-import": 0,
+      "forgotten-companion": 90,
+      "family-drift": 9,
+      "untested-change": 7,
+      "wide-surface": 55
+    },
+    "prsWithKind": {
+      "broken-import": 0,
+      "forgotten-companion": 69,
+      "family-drift": 8,
+      "untested-change": 7,
+      "wide-surface": 55
+    }
+  },
+  "untestedChange": {
+    "newlyShown": 3,
+    "newlyShownList": [
+      "#5463",
+      "#5267",
+      "#5266"
+    ],
+    "hiddenByAskedBefore": 2
+  },
+  "reproduction": {
+    "prsCompared": 200,
+    "prsMissing": 0,
+    "prsDiffering": 0,
+    "prsDifferingList": [],
+    "aggregatesIdentical": true,
+    "gatesIdentical": true,
+    "funnelIdentical": true,
+    "stage0b": {
+      "id": "stage0b-default",
+      "repo": "honojs/hono",
+      "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "settingsHash": "63a836d7b4058728",
+      "configOverrides": {},
+      "gutterVersion": "0.2.1",
+      "raVersion": "0.10.0",
+      "prsEvaluated": 200,
+      "prsScored": 70,
+      "questionsTotal": 161,
+      "fullSalienceShare": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      },
+      "gutter": {
+        "followUp": {
+          "numerator": 25,
+          "denominator": 107,
+          "rate": 0.2336,
+          "interval": {
+            "low": 0.16356165995161556,
+            "high": 0.32219032665650293
+          }
+        },
+        "sameAuthor": {
+          "numerator": 13,
+          "denominator": 107,
+          "rate": 0.1215,
+          "interval": {
+            "low": 0.07239434166761743,
+            "high": 0.19683216561760356
+          }
+        },
+        "raSignal": {
+          "numerator": 9,
+          "denominator": 107,
+          "rate": 0.0841,
+          "interval": {
+            "low": 0.044881945524203326,
+            "high": 0.15216940198671847
+          }
+        }
+      },
+      "baselines": {
+        "popular": {
+          "followUp": {
+            "numerator": 61,
+            "denominator": 106,
+            "rate": 0.5755,
+            "interval": {
+              "low": 0.48036088516716324,
+              "high": 0.6653036041047654
+            }
+          },
+          "sameAuthor": {
+            "numerator": 24,
+            "denominator": 106,
+            "rate": 0.2264,
+            "interval": {
+              "low": 0.15713470742524072,
+              "high": 0.3148315189640176
+            }
+          },
+          "raSignal": {
+            "numerator": 14,
+            "denominator": 106,
+            "rate": 0.1321,
+            "interval": {
+              "low": 0.08033205324120549,
+              "high": 0.20955356155814195
+            }
+          }
+        },
+        "popular-near": {
+          "followUp": {
+            "numerator": 27,
+            "denominator": 105,
+            "rate": 0.2571,
+            "interval": {
+              "low": 0.18315909307507203,
+              "high": 0.34826945857620983
+            }
+          },
+          "sameAuthor": {
+            "numerator": 10,
+            "denominator": 105,
+            "rate": 0.0952,
+            "interval": {
+              "low": 0.0525563098634332,
+              "high": 0.16649127622203672
+            }
+          },
+          "raSignal": {
+            "numerator": 7,
+            "denominator": 105,
+            "rate": 0.0667,
+            "interval": {
+              "low": 0.03266588465602071,
+              "high": 0.1312556486825412
+            }
+          }
+        },
+        "recent": {
+          "followUp": {
+            "numerator": 69,
+            "denominator": 106,
+            "rate": 0.6509,
+            "interval": {
+              "low": 0.5563658870548236,
+              "high": 0.7349630914890337
+            }
+          },
+          "sameAuthor": {
+            "numerator": 31,
+            "denominator": 106,
+            "rate": 0.2925,
+            "interval": {
+              "low": 0.21433337400446412,
+              "high": 0.3850892804977318
+            }
+          },
+          "raSignal": {
+            "numerator": 21,
+            "denominator": 106,
+            "rate": 0.1981,
+            "interval": {
+              "low": 0.13338893526287282,
+              "high": 0.2839531076494123
+            }
+          }
+        }
+      },
+      "byOutcome": {
+        "followUp": {
+          "strongestBaseline": "recent",
+          "lift": 0.3589,
+          "bootstrapCi": {
+            "low": 0.2329,
+            "median": 0.3539,
+            "high": 0.5101,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "sameAuthor": {
+          "strongestBaseline": "recent",
+          "lift": 0.4154,
+          "bootstrapCi": {
+            "low": 0.2141,
+            "median": 0.4085,
+            "high": 0.6906,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "raSignal": {
+          "strongestBaseline": "recent",
+          "lift": 0.4245,
+          "bootstrapCi": {
+            "low": 0.1427,
+            "median": 0.4091,
+            "high": 0.9057,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        }
+      },
+      "totalWallMs": 94904.27,
+      "companionCoverage": {
+        "numerator": 69,
+        "denominator": 200,
+        "rate": 0.345
+      },
+      "companionQuestions": 90,
+      "companionScoredTargets": 84,
+      "companionFollowUp": {
+        "numerator": 20,
+        "denominator": 84,
+        "rate": 0.2381,
+        "interval": {
+          "low": 0.15974690895549554,
+          "high": 0.3393506630712311
+        }
+      },
+      "companionSameAuthor": {
+        "numerator": 10,
+        "denominator": 84,
+        "rate": 0.119,
+        "interval": {
+          "low": 0.0659654924759903,
+          "high": 0.2054491577447029
+        }
+      }
+    },
+    "legacy": {
+      "id": "gu29-legacy",
+      "repo": "honojs/hono",
+      "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "settingsHash": "a4900710039afa8f",
+      "configOverrides": {
+        "legacyPredictions": true
+      },
+      "gutterVersion": "0.2.1",
+      "raVersion": "0.10.0",
+      "prsEvaluated": 200,
+      "prsScored": 70,
+      "questionsTotal": 161,
+      "fullSalienceShare": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      },
+      "gutter": {
+        "followUp": {
+          "numerator": 25,
+          "denominator": 107,
+          "rate": 0.2336,
+          "interval": {
+            "low": 0.16356165995161556,
+            "high": 0.32219032665650293
+          }
+        },
+        "sameAuthor": {
+          "numerator": 13,
+          "denominator": 107,
+          "rate": 0.1215,
+          "interval": {
+            "low": 0.07239434166761743,
+            "high": 0.19683216561760356
+          }
+        },
+        "raSignal": {
+          "numerator": 9,
+          "denominator": 107,
+          "rate": 0.0841,
+          "interval": {
+            "low": 0.044881945524203326,
+            "high": 0.15216940198671847
+          }
+        }
+      },
+      "baselines": {
+        "popular": {
+          "followUp": {
+            "numerator": 61,
+            "denominator": 106,
+            "rate": 0.5755,
+            "interval": {
+              "low": 0.48036088516716324,
+              "high": 0.6653036041047654
+            }
+          },
+          "sameAuthor": {
+            "numerator": 24,
+            "denominator": 106,
+            "rate": 0.2264,
+            "interval": {
+              "low": 0.15713470742524072,
+              "high": 0.3148315189640176
+            }
+          },
+          "raSignal": {
+            "numerator": 14,
+            "denominator": 106,
+            "rate": 0.1321,
+            "interval": {
+              "low": 0.08033205324120549,
+              "high": 0.20955356155814195
+            }
+          }
+        },
+        "popular-near": {
+          "followUp": {
+            "numerator": 27,
+            "denominator": 105,
+            "rate": 0.2571,
+            "interval": {
+              "low": 0.18315909307507203,
+              "high": 0.34826945857620983
+            }
+          },
+          "sameAuthor": {
+            "numerator": 10,
+            "denominator": 105,
+            "rate": 0.0952,
+            "interval": {
+              "low": 0.0525563098634332,
+              "high": 0.16649127622203672
+            }
+          },
+          "raSignal": {
+            "numerator": 7,
+            "denominator": 105,
+            "rate": 0.0667,
+            "interval": {
+              "low": 0.03266588465602071,
+              "high": 0.1312556486825412
+            }
+          }
+        },
+        "recent": {
+          "followUp": {
+            "numerator": 69,
+            "denominator": 106,
+            "rate": 0.6509,
+            "interval": {
+              "low": 0.5563658870548236,
+              "high": 0.7349630914890337
+            }
+          },
+          "sameAuthor": {
+            "numerator": 31,
+            "denominator": 106,
+            "rate": 0.2925,
+            "interval": {
+              "low": 0.21433337400446412,
+              "high": 0.3850892804977318
+            }
+          },
+          "raSignal": {
+            "numerator": 21,
+            "denominator": 106,
+            "rate": 0.1981,
+            "interval": {
+              "low": 0.13338893526287282,
+              "high": 0.2839531076494123
+            }
+          }
+        }
+      },
+      "byOutcome": {
+        "followUp": {
+          "strongestBaseline": "recent",
+          "lift": 0.3589,
+          "bootstrapCi": {
+            "low": 0.2329,
+            "median": 0.3539,
+            "high": 0.5101,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "sameAuthor": {
+          "strongestBaseline": "recent",
+          "lift": 0.4154,
+          "bootstrapCi": {
+            "low": 0.2141,
+            "median": 0.4085,
+            "high": 0.6906,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "raSignal": {
+          "strongestBaseline": "recent",
+          "lift": 0.4245,
+          "bootstrapCi": {
+            "low": 0.1427,
+            "median": 0.4091,
+            "high": 0.9057,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        }
+      },
+      "totalWallMs": 79556.06,
+      "companionCoverage": {
+        "numerator": 69,
+        "denominator": 200,
+        "rate": 0.345
+      },
+      "companionQuestions": 90,
+      "companionScoredTargets": 84,
+      "companionFollowUp": {
+        "numerator": 20,
+        "denominator": 84,
+        "rate": 0.2381,
+        "interval": {
+          "low": 0.15974690895549554,
+          "high": 0.3393506630712311
+        }
+      },
+      "companionSameAuthor": {
+        "numerator": 10,
+        "denominator": 84,
+        "rate": 0.119,
+        "interval": {
+          "low": 0.0659654924759903,
+          "high": 0.2054491577447029
+        }
+      }
+    }
+  },
+  "gate": {
+    "tools": {
+      "gutter": "0.2.1",
+      "repoArchaeology": "0.10.0",
+      "typescript": "6.0.3"
+    },
+    "prsEvaluated": 200,
+    "replayParity": {
+      "salienceMismatches": 0,
+      "checklistKindMismatches": 0
+    },
+    "a": {
+      "full": 0,
+      "evaluated": 200,
+      "share": 0,
+      "budget": 0.3333333333333333,
+      "met": true
+    },
+    "b": {
+      "brokenImport": {
+        "checked": 0,
+        "confirmed": 0,
+        "rate": null,
+        "needs": 0.95,
+        "met": null,
+        "failures": 0
+      },
+      "untestedChange": {
+        "checked": 10,
+        "confirmed": 10,
+        "rate": 1,
+        "needs": 1,
+        "met": true,
+        "failures": 0
+      },
+      "testHistory": {
+        "checked": 43,
+        "confirmed": 43,
+        "rate": 1,
+        "needs": 1,
+        "met": true,
+        "failures": 0
+      }
+    },
+    "c": {
+      "pagesChecked": 200,
+      "ownWordingHits": 0,
+      "prTextHits": 0,
+      "met": true
+    }
+  }
+}
