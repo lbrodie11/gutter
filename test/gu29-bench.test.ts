@@ -36,7 +36,7 @@ test('bench: the report generator reproduces results.json and the STAGE0.md bloc
   });
   const committed = load('gu29/results.json');
   assert.deepEqual(results, committed);
-  const doc = readFileSync(new URL('../docs/benchmark/STAGE0.md', import.meta.url), 'utf8');
+  const doc = readFileSync(new URL('../docs/benchmark/STAGE0.md', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   const block = doc.slice(doc.indexOf(MARK_GU29_START), doc.indexOf(MARK_GU29_END) + MARK_GU29_END.length);
   assert.equal(block, renderGu29(committed));
   // The numbers the PR reports.

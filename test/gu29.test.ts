@@ -42,7 +42,8 @@ test('legacyPredictions: gutter.json is byte-identical to the pre-GU-29 output o
   const goldens = readdirSync(LEGACY_DIR).filter((f) => f.endsWith('.json')).sort();
   assert.deepEqual(goldens, scenarios().map((s) => `${s.name}.json`).sort(), 'one golden per scenario');
   for (const s of scenarios()) {
-    const expected = readFileSync(new URL(`${s.name}.json`, LEGACY_DIR), 'utf8');
+    // Windows checkouts may convert committed text to CRLF; the comparison is about content.
+    const expected = readFileSync(new URL(`${s.name}.json`, LEGACY_DIR), 'utf8').replace(/\r\n/g, '\n');
     assert.equal(normalizeForLegacyCompare(legacy(s)), expected, `${s.name}: legacy output drifted`);
   }
 });
