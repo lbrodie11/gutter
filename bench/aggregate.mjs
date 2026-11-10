@@ -114,7 +114,13 @@ function backtests(bt, btOrigin) {
     const p = pop(doc);
     return { testCommits: doc.test?.commits ?? null, fired: c.fired, precision: c.precision, hitRate: c.hitRate, lift: p && p.hitRate > 0 ? c.hitRate / p.hitRate : null };
   };
-  return { plain: one(bt), originWeighted: btOrigin ? { ...one(btOrigin), comparison: btOrigin.originComparison ?? btOrigin.compareOriginWeights ?? null } : null };
+  // `--compare-origin-weights` reports the weighted run under comparisons[0].weighted (RA 0.10).
+  const cmp = btOrigin?.comparisons?.[0];
+  const w = cmp?.weighted;
+  return {
+    plain: one(bt),
+    originWeighted: w ? { spec: cmp.spec, fired: w.fired, precision: w.precision, hitRate: w.hitRate, lift: w.lift ?? null, deltas: cmp.deltas ?? null } : null,
+  };
 }
 
 /** One repository's row from its loaded files (any of them may be missing). */
@@ -350,11 +356,11 @@ export function renderReadme(res) {
     L.push(`| \`${r.repo}\` | ${s.positives} | ${s.detected} (${f2(s.recall)}) | ${s.skipped} (${f2(s.skippedShare)}) | ${s.confirmed}/${s.reported} (${f2(s.precision)}) | ${s.falsePositives}/${s.negatives} (${f2(s.falsePositiveRate)}) | ${obj(s.shortfalls)} |`);
   }
   L.push('', '### Coverage, runtime, backtests (reported, never decisive)', '');
-  L.push('| Repository | `coverage: partial` PRs | Unresolved by reason | Unchecked languages (PRs) | Replay p50 / p95 ms | Wall (min) | Backtest hit rate · lift | Origin-weighted (bot 0, agent 0.5) hit rate · lift |', '|---|---|---|---|---|---:|---|---|');
+  L.push('| Repository | `coverage: partial` PRs | Unresolved by reason | Unchecked languages (PRs) | Replay p50 / p95 ms | Wall (min) | Backtest: test commits · precision · hit rate · lift | Origin-weighted (bot 0, agent 0.5): precision · hit rate · lift |', '|---|---|---|---|---|---:|---|---|');
   for (const r of res.repos) {
     const bt = r.backtests?.plain;
     const bo = r.backtests?.originWeighted;
-    L.push(`| \`${r.repo}\` | ${p(r.coverage?.partial)} | ${obj(r.coverage?.unresolvedByReason)} | ${obj(r.coverage?.uncheckedLanguages)} | ${r.runtime ? `${r.runtime.replayP50Ms} / ${r.runtime.replayP95Ms}` : '—'} | ${r.wallMin ?? '—'} | ${bt ? `${f2(bt.hitRate)} · ×${f2(bt.lift)}` : '—'} | ${bo && bo.hitRate !== undefined ? `${f2(bo.hitRate)} · ×${f2(bo.lift)}` : '—'} |`);
+    L.push(`| \`${r.repo}\` | ${p(r.coverage?.partial)} | ${obj(r.coverage?.unresolvedByReason)} | ${obj(r.coverage?.uncheckedLanguages)} | ${r.runtime ? `${r.runtime.replayP50Ms} / ${r.runtime.replayP95Ms}` : '—'} | ${r.wallMin ?? '—'} | ${bt ? `${bt.testCommits} · ${f2(bt.precision)} · ${f2(bt.hitRate)} · ×${f2(bt.lift)}` : '—'} | ${bo ? `${f2(bo.precision)} · ${f2(bo.hitRate)} · ×${f2(bo.lift)}` : '—'} |`);
   }
   L.push('', '## Where Gutter did badly', '');
   L.push('Worst five completed repositories on each criterion, with the reason the data gives.', '');

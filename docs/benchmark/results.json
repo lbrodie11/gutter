@@ -464,12 +464,20 @@
           "lift": 6.146341463414633
         },
         "originWeighted": {
-          "testCommits": 561,
-          "fired": 700,
-          "precision": 0.5711340206185567,
-          "hitRate": 0.72,
-          "lift": 6.146341463414633,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 695,
+          "precision": 0.5760755508919203,
+          "hitRate": 0.7179856115107913,
+          "lift": 6.237499999999999,
+          "deltas": {
+            "fired": -5,
+            "coverage": -0.004325259515570834,
+            "precision": 0.004941530273363637,
+            "hitRate": -0.0020143884892086517,
+            "falseAlarmRate": 0.002014388489208596,
+            "recall": -0.0014100394811054906,
+            "lift": 0.09115853658536555
+          }
         }
       }
     },
@@ -640,12 +648,20 @@
           "lift": 1.7142857142857144
         },
         "originWeighted": {
-          "testCommits": 553,
-          "fired": 62,
-          "precision": 0.5916666666666667,
-          "hitRate": 0.5806451612903226,
-          "lift": 1.7142857142857144,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 57,
+          "precision": 0.5533980582524272,
+          "hitRate": 0.5789473684210527,
+          "lift": 1.9411764705882355,
+          "deltas": {
+            "fired": -5,
+            "coverage": -0.007923930269413626,
+            "precision": -0.03826860841423951,
+            "hitRate": -0.001697792869269965,
+            "falseAlarmRate": 0.0016977928692699096,
+            "recall": -0.016706443914081145,
+            "lift": 0.2268907563025211
+          }
         }
       }
     },
@@ -814,12 +830,20 @@
           "lift": 0.6
         },
         "originWeighted": {
-          "testCommits": 558,
+          "spec": "bot=0,agent=0.5",
           "fired": 7,
           "precision": 0.3076923076923077,
           "hitRate": 0.42857142857142855,
           "lift": 0.6,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -991,12 +1015,20 @@
           "lift": 2.828125
         },
         "originWeighted": {
-          "testCommits": 294,
-          "fired": 181,
-          "precision": 0.7484787018255578,
-          "hitRate": 1,
-          "lift": 2.828125,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 108,
+          "precision": 0.4528301886792453,
+          "hitRate": 0.5,
+          "lift": 1.7419354838709677,
+          "deltas": {
+            "fired": -73,
+            "coverage": -0.14038461538461536,
+            "precision": -0.29564851314631246,
+            "hitRate": -0.5,
+            "falseAlarmRate": 0.5,
+            "recall": -0.10827561064527891,
+            "lift": -1.0861895161290323
+          }
         }
       }
     },
@@ -1170,12 +1202,20 @@
           "lift": 1.7625570776255708
         },
         "originWeighted": {
-          "testCommits": 345,
+          "spec": "bot=0,agent=0.5",
           "fired": 541,
           "precision": 0.5590551181102362,
           "hitRate": 0.7134935304990758,
           "lift": 1.7625570776255708,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -1346,12 +1386,20 @@
           "lift": 0.7499999999999999
         },
         "originWeighted": {
-          "testCommits": 288,
+          "spec": "bot=0,agent=0.5",
           "fired": 22,
           "precision": 0.5185185185185185,
           "hitRate": 0.5454545454545454,
           "lift": 0.7499999999999999,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -1524,12 +1572,20 @@
           "lift": 1.3237410071942446
         },
         "originWeighted": {
-          "testCommits": 418,
+          "spec": "bot=0,agent=0.5",
           "fired": 296,
           "precision": 0.5844155844155844,
           "hitRate": 0.6216216216216216,
           "lift": 1.3237410071942446,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -1702,12 +1758,20 @@
           "lift": 2.078651685393258
         },
         "originWeighted": {
-          "testCommits": 135,
-          "fired": 245,
-          "precision": 0.7112810707456979,
-          "hitRate": 0.7551020408163265,
-          "lift": 2.078651685393258,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 249,
+          "precision": 0.7012987012987013,
+          "hitRate": 0.7630522088353414,
+          "lift": 2.111111111111111,
+          "deltas": {
+            "fired": 4,
+            "coverage": 0.010638297872340496,
+            "precision": -0.009982369446996597,
+            "hitRate": 0.007950168019014936,
+            "falseAlarmRate": -0.007950168019014825,
+            "recall": 0.002071108042802916,
+            "lift": 0.03245942571785321
+          }
         }
       }
     },
@@ -1881,12 +1945,20 @@
           "lift": 2.2386363636363638
         },
         "originWeighted": {
-          "testCommits": 389,
+          "spec": "bot=0,agent=0.5",
           "fired": 321,
           "precision": 0.47938931297709925,
           "hitRate": 0.6137071651090342,
           "lift": 2.2386363636363638,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -2061,12 +2133,20 @@
           "lift": 1.5595238095238098
         },
         "originWeighted": {
-          "testCommits": 525,
+          "spec": "bot=0,agent=0.5",
           "fired": 573,
           "precision": 0.35294117647058826,
           "hitRate": 0.4572425828970332,
           "lift": 1.5595238095238098,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -2241,12 +2321,20 @@
           "lift": 3.9032258064516125
         },
         "originWeighted": {
-          "testCommits": 357,
-          "fired": 397,
-          "precision": 0.42209302325581394,
-          "hitRate": 0.6095717884130982,
-          "lift": 3.9032258064516125,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 401,
+          "precision": 0.4243845252051583,
+          "hitRate": 0.6034912718204489,
+          "lift": 3.903225806451613,
+          "deltas": {
+            "fired": 4,
+            "coverage": 0.004634994206257237,
+            "precision": 0.0022915019493443545,
+            "hitRate": -0.006080516592649299,
+            "falseAlarmRate": 0.006080516592649354,
+            "recall": -0.0001646090534979383,
+            "lift": 4.440892098500626e-16
+          }
         }
       }
     },
@@ -2418,12 +2506,20 @@
           "lift": 1.7560975609756098
         },
         "originWeighted": {
-          "testCommits": 228,
-          "fired": 294,
-          "precision": 0.4868651488616462,
-          "hitRate": 0.7346938775510204,
-          "lift": 1.7560975609756098,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 274,
+          "precision": 0.48722986247544203,
+          "hitRate": 0.7262773722627737,
+          "lift": 1.6178861788617884,
+          "deltas": {
+            "fired": -20,
+            "coverage": -0.03883495145631066,
+            "precision": 0.00036471361379580847,
+            "hitRate": -0.008416505288246778,
+            "falseAlarmRate": 0.008416505288246667,
+            "recall": -0.007543374402816196,
+            "lift": -0.13821138211382133
+          }
         }
       }
     },
@@ -2596,12 +2692,20 @@
           "lift": 1.9012345679012346
         },
         "originWeighted": {
-          "testCommits": 949,
+          "spec": "bot=0,agent=0.5",
           "fired": 447,
           "precision": 0.5181058495821727,
           "hitRate": 0.6890380313199105,
           "lift": 1.9012345679012346,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -2772,12 +2876,20 @@
           "lift": 1.9622641509433965
         },
         "originWeighted": {
-          "testCommits": 238,
+          "spec": "bot=0,agent=0.5",
           "fired": 420,
           "precision": 0.358600583090379,
           "hitRate": 0.49523809523809526,
           "lift": 1.9622641509433965,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -2948,12 +3060,20 @@
           "lift": 1.6029411764705883
         },
         "originWeighted": {
-          "testCommits": 352,
+          "spec": "bot=0,agent=0.5",
           "fired": 203,
           "precision": 0.4263565891472868,
           "hitRate": 0.5369458128078818,
           "lift": 1.6029411764705883,
-          "comparison": null
+          "deltas": {
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0,
+            "falseAlarmRate": 0,
+            "recall": 0,
+            "lift": 0
+          }
         }
       }
     },
@@ -3124,12 +3244,20 @@
           "lift": 2.55
         },
         "originWeighted": {
-          "testCommits": 774,
-          "fired": 84,
-          "precision": 0.5242718446601942,
-          "hitRate": 0.6071428571428571,
-          "lift": 2.55,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 61,
+          "precision": 0.45569620253164556,
+          "hitRate": 0.5573770491803278,
+          "lift": 2.2666666666666666,
+          "deltas": {
+            "fired": -23,
+            "coverage": -0.026018099547511303,
+            "precision": -0.06857564212854861,
+            "hitRate": -0.049765807962529274,
+            "falseAlarmRate": 0.049765807962529274,
+            "recall": -0.004868812550716797,
+            "lift": -0.2833333333333332
+          }
         }
       }
     },
@@ -3300,12 +3428,20 @@
           "lift": 2.4850299401197606
         },
         "originWeighted": {
-          "testCommits": 992,
-          "fired": 547,
-          "precision": 0.5571984435797666,
-          "hitRate": 0.7586837294332724,
-          "lift": 2.4850299401197606,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 513,
+          "precision": 0.5638207945900253,
+          "hitRate": 0.746588693957115,
+          "lift": 2.37888198757764,
+          "deltas": {
+            "fired": -34,
+            "coverage": -0.019439679817038313,
+            "precision": 0.006622351010258765,
+            "hitRate": -0.012095035476157423,
+            "falseAlarmRate": 0.012095035476157368,
+            "recall": -0.006886858749121566,
+            "lift": -0.10614795254212073
+          }
         }
       }
     },
@@ -3476,12 +3612,20 @@
           "lift": 5
         },
         "originWeighted": {
-          "testCommits": 418,
-          "fired": 669,
-          "precision": 0.5865019011406845,
-          "hitRate": 0.7100149476831091,
-          "lift": 5,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 621,
+          "precision": 0.55,
+          "hitRate": 0.607085346215781,
+          "lift": 4.053763440860215,
+          "deltas": {
+            "fired": -48,
+            "coverage": -0.04043807919123843,
+            "precision": -0.03650190114068441,
+            "hitRate": -0.1029296014673281,
+            "falseAlarmRate": 0.10292960146732816,
+            "recall": -0.01014476233899464,
+            "lift": -0.946236559139785
+          }
         }
       }
     },
@@ -3659,12 +3803,20 @@
           "lift": 1.2666666666666666
         },
         "originWeighted": {
-          "testCommits": 347,
-          "fired": 514,
-          "precision": 0.4781216648879402,
-          "hitRate": 0.6284046692607004,
-          "lift": 1.2666666666666666,
-          "comparison": null
+          "spec": "bot=0,agent=0.5",
+          "fired": 430,
+          "precision": 0.5143288084464555,
+          "hitRate": 0.6186046511627907,
+          "lift": 1.2090909090909092,
+          "deltas": {
+            "fired": -84,
+            "coverage": -0.08267716535433067,
+            "precision": 0.03620714355851523,
+            "hitRate": -0.009800018097909646,
+            "falseAlarmRate": 0.009800018097909702,
+            "recall": -0.02004120621839295,
+            "lift": -0.05757575757575739
+          }
         }
       }
     },
@@ -3837,12 +3989,20 @@
           "lift": 1
         },
         "originWeighted": {
-          "testCommits": 64,
-          "fired": 136,
-          "precision": 0.8029556650246306,
-          "hitRate": 0.9411764705882353,
+          "spec": "bot=0,agent=0.5",
+          "fired": 1,
+          "precision": 1,
+          "hitRate": 1,
           "lift": 1,
-          "comparison": null
+          "deltas": {
+            "fired": -135,
+            "coverage": -0.823170731707317,
+            "precision": 0.19704433497536944,
+            "hitRate": 0.05882352941176472,
+            "falseAlarmRate": -0.058823529411764705,
+            "recall": -0.14719202898550723,
+            "lift": 0
+          }
         }
       }
     }

@@ -93,28 +93,28 @@ Preregistered in [`CORPUS.md`](CORPUS.md) (§1–§5 fixed before any run). Gate
 
 ### Coverage, runtime, backtests (reported, never decisive)
 
-| Repository | `coverage: partial` PRs | Unresolved by reason | Unchecked languages (PRs) | Replay p50 / p95 ms | Wall (min) | Backtest hit rate · lift | Origin-weighted (bot 0, agent 0.5) hit rate · lift |
+| Repository | `coverage: partial` PRs | Unresolved by reason | Unchecked languages (PRs) | Replay p50 / p95 ms | Wall (min) | Backtest: test commits · precision · hit rate · lift | Origin-weighted (bot 0, agent 0.5): precision · hit rate · lift |
 |---|---|---|---|---|---:|---|---|
-| `honojs/hono` | 1.00 (200/200) | unknown-package 1250, target-missing 344 | — | 495 / 686 | 4.5 | 0.72 · ×6.15 | 0.72 · ×6.15 |
-| `remarkablemark/html-react-parser` | 1.00 (200/200) | target-missing 2000, unknown-package 98 | — | 571 / 752 | 4.2 | 0.58 · ×1.71 | 0.58 · ×1.71 |
-| `faastjs/faast.js` | 1.00 (200/200) | unknown-package 1000, target-missing 600 | — | 660 / 873 | 4.4 | 0.43 · ×0.60 | 0.43 · ×0.60 |
-| `binance/binance-connector-js` | 1.00 (200/200) | target-missing 54183, unknown-package 28235 | — | 1371 / 2274 | 23.2 | 1.00 · ×2.83 | 1.00 · ×2.83 |
-| `allianz/ng-aquila` | 1.00 (200/200) | not-exported 16600, unknown-package 1599, target-missing 616 | css 105 | 1378 / 2364 | 12.8 | 0.71 · ×1.76 | 0.71 · ×1.76 |
-| `matrix-org/matrix-appservice-bridge` | 1.00 (200/200) | target-missing 4358, unknown-package 141 | — | 583 / 1265 | 4.6 | 0.55 · ×0.75 | 0.55 · ×0.75 |
-| `ChatGPTNextWeb/NextChat` | 1.00 (200/200) | unknown-package 720 | css 8, rust 2 | 659 / 1641 | 5.7 | 0.62 · ×1.32 | 0.62 · ×1.32 |
-| `DayuanJiang/next-ai-draw-io` | 0.40 (79/200) | unknown-package 79 | css 7 | 674 / 1168 | 5.2 | 0.76 · ×2.08 | 0.76 · ×2.08 |
-| `slymnoyann/hey.xyz` | 0.02 (4/200) | unknown-package 4 | css 9, sql 2 | 678 / 3530 | 7.8 | 0.61 · ×2.24 | 0.61 · ×2.24 |
-| `lerna/lerna` | 1.00 (200/200) | unsupported-config 3200, unknown-package 883, target-missing 10 | css 1 | 1104 / 1553 | 9 | 0.46 · ×1.56 | 0.46 · ×1.56 |
-| `vbenjs/vue-vben-admin` | 1.00 (200/200) | target-missing 19841, alias-unmatched 3409, unknown-package 153 | css 10 | 832 / 1857 | 8.2 | 0.61 · ×3.90 | 0.61 · ×3.90 |
-| `hypit-ai/hypit` | 0.41 (81/200) | unknown-package 161 | css 8 | 1229 / 17017 | 23.4 | 0.73 · ×1.76 | 0.73 · ×1.76 |
-| `ollama/ollama` | 0.99 (199/200) | unknown-package 796 | css 2 | 875 / 1767 | 10.2 | 0.69 · ×1.90 | 0.69 · ×1.90 |
-| `fatedier/frp` | 0.00 (0/200) | — | css 9 | 563 / 1097 | 5.8 | 0.50 · ×1.96 | 0.50 · ×1.96 |
-| `gin-gonic/gin` | 0.00 (0/200) | — | — | 493 / 901 | 3.4 | 0.54 · ×1.60 | 0.54 · ×1.60 |
-| `TheAlgorithms/Python` | 0.00 (0/200) | — | — | 898 / 1472 | 2.8 | 0.61 · ×2.55 | 0.61 · ×2.55 |
-| `yt-dlp/yt-dlp` | 1.00 (200/200) | target-missing 400 | — | 1170 / 1611 | 7.4 | 0.76 · ×2.49 | 0.76 · ×2.49 |
-| `github/spec-kit` | 1.00 (200/200) | unknown-package 1000 | — | 1029 / 1197 | 7.9 | 0.71 · ×5.00 | 0.71 · ×5.00 |
-| `colbymchenry/codegraph` | 1.00 (200/200) | target-missing 3072, unsupported-config 400, unknown-package 200 | rust 16, java 2, kotlin 1, sql 1 | 2039 / 3222 | 15.9 | 0.63 · ×1.27 | 0.63 · ×1.27 |
-| `team-telnyx/telnyx-node` | 1.00 (200/200) | invalid-target 6400, target-missing 4373, unsupported-config 182, unknown-package 103 | — | 923 / 1569 | 8.9 | 0.94 · ×1.00 | 0.94 · ×1.00 |
+| `honojs/hono` | 1.00 (200/200) | unknown-package 1250, target-missing 344 | — | 495 / 686 | 4.5 | 561 · 0.57 · 0.72 · ×6.15 | 0.58 · 0.72 · ×6.24 |
+| `remarkablemark/html-react-parser` | 1.00 (200/200) | target-missing 2000, unknown-package 98 | — | 571 / 752 | 4.2 | 553 · 0.59 · 0.58 · ×1.71 | 0.55 · 0.58 · ×1.94 |
+| `faastjs/faast.js` | 1.00 (200/200) | unknown-package 1000, target-missing 600 | — | 660 / 873 | 4.4 | 558 · 0.31 · 0.43 · ×0.60 | 0.31 · 0.43 · ×0.60 |
+| `binance/binance-connector-js` | 1.00 (200/200) | target-missing 54183, unknown-package 28235 | — | 1371 / 2274 | 23.2 | 294 · 0.75 · 1.00 · ×2.83 | 0.45 · 0.50 · ×1.74 |
+| `allianz/ng-aquila` | 1.00 (200/200) | not-exported 16600, unknown-package 1599, target-missing 616 | css 105 | 1378 / 2364 | 12.8 | 345 · 0.56 · 0.71 · ×1.76 | 0.56 · 0.71 · ×1.76 |
+| `matrix-org/matrix-appservice-bridge` | 1.00 (200/200) | target-missing 4358, unknown-package 141 | — | 583 / 1265 | 4.6 | 288 · 0.52 · 0.55 · ×0.75 | 0.52 · 0.55 · ×0.75 |
+| `ChatGPTNextWeb/NextChat` | 1.00 (200/200) | unknown-package 720 | css 8, rust 2 | 659 / 1641 | 5.7 | 418 · 0.58 · 0.62 · ×1.32 | 0.58 · 0.62 · ×1.32 |
+| `DayuanJiang/next-ai-draw-io` | 0.40 (79/200) | unknown-package 79 | css 7 | 674 / 1168 | 5.2 | 135 · 0.71 · 0.76 · ×2.08 | 0.70 · 0.76 · ×2.11 |
+| `slymnoyann/hey.xyz` | 0.02 (4/200) | unknown-package 4 | css 9, sql 2 | 678 / 3530 | 7.8 | 389 · 0.48 · 0.61 · ×2.24 | 0.48 · 0.61 · ×2.24 |
+| `lerna/lerna` | 1.00 (200/200) | unsupported-config 3200, unknown-package 883, target-missing 10 | css 1 | 1104 / 1553 | 9 | 525 · 0.35 · 0.46 · ×1.56 | 0.35 · 0.46 · ×1.56 |
+| `vbenjs/vue-vben-admin` | 1.00 (200/200) | target-missing 19841, alias-unmatched 3409, unknown-package 153 | css 10 | 832 / 1857 | 8.2 | 357 · 0.42 · 0.61 · ×3.90 | 0.42 · 0.60 · ×3.90 |
+| `hypit-ai/hypit` | 0.41 (81/200) | unknown-package 161 | css 8 | 1229 / 17017 | 23.4 | 228 · 0.49 · 0.73 · ×1.76 | 0.49 · 0.73 · ×1.62 |
+| `ollama/ollama` | 0.99 (199/200) | unknown-package 796 | css 2 | 875 / 1767 | 10.2 | 949 · 0.52 · 0.69 · ×1.90 | 0.52 · 0.69 · ×1.90 |
+| `fatedier/frp` | 0.00 (0/200) | — | css 9 | 563 / 1097 | 5.8 | 238 · 0.36 · 0.50 · ×1.96 | 0.36 · 0.50 · ×1.96 |
+| `gin-gonic/gin` | 0.00 (0/200) | — | — | 493 / 901 | 3.4 | 352 · 0.43 · 0.54 · ×1.60 | 0.43 · 0.54 · ×1.60 |
+| `TheAlgorithms/Python` | 0.00 (0/200) | — | — | 898 / 1472 | 2.8 | 774 · 0.52 · 0.61 · ×2.55 | 0.46 · 0.56 · ×2.27 |
+| `yt-dlp/yt-dlp` | 1.00 (200/200) | target-missing 400 | — | 1170 / 1611 | 7.4 | 992 · 0.56 · 0.76 · ×2.49 | 0.56 · 0.75 · ×2.38 |
+| `github/spec-kit` | 1.00 (200/200) | unknown-package 1000 | — | 1029 / 1197 | 7.9 | 418 · 0.59 · 0.71 · ×5.00 | 0.55 · 0.61 · ×4.05 |
+| `colbymchenry/codegraph` | 1.00 (200/200) | target-missing 3072, unsupported-config 400, unknown-package 200 | rust 16, java 2, kotlin 1, sql 1 | 2039 / 3222 | 15.9 | 347 · 0.48 · 0.63 · ×1.27 | 0.51 · 0.62 · ×1.21 |
+| `team-telnyx/telnyx-node` | 1.00 (200/200) | invalid-target 6400, target-missing 4373, unsupported-config 182, unknown-package 103 | — | 923 / 1569 | 8.9 | 64 · 0.80 · 0.94 · ×1.00 | 1.00 · 1.00 · ×1.00 |
 
 ## Where Gutter did badly
 

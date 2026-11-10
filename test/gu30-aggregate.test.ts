@@ -139,3 +139,14 @@ test('report consistency: the committed README is rendered from the committed re
   const run = JSON.parse(readFileSync('docs/benchmark/data/corpus-run.json', 'utf8'));
   assert.deepEqual(aggregate({ corpus, inputs: loadInputs('docs/benchmark/data', corpus), run }), res);
 });
+
+test('backtests: the origin-weighted numbers come from comparisons[0].weighted, not the unweighted strategies', () => {
+  const plainBt = { test: { commits: 500 }, strategies: [{ name: 'co-change', fired: 100, precision: 0.5, hitRate: 0.7 }, { name: 'popularity, same changes', hitRate: 0.1 }] };
+  const origin = { ...plainBt, comparisons: [{ spec: 'bot=0,agent=0.5', weighted: { fired: 90, precision: 0.6, hitRate: 0.65, lift: 6.5 }, deltas: { precision: 0.1 } }] };
+  const e = good('bt');
+  const res = build([{ ...e, input: { ...e.input, backtest: plainBt, backtestOrigin: origin } }]);
+  const bt = res.repos[0].backtests;
+  assert.deepEqual(bt.plain, { testCommits: 500, fired: 100, precision: 0.5, hitRate: 0.7, lift: 0.7 / 0.1 });
+  assert.deepEqual(bt.originWeighted, { spec: 'bot=0,agent=0.5', fired: 90, precision: 0.6, hitRate: 0.65, lift: 6.5, deltas: { precision: 0.1 } });
+  assert.match(renderReadme(res), /\| 500 · 0\.50 · 0\.70 · ×7\.00 \| 0\.60 · 0\.65 · ×6\.50 \|/);
+});
