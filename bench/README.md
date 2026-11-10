@@ -20,12 +20,14 @@ A cheap screen on one repository before investing in a corpus. Rules are preregi
 git clone --filter=blob:none --no-checkout https://github.com/honojs/hono.git ~/.cache/gutter-bench/honojs__hono
 git -C ~/.cache/gutter-bench/honojs__hono checkout eb754bd5ef22c63f1634a4c374a86be086f85710
 
-# 2. The four runs (repo-archaeology >= 0.4.0 comes from devDependencies)
+# 2. The four runs, on the pre-GU-29 behavior (--legacy-predictions; see "GU-29" below).
+#    repo-archaeology comes from devDependencies (pinned 0.10.0 since GU-28; Stage 0 itself ran on 0.4.0,
+#    and STAGE0.md 0b.R1 shows the upgrade changed no headline number).
 npm ci
 H=~/.cache/gutter-bench/honojs__hono; OUT=/tmp/gutter-stage0
-node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --out $OUT/default
+node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --out $OUT/default
 for v in v1-floor v2-two-signals v3-breadth-not-full; do
-  node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --config bench/variants/stage0-$v.json --out $OUT/$v
+  node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --config bench/variants/stage0-$v.json --out $OUT/$v
 done
 
 # 3. Results and the blinded labeling page
@@ -33,7 +35,7 @@ node bench/stage0-report.mjs --runs $OUT --write-results /tmp/results.json
 node --experimental-strip-types src/cli.ts label --compare $OUT/default/bench.json --seed 1 --out /tmp/label-compare.html
 ```
 
-`results.json` should match the committed one apart from `totalWallMs`, and the label page should be byte-identical (sample `55dc4b4e4b5e`).
+`results.json` should match the committed one apart from run metadata: `totalWallMs`, `raVersion`, and `settingsHash` / `configOverrides` (which now record `legacyPredictions`). This was checked for the default run on 2026-11-10; every rate, lift and interval matched. The label page should be byte-identical (sample `55dc4b4e4b5e`).
 
 ### Label (HUMAN STEP)
 
@@ -71,8 +73,8 @@ Tests STAGE0.md section 5's option 2 with Repo Archaeology 0.10.0's per-pair `tr
 ```bash
 # Same hono checkout as Stage 0; npm ci installs repo-archaeology 0.10.0 (pinned)
 H=~/.cache/gutter-bench/honojs__hono; OUT=/tmp/gutter-stage0b
-node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --out $OUT/default
-node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --config bench/variants/stage0b-v4-proven-pairs.json --out $OUT/v4-proven-pairs
+node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --out $OUT/default
+node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --config bench/variants/stage0b-v4-proven-pairs.json --out $OUT/v4-proven-pairs
 node bench/stage0-report.mjs --stage0b --runs $OUT --compare-bench docs/benchmark/data/honojs__hono/stage0/default/bench.json --write-results /tmp/stage0b-results.json --stage0-results docs/benchmark/data/honojs__hono/stage0/results.json
 node --experimental-strip-types bench/stage0b-funnel.ts $H $OUT/default/bench.json
 ```
@@ -81,7 +83,7 @@ Merge Stage 0b's PR with a merge commit, not a squash: `test/stage0b-report.test
 
 ## GU-29 · explain, don't predict (after Stage 0b)
 
-GU-29 stops Gutter's default output from predicting omissions ([DECISIONS #17](../docs/DECISIONS.md#17-explain-dont-predict-gu-29)). Stage 0 and 0b now reproduce only under the research switch: add `--config bench/variants/gu29-legacy.json` (`{ "legacyPredictions": true }`), which reproduces Stage 0b's default run record for record. Results: STAGE0.md "After GU-29"; data: [`docs/benchmark/data/honojs__hono/gu29/`](../docs/benchmark/data/honojs__hono/gu29/).
+GU-29 stops Gutter's default output from predicting omissions ([DECISIONS #17](../docs/DECISIONS.md#17-explain-dont-predict-gu-29)). Stage 0 and 0b now reproduce only under the research switch: pass `--legacy-predictions` (or `--config bench/variants/gu29-legacy.json`, `{ "legacyPredictions": true }`); the legacy run reproduces Stage 0b's default run record for record. `--config` refuses a variant whose keys only tune the retired companion questions (`minIntervalLow`, `maxCompanionQuestions`, `minCalibratedPrecision`, `companionRequireGhost`, `companionMinTrackRecordFired`) unless the switch is on, so a Stage 0 variant can't silently run as a no-op. Results: STAGE0.md "After GU-29"; data: [`docs/benchmark/data/honojs__hono/gu29/`](../docs/benchmark/data/honojs__hono/gu29/).
 
 | File | What it is |
 |---|---|

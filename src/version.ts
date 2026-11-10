@@ -1,1 +1,1 @@
-export const GUTTER_VERSION = '0.2.1';
+export const GUTTER_VERSION = '0.3.0';

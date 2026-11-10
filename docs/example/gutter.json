@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "tool": {
     "name": "gutter",
-    "version": "0.2.1"
+    "version": "0.3.0"
   },
   "change": {
     "base": "main",
@@ -312,11 +312,11 @@
     }
   },
   "provenance": {
-    "generatedAt": "2026-11-10T08:56:16.667Z",
+    "generatedAt": "2026-11-10T09:15:31.159Z",
     "engines": [
       {
         "name": "gutter",
-        "version": "0.2.1"
+        "version": "0.3.0"
       },
       {
         "name": "repo-archaeology",

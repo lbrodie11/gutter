@@ -3,7 +3,7 @@
   "kind": "gutter-gu29-results",
   "repo": "honojs/hono",
   "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
-  "gutterVersion": "0.2.1",
+  "gutterVersion": "0.3.0",
   "raVersion": "0.10.0",
   "before": {
     "prsEvaluated": 200,
@@ -412,7 +412,7 @@
       "configOverrides": {
         "legacyPredictions": true
       },
-      "gutterVersion": "0.2.1",
+      "gutterVersion": "0.3.0",
       "raVersion": "0.10.0",
       "prsEvaluated": 200,
       "prsScored": 70,
@@ -585,7 +585,7 @@
           }
         }
       },
-      "totalWallMs": 79556.06,
+      "totalWallMs": 78895.14,
       "companionCoverage": {
         "numerator": 69,
         "denominator": 200,
@@ -615,7 +615,7 @@
   },
   "gate": {
     "tools": {
-      "gutter": "0.2.1",
+      "gutter": "0.3.0",
       "repoArchaeology": "0.10.0",
       "typescript": "6.0.3"
     },
@@ -660,7 +660,7 @@
     "c": {
       "pagesChecked": 200,
       "ownWordingHits": 0,
-      "prTextHits": 0,
+      "rawHits": 0,
       "met": true
     }
   }

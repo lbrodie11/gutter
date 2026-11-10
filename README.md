@@ -4,7 +4,7 @@
 
 Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, what the tests show, and what the history says — with clickable commit receipts. You decide what matters.
 
-`Experimental · v0.2.1` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+`Experimental · v0.3.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -79,7 +79,7 @@ None of these is a verdict. The test row is a historical fact; whether this chan
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.2.1 + repo-archaeology 0.3.0; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.3.0 + repo-archaeology 0.3.0; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
@@ -91,7 +91,7 @@ GitHub pull request comments cannot render custom CSS, so Gutter posts **one com
 >
 > *(Plus collapsed `<details>` sections: **Usually changes with** (history, not a prediction), **What it touches**, **Tests**, and **What changed**.)*
 >
-> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.2.1 + repo-archaeology 0.3.0</sub>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.3.0 + repo-archaeology 0.3.0</sub>
 
 ### 3 · The full six-panel page (`gutter.html` artifact)
 
@@ -140,7 +140,7 @@ node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
 1. **Commits ≠ pull requests (offline discovery funnel):**
    `gutter bench` walks `git rev-list --first-parent <branch>` offline without requiring GitHub API tokens. Each commit is classified into `merge-commit` (`high` confidence when `Merge pull request #n`, `medium` when unnumbered), `squash-subject` (`medium` confidence when ending in `(#n)`), or skipped as `octopus` / `not-a-pr` (direct pushes and GitHub rebase merges, which leave no merge parent or `(#n)` suffix). Passing `--include-unnumbered` evaluates 1-parent unnumbered commits as `change-unit` (`low` confidence) in a separate pool that is never pooled with PR results.
 2. **Follow-ups are observations (`followedUp`), not ground-truth defects:**
-   A target file changing on the first-parent branch within `--window-days` (default `7`) after `mergedAt` is recorded as `followedUp` (along with delay, `sameAuthor` after `.mailmap`, and Repo Archaeology follow-up signals). Planned multi-PR splits and unrelated work can touch the same file, while a genuine omission left unfixed for 7 days is recorded as `notFollowedUp`. Consequently, **Gate A (`Question usefulness`) always prints `UNVERIFIED`** until human review labels exist in GU-04 — never `PASS` from automated follow-up rates.
+   A target file changing on the first-parent branch within `--window-days` (default `7`) after `mergedAt` is recorded as `followedUp` (along with delay, `sameAuthor` after `.mailmap`, and Repo Archaeology follow-up signals). Planned multi-PR splits and unrelated work can touch the same file, while a genuine omission left unfixed for 7 days is recorded as `notFollowedUp`. Consequently, the bench's **Gate A (`Question usefulness`) line always prints `UNVERIFIED`** — never `PASS` from automated follow-up rates. (Gate A was retired as M0's exit test by GU-29; see item 10.)
 3. **Right-censoring and rename/deletion tracking:**
    First-parent outcomes follow renames (`targetRenamed`) and record deletions as their own outcome (`targetDeleted`, never a hit). If a PR's observation window extends past the newest commit on the branch without an earlier hit, the target is marked `censored` and excluded from precision denominators.
 4. **Two explicit policies (`production` vs. `ungated`):**
@@ -155,7 +155,7 @@ node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
 6. **Why same-commit backtest lift (`6.8×`) and 7-day post-merge follow-up proxy (`×0.36` vs. `recent`) differ:**
    - **Same-commit backtest (`repo-archaeology backtest`):** Holds out files *within a single commit* and asks whether historical co-change predicts the other files modified in that same commit (`73%` hit rate, `6.8×` lift over popularity on Hono). This measures whether the files genuinely form a coupled pair when a change is complete.
    - **Post-merge follow-up proxy (`gutter bench`):** Replays merged PRs where a companion or test was left *untouched* in the PR and observes whether that file is edited in a *separate* commit within the next 7 days (`0.23` follow-up proxy on Hono). Over a 7-day post-merge window on an active repository, central/recently-busy files (`recent`, `popular`) naturally accumulate unrelated feature edits at a high rate (`0.65` on Hono), whereas specific companion/test targets change later only when a follow-up test or fix commit lands.
-   - Because 7-day post-merge edits conflate genuine omissions with background churn on busy files, `gutter bench` always marks Roadmap Gate A as `UNVERIFIED` and defers usefulness verdicts to human review labels in **GU-04**.
+   - Because 7-day post-merge edits conflate genuine omissions with background churn on busy files, `gutter bench` always marks Gate A as `UNVERIFIED` and leaves usefulness to human review (GU-04 labels, then M1).
 
 7. **Stricter outcomes for every baseline (`GU-04` Stage 0):**
    Every baseline is also scored on same-author follow-up and on Repo Archaeology's follow-up signal, with Wilson and PR-clustered bootstrap intervals, and `bench.md` shows lift on each outcome against that outcome's strongest baseline. On Hono, `recent` still leads on all three (same-author `0.29` vs. Gutter `0.12`, lift `×0.42`), so the gap is not only busy-file churn. See [`docs/benchmark/STAGE0.md`](docs/benchmark/STAGE0.md).
@@ -172,7 +172,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
 
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.2.1`, always pin to the **release tag's commit SHA** (`git rev-parse v0.2.1^{commit}`), never an unbuilt `main` branch commit SHA.
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.3.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.3.0^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|
@@ -199,7 +199,7 @@ Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (u
 
 **How loud a page is (salience).** Each checklist item with priority ≤ 2 counts as one signal, and breadth (≥ 8 files or ≥ 3 modules) counts as one more when `salienceBreadthFull` is `true` (the default). A page is `full` when it has at least `salienceFullMinSignals` signals (default `2`). By default only `broken-import` has priority ≤ 2, so a page is `full` when it has **two or more broken imports, or one broken import plus breadth**. Breadth alone is never `full`. Any checklist item makes a page at least `brief`, and so does a change to more than three files; otherwise it is `quiet`. Co-change history and test history never count.
 
-**Research switch (not recommended).** `legacyPredictions: true` reproduces pre-GU-29 behavior for benchmarks: companion (`forgotten-companion`) and `family-drift` questions with their old wording, `salienceFullMinSignals` defaulting to `1` (an explicit value still wins), and no `forgotten.presentation` or `TestLink.history` in `gutter.json`. The keys `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `companionRequireGhost` and `companionMinTrackRecordFired` only matter under it. See [DECISIONS #17](docs/DECISIONS.md#17-explain-dont-predict-gu-29).
+**Research switch (not recommended).** `legacyPredictions: true` reproduces pre-GU-29 behavior for benchmarks: companion (`forgotten-companion`) and `family-drift` questions with their old wording, `salienceFullMinSignals` defaulting to `1` (an explicit value still wins), and no `forgotten.presentation` or `TestLink.history` in `gutter.json`. The keys `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `companionRequireGhost` and `companionMinTrackRecordFired` only matter under it; the CLI and the Action print a warning when one is set without it. See [DECISIONS #17](docs/DECISIONS.md#17-explain-dont-predict-gu-29).
 
 ### Option 3 · Run locally from source
 

@@ -7,7 +7,7 @@
 
 1. `src/middleware/serve-static/index.ts` changed \(\+12/−0\); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR\.<br><sub>receipts: [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts)</sub>
 
-<details><summary><b>Usually changes with</b> (history, not a prediction) · 4 pairs</summary>
+<details><summary><b>Usually changes with</b> (history, not a prediction) · 3 pairs · 1 parallel group</summary>
 
 - [`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts) and [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts) changed together in 17 of 20 commits; [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts) isn't in this PR · last together 2026\-10\-16<br><sub>receipts: [d54720d](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) [588ec13](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70) [8b05c77](https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc)</sub>
 - [`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts) and [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) changed together in 9 of 11 commits; [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) isn't in this PR · last together 2026\-05\-16<br><sub>receipts: [26f8c33](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) [1196f14](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e) [246a06a](https://github.com/honojs/hono/commit/246a06aa1d35aa206dcf11186b3aa90badb2de72)</sub>
@@ -44,4 +44,4 @@
 
 </details>
 
-<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(6\.8× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.2.1 + repo-archaeology 0.3.0</sub>
+<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(6\.8× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.3.0 + repo-archaeology 0.3.0</sub>
