@@ -77,8 +77,8 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .panel{grid-column:span 12;position:relative;background:var(--f-panel);border:var(--f-stroke) solid var(--f-rule);padding:0 16px 16px;min-width:0}
 .page.quiet .panel{grid-column:span 12}
 @media (min-width:860px){
-.page:not(.quiet){grid-template-areas:"intent intent intent intent intent intent intent changed changed changed changed changed" "touches touches touches touches touches forgotten forgotten forgotten forgotten forgotten forgotten forgotten" "tests tests tests tests tests forgotten forgotten forgotten forgotten forgotten forgotten forgotten" "checks checks checks checks checks checks checks checks checks checks checks checks"}
-.area-intent{grid-area:intent}.area-changed{grid-area:changed}.area-touches{grid-area:touches}.area-forgotten{grid-area:forgotten}.area-tests{grid-area:tests}.area-checks{grid-area:checks}
+.page:not(.quiet){grid-template-areas:"intent intent intent intent intent intent intent changed changed changed changed changed" "touches touches touches touches touches history history history history history history history" "tests tests tests tests tests history history history history history history history" "checks checks checks checks checks checks checks checks checks checks checks checks"}
+.area-intent{grid-area:intent}.area-changed{grid-area:changed}.area-touches{grid-area:touches}.area-history{grid-area:history}.area-tests{grid-area:tests}.area-checks{grid-area:checks}
 .page.quiet .area-intent{grid-column:span 7}.page.quiet .area-changed{grid-column:span 5}
 }
 .cap{display:inline-flex;align-items:center;margin:0 0 14px -16px;padding:5px 12px 5px 0;background:var(--f-ink);color:var(--f-sheet);font-family:var(--font-f-display);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
@@ -107,6 +107,9 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .deps{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-pair)}
 .deps li{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--f-gutter-pair)}
 .importers{display:inline-flex;flex-wrap:wrap;gap:var(--f-gutter-pair)}
+.ref{font-family:var(--font-f-mono);font-size:12px;overflow-wrap:anywhere}
+.deps .test-row{flex-direction:column;align-items:flex-start;gap:0}
+.fact{font-size:13px;color:var(--f-ink-2);margin:4px 0}
 .stamp{font-family:var(--font-f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 5px;transform:rotate(-3deg);display:inline-block}
 .small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
 .quiet-line{margin:0;color:var(--f-ink-2)}
@@ -145,7 +148,7 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 <article class="sheet">
   <header class="masthead">
     <p class="wordmark">GUTTER<span class="slash">/</span><span class="kicker">change briefing</span></p>
-    <p class="issue">main → feat/serve-static-cache-control · eb754bd · 2026-11-08</p>
+    <p class="issue">main → feat/serve-static-cache-control · eb754bd · 2026-11-10</p>
   </header>
   
   <div class="page">
@@ -158,11 +161,11 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 <section class="panel area-changed" data-cut="C-02" aria-labelledby="p2">
   <h2 id="p2" class="cap"><span class="num">C-02</span> What changed</h2>
   
-  <p class="stat"><b>2</b> files · <b>2</b> modules · <b>+10</b>/<b>−0</b></p>
+  <p class="stat"><b>2</b> files · <b>2</b> modules · <b>+14</b>/<b>−0</b></p>
   <ul class="modules" aria-label="Churn by module, darker tone means more lines changed"><li><span class="mod">src/middleware</span>
       <svg class="bar" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="100" height="10" fill="url(#tone-3)"/><rect x="0.6" y="0.6" width="98.8" height="8.8" class="bar-ink"/></svg>
-      <span class="num-sm">1f · +8/−0</span></li><li><span class="mod">src/adapter</span>
-      <svg class="bar" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="25" height="10" fill="url(#tone-1)"/><rect x="0.6" y="0.6" width="23.8" height="8.8" class="bar-ink"/></svg>
+      <span class="num-sm">1f · +12/−0</span></li><li><span class="mod">src/adapter</span>
+      <svg class="bar" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="0" width="17" height="10" fill="url(#tone-1)"/><rect x="0.6" y="0.6" width="15.8" height="8.8" class="bar-ink"/></svg>
       <span class="num-sm">1f · +2/−0</span></li></ul>
   
 </section>
@@ -174,57 +177,57 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
         <span class="small">imported by 1 untouched file</span>
         <span class="importers"><a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/index.ts"><code class="path">src/adapter/bun/index.ts</code></a></span></li></ul><p class="small"><span class="stamp">partial</span> 84 imports use aliases or packages Gutter can&#39;t resolve yet, so some importers may be missing.</p>
 </section>
-<section class="panel area-forgotten hero" data-cut="C-04" aria-labelledby="p4">
-  <h2 id="p4" class="cap marker"><span class="num">C-04</span> Likely forgotten</h2>
-  <ul class="wires"><li class="wire-row" id="forgotten:0">
+<section class="panel area-history" data-cut="C-04" aria-labelledby="p4">
+  <h2 id="p4" class="cap"><span class="num">C-04</span> Usually changes with</h2>
+  <p class="small">History, not a prediction: files that changed together in past commits.</p><ul class="wires"><li class="wire-row" id="history-0">
       <div class="wire">
         <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts"><code class="path solid">src/middleware/serve-static/index.ts</code></a>
         <svg class="ghost" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="6"/></svg>
         <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts"><code class="path dashed">src/middleware/serve-static/index.test.ts</code></a>
       </div>
-      <p class="evidence-line"><b>17 of 20</b> commits together · 95% CI 64%–95% · last 2026-10-16</p>
-      <p class="small why">a test and the code it covers</p>
+      <p class="evidence-line"><code class="ref">src/middleware/serve-static/index.ts</code> and <code class="ref">src/middleware/serve-static/index.test.ts</code> changed together in <b>17 of 20</b> commits; <code class="ref">src/middleware/serve-static/index.test.ts</code> isn't in this PR.</p>
+      <p class="small">Last together 2026-10-16. a test and the code it covers</p>
       <ol class="receipts" aria-label="Commits where these files changed together"><li><a class="sha" href="https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4">d54720d</a> <span class="small">2026-10-16</span> fix(serve-static): respect q-values in Accept-Encoding for precompressed files (#5436)</li><li><a class="sha" href="https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70">588ec13</a> <span class="small">2026-10-13</span> fix(serve-static): only serve GET and HEAD requests (#5514)</li><li><a class="sha" href="https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc">8b05c77</a> <span class="small">2026-09-29</span> Merge commit from fork</li></ol>
-    </li><li class="wire-row" id="forgotten:1">
+    </li><li class="wire-row" id="history-1">
       <div class="wire">
         <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts"><code class="path solid">src/adapter/bun/serve-static.ts</code></a>
         <svg class="ghost" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="6"/></svg>
         <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts"><code class="path dashed">src/adapter/deno/serve-static.ts</code></a>
       </div>
-      <p class="evidence-line"><b>9 of 11</b> commits together · 95% CI 52%–95% · last 2026-05-16</p>
-      <p class="small why">possible parallel implementations: serve-static.ts appears in sibling folders</p>
+      <p class="evidence-line"><code class="ref">src/adapter/bun/serve-static.ts</code> and <code class="ref">src/adapter/deno/serve-static.ts</code> changed together in <b>9 of 11</b> commits; <code class="ref">src/adapter/deno/serve-static.ts</code> isn't in this PR.</p>
+      <p class="small">Last together 2026-05-16. possible parallel implementations: serve-static.ts appears in sibling folders</p>
       <ol class="receipts" aria-label="Commits where these files changed together"><li><a class="sha" href="https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15">26f8c33</a> <span class="small">2026-05-16</span> fix(serveStatic): make options parameter optional in all adapters (#4934)</li><li><a class="sha" href="https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e">1196f14</a> <span class="small">2025-08-07</span> feat(serve-static): use `join` to correct path resolution (#4291)</li><li><a class="sha" href="https://github.com/honojs/hono/commit/246a06aa1d35aa206dcf11186b3aa90badb2de72">246a06a</a> <span class="small">2024-09-24</span> feat(serve-static): support absolute root (#3420)</li></ol>
-    </li><li class="wire-row" id="forgotten:2">
+    </li><li class="wire-row" id="history-2">
       <div class="wire">
         <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts"><code class="path solid">src/adapter/bun/serve-static.ts</code></a>
         <svg class="ghost" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="6"/></svg>
         <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts"><code class="path dashed">src/adapter/cloudflare-workers/serve-static.ts</code></a>
       </div>
-      <p class="evidence-line"><b>6 of 11</b> commits together · 95% CI 28%–79% · last 2026-05-16</p>
-      <p class="small why">possible parallel implementations: serve-static.ts appears in sibling folders</p>
+      <p class="evidence-line"><code class="ref">src/adapter/bun/serve-static.ts</code> and <code class="ref">src/adapter/cloudflare-workers/serve-static.ts</code> changed together in <b>6 of 11</b> commits; <code class="ref">src/adapter/cloudflare-workers/serve-static.ts</code> isn't in this PR.</p>
+      <p class="small">Last together 2026-05-16. possible parallel implementations: serve-static.ts appears in sibling folders</p>
       <ol class="receipts" aria-label="Commits where these files changed together"><li><a class="sha" href="https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15">26f8c33</a> <span class="small">2026-05-16</span> fix(serveStatic): make options parameter optional in all adapters (#4934)</li><li><a class="sha" href="https://github.com/honojs/hono/commit/f8371ab356f79fcf762c66aa372448a8018bcfc7">f8371ab</a> <span class="small">2024-02-24</span> fix(serve-static): support extensionless files and refactor (#2260)</li><li><a class="sha" href="https://github.com/honojs/hono/commit/d74d95d11c8d06ff7588a3a2e899e3843c4a7d1e">d74d95d</a> <span class="small">2024-01-29</span> feat(serve-static): `mimes` option for serve-static (#2094)</li></ol>
     </li></ul><div class="family" id="family:0"><p><b>Parallel implementations</b> · serve-static.ts across src/adapter/*</p>
-     <p class="small">Changed: <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts"><code class="path">src/adapter/bun/serve-static.ts</code></a></p>
-     <p class="small">Untouched: <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts"><code class="path dashed">src/adapter/cloudflare-workers/serve-static.ts</code></a> <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts"><code class="path dashed">src/adapter/deno/serve-static.ts</code></a></p></div><p class="small">3 weaker matches not shown.</p>
+     <p class="small">Changed in this PR: <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts"><code class="path">src/adapter/bun/serve-static.ts</code></a></p>
+     <p class="small">Not in this PR: <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts"><code class="path dashed">src/adapter/cloudflare-workers/serve-static.ts</code></a> <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts"><code class="path dashed">src/adapter/deno/serve-static.ts</code></a></p></div><p class="small">3 weaker pairs not shown.</p>
 </section>
 <section class="panel area-tests" data-cut="C-05" aria-labelledby="p5">
   <h2 id="p5" class="cap"><span class="num">C-05</span> Tests</h2>
   
   <dl class="metrics">
     <div><dt>updated</dt><dd>0</dd></div>
-    <div><dt>untouched</dt><dd>1</dd></div>
+    <div><dt>unchanged</dt><dd>1</dd></div>
     <div><dt>none found</dt><dd>1</dd></div>
   </dl>
-  <ul class="deps"><li id="tests:src/middleware/serve-static/index.ts"><a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts"><code class="path">src/middleware/serve-static/index.ts</code></a> <span class="small">→</span> <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts"><code class="path dashed">src/middleware/serve-static/index.test.ts</code></a></li></ul>
+  <ul class="deps"><li class="test-row" id="tests:src/middleware/serve-static/index.ts"><a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts"><code class="path dashed">src/middleware/serve-static/index.test.ts</code></a><span class="fact">unchanged in this PR · changed together with <code class="ref">src/middleware/serve-static/index.ts</code> in 17 of 20 commits</span><span class="importers"><a class="sha" href="https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4">d54720d</a> <a class="sha" href="https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70">588ec13</a> <a class="sha" href="https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc">8b05c77</a></span></li></ul>
 </section>
-<section class="panel area-checks" data-cut="C-06" aria-labelledby="p6">
-  <h2 id="p6" class="cap"><span class="num">C-06</span> Check these</h2>
-  <ol class="checks"><li><p><code class="path">src/middleware/serve-static/index.test.ts</code> changed alongside <code class="path">src/middleware/serve-static/index.ts</code> in 17 of its 20 commits (95% CI 64%–95%) but is untouched here. Does it need a matching change?</p><p class="small"><a class="sha" href="https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4">d54720d</a> <a class="sha" href="https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70">588ec13</a> <a class="jump" href="#forgotten:0">see evidence</a></p></li><li><p><code class="path">src/adapter/deno/serve-static.ts</code> changed alongside <code class="path">src/adapter/bun/serve-static.ts</code> in 9 of its 11 commits (95% CI 52%–95%) but is untouched here. Does it need a matching change?</p><p class="small"><a class="sha" href="https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15">26f8c33</a> <a class="sha" href="https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e">1196f14</a> <a class="jump" href="#forgotten:1">see evidence</a></p></li><li><p>This changes 1 of 3 parallel implementations (serve-static.ts across src/adapter/*). Should <code class="path">src/adapter/cloudflare-workers/serve-static.ts</code> (+1 more) follow?</p><p class="small"><a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts"><code class="path">src/adapter/cloudflare-workers/serve-static.ts</code></a> <a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts"><code class="path">src/adapter/deno/serve-static.ts</code></a> <a class="jump" href="#family:0">see evidence</a></p></li></ol>
+<section class="panel area-checks hero" data-cut="C-06" aria-labelledby="p6">
+  <h2 id="p6" class="cap marker"><span class="num">C-06</span> Check these</h2>
+  <ol class="checks"><li><p><code class="path">src/middleware/serve-static/index.ts</code> changed (+12/−0); its test file <code class="path">src/middleware/serve-static/index.test.ts</code> didn&#39;t change in this PR.</p><p class="small"><a href="https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts"><code class="path">src/middleware/serve-static/index.test.ts</code></a> <a class="jump" href="#tests:src/middleware/serve-static/index.ts">see evidence</a></p></li></ol>
 </section>
   </div>
   <footer class="colophon">
     <div class="cal"><p><b>How much to trust the history panel here:</b> Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did.</p><svg class="gauge" viewBox="0 0 100 8" preserveAspectRatio="none" role="img" aria-label="Measured precision 57%"><rect x="0" y="0" width="57" height="8" fill="url(#tone-2)"/><rect x="0.6" y="0.6" width="98.8" height="6.8" class="bar-ink"/></svg></div>
-    <p class="small">No AI wrote this page: every line comes from git history and the code. gutter 0.1.0 + repo-archaeology 0.3.0.</p>
+    <p class="small">No AI wrote this page: every line comes from git history and the code. gutter 0.2.1 + repo-archaeology 0.3.0.</p>
   </footer>
 </article>
 </main>

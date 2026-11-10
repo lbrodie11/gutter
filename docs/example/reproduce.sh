@@ -19,14 +19,14 @@ git fetch -q --depth 1500 origin "$BASE_SHA"
 git checkout -q -B main FETCH_HEAD
 git checkout -q -b feat/serve-static-cache-control
 
-echo "3. Applying illustrative 2-file cacheControl change (+10/-0)..."
+echo "3. Applying illustrative 2-file cacheControl change (+14/-0)..."
 node -e '
 const fs = require("node:fs");
 const mw = "src/middleware/serve-static/index.ts";
 fs.writeFileSync(
   mw,
   fs.readFileSync(mw, "utf8") +
-    "\n// Illustrative option for static Cache-Control header\nexport interface ServeStaticCacheOption {\n  cacheControl?: string\n}\nexport const applyCacheControl = (value?: string): string | undefined => {\n  return value ? value.trim() : undefined\n}\n"
+    "\n// Illustrative option for static Cache-Control header\nexport interface ServeStaticCacheOption {\n  cacheControl?: string\n}\nexport const applyCacheControl = (value?: string): string | undefined => {\n  return value ? value.trim() : undefined\n}\n/** Default Cache-Control value for the illustrative option. */\nexport const DEFAULT_CACHE_CONTROL = \"public, max-age=3600\"\nexport const isCacheControlSet = (value?: string): boolean =>\n  applyCacheControl(value) !== undefined\n"
 );
 const bun = "src/adapter/bun/serve-static.ts";
 fs.writeFileSync(
