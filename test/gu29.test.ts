@@ -144,7 +144,7 @@ test('tests: the same test found by naming and by co-change is one row citing bo
   assert.equal(rows.length, 1);
   assert.match(rows[0]!, / — unchanged in this PR · changed together with \[`src\/orders\/a\.ts`\]\([^)]+\) in 17 of 20 commits<br><sub>receipts: /);
   const page = renderComic(b);
-  assert.match(page, /<li id="tests:src\/orders\/a\.ts">.*unchanged in this PR · changed together with <\/span>.*src\/orders\/a\.ts.*in 17 of 20 commits/s);
+  assert.match(page, /<li class="test-row" id="tests:src\/orders\/a\.ts">.*<span class="fact">unchanged in this PR · changed together with <code class="ref">src\/orders\/a\.ts<\/code> in 17 of 20 commits<\/span>/s);
 });
 
 test('tests: a co-change test partner the naming heuristics missed is added as a candidate', () => {
@@ -217,7 +217,7 @@ test('comic: C-04 is "Usually changes with" and never the hero; the hero is C-06
 test('comic: co-change rows read as history with receipts, never as a question', () => {
   const page = renderComic(brief(byName('normal')));
   const panel = page.slice(page.indexOf('data-cut="C-04"'), page.indexOf('data-cut="C-05"'));
-  assert.match(panel, /db\/schema\.sql<\/code><\/a> changed together in <b>14 of 19<\/b> commits; <a[^>]*><code class="path">db\/schema\.sql<\/code><\/a> isn't in this PR\./);
+  assert.match(panel, /<code class="ref">src\/orders\/a\.ts<\/code> and <code class="ref">db\/schema\.sql<\/code> changed together in <b>14 of 19<\/b> commits; <code class="ref">db\/schema\.sql<\/code> isn't in this PR\./);
   assert.match(panel, /<ol class="receipts"/);
   assert.ok(!/\?|likely|forgot/i.test(panel.replace(/<[^>]+>/g, '')), panel);
   assert.ok(panel.includes('id="history-0"'), 'co-change evidence anchors as history-n');

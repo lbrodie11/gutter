@@ -28,6 +28,8 @@ export function renderComic(brief: GutterBrief): string {
     const inner = `<code class="path${cls ? ` ${cls}` : ''}">${html(p)}</code>`;
     return url ? `<a href="${html(url)}">${inner}</a>` : inner;
   };
+  /** A path inside a sentence: plain inline code, so prose stays prose (the boxed links sit beside it). */
+  const ref = (p: string) => `<code class="ref">${html(p)}</code>`;
   const commitLink = (sha: string) => {
     const url = commitUrl(change.repoUrl, sha);
     return url ? `<a class="sha" href="${html(url)}">${html(short(sha))}</a>` : `<span class="sha">${html(short(sha))}</span>`;
@@ -111,7 +113,7 @@ export function renderComic(brief: GutterBrief): string {
         <svg class="ghost" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="6"/></svg>
         ${fileLink(f.file, 'dashed')}
       </div>
-      <p class="evidence-line">${fileLink(f.changed)} and ${fileLink(f.file)} changed together in <b>${f.shared} of ${f.changedTotal}</b> commits; ${fileLink(f.file)} isn't in this PR.</p>
+      <p class="evidence-line">${ref(f.changed)} and ${ref(f.file)} changed together in <b>${f.shared} of ${f.changedTotal}</b> commits; ${ref(f.file)} isn't in this PR.</p>
       <p class="small">${f.lastTogether ? `Last together ${html(f.lastTogether)}. ` : ''}${html(f.why)}${f.automationShare >= 0.5 ? ' · <span class="stamp">mostly bot commits</span>' : ''}</p>
       ${receipts ? `<ol class="receipts" aria-label="Commits where these files changed together">${receipts}</ol>` : ''}
     </li>`;
@@ -133,7 +135,7 @@ export function renderComic(brief: GutterBrief): string {
   const testRowsHtml = testRows.slice(0, 4).map((row) => {
     const clause = historyClause(row);
     const receipts = row.receipts.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
-    return `<li id="${html(domId(row.id))}">${fileLink(row.test, 'dashed')} <span class="small">unchanged in this PR · ${html(clause.before)}</span>${fileLink(row.source)}<span class="small">${html(clause.after)}</span>${receipts ? ` <span class="importers">${receipts}</span>` : ''}</li>`;
+    return `<li class="test-row" id="${html(domId(row.id))}">${fileLink(row.test, 'dashed')}<span class="fact">unchanged in this PR · ${html(clause.before)}${ref(row.source)}${html(clause.after)}</span>${receipts ? `<span class="importers">${receipts}</span>` : ''}</li>`;
   }).join('');
   panels.push(panel(5, 'Tests', `
   <dl class="metrics">
@@ -284,6 +286,9 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .deps{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-pair)}
 .deps li{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--f-gutter-pair)}
 .importers{display:inline-flex;flex-wrap:wrap;gap:var(--f-gutter-pair)}
+.ref{font-family:var(--font-f-mono);font-size:12px;overflow-wrap:anywhere}
+.deps .test-row{flex-direction:column;align-items:flex-start;gap:0}
+.fact{font-size:13px;color:var(--f-ink-2);margin:4px 0}
 .stamp{font-family:var(--font-f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 5px;transform:rotate(-3deg);display:inline-block}
 .small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
 .quiet-line{margin:0;color:var(--f-ink-2)}
