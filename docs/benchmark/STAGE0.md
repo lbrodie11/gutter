@@ -131,3 +131,40 @@ The corpus (`bench/corpus.json`, `bench/run-corpus.mjs`, aggregation) is **not b
   1. **Blind labels decide.** The useful rate in section 4 counts each item's **first** label, the one made before the reveal (`firstLabel` in `labels.json`). A label changed after seeing the source and outcome is kept in the file but never counted.
   2. **One vote per labeler and item.** Duplicate exports collapse to the latest label for each (labeler, item); a file without a labeler name counts as its own labeler. "60 labels" means each labeler has labeled 60 distinct items.
   3. **Lift intervals keep zero-baseline resamples.** `liftByOutcome` and `headlineBaseline.byOutcome` intervals (section 1) now count bootstrap resamples where the baseline has no hits but Gutter does as an infinite lift, instead of dropping them, which biased the upper bound down for sparse outcomes. A bound that lands in those resamples is reported as unbounded (`null`, shown as ∞). GU-03's `bootstrapLiftCi` fields keep their original method so published numbers don't move. On hono no resample in any of the four runs had zero baseline hits, so every interval is unchanged (verified by rerunning all four).
+
+## Stage 0b · option 2 (preregistered 2026-11-10)
+
+**Status:** PREREGISTERED. Committed before the `repo-archaeology` upgrade, the V4 filter code, and any Stage 0b run. Prompt: GU-28. Rules in this section follow the same errata policy as sections 1–5.
+
+**Why.** Option 2 in section 5 ("restrict companion questions to strong, proven pairs") needs Repo Archaeology's per-pair `trackRecord`, which arrived in `repo-archaeology` 0.10.0 (RA-06). Stage 0 ran on 0.4.0, so option 2 could not be tested. Stage 0b tests it with one variant, under a rule fixed now.
+
+### 0b.1 Runs
+
+- `repo-archaeology` pinned to exactly **0.10.0** for both runs. Same hono SHA (`eb754bd5ef22c63f1634a4c374a86be086f85710`), `--prs 200 --window-days 7`, production policy, same baselines and scoring as Stage 0.
+- **Default:** no config. Output: `docs/benchmark/data/honojs__hono/stage0b/default/`.
+- **V4 · proven pairs:** [`bench/variants/stage0b-v4-proven-pairs.json`](../../bench/variants/stage0b-v4-proven-pairs.json) = `{ "minIntervalLow": 0.3, "companionRequireGhost": true, "companionMinTrackRecordFired": 3 }`. Output: `.../stage0b/v4-proven-pairs/`.
+  - A `forgotten-companion` question survives only if all three hold for the suggestion behind it: its `relationship` is `ghost`; its `trackRecord.fired ≥ 3`; and its Wilson `interval.low ≥ 0.3` (Gutter's existing floor, stated explicitly).
+  - A `trackRecord` of `{ reason: "limited_history" }`, `{ fired: 0, reason: "never_fired" }`, or no `trackRecord` at all, drops the question.
+  - Everything else in the checklist (broken imports, family drift, tests, wide surface, the calibration gate, the 4-item cap) is unchanged. The forgotten-companion panel still lists the files; only the question is dropped.
+
+### 0b.2 Pass rule (decisive)
+
+Identical to section 4's lift condition, applied to V4:
+
+- **PASS** if V4's lift on same-author follow-up **or** on RA-signal follow-up, each against that outcome's strongest baseline (the same `headlineBaseline.byOutcome` as Stage 0), is **> ×1.00** (point estimate), **and** V4 has **≥ 30 scored `forgotten-companion` targets** (`breakdowns.byKind["forgotten-companion"].scoredTargets`, production policy).
+- **INSUFFICIENT** if V4 has fewer than 30 scored `forgotten-companion` targets, whatever the lift.
+- **FAIL** otherwise.
+
+The lift is the policy-level lift, exactly as in section 4: it pools every scored question kind, and the baselines are matched to all of them. The companion-only rates (`byKind`) are reported next to it but are **not decisive**.
+
+### 0b.3 Reported, not decisive
+
+- **Coverage:** the share of evaluated PRs that still get at least one `forgotten-companion` question, default vs V4.
+- **Full-salience share** for each run.
+- **Analyzer delta:** the default run on 0.10.0 compared with Stage 0's default run on 0.4.0 (full share, scored targets, rates and lifts on each outcome), so changes from the analyzer upgrade (for example 0.6.0's revert skipping) are not mistaken for option 2's effect.
+
+### 0b.4 What Stage 0b does not change
+
+- The blinded labels from section 2 are not reused for V4. A V4 label set is a follow-up only if V4 passes.
+- No product default changes. V2 meeting the salience budget (Stage 0) stays a separate proposal for the human.
+- Section 4's Stage 0 verdict (STOP) is not re-evaluated; Stage 0b only adds evidence about option 2.
