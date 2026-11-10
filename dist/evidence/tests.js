@@ -1,0 +1,112 @@
+import { posix } from 'node:path';
+import { WorkingTreeReader } from "../source/reader.js";
+import { isTestPath } from "./changes.js";
+/**
+ * Link changed source files to conventional test files.
+ * Conventions covered: a.test.ts / a.spec.ts beside the file, in __tests__/,
+ * and in a mirrored top-level test/ or tests/ tree; Go _test.go; Python test_a.py.
+ */
+export function candidateTestNames(source) {
+    const dir = posix.dirname(source);
+    const file = posix.basename(source);
+    const m = /^(.*?)\.([a-z0-9]+)$/i.exec(file);
+    if (!m)
+        return [];
+    const [, stem, ext] = m;
+    const out = new Set();
+    const exts = /^[cm]?[jt]sx?$/.test(ext) ? ['ts', 'tsx', 'js', 'jsx', 'mts', 'mjs', 'cts', 'cjs'] : [ext];
+    const inDir = (d, name) => (d === '.' ? name : `${d}/${name}`);
+    for (const e of exts) {
+        for (const kind of ['test', 'spec']) {
+            out.add(inDir(dir, `${stem}.${kind}.${e}`));
+            out.add(inDir(dir, `__tests__/${stem}.${kind}.${e}`));
+            out.add(inDir(dir, `__tests__/${stem}.${e}`));
+            // mirrored trees: src/a/b.ts -> test/a/b.test.ts, tests/a/b.test.ts
+            const rest = dir.split('/').slice(1).join('/');
+            for (const top of ['test', 'tests']) {
+                out.add(inDir(rest ? `${top}/${rest}` : top, `${stem}.${kind}.${e}`));
+                if (/(^|\/)src(\/|$)/.test(dir)) {
+                    out.add(inDir(dir.replace(/(^|\/)src(?=\/|$)/, `$1${top}`), `${stem}.${kind}.${e}`));
+                }
+            }
+        }
+    }
+    if (ext === 'go')
+        out.add(inDir(dir, `${stem}_test.go`));
+    if (ext === 'py') {
+        out.add(inDir(dir, `test_${stem}.py`));
+        out.add(inDir(dir, `${stem}_test.py`));
+        out.add(`tests/test_${stem}.py`);
+    }
+    out.delete(source);
+    return [...out];
+}
+const SOURCE_EXT = /\.([cm]?[jt]sx?|go|py)$/;
+export function linkTests(root, changes, reader = new WorkingTreeReader(root)) {
+    const tracked = new Set(reader.listFiles());
+    const changed = new Set(changes.files.map((f) => f.path));
+    const links = [];
+    for (const f of changes.files) {
+        if (f.isTest || f.status === 'deleted' || !SOURCE_EXT.test(f.path) || /\.d\.[cm]?ts$/.test(f.path))
+            continue;
+        const candidates = candidateTestNames(f.path)
+            .filter((p) => tracked.has(p) || changed.has(p))
+            .map((p) => ({ path: p, changed: changed.has(p) }));
+        const status = candidates.some((c) => c.changed)
+            ? 'test-changed'
+            : candidates.length
+                ? 'test-untouched'
+                : 'no-test-found';
+        links.push({ id: `tests:${f.path}`, source: f.path, status, candidates });
+    }
+    return links;
+}
+/** A co-change partner counts as a test pairing when RA classified it as `test` or its path is a test path. */
+function isTestPartner(item) {
+    return item.relationship === 'test' || isTestPath(item.file);
+}
+/**
+ * GU-29: attach co-change history to test links, as facts for the Tests panel.
+ *
+ * For each link, co-change items whose `changed` is the link's source and whose partner is a test file
+ * become `history`. The counts describe one pair, cited first in `evidence`: the pair with the test the
+ * naming conventions found (so the Tests row and the checklist name the same file), else the strongest
+ * pair. Other test partners of the same source follow in `evidence`. A partner the naming heuristics
+ * already found stays one candidate; a partner they missed is appended as a candidate, which can turn
+ * `no-test-found` into `test-untouched`.
+ *
+ * Returns new objects and never touches the checklist: callers build the checklist first, from the
+ * naming-only links, so history cannot add, remove or reword an item or move salience.
+ */
+export function attachTestHistory(tests, forgotten) {
+    return tests.map((t) => {
+        const pairs = forgotten.items.filter((f) => f.changed === t.source && isTestPartner(f));
+        if (!pairs.length)
+            return t;
+        const strength = (f) => f.shared / Math.max(1, f.changedTotal);
+        const byStrength = [...pairs].sort((a, b) => strength(b) - strength(a) || b.shared - a.shared);
+        const named = t.candidates.map((c) => pairs.find((p) => p.file === c.path)).find((p) => Boolean(p));
+        const primary = named ?? byStrength[0];
+        const candidates = [...t.candidates];
+        for (const p of byStrength) {
+            if (!candidates.some((c) => c.path === p.file))
+                candidates.push({ path: p.file, changed: false });
+        }
+        const status = candidates.some((c) => c.changed)
+            ? 'test-changed'
+            : candidates.length
+                ? 'test-untouched'
+                : 'no-test-found';
+        return {
+            ...t,
+            status,
+            candidates,
+            history: {
+                together: primary.shared,
+                sourceCommits: primary.changedTotal,
+                evidence: [primary.id, ...byStrength.filter((p) => p !== primary).map((p) => p.id)],
+            },
+        };
+    });
+}
+export { isTestPath };
