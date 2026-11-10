@@ -1,11 +1,14 @@
 #!/usr/bin/env node
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { buildBrief } from './brief.ts';
 import { parseGutterConfigObject, type GutterConfig } from './config.ts';
 import type { GutterBrief } from './contract.ts';
+import { renderCompareLabelHtml, sampleCompare, type CompareSource } from './bench/label.ts';
+import type { BenchResultsModel } from './bench/model.ts';
 import { runBench } from './bench/runner.ts';
+import { validateBenchResults } from './bench/validate.ts';
 import { writeBrief } from './output.ts';
 import { renderComic, lintPage } from './render/comic.ts';
 import { renderMarkdown } from './render/markdown.ts';
@@ -18,6 +21,7 @@ const HELP = `gutter ${GUTTER_VERSION}: a one-page, evidence-backed briefing for
 Usage
   gutter brief --base <ref> [options]     analyze <base>...HEAD and write gutter.json, brief.md, gutter.html
   gutter bench [options]                  replay merged PRs as-of each PR and write bench.json, bench.md, bench.html
+  gutter label --compare <bench.json> [options]   write a blinded labeling page (one self-contained HTML file)
   gutter render <gutter.json> [--format md|html]   re-render a saved brief to stdout
   gutter --version
   gutter <command> --help                 show this help
@@ -54,9 +58,16 @@ bench options
   --resume                resume from bench.partial.jsonl in --out
   --out <dir>             output directory (default: .gutter/bench)
   --cwd <dir>             repository directory to benchmark (default: cwd)
+
+label options
+  --compare               blinded comparison: Gutter companion questions vs recent and
+                          popular-near baseline proposals, rendered identically (GU-04 Stage 0)
+  --sample <n>            items to draw, split 2:1:1 Gutter:recent:popular-near (default: 60)
+  --seed <n>              sampling and shuffle seed (default: 1)
+  --out <file>            HTML file to write (default: label-compare.html next to bench.json)
 `;
 
-const COMMANDS = new Set(['brief', 'bench', 'render']);
+const COMMANDS = new Set(['brief', 'bench', 'label', 'render']);
 
 async function main(argv: string[]): Promise<number> {
   const [cmd, ...rest] = argv;
@@ -74,6 +85,7 @@ async function main(argv: string[]): Promise<number> {
   }
   if (cmd === 'brief') return brief(rest);
   if (cmd === 'bench') return await bench(rest);
+  if (cmd === 'label') return label(rest);
   if (cmd === 'render') return render(rest);
   process.stderr.write(`unknown command "${cmd}"\n\n${HELP}`);
   return 2;
@@ -164,6 +176,56 @@ function render(args: string[]): number {
     return 2;
   }
   process.stdout.write(values.format === 'html' ? renderComic(doc) : renderMarkdown(doc));
+  return 0;
+}
+
+function label(args: string[]): number {
+  const { values, positionals } = parseArgs({
+    args,
+    options: {
+      compare: { type: 'boolean', default: false },
+      sample: { type: 'string', default: '60' },
+      seed: { type: 'string', default: '1' },
+      out: { type: 'string' },
+    },
+    allowPositionals: true,
+    strict: true,
+  });
+  const file = positionals[0];
+  if (!file) {
+    process.stderr.write('error: label needs a bench.json path\n');
+    return 2;
+  }
+  if (!values.compare) {
+    process.stderr.write(
+      'error: only --compare (blinded comparison labeling, GU-04 Stage 0) is available so far; ' +
+        'the per-question labeling mode lands with the benchmark corpus\n',
+    );
+    return 2;
+  }
+  const sample = Number(values.sample);
+  const seed = Number(values.seed);
+  if (!Number.isInteger(sample) || sample < 4 || !Number.isInteger(seed)) {
+    process.stderr.write('error: --sample must be an integer >= 4 and --seed an integer\n');
+    return 2;
+  }
+  const benchPath = resolve(file);
+  const model = JSON.parse(readFileSync(benchPath, 'utf8')) as BenchResultsModel;
+  const problems = validateBenchResults(model);
+  if (problems.length > 0) {
+    process.stderr.write(`error: ${file} is not a valid bench.json:\n  ${problems.slice(0, 5).join('\n  ')}\n`);
+    return 2;
+  }
+  const quarter = Math.floor(sample / 4);
+  const result = sampleCompare(model, { seed, gutter: sample - 2 * quarter, recent: quarter, popularNear: quarter });
+  const outPath = values.out ? resolve(values.out) : join(dirname(benchPath), 'label-compare.html');
+  mkdirSync(dirname(outPath), { recursive: true });
+  writeFileSync(outPath, renderCompareLabelHtml(result), 'utf8');
+  const short = (s: CompareSource) => `${result.drawn[s]}/${result.requested[s]} ${s} (pool ${result.pool[s]})`;
+  process.stderr.write(
+    `gutter label: ${result.items.length} blinded item(s): ${short('gutter')}, ${short('recent')}, ${short('popular-near')}; ` +
+      `sample ${result.sampleId}, seed ${seed}\n  ${outPath}\n`,
+  );
   return 0;
 }
 

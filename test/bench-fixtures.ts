@@ -178,3 +178,23 @@ export function benchModel(prs: BenchPrRecord[], repo = 'https://github.com/exam
     },
   };
 }
+
+/** n PRs; each has one companion target, plus one recent and one popular-near proposal. */
+export function labelFixturePrs(n: number): BenchPrRecord[] {
+  const prs: BenchPrRecord[] = [];
+  for (let i = 1; i <= n; i++) {
+    prs.push(
+      pr({
+        n: i,
+        questions: [question('forgotten-companion', target({ file: `src/companion-${i}.ts`, followedUp: i % 3 === 0, sameAuthor: true }))],
+        baselines: {
+          recent: [target({ file: `src/busy-${i}.ts`, followedUp: i % 2 === 0 })],
+          'popular-near': [target({ file: `src/near-${i}.ts`, followedUp: false })],
+          popular: [target({ file: `src/pop-${i}.ts`, followedUp: true })],
+        },
+      }),
+    );
+  }
+  return prs;
+}
+
