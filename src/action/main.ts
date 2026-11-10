@@ -71,6 +71,7 @@ async function run(): Promise<void> {
     noHistory: input('history', 'true') === 'false',
     noCalibration: input('calibrate', 'true') === 'false',
     maxForgotten: Number.isFinite(maxForgottenRaw) ? Math.max(0, Math.trunc(maxForgottenRaw)) : 3,
+    warn: (message) => console.log(`::warning::Gutter .gutter.json: ${message}`),
   });
 
   const runUrl = process.env.GITHUB_RUN_ID ? `${server}/${repository}/actions/runs/${process.env.GITHUB_RUN_ID}` : undefined;

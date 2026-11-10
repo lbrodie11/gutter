@@ -4,28 +4,61 @@ import type { SourceReader } from './source/reader.ts';
 export interface GutterConfig {
   maxForgotten?: number;
   maxChecklist?: number;
+  /** Legacy-only (see `LEGACY_ONLY_KEYS`). */
   maxCompanionQuestions?: number;
+  /** Legacy-only. */
   minIntervalLow?: number;
+  /** Legacy-only. */
   minCalibratedPrecision?: number;
   minChurnForTestQuestion?: number;
   wideSurfaceImporters?: number;
   /**
-   * Independent signals a brief needs before it is `full` (default 1). Each high-signal
-   * question (priority <= 2) counts once; breadth (>= 8 files or >= 3 modules) counts once.
+   * Independent signals a brief needs before it is `full` (default 2; 1 under `legacyPredictions`).
+   * Each priority <= 2 checklist item counts once (by default only `broken-import` has that priority);
+   * breadth (>= 8 files or >= 3 modules) counts once.
    */
   salienceFullMinSignals?: number;
   /** When false, breadth alone never makes a brief `full` (default true). */
   salienceBreadthFull?: boolean;
-  /** Keep a `forgotten-companion` question only when the pair's relationship is `ghost` (default false). */
+  /**
+   * Research switch (GU-29): reproduces pre-GU-29 behavior for benchmarks; not recommended.
+   * Restores `forgotten-companion` / `family-drift` questions, the old question wording,
+   * `salienceFullMinSignals` defaulting to 1, and omits `forgotten.presentation`.
+   */
+  legacyPredictions?: boolean;
+  /**
+   * Keep a `forgotten-companion` question only when the pair's relationship is `ghost` (default false).
+   * Applies only under `legacyPredictions` (the default checklist asks no companion questions).
+   */
   companionRequireGhost?: boolean;
   /**
    * Keep a `forgotten-companion` question only when Repo Archaeology's per-pair `trackRecord`
    * (repo-archaeology >= 0.10) has at least this many fired episodes. `never_fired`,
    * `limited_history` and a missing track record all drop the question. Unset by default.
+   * Applies only under `legacyPredictions`.
    */
   companionMinTrackRecordFired?: number;
   noHistory?: boolean;
   noCalibration?: boolean;
+}
+
+/** Keys that only change anything under `legacyPredictions` (GU-29): they tune the retired companion questions. */
+export const LEGACY_ONLY_KEYS = [
+  'maxCompanionQuestions',
+  'minIntervalLow',
+  'minCalibratedPrecision',
+  'companionRequireGhost',
+  'companionMinTrackRecordFired',
+] as const;
+
+/** Legacy-only keys that are set while `legacyPredictions` is off, so they have no effect. */
+export function inertLegacyKeys(config: GutterConfig | undefined): string[] {
+  if (!config || config.legacyPredictions) return [];
+  return LEGACY_ONLY_KEYS.filter((k) => config[k] !== undefined);
+}
+
+export function inertLegacyWarning(keys: readonly string[]): string {
+  return `${keys.join(', ')} only appl${keys.length === 1 ? 'ies' : 'y'} with "legacyPredictions": true (GU-29, DECISIONS #17); ignored.`;
 }
 
 export interface SafeRaOriginWeights {
@@ -485,6 +518,9 @@ export function parseGutterConfigObject(raw: unknown): GutterConfig {
   }
   if (typeof obj.salienceBreadthFull === 'boolean') {
     out.salienceBreadthFull = obj.salienceBreadthFull;
+  }
+  if (typeof obj.legacyPredictions === 'boolean') {
+    out.legacyPredictions = obj.legacyPredictions;
   }
   if (typeof obj.companionRequireGhost === 'boolean') {
     out.companionRequireGhost = obj.companionRequireGhost;

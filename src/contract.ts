@@ -147,8 +147,17 @@ export interface FamilyItem {
   untouchedMembers: string[];
 }
 
+/**
+ * Co-change history (the field keeps its v1 name `forgotten`). Since GU-29 it is context, never a
+ * prediction: no checklist item and no salience comes from it unless `legacyPredictions` is on.
+ */
 export interface ForgottenLayer {
   status: 'analyzed' | 'insufficient-history' | 'unavailable';
+  /**
+   * GU-29, additive: `context` means renderers show this layer as "Usually changes with" history,
+   * never as a question. Absent under `legacyPredictions` and in pre-GU-29 briefs.
+   */
+  presentation?: 'context';
   /** Plain-language reason when status !== analyzed or nothing was found. */
   note?: string;
   items: ForgottenItem[];
@@ -164,8 +173,28 @@ export interface TestLink {
   source: string;
   status: 'test-changed' | 'test-untouched' | 'no-test-found';
   candidates: { path: string; changed: boolean }[];
+  /**
+   * GU-29, additive: co-change history pairing `source` with one of its test candidates (a historical
+   * fact, not a claim that the test must change). `together` of the source's `sourceCommits` commits
+   * also changed the test named by `evidence[0]` (the pair with the naming-convention test when there is
+   * one, else the strongest pair); later `evidence` ids are the source's other test partners.
+   * A partner the naming conventions missed is appended to `candidates`, so `status` can read
+   * `test-untouched` where naming alone found no test. Never affects the checklist or salience, which
+   * are computed from the naming-only links. Absent under `legacyPredictions`.
+   */
+  history?: TestHistory;
 }
 
+export interface TestHistory {
+  together: number;
+  sourceCommits: number;
+  evidence: EvidenceId[];
+}
+
+/**
+ * `forgotten-companion` and `family-drift` stay in the type (and the schema) so v1 readers keep working,
+ * but since GU-29 they are produced only under `legacyPredictions`.
+ */
 export type ChecklistKind =
   | 'broken-import'
   | 'forgotten-companion'
@@ -176,7 +205,10 @@ export type ChecklistKind =
 export interface ChecklistItem {
   id: EvidenceId;
   kind: ChecklistKind;
-  /** A question for the reviewer, never a verdict. Paths appear in `backticks`. */
+  /**
+   * A question or a plain statement of fact for the reviewer, never a verdict or a prediction.
+   * Paths appear in `backticks`. (The field keeps its v1 name.)
+   */
   question: string;
   /** Ids of dependents/forgotten/family/tests entries this question rests on. */
   evidence: EvidenceId[];

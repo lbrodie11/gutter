@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "orders: add status filter",
+    "intent": "Lets callers filter orders by status.",
+    "commits": [
+      {
+        "sha": "0000000000000000000000000000000000000384",
+        "subject": "orders: add status filter"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets",
+    "prNumber": 42
+  },
+  "salience": {
+    "level": "brief",
+    "reasons": [
+      "2 questions worth a look"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/orders/a.ts",
+        "status": "modified",
+        "additions": 30,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/orders",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/orders/b.ts",
+        "status": "modified",
+        "additions": 4,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/orders",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/orders",
+        "files": 2,
+        "additions": 34,
+        "deletions": 3
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 34,
+      "deletions": 3,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/orders/a.ts",
+        "file": "src/orders/a.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/api/orders.ts",
+          "src/api/admin.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "items": [
+      {
+        "id": "forgotten:0",
+        "changed": "src/orders/a.ts",
+        "file": "src/orders/a.test.ts",
+        "relationship": "test",
+        "why": "a test and the code it covers",
+        "shared": 17,
+        "changedTotal": 20,
+        "confidence": 0.85,
+        "interval": {
+          "low": 0.639581135259243,
+          "high": 0.9476312541037835
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "0000000000000000000000000000000000000001",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 1",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000002",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 2",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000003",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 3",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:1",
+        "changed": "src/orders/a.ts",
+        "file": "db/schema.sql",
+        "relationship": "ghost",
+        "why": "shared table name \"orders\"",
+        "shared": 14,
+        "changedTotal": 19,
+        "confidence": 0.7368421052631579,
+        "interval": {
+          "low": 0.5120844910218489,
+          "high": 0.8819358765321749
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "000000000000000000000000000000000000000a",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 10",
+            "automated": false
+          },
+          {
+            "sha": "000000000000000000000000000000000000000b",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 11",
+            "automated": false
+          },
+          {
+            "sha": "000000000000000000000000000000000000000c",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 12",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:2",
+        "changed": "src/orders/b.ts",
+        "file": "src/legacy/b.ts",
+        "relationship": "unknown",
+        "why": "no import link detected in the current code",
+        "shared": 4,
+        "changedTotal": 19,
+        "confidence": 0.21052631578947367,
+        "interval": {
+          "low": 0.0850767663291625,
+          "high": 0.43334278443814167
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "0000000000000000000000000000000000000014",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 20",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000015",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 21",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000016",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 22",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      }
+    ],
+    "total": 5,
+    "families": [
+      {
+        "id": "family:0",
+        "label": "b.ts across src/*",
+        "why": "parallel implementations",
+        "members": [
+          "src/orders/b.ts",
+          "src/billing/b.ts",
+          "src/refunds/b.ts"
+        ],
+        "changedMembers": [
+          "src/orders/b.ts"
+        ],
+        "untouchedMembers": [
+          "src/billing/b.ts",
+          "src/refunds/b.ts"
+        ]
+      }
+    ],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/orders/a.ts",
+      "source": "src/orders/a.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/orders/a.test.ts",
+          "changed": false
+        }
+      ]
+    },
+    {
+      "id": "tests:src/orders/b.ts",
+      "source": "src/orders/b.ts",
+      "status": "no-test-found",
+      "candidates": []
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:family:family:0",
+      "kind": "family-drift",
+      "question": "This changes 1 of 3 parallel implementations (b.ts across src/*). Should `src/billing/b.ts` (+1 more) follow?",
+      "evidence": [
+        "family:0"
+      ],
+      "priority": 3
+    },
+    {
+      "id": "check:test:src/orders/a.ts",
+      "kind": "untested-change",
+      "question": "`src/orders/a.ts` changed (+30/−2) but `src/orders/a.test.ts` didn't. Is the new behavior covered?",
+      "evidence": [
+        "tests:src/orders/a.ts"
+      ],
+      "priority": 4
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 20% of the time (2.0× better than guessing busy files), and 10% of all flagged files did.",
+    "precision": 0.1,
+    "hitRate": 0.2,
+    "lift": 2,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

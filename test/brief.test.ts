@@ -11,6 +11,8 @@ const GUTTER_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 let repo: TempRepo;
 let brief: GutterBrief;
+/** Same inputs under the GU-29 research switch: the pre-GU-29 companion questions live here now. */
+let legacyBrief: GutterBrief;
 
 before(() => {
   repo = new TempRepo()
@@ -35,6 +37,11 @@ before(() => {
     cwd: repo.dir, base: 'main', repoUrl: 'https://github.com/acme/shop', prNumber: 7,
     raDiff: raDiffFixture(), raBacktest: raBacktestFixture(0.6),
     now: new Date('2026-11-06T00:00:00Z'),
+  });
+  legacyBrief = buildBrief({
+    cwd: repo.dir, base: 'main', repoUrl: 'https://github.com/acme/shop', prNumber: 7,
+    raDiff: raDiffFixture(), raBacktest: raBacktestFixture(0.6),
+    now: new Date('2026-11-06T00:00:00Z'), config: { legacyPredictions: true },
   });
 });
 
@@ -78,17 +85,21 @@ test('maps co-change with Wilson intervals and flags bot-backed evidence', () =>
 });
 
 test('asks about strong companions only, never weak or bot-backed ones', () => {
-  const companions = brief.checklist.filter((c) => c.kind === 'forgotten-companion');
+  // GU-29: companion questions exist only under `legacyPredictions`; the default checklist has none.
+  assert.equal(brief.checklist.filter((c) => c.kind === 'forgotten-companion').length, 0);
+  const companions = legacyBrief.checklist.filter((c) => c.kind === 'forgotten-companion');
   assert.equal(companions.length, 1);
   assert.match(companions[0]!.question, /`db\/schema\.sql` changed alongside `src\/a\.ts` in 14 of its 19 commits/);
 });
 
 test('checklist is capped, prioritized, and every item cites real evidence', () => {
-  assert.ok(brief.checklist.length <= 4);
-  const priorities = brief.checklist.map((c) => c.priority);
-  assert.deepEqual(priorities, [...priorities].sort((x, y) => x - y));
-  assert.doesNotThrow(() => assertEvidenceResolves(brief));
-  assert.equal(brief.salience.level, 'full');
+  for (const b of [brief, legacyBrief]) {
+    assert.ok(b.checklist.length <= 4);
+    const priorities = b.checklist.map((c) => c.priority);
+    assert.deepEqual(priorities, [...priorities].sort((x, y) => x - y));
+    assert.doesNotThrow(() => assertEvidenceResolves(b));
+    assert.equal(b.salience.level, 'full');
+  }
 });
 
 test('measured calibration is reported with Repo Archaeology’s lift definition', () => {
@@ -98,7 +109,8 @@ test('measured calibration is reported with Repo Archaeology’s lift definition
 });
 
 test('poor measured precision suppresses co-change questions', () => {
-  const b = buildBrief({ cwd: repo.dir, base: 'main', raDiff: raDiffFixture(), raBacktest: raBacktestFixture(0.1) });
+  // Legacy path only: by default co-change never becomes a question, whatever the calibration.
+  const b = buildBrief({ cwd: repo.dir, base: 'main', raDiff: raDiffFixture(), raBacktest: raBacktestFixture(0.1), config: { legacyPredictions: true } });
   assert.equal(b.checklist.filter((c) => c.kind === 'forgotten-companion').length, 0);
   assert.equal(b.forgotten.items.length, 2, 'evidence is still shown, just not asked about');
 });

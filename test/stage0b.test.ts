@@ -121,9 +121,14 @@ test('V4 gate inside buildChecklist: only the proven ghost pair above the interv
   };
   const companions = (list: ChecklistItem[]) => list.filter((c) => c.kind === 'forgotten-companion').map((c) => c.id);
 
-  assert.deepEqual(companions(buildChecklist({ ...input, config: { ...V4, maxCompanionQuestions: 5 } })), ['check:companion:src/proven.ts']);
-  // Default config: the gate is off, the 0.3 floor and the 2-question cap apply as before.
-  assert.deepEqual(companions(buildChecklist({ ...input, config: {} })), ['check:companion:src/proven.ts', 'check:companion:src/unknown.ts']);
+  // GU-29: the V4 keys apply only under `legacyPredictions` (Stage 0b ran on the legacy path).
+  const legacy = { legacyPredictions: true };
+  assert.deepEqual(companions(buildChecklist({ ...input, config: { ...legacy, ...V4, maxCompanionQuestions: 5 } })), ['check:companion:src/proven.ts']);
+  // Legacy config without V4: the gate is off, the 0.3 floor and the 2-question cap apply as before.
+  assert.deepEqual(companions(buildChecklist({ ...input, config: legacy })), ['check:companion:src/proven.ts', 'check:companion:src/unknown.ts']);
+  // Default (GU-29): no companion question at all, with or without the V4 keys.
+  assert.deepEqual(companions(buildChecklist({ ...input, config: {} })), []);
+  assert.deepEqual(companions(buildChecklist({ ...input, config: V4 })), []);
 });
 
 test('config: V4 and skipReverts parse exactly; invalid values are dropped or rejected', () => {
@@ -177,7 +182,9 @@ test('consumer: the installed repo-archaeology 0.10 library returns a track reco
     commitOn(80, 'feat: a only');
     const head = repo.git('rev-parse', 'HEAD').trim();
 
-    const res = await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'feat: a only', noCalibration: true });
+    // GU-29: companion questions and the V4 keys live under `legacyPredictions`.
+    const legacy = { legacyPredictions: true };
+    const res = await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'feat: a only', noCalibration: true, config: legacy });
     assert.match(res.meta.raVersion ?? '', /^0\.10\./, 'bench runs on the pinned repo-archaeology 0.10.x');
     const suggestion = res.meta.raDiff?.suggestions.find((s) => s.to === 'src/b.ts');
     assert.ok(suggestion, 'b is suggested');
@@ -188,7 +195,7 @@ test('consumer: the installed repo-archaeology 0.10 library returns a track reco
     // Default brief asks about b; with V4 the answer depends only on the relationship (RA calls this pair "unknown":
     // both files are plain constants with no shared signal), so V4 drops it.
     assert.ok(res.brief.checklist.some((c) => c.id === 'check:companion:src/b.ts'));
-    const gated = await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'feat: a only', noCalibration: true, config: V4 });
+    const gated = await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'feat: a only', noCalibration: true, config: { ...legacy, ...V4 } });
     const rel = gated.brief.forgotten.items.find((f) => f.file === 'src/b.ts')?.relationship;
     assert.equal(
       gated.brief.checklist.some((c) => c.id === 'check:companion:src/b.ts'),
@@ -198,7 +205,7 @@ test('consumer: the installed repo-archaeology 0.10 library returns a track reco
 
     // The fired threshold alone, against the real library's numbers.
     const at = async (n: number) =>
-      (await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'x', noCalibration: true, config: { companionMinTrackRecordFired: n } }))
+      (await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'x', noCalibration: true, config: { ...legacy, companionMinTrackRecordFired: n } }))
         .brief.checklist.some((c) => c.id === 'check:companion:src/b.ts');
     assert.equal(await at(tr.fired!), true, `fired = ${tr.fired} meets a threshold of ${tr.fired}`);
     assert.equal(await at(tr.fired! + 1), false, 'one more than fired drops it');

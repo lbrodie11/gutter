@@ -97,6 +97,7 @@
       "required": ["status", "items", "total", "families", "commitsAnalyzed", "warnings"],
       "properties": {
         "status": { "enum": ["analyzed", "insufficient-history", "unavailable"], "description": "Consumers must tolerate unknown enum values." },
+        "presentation": { "enum": ["context"], "description": "GU-29, optional: 'context' means this co-change layer is history shown as context, never a prediction or a checklist source. Absent under legacyPredictions and in pre-GU-29 briefs. Consumers must tolerate unknown enum values." },
         "note": { "type": "string" },
         "items": { "type": "array", "items": { "$ref": "#/$defs/ForgottenItem" } },
         "total": { "type": "integer" },
@@ -127,10 +128,20 @@
         "properties": {
           "id": { "$ref": "#/$defs/EvidenceId" },
           "source": { "type": "string" },
-          "status": { "enum": ["test-changed", "test-untouched", "no-test-found"], "description": "Consumers must tolerate unknown enum values." },
+          "status": { "enum": ["test-changed", "test-untouched", "no-test-found"], "description": "Consumers must tolerate unknown enum values. Since GU-29 (default mode) a co-change test partner the naming conventions missed is added to candidates, so status can be test-untouched where naming alone found no test; the checklist is computed from the naming-only links." },
           "candidates": {
             "type": "array",
             "items": { "type": "object", "required": ["path", "changed"], "properties": { "path": { "type": "string" }, "changed": { "type": "boolean" } } }
+          },
+          "history": {
+            "type": "object",
+            "description": "GU-29, optional: co-change history pairing source with one of its test candidates. together and sourceCommits describe the pair cited by evidence[0] (the naming-convention test when it is a partner, else the strongest pair); later evidence ids are other test partners of the same source. A historical fact; it never affects checklist or salience. Absent under legacyPredictions.",
+            "required": ["together", "sourceCommits", "evidence"],
+            "properties": {
+              "together": { "type": "integer", "minimum": 0, "description": "Commits of source that also changed the paired test." },
+              "sourceCommits": { "type": "integer", "minimum": 0, "description": "Commits of source in the analyzed history." },
+              "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/EvidenceId" }, "description": "Ids of forgotten items carrying the receipts; the first is the pair the counts describe." }
+            }
           }
         }
       }
@@ -143,8 +154,8 @@
         "required": ["id", "kind", "question", "evidence", "priority"],
         "properties": {
           "id": { "type": "string" },
-          "kind": { "enum": ["broken-import", "forgotten-companion", "family-drift", "untested-change", "wide-surface"], "description": "Consumers must tolerate unknown enum values." },
-          "question": { "type": "string", "description": "A question, never a verdict. Paths appear in backticks." },
+          "kind": { "enum": ["broken-import", "forgotten-companion", "family-drift", "untested-change", "wide-surface"], "description": "Consumers must tolerate unknown enum values. Since GU-29, forgotten-companion and family-drift are produced only under legacyPredictions; they stay in the enum for v1 readers." },
+          "question": { "type": "string", "description": "A question or a plain statement of fact, never a verdict or a prediction. Paths appear in backticks." },
           "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/EvidenceId" }, "description": "Must resolve to ids in dependents, forgotten, families or tests." },
           "priority": { "type": "integer" }
         }

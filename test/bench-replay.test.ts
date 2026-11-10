@@ -12,6 +12,13 @@ import { loadRaLibrary, RaLibUnavailableError } from '../src/sources/archaeology
 import { git, resolveSha } from '../src/git.ts';
 import { lines, TempRepo } from './helpers.ts';
 
+/**
+ * GU-29: these tests plant co-change signal and check how the bench scores companion questions,
+ * which exist only under the `legacyPredictions` research switch. Default-mode replay is covered
+ * in test/gu29.test.ts.
+ */
+const LEGACY = { legacyPredictions: true } as const;
+
 test('discoverChangeUnits: classifies merge-commit, unnumbered merge, squash (#n), rebase series, cherry-pick (#n), octopus, direct push, and --include-unnumbered with exact funnel counts', () => {
   const repo = new TempRepo();
   try {
@@ -184,13 +191,13 @@ test('golden equivalence: replayBrief() at HEAD and buildBrief() produce identic
     const localRaCli = join(process.cwd(), 'node_modules', 'repo-archaeology', 'dist', 'cli.js');
     const fixedNow = new Date('2026-11-08T12:00:00Z');
 
-    const syncBrief = buildBrief({
+    const syncBrief = buildBrief({ config: LEGACY,
       cwd: repo.dir,
       base: baseSha,
       runner: { bin: localRaCli },
       now: fixedNow,
     });
-    const replayedBrief = await replayBrief({
+    const replayedBrief = await replayBrief({ config: LEGACY,
       cwd: repo.dir,
       base: baseSha,
       head: 'HEAD',
@@ -263,13 +270,13 @@ test('leakage: later commits, later .gutter.json, later tsconfig, later imports,
     }).commit('chore: future config, tests, and importers (#99)');
 
     const fixedNow = new Date('2026-11-08T00:00:00.000Z');
-    const briefFromFullRepo = await replayBrief({
+    const briefFromFullRepo = await replayBrief({ config: LEGACY,
       cwd: repo.dir,
       base: pr11BaseSha,
       head: pr11HeadSha,
       now: fixedNow,
     });
-    const briefFromTruncatedClone = await replayBrief({
+    const briefFromTruncatedClone = await replayBrief({ config: LEGACY,
       cwd: truncDir,
       base: pr11BaseSha,
       head: pr11HeadSha,
@@ -324,7 +331,7 @@ test('merge semantics: conflict resolution editing a suggested file sets mergeDi
     assert.equal(pr42.detection, 'merge-commit');
     assert.equal(pr42.confidence, 'high');
 
-    const { brief, ungatedBrief } = await replayBriefWithMeta({
+    const { brief, ungatedBrief } = await replayBriefWithMeta({ config: LEGACY,
       cwd: repo.dir,
       base: pr42.base,
       head: pr42.head,
@@ -374,7 +381,7 @@ test('edge cases: shallow clone marks history unavailable and timestamp anomaly 
     // Create a shallow clone (--depth 1)
     git(shallowDir, ['clone', '-q', '--depth', '1', `file://${repo.dir}`, '.']);
     const shallowHead = resolveSha(shallowDir, 'HEAD')!;
-    const res = await replayBriefWithMeta({
+    const res = await replayBriefWithMeta({ config: LEGACY,
       cwd: shallowDir,
       base: shallowHead,
       head: shallowHead,
@@ -503,7 +510,7 @@ test('config safety: replayBrief matches the repo-archaeology config contract, r
     }).commit('feat: pr with hostile .repo-archaeology.json (#77)');
     const head77Sha = resolveSha(repo.dir, 'HEAD')!;
 
-    const res77 = await replayBriefWithMeta({
+    const res77 = await replayBriefWithMeta({ config: LEGACY,
       cwd: repo.dir,
       base: baseSha,
       head: head77Sha,
@@ -523,7 +530,7 @@ test('config safety: replayBrief matches the repo-archaeology config contract, r
     }).commit('feat: pr with valid halfLifeDays + ignore (#78)');
     const head78Sha = resolveSha(repo.dir, 'HEAD')!;
 
-    const res78 = await replayBriefWithMeta({
+    const res78 = await replayBriefWithMeta({ config: LEGACY,
       cwd: repo.dir,
       base: base78Sha,
       head: head78Sha,
@@ -545,7 +552,7 @@ test('config safety: replayBrief matches the repo-archaeology config contract, r
     }).commit('feat: pr with symlinked .repo-archaeology.json (#79)');
     const head79Sha = resolveSha(repo.dir, 'HEAD')!;
 
-    const beforeFutureEdit = await replayBrief({
+    const beforeFutureEdit = await replayBrief({ config: LEGACY,
       cwd: repo.dir,
       base: base79Sha,
       head: head79Sha,
@@ -563,7 +570,7 @@ test('config safety: replayBrief matches the repo-archaeology config contract, r
       '.repo-archaeology.json': JSON.stringify({ ignore: ['src/b.ts'] }),
     }).commit('chore: future commit ignores src/b.ts (#80)');
 
-    const afterFutureEdit = await replayBrief({
+    const afterFutureEdit = await replayBrief({ config: LEGACY,
       cwd: repo.dir,
       base: base79Sha,
       head: head79Sha,
@@ -612,7 +619,7 @@ test('config precedence: CLI gutter brief matches replayBrief on .gutter.json an
       { cwd: repo.dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
     );
     const cliBrief = JSON.parse(cliOut);
-    const replayed = await replayBrief({ cwd: repo.dir, base: baseSha, head: headSha });
+    const replayed = await replayBrief({ config: LEGACY, cwd: repo.dir, base: baseSha, head: headSha });
 
     assert.equal(cliBrief.forgotten.items.length, 0, 'CLI brief must honor .gutter.json maxForgotten: 0');
     assert.equal(cliBrief.checklist.length, 0, 'CLI brief must honor .gutter.json maxChecklist: 0');
@@ -641,7 +648,7 @@ test('config precedence: CLI gutter brief matches replayBrief on .gutter.json an
     assert.equal(cliOverrideBrief.forgotten.items.length, 1, 'Explicit --max-forgotten flag must override .gutter.json');
 
     // 3. Action `configRef: baseSha` reads `.gutter.json` from `base`, so a PR adding `.gutter.json` cannot silence Gutter on itself
-    const actionBrief = buildBrief({
+    const actionBrief = buildBrief({ config: LEGACY,
       cwd: repo.dir,
       base: baseSha,
       configRef: baseSha,

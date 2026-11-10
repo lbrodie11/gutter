@@ -183,13 +183,18 @@ const companion2: ChecklistItem = { ...companion, id: 'check:companion:src/b.ts'
 const wide: ChecklistItem = { ...companion, id: 'check:surface:src/x.ts', kind: 'wide-surface', priority: 5 };
 
 test('salience variants: defaults are unchanged; salienceFullMinSignals and salienceBreadthFull only ever lower salience', () => {
-  // Defaults: one high-signal question, or breadth alone, is full.
-  assert.equal(salienceOf(changes(1, 1), [companion]).level, 'full');
-  assert.equal(salienceOf(changes(9, 1), []).level, 'full');
-  assert.equal(salienceOf(changes(2, 3), []).level, 'full');
-  assert.equal(salienceOf(changes(2, 1), [wide]).level, 'brief', 'wide-surface alone is never full');
-  assert.equal(salienceOf(changes(2, 1), []).level, 'quiet');
-  assert.deepEqual(salienceOf(changes(9, 3), [companion]), salienceOf(changes(9, 3), [companion], {}));
+  // Stage 0 ran on the pre-GU-29 defaults, which `legacyPredictions` keeps:
+  // one high-signal question, or breadth alone, is full.
+  const legacy = { legacyPredictions: true };
+  assert.equal(salienceOf(changes(1, 1), [companion], legacy).level, 'full');
+  assert.equal(salienceOf(changes(9, 1), [], legacy).level, 'full');
+  assert.equal(salienceOf(changes(2, 3), [], legacy).level, 'full');
+  assert.equal(salienceOf(changes(2, 1), [wide], legacy).level, 'brief', 'wide-surface alone is never full');
+  assert.equal(salienceOf(changes(2, 1), [], legacy).level, 'quiet');
+  assert.deepEqual(salienceOf(changes(9, 3), [companion], legacy), salienceOf(changes(9, 3), [companion], { legacyPredictions: true, salienceFullMinSignals: 1 }));
+  // GU-29 default is V2 (two signals); an explicit legacy-style value still wins.
+  assert.deepEqual(salienceOf(changes(9, 3), [companion]), salienceOf(changes(9, 3), [companion], { salienceFullMinSignals: 2 }));
+  assert.equal(salienceOf(changes(9, 1), []).level, 'brief', 'breadth alone is never full by default');
 
   // V2: two independent signals.
   const two = { salienceFullMinSignals: 2 };
@@ -198,8 +203,8 @@ test('salience variants: defaults are unchanged; salienceFullMinSignals and sali
   assert.equal(salienceOf(changes(9, 1), [companion], two).level, 'full');
   assert.equal(salienceOf(changes(1, 1), [companion, companion2], two).level, 'full');
 
-  // V3: breadth alone never full.
-  const noBreadth = { salienceBreadthFull: false };
+  // V3: breadth alone never full (a Stage 0 variant, so on the legacy defaults).
+  const noBreadth = { legacyPredictions: true, salienceBreadthFull: false };
   assert.equal(salienceOf(changes(9, 3), [], noBreadth).level, 'brief');
   assert.equal(salienceOf(changes(9, 3), [companion], noBreadth).level, 'full');
   assert.deepEqual(salienceOf(changes(9, 3), [companion], noBreadth).reasons, ['1 high-signal question']);

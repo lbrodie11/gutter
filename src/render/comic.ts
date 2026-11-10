@@ -4,13 +4,20 @@ import { pct } from '../stats/wilson.ts';
 import { commitUrl, fileUrl, html, short } from './escape.ts';
 import { FRAME12_TOKENS, TOKENS_ID } from './frame12-tokens.ts';
 import { receiptsFor } from './receipts.ts';
+import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, noPairsLine, unchangedTestRows } from './context.ts';
+
+/** DOM anchor for an evidence id. Co-change ids (`forgotten:n` in gutter.json) anchor as `history-n`. */
+const domId = (id: string) => id.replace(/^forgotten:/, 'history-');
 
 /**
  * The comic page: one self-contained, offline HTML file in FRAME/12's panel
  * grammar. Same evidence as the Markdown comment, laid out for a 60-second read.
  *
  * Reading order = review order:
- *   C-01 Intent → C-02 What changed → C-03 What it touches → C-04 Likely forgotten → C-05 Tests → C-06 Check these
+ *   C-01 Intent → C-02 What changed → C-03 What it touches → C-04 Usually changes with → C-05 Tests → C-06 Check these
+ *
+ * GU-29: C-04 is context (history, not a prediction) and is never the hero. The hero is C-06 when the
+ * checklist has items, otherwise C-03.
  */
 
 export function renderComic(brief: GutterBrief): string {
@@ -21,11 +28,14 @@ export function renderComic(brief: GutterBrief): string {
     const inner = `<code class="path${cls ? ` ${cls}` : ''}">${html(p)}</code>`;
     return url ? `<a href="${html(url)}">${inner}</a>` : inner;
   };
+  /** A path inside a sentence: plain inline code, so prose stays prose (the boxed links sit beside it). */
+  const ref = (p: string) => `<code class="ref">${html(p)}</code>`;
   const commitLink = (sha: string) => {
     const url = commitUrl(change.repoUrl, sha);
     return url ? `<a class="sha" href="${html(url)}">${html(short(sha))}</a>` : `<span class="sha">${html(short(sha))}</span>`;
   };
 
+  const heroChecks = brief.checklist.length > 0;
   const issue = [
     change.prNumber ? `PR #${change.prNumber}` : null,
     `${html(change.base)} → ${html(change.head)}`,
@@ -76,7 +86,7 @@ export function renderComic(brief: GutterBrief): string {
         const label = d.untouchedImporters.length
           ? `imported by ${d.untouchedImporters.length} untouched file${d.untouchedImporters.length === 1 ? '' : 's'}`
           : `still imported by ${shown.length} changed file${shown.length === 1 ? '' : 's'}`;
-        return `<li id="${html(d.id)}">${fileLink(d.file)}${d.deleted ? ' <span class="stamp">removed</span>' : ''}
+        return `<li id="${html(domId(d.id))}">${fileLink(d.file)}${d.deleted ? ' <span class="stamp">removed</span>' : ''}
         <span class="small">${label}</span>
         <span class="importers">${shown.slice(0, 3).map((p) => fileLink(p)).join(' ')}${shown.length > 3 ? ` <span class="small">+${shown.length - 3}</span>` : ''}</span></li>`;
       }).join('')}</ul>`
@@ -91,55 +101,64 @@ export function renderComic(brief: GutterBrief): string {
   const unchecked = brief.dependents.unchecked.length
     ? `<p class="small">Imports not analyzed for ${brief.dependents.unchecked.length} file${brief.dependents.unchecked.length === 1 ? '' : 's'} (language not supported yet).</p>`
     : '';
-  panels.push(panel(3, 'What it touches', depBody + partialNote + unchecked, { area: 'touches' }));
+  panels.push(panel(3, 'What it touches', depBody + partialNote + unchecked, { area: 'touches', hero: !heroChecks }));
 
-  // C-04 · Likely forgotten (hero)
+  // C-04 · Usually changes with (history as context; never the hero)
   const fg = brief.forgotten;
   const wires = fg.items.map((f) => {
     const receipts = f.evidence.slice(0, 3).map((e) => `<li>${commitLink(e.sha)} <span class="small">${html(e.date)}</span> ${html(e.subject)}${e.automated ? ' <span class="stamp">bot</span>' : ''}</li>`).join('');
-    return `<li class="wire-row" id="${html(f.id)}">
+    return `<li class="wire-row" id="${html(domId(f.id))}">
       <div class="wire">
         ${fileLink(f.changed, 'solid')}
         <svg class="ghost" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="6" x2="100" y2="6"/></svg>
         ${fileLink(f.file, 'dashed')}
       </div>
-      <p class="evidence-line"><b>${f.shared} of ${f.changedTotal}</b> commits together · 95% CI ${pct(f.interval.low)}–${pct(f.interval.high)}${f.lastTogether ? ` · last ${html(f.lastTogether)}` : ''}${f.automationShare >= 0.5 ? ' · <span class="stamp">mostly bot commits</span>' : ''}</p>
-      <p class="small why">${html(f.why)}</p>
+      <p class="evidence-line">${ref(f.changed)} and ${ref(f.file)} changed together in <b>${f.shared} of ${f.changedTotal}</b> commits; ${ref(f.file)} isn't in this PR.</p>
+      <p class="small">${f.lastTogether ? `Last together ${html(f.lastTogether)}. ` : ''}${html(f.why)}${f.automationShare >= 0.5 ? ' · <span class="stamp">mostly bot commits</span>' : ''}</p>
       ${receipts ? `<ol class="receipts" aria-label="Commits where these files changed together">${receipts}</ol>` : ''}
     </li>`;
   }).join('');
   const families = fg.families.filter((f) => f.changedMembers.length && f.untouchedMembers.length).map((f) =>
-    `<div class="family" id="${html(f.id)}"><p><b>Parallel implementations</b> · ${html(f.label)}</p>
-     <p class="small">Changed: ${f.changedMembers.map((p) => fileLink(p)).join(' ')}</p>
-     <p class="small">Untouched: ${f.untouchedMembers.slice(0, 5).map((p) => fileLink(p, 'dashed')).join(' ')}</p></div>`).join('');
+    `<div class="family" id="${html(domId(f.id))}"><p><b>Parallel implementations</b> · ${html(f.label)}</p>
+     <p class="small">Changed in this PR: ${f.changedMembers.map((p) => fileLink(p)).join(' ')}</p>
+     <p class="small">Not in this PR: ${f.untouchedMembers.slice(0, 5).map((p) => fileLink(p, 'dashed')).join(' ')}</p></div>`).join('');
   const fgBody = wires || families
-    ? `${wires ? `<ul class="wires">${wires}</ul>` : ''}${families}${fg.total > fg.items.length ? `<p class="small">${fg.total - fg.items.length} weaker matches not shown.</p>` : ''}`
-    : `<div class="balloon thought"><p class="said">${html(fg.note ?? 'Nothing that usually changes with these files was left out.')}</p></div>`;
-  panels.push(panel(4, 'Likely forgotten', fgBody, { area: 'forgotten', hero: fg.items.length > 0 }));
+    ? `<p class="small">${html(CONTEXT_SUBTITLE[0]!.toUpperCase() + CONTEXT_SUBTITLE.slice(1))}: files that changed together in past commits.</p>${wires ? `<ul class="wires">${wires}</ul>` : ''}${families}${fg.total > fg.items.length ? `<p class="small">${fg.total - fg.items.length} weaker pairs not shown.</p>` : ''}`
+    : `<div class="balloon thought"><p class="said">${html(noPairsLine(fg))}</p></div>`;
+  panels.push(panel(4, CONTEXT_TITLE, fgBody, { area: 'history' }));
 
-  // C-05 · Tests
+  // C-05 · Tests (facts; history rows say what happened before, not what must happen now)
   const t = brief.tests;
   const nChanged = t.filter((x) => x.status === 'test-changed').length;
-  const untouched = t.filter((x) => x.status === 'test-untouched');
+  const testRows = unchangedTestRows(brief);
   const nNone = t.filter((x) => x.status === 'no-test-found').length;
+  const testRowsHtml = testRows.slice(0, 4).map((row) => {
+    const clause = historyClause(row);
+    const other = row.other
+      ? ` · ${ref(row.source)} changed together with ${ref(row.other.test)} in ${row.other.together} of ${row.other.sourceCommits} commits`
+      : '';
+    const receipts = (row.other?.receipts ?? row.receipts).slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
+    return `<li class="test-row" id="${html(domId(row.id))}">${fileLink(row.test, 'dashed')}<span class="fact">unchanged in this PR · ${html(clause.before)}${ref(row.source)}${html(clause.after)}${other}</span>${receipts ? `<span class="importers">${receipts}</span>` : ''}</li>`;
+  }).join('');
   panels.push(panel(5, 'Tests', `
   <dl class="metrics">
     <div><dt>updated</dt><dd>${nChanged}</dd></div>
-    <div><dt>untouched</dt><dd>${untouched.length}</dd></div>
+    <div><dt>unchanged</dt><dd>${testRows.length}</dd></div>
     <div><dt>none found</dt><dd>${nNone}</dd></div>
   </dl>
-  ${untouched.length ? `<ul class="deps">${untouched.slice(0, 4).map((x) => `<li id="${html(x.id)}">${fileLink(x.source)} <span class="small">→</span> ${fileLink(x.candidates[0]!.path, 'dashed')}</li>`).join('')}</ul>` : ''}`, { area: 'tests' }));
+  ${testRowsHtml ? `<ul class="deps">${testRowsHtml}</ul><p class="small">${html(TESTS_LEGEND)}</p>` : ''}`, { area: 'tests' }));
 
   // C-06 · Check these — only link to evidence that is actually on the page
   const rendered = new Set([...panels.join('').matchAll(/ id="([^"]+)"/g)].map((m) => m[1]));
+  const anchorOf = (id: string) => html(domId(id));
   const checks = brief.checklist.map((c) => {
     const receipts = c.evidence.flatMap((id) => receiptsFor(brief, id, 2)).map((r) => (r.kind === 'commit' ? commitLink(r.ref) : fileLink(r.ref))).join(' ');
-    const anchors = c.evidence.filter((id) => rendered.has(html(id))).map((id) => `<a class="jump" href="#${html(id)}">see evidence</a>`).join(' ');
+    const anchors = c.evidence.filter((id) => rendered.has(anchorOf(id))).map((id) => `<a class="jump" href="#${anchorOf(id)}">see evidence</a>`).join(' ');
     return `<li><p>${questionHtml(c.question)}</p><p class="small">${receipts} ${anchors}</p></li>`;
   }).join('');
   panels.push(panel(6, 'Check these', checks
     ? `<ol class="checks">${checks}</ol>`
-    : `<div class="balloon thought"><p class="said">Nothing here needs a second look beyond the diff itself.</p></div>`, { area: 'checks' }));
+    : `<div class="balloon thought"><p class="said">Nothing here needs a second look beyond the diff itself.</p></div>`, { area: 'checks', hero: heroChecks }));
 
   const cal = brief.calibration;
   const gauge = cal.precision !== undefined
@@ -240,8 +259,8 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .panel{grid-column:span 12;position:relative;background:var(--f-panel);border:var(--f-stroke) solid var(--f-rule);padding:0 16px 16px;min-width:0}
 .page.quiet .panel{grid-column:span 12}
 @media (min-width:860px){
-.page:not(.quiet){grid-template-areas:"intent intent intent intent intent intent intent changed changed changed changed changed" "touches touches touches touches touches forgotten forgotten forgotten forgotten forgotten forgotten forgotten" "tests tests tests tests tests forgotten forgotten forgotten forgotten forgotten forgotten forgotten" "checks checks checks checks checks checks checks checks checks checks checks checks"}
-.area-intent{grid-area:intent}.area-changed{grid-area:changed}.area-touches{grid-area:touches}.area-forgotten{grid-area:forgotten}.area-tests{grid-area:tests}.area-checks{grid-area:checks}
+.page:not(.quiet){grid-template-areas:"intent intent intent intent intent intent intent changed changed changed changed changed" "touches touches touches touches touches history history history history history history history" "tests tests tests tests tests history history history history history history history" "checks checks checks checks checks checks checks checks checks checks checks checks"}
+.area-intent{grid-area:intent}.area-changed{grid-area:changed}.area-touches{grid-area:touches}.area-history{grid-area:history}.area-tests{grid-area:tests}.area-checks{grid-area:checks}
 .page.quiet .area-intent{grid-column:span 7}.page.quiet .area-changed{grid-column:span 5}
 }
 .cap{display:inline-flex;align-items:center;margin:0 0 14px -16px;padding:5px 12px 5px 0;background:var(--f-ink);color:var(--f-sheet);font-family:var(--font-f-display);font-size:14px;font-weight:400;letter-spacing:.04em;text-transform:uppercase}
@@ -270,6 +289,9 @@ a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marke
 .deps{list-style:none;margin:0;padding:0;display:grid;gap:var(--f-gutter-pair)}
 .deps li{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--f-gutter-pair)}
 .importers{display:inline-flex;flex-wrap:wrap;gap:var(--f-gutter-pair)}
+.ref{font-family:var(--font-f-mono);font-size:12px;overflow-wrap:anywhere}
+.deps .test-row{flex-direction:column;align-items:flex-start;gap:0}
+.fact{font-size:13px;color:var(--f-ink-2);margin:4px 0}
 .stamp{font-family:var(--font-f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--f-rule);padding:0 5px;transform:rotate(-3deg);display:inline-block}
 .small{font-size:12px;color:var(--f-ink-2);margin:4px 0 0}
 .quiet-line{margin:0;color:var(--f-ink-2)}

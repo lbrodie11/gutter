@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "io: drop old readers",
+    "commits": [
+      {
+        "sha": "000000000000000000000000000000000000038b",
+        "subject": "io: drop old readers"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "full",
+    "reasons": [
+      "2 high-signal questions"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/io/read.ts",
+        "status": "deleted",
+        "additions": 0,
+        "deletions": 30,
+        "binary": false,
+        "module": "src/io",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/io/write.ts",
+        "status": "deleted",
+        "additions": 0,
+        "deletions": 25,
+        "binary": false,
+        "module": "src/io",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/io",
+        "files": 2,
+        "additions": 0,
+        "deletions": 55
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 0,
+      "deletions": 55,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/io/read.ts",
+        "file": "src/io/read.ts",
+        "deleted": true,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/cli.ts"
+        ]
+      },
+      {
+        "id": "deps:src/io/write.ts",
+        "file": "src/io/write.ts",
+        "deleted": true,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/cli.ts",
+          "src/server.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "note": "Every file that usually changes with these files was changed here too.",
+    "items": [],
+    "total": 0,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [],
+  "checklist": [
+    {
+      "id": "check:broken:src/io/read.ts",
+      "kind": "broken-import",
+      "question": "`src/io/read.ts` no longer exists at this path, but `src/cli.ts` still imports it. Is something missing?",
+      "evidence": [
+        "deps:src/io/read.ts"
+      ],
+      "priority": 1
+    },
+    {
+      "id": "check:broken:src/io/write.ts",
+      "kind": "broken-import",
+      "question": "`src/io/write.ts` no longer exists at this path, but `src/cli.ts` (+1 more) still imports it. Is something missing?",
+      "evidence": [
+        "deps:src/io/write.ts"
+      ],
+      "priority": 1
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 75% of the time (7.5× better than guessing busy files), and 60% of all flagged files did.",
+    "precision": 0.6,
+    "hitRate": 0.75,
+    "lift": 7.5,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

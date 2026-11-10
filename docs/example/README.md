@@ -2,6 +2,8 @@
 
 The files in `docs/example/` (`gutter.json`, `brief.md`, `gutter.html`) and screenshots in `docs/images/` are generated from a deterministic local simulation against [`honojs/hono`](https://github.com/honojs/hono) at pinned commit `eb754bd5ef22c63f1634a4c374a86be086f85710` using `repo-archaeology@0.3.0`.
 
+Since GU-29 the illustrative edit adds 12 lines to the middleware (previously 8), so it passes the `minChurnForTestQuestion` gate (10 changed lines) and the page is `brief`: the unchanged-test fact, the Tests row with its history and the "Usually changes with" context are all visible. The co-change history is the same as before (same commit, same analyzer).
+
 ## 1. Re-render from the committed `gutter.json` contract (offline, instant)
 
 ```bash
@@ -33,7 +35,7 @@ git fetch --depth 1500 origin eb754bd5ef22c63f1634a4c374a86be086f85710
 git checkout -B main FETCH_HEAD
 git checkout -b feat/serve-static-cache-control
 
-# Apply the 2-file (+10/-0) edit to src/middleware/serve-static/index.ts and src/adapter/bun/serve-static.ts, commit, and run:
+# Apply the 2-file (+14/-0) edit to src/middleware/serve-static/index.ts (+12) and src/adapter/bun/serve-static.ts (+2), commit, and run:
 node /path/to/gutter/dist/cli.js brief \
   --base main \
   --head feat/serve-static-cache-control \

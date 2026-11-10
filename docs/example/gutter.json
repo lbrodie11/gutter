@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "tool": {
     "name": "gutter",
-    "version": "0.1.0"
+    "version": "0.3.0"
   },
   "change": {
     "base": "main",
@@ -20,9 +20,9 @@
     "repoUrl": "https://github.com/honojs/hono"
   },
   "salience": {
-    "level": "full",
+    "level": "brief",
     "reasons": [
-      "2 high-signal questions"
+      "1 item worth a look"
     ]
   },
   "changes": {
@@ -40,7 +40,7 @@
       {
         "path": "src/middleware/serve-static/index.ts",
         "status": "modified",
-        "additions": 8,
+        "additions": 12,
         "deletions": 0,
         "binary": false,
         "module": "src/middleware",
@@ -52,7 +52,7 @@
       {
         "name": "src/middleware",
         "files": 1,
-        "additions": 8,
+        "additions": 12,
         "deletions": 0
       },
       {
@@ -64,7 +64,7 @@
     ],
     "totals": {
       "files": 2,
-      "additions": 10,
+      "additions": 14,
       "deletions": 0,
       "modules": 2
     }
@@ -113,6 +113,7 @@
   },
   "forgotten": {
     "status": "analyzed",
+    "presentation": "context",
     "items": [
       {
         "id": "forgotten:0",
@@ -276,36 +277,25 @@
           "path": "src/middleware/serve-static/index.test.ts",
           "changed": false
         }
-      ]
+      ],
+      "history": {
+        "together": 17,
+        "sourceCommits": 20,
+        "evidence": [
+          "forgotten:0"
+        ]
+      }
     }
   ],
   "checklist": [
     {
-      "id": "check:companion:src/middleware/serve-static/index.test.ts",
-      "kind": "forgotten-companion",
-      "question": "`src/middleware/serve-static/index.test.ts` changed alongside `src/middleware/serve-static/index.ts` in 17 of its 20 commits (95% CI 64%–95%) but is untouched here. Does it need a matching change?",
+      "id": "check:test:src/middleware/serve-static/index.ts",
+      "kind": "untested-change",
+      "question": "`src/middleware/serve-static/index.ts` changed (+12/−0); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR.",
       "evidence": [
-        "forgotten:0"
+        "tests:src/middleware/serve-static/index.ts"
       ],
-      "priority": 2
-    },
-    {
-      "id": "check:companion:src/adapter/deno/serve-static.ts",
-      "kind": "forgotten-companion",
-      "question": "`src/adapter/deno/serve-static.ts` changed alongside `src/adapter/bun/serve-static.ts` in 9 of its 11 commits (95% CI 52%–95%) but is untouched here. Does it need a matching change?",
-      "evidence": [
-        "forgotten:1"
-      ],
-      "priority": 2
-    },
-    {
-      "id": "check:family:family:0",
-      "kind": "family-drift",
-      "question": "This changes 1 of 3 parallel implementations (serve-static.ts across src/adapter/*). Should `src/adapter/cloudflare-workers/serve-static.ts` (+1 more) follow?",
-      "evidence": [
-        "family:0"
-      ],
-      "priority": 3
+      "priority": 4
     }
   ],
   "calibration": {
@@ -322,11 +312,11 @@
     }
   },
   "provenance": {
-    "generatedAt": "2026-11-08T05:15:56.077Z",
+    "generatedAt": "2026-11-10T09:15:31.159Z",
     "engines": [
       {
         "name": "gutter",
-        "version": "0.1.0"
+        "version": "0.3.0"
       },
       {
         "name": "repo-archaeology",

@@ -11,6 +11,9 @@ import { validateBenchResults } from '../src/bench/validate.ts';
 import { lintPage } from '../src/render/comic.ts';
 import { TempRepo } from './helpers.ts';
 
+/** GU-29: the planted PRs exercise companion questions, which exist only under `legacyPredictions`. */
+const LEGACY = { legacyPredictions: true } as const;
+
 const DAY_SEC = 86400;
 const BASE_TIME = 1760000000;
 
@@ -82,7 +85,7 @@ test('reports & schema: bench.json conforms to schema/bench.schema.json, bench.h
     repo.write({ 'README.md': '# Repo\n' });
     commitAt(repo, 'docs: update readme', { dateSec: BASE_TIME + 25 * DAY_SEC });
 
-    const model = await runBench({
+    const model = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir,
       prs: 5,
@@ -196,7 +199,7 @@ test('security: malicious paths, subjects, HTML, control/bidi chars, emails, tok
     repo.write({ 'README.md': '# Done\n' });
     commitAt(repo, 'docs: done', { dateSec: BASE_TIME + 25 * DAY_SEC });
 
-    const model = await runBench({
+    const model = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir,
       prs: 5,

@@ -11,6 +11,13 @@ import { runBench } from '../src/bench/runner.ts';
 import { git, resolveSha } from '../src/git.ts';
 import { lines, TempRepo } from './helpers.ts';
 
+/**
+ * GU-29: these tests plant co-change signal and check how the bench scores companion questions,
+ * which exist only under the `legacyPredictions` research switch. Default-mode replay is covered
+ * in test/gu29.test.ts.
+ */
+const LEGACY = { legacyPredictions: true } as const;
+
 function commitWithMeta(
   repo: TempRepo,
   msg: string,
@@ -78,7 +85,7 @@ test('planted signal: A and B co-change 10 times; squash PR #11 changes A only; 
     });
     commitWithMeta(repo, 'docs: readme (#13)', { dateIso: '2026-02-05T12:00:00Z' });
 
-    const bench = await runBench({ cwd: repo.dir, windowDays: 7 });
+    const bench = await runBench({ config: LEGACY, cwd: repo.dir, windowDays: 7 });
     const pr11 = bench.prs.find((p) => p.prNumber === 11)!;
     assert.ok(pr11);
 
@@ -93,7 +100,7 @@ test('planted signal: A and B co-change 10 times; squash PR #11 changes A only; 
     assert.equal(ungatedCompanions[0]!.targets[0]!.matchesRaFollowUp, true);
 
     // Under production: must match brief computed on clone truncated at PR #11
-    const truncBrief = await replayBrief({
+    const truncBrief = await replayBrief({ config: LEGACY,
       cwd: truncDir,
       base: pr11Base,
       head: pr11Head,
@@ -187,12 +194,12 @@ test('calibration equivalence: present-day poor measured calibration (< 0.25) ne
     // Verify that at HEAD, backtest is 'measured' with precision < 0.25 (so present-day calibration WOULD suppress co-change)
     const headBase = resolveSha(repo.dir, 'HEAD~1')!;
     const headSha = resolveSha(repo.dir, 'HEAD')!;
-    const headBrief = await replayBrief({ cwd: repo.dir, base: headBase, head: headSha });
+    const headBrief = await replayBrief({ config: LEGACY, cwd: repo.dir, base: headBase, head: headSha });
     assert.equal(headBrief.calibration.status, 'measured');
     assert.ok((headBrief.calibration.precision ?? 1) < 0.25);
 
     // Run bench including PR #11: PR #11 must use its as-of calibration ('unavailable'), NOT the full-history 'measured' < 0.25 calibration!
-    const bench = await runBench({ cwd: repo.dir, prs: 20 });
+    const bench = await runBench({ config: LEGACY, cwd: repo.dir, prs: 20 });
     const pr11 = bench.prs.find((p) => p.prNumber === 11)!;
     assert.ok(pr11);
     assert.equal(pr11.policies.production.calibrationStatus, 'unavailable');
@@ -238,7 +245,7 @@ test('baseline leakage: a file that becomes popular only after PR #11 never appe
       });
     }
 
-    const bench = await runBench({ cwd: repo.dir, prs: 10 });
+    const bench = await runBench({ config: LEGACY, cwd: repo.dir, prs: 10 });
     const pr11 = bench.prs.find((p) => p.prNumber === 11)!;
     assert.ok(pr11);
 
@@ -359,7 +366,7 @@ test('outcomes: unrelated author (sameAuthor: false), .mailmap author mapping, r
       authorEmail: 'alice@canonical.example',
     });
 
-    const bench = await runBench({ cwd: repo.dir, windowDays: 7 });
+    const bench = await runBench({ config: LEGACY, cwd: repo.dir, windowDays: 7 });
 
     // Check PR #21 & PR #22: both followedUp by Bob (sameAuthor: false) and sharedWithOtherPrs: true
     const pr21 = bench.prs.find((p) => p.prNumber === 21)!;
@@ -429,13 +436,13 @@ test('cache equivalence and resumability: cache on vs off produces identical res
     commitWithMeta(repo, 'feat: pr 3 (#3)', { dateIso: '2026-01-25T00:00:00Z' });
 
     const fixedNow = new Date('2026-11-08T12:00:00Z');
-    const resCacheOn = await runBench({
+    const resCacheOn = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir: outCacheOn,
       raCache: true,
       now: fixedNow,
     });
-    const resCacheOff = await runBench({
+    const resCacheOff = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir: outCacheOff,
       raCache: false,
@@ -450,7 +457,7 @@ test('cache equivalence and resumability: cache on vs off produces identical res
     // Simulate crash after 1 PR
     await assert.rejects(
       () =>
-        runBench({
+        runBench({ config: LEGACY,
           cwd: repo.dir,
           outDir: outResume,
           failAfterPrs: 1,
@@ -466,7 +473,7 @@ test('cache equivalence and resumability: cache on vs off produces identical res
     // Refuses to resume when a setting changes (e.g. windowDays: 14 instead of 7)
     await assert.rejects(
       () =>
-        runBench({
+        runBench({ config: LEGACY,
           cwd: repo.dir,
           outDir: outResume,
           windowDays: 14,
@@ -477,7 +484,7 @@ test('cache equivalence and resumability: cache on vs off produces identical res
     );
 
     // Resumes cleanly with matching settings, recovering from the truncated last line and producing identical results
-    const resResumed = await runBench({
+    const resResumed = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir: outResume,
       resume: true,
@@ -626,7 +633,7 @@ test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reu
     commitWithMeta(repo, 'feat: pr 32 on late main (#32)', { dateIso: '2026-02-03T00:00:00Z' });
 
     const fixedNow = new Date('2026-11-08T12:00:00Z');
-    const fullBench = await runBench({
+    const fullBench = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir: outFull,
       prs: 3,
@@ -671,7 +678,7 @@ test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reu
     // Test --resume with calibrationEvery: 3 after crashing at 1 PR
     await assert.rejects(
       () =>
-        runBench({
+        runBench({ config: LEGACY,
           cwd: repo.dir,
           outDir: outResume,
           prs: 3,
@@ -681,7 +688,7 @@ test('calibration-every ancestry and resume: refuses non-ancestor checkpoint reu
         }),
       /Simulated crash after 1 PR/,
     );
-    const resumedBench = await runBench({
+    const resumedBench = await runBench({ config: LEGACY,
       cwd: repo.dir,
       outDir: outResume,
       prs: 3,
@@ -749,7 +756,7 @@ test('non-monotonic timestamps, snapshot .repo-archaeology.json baseline filters
     commitWithMeta(repo, 'fix: in-window follow-up to b (#41)', { dateIso: '2026-01-22T12:00:00Z' });
     const inWindowCommitSha = resolveSha(repo.dir, 'HEAD')!;
 
-    const bench = await runBench({ cwd: repo.dir, windowDays: 7 });
+    const bench = await runBench({ config: LEGACY, cwd: repo.dir, windowDays: 7 });
     const pr40 = bench.prs.find((p) => p.prNumber === 40)!;
     assert.ok(pr40);
 

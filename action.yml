@@ -1,5 +1,5 @@
 name: 'Gutter: PR change briefing'
-description: 'A one-page, evidence-backed briefing on every pull request: what changed, what it touches, and what it probably forgot.'
+description: 'A one-page, evidence-backed briefing on every pull request: what changed, what it touches, its tests, and its history.'
 author: 'Laqwan Brodie'
 
 branding:
@@ -24,11 +24,11 @@ inputs:
     required: false
     default: 'true'
   calibrate:
-    description: 'Measure warning accuracy on this repo with a backtest ("true"/"false").'
+    description: 'Backtest how reliable co-change history is on this repo ("true"/"false").'
     required: false
     default: 'true'
   max-forgotten:
-    description: 'Maximum likely-forgotten files to show.'
+    description: 'Maximum "usually changes with" pairs from co-change history to show.'
     required: false
     default: '3'
   archaeology-version:
@@ -52,10 +52,10 @@ outputs:
     description: 'quiet, brief, or full.'
     value: ${{ steps.brief.outputs.salience }}
   question-count:
-    description: 'Number of reviewer questions raised.'
+    description: 'Number of checklist items (facts for the reviewer).'
     value: ${{ steps.brief.outputs.question-count }}
   forgotten-count:
-    description: 'Number of likely-forgotten files shown.'
+    description: 'Number of "usually changes with" pairs shown (co-change history, not predictions).'
     value: ${{ steps.brief.outputs.forgotten-count }}
   json-path:
     description: 'Path to gutter.json on the runner.'
