@@ -1,7 +1,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
-import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
@@ -288,6 +288,52 @@ test('action.yml shell wrapper fails open when dist/action/main.js is missing, N
     assert.equal(resBad.stderr, '');
     assert.match(resBad.stdout, /::warning::Gutter needs Node\.js >= 22/);
     assert.match(readFileSync(outBad, 'utf8'), /status=error/);
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
+test('action.yml installs each requested repo-archaeology version into its own prefix (review P2)', { skip: process.platform === 'win32' }, () => {
+  const actionYml = readFileSync(join(ROOT, 'action.yml'), 'utf8');
+  const runMatch = /run:\s*\|\n([\s\S]*?)\n\n\s*- name: Upload/.exec(actionYml);
+  const prefixMatch = /id: ra-prefix[\s\S]*?\n      run: (.*)\n/.exec(actionYml);
+  assert.ok(runMatch?.[1] && prefixMatch?.[1], 'extracted the brief script and the prefix step');
+  const script = runMatch[1].split('\n').map((line) => line.replace(/^ {8}/, '')).join('\n');
+  const scratch = mkdtempSync(join(tmpdir(), 'gutter-ra-prefix-'));
+  try {
+    const bin = join(scratch, 'bin');
+    const actionPath = join(scratch, 'action');
+    const temp = join(scratch, 'temp');
+    mkdirSync(bin);
+    mkdirSync(join(actionPath, 'dist', 'action'), { recursive: true });
+    mkdirSync(temp);
+    writeFileSync(join(actionPath, 'dist', 'action', 'main.js'), '');
+    // Fake node: version checks pass; running main.js reports the library dir and its installed version.
+    writeFileSync(join(bin, 'node'), '#!/bin/sh\ncase "$1" in -v) echo v24.0.0;; -p) echo 24;; *) echo "LIB=$GUTTER_RA_LIB VERSION=$(sed -n \'s/.*"version":"\\([^"]*\\)".*/\\1/p\' "$GUTTER_RA_LIB/package.json")";; esac\n');
+    // Fake npm: "installs" exactly the requested version into --prefix.
+    writeFileSync(join(bin, 'npm'), '#!/bin/sh\nfor a; do if [ "$n" = 1 ]; then p="$a"; n=; fi; [ "$a" = --prefix ] && n=1; case "$a" in repo-archaeology@*) v="${a#repo-archaeology@}";; esac; done\nmkdir -p "$p/node_modules/repo-archaeology" && printf \'{"name":"repo-archaeology","version":"%s"}\' "$v" > "$p/node_modules/repo-archaeology/package.json"\n');
+    chmodSync(join(bin, 'node'), 0o755);
+    chmodSync(join(bin, 'npm'), 0o755);
+    const run = (spec: string) => {
+      const out = join(scratch, 'prefix.txt');
+      writeFileSync(out, '');
+      spawnSync('bash', ['-c', prefixMatch[1]!], { env: { ...process.env, SPEC: spec, RUNNER_TEMP: temp, GITHUB_OUTPUT: out } });
+      const dir = /^dir=(.*)$/m.exec(readFileSync(out, 'utf8'))?.[1] ?? '';
+      const res = spawnSync('bash', ['-c', script], {
+        encoding: 'utf8',
+        env: { ...process.env, PATH: `${bin}:${process.env.PATH ?? ''}`, GITHUB_ACTION_PATH: actionPath, RUNNER_TEMP: temp, INPUT_ARCHAEOLOGY_VERSION: spec, INPUT_RA_PREFIX: dir, GITHUB_OUTPUT: join(scratch, 'o.txt') },
+      });
+      return { dir, line: res.stdout.trim().split('\n').pop() ?? '' };
+    };
+    const a = run('0.4.0');
+    const b = run('0.10.0');
+    const c = run('^0.10.0');
+    const d = run('~0.10.0');
+    assert.match(a.line, /VERSION=0\.4\.0$/);
+    assert.match(b.line, /VERSION=0\.10\.0$/, 'a second version is installed, not the first one reused');
+    assert.equal(new Set([a.dir, b.dir, c.dir, d.dir]).size, 4, 'one prefix per spec, including ^ vs ~');
+    for (const x of [a, b, c, d]) assert.ok(x.dir.startsWith(join(temp, 'gutter-ra')) && x.line.includes(`LIB=${x.dir}/node_modules/repo-archaeology`));
+    assert.match(run('0.4.0').line, /VERSION=0\.4\.0$/, 'a repeated spec reuses its own install');
   } finally {
     rmSync(scratch, { recursive: true, force: true });
   }
