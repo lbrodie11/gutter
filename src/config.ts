@@ -9,6 +9,13 @@ export interface GutterConfig {
   minCalibratedPrecision?: number;
   minChurnForTestQuestion?: number;
   wideSurfaceImporters?: number;
+  /**
+   * Independent signals a brief needs before it is `full` (default 1). Each high-signal
+   * question (priority <= 2) counts once; breadth (>= 8 files or >= 3 modules) counts once.
+   */
+  salienceFullMinSignals?: number;
+  /** When false, breadth alone never makes a brief `full` (default true). */
+  salienceBreadthFull?: boolean;
   noHistory?: boolean;
   noCalibration?: boolean;
 }
@@ -451,6 +458,16 @@ export function parseGutterConfigObject(raw: unknown): GutterConfig {
     obj.wideSurfaceImporters >= 1
   ) {
     out.wideSurfaceImporters = Math.floor(obj.wideSurfaceImporters);
+  }
+  if (
+    typeof obj.salienceFullMinSignals === 'number' &&
+    Number.isFinite(obj.salienceFullMinSignals) &&
+    obj.salienceFullMinSignals >= 1
+  ) {
+    out.salienceFullMinSignals = Math.floor(obj.salienceFullMinSignals);
+  }
+  if (typeof obj.salienceBreadthFull === 'boolean') {
+    out.salienceBreadthFull = obj.salienceBreadthFull;
   }
   if (typeof obj.noHistory === 'boolean') {
     out.noHistory = obj.noHistory;

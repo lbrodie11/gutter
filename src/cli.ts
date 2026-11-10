@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { buildBrief } from './brief.ts';
-import type { GutterConfig } from './config.ts';
+import { parseGutterConfigObject, type GutterConfig } from './config.ts';
 import type { GutterBrief } from './contract.ts';
 import { runBench } from './bench/runner.ts';
 import { writeBrief } from './output.ts';
@@ -191,7 +191,15 @@ async function bench(args: string[]): Promise<number> {
 
   let configVariant: GutterConfig | undefined;
   if (values.config) {
-    configVariant = JSON.parse(readFileSync(resolve(values.config), 'utf8')) as GutterConfig;
+    const raw: unknown = JSON.parse(readFileSync(resolve(values.config), 'utf8'));
+    configVariant = parseGutterConfigObject(raw);
+    // A preregistered variant must run exactly as written: refuse keys or values the config parser drops.
+    const rawKeys = raw && typeof raw === 'object' && !Array.isArray(raw) ? Object.keys(raw) : [];
+    const dropped = rawKeys.filter((k) => !(k in configVariant!));
+    if (dropped.length > 0) {
+      process.stderr.write(`error: --config ${values.config}: unknown or invalid key(s): ${dropped.join(', ')}\n`);
+      return 2;
+    }
   }
 
   const outDir = resolve(values.out);
