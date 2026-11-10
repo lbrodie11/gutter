@@ -1,0 +1,2026 @@
+{
+  "searchedOn": "2026-11-10",
+  "filters": {
+    "archived": false,
+    "updatedAfter": "2026-08-12",
+    "maxSizeKb": 100000,
+    "sort": "stars desc",
+    "limit": 40
+  },
+  "categories": {
+    "ts-library": {
+      "search": [
+        "--language=typescript",
+        "--topic=library"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2024-07-03T15:58:42Z",
+          "defaultBranch": "main",
+          "fullName": "ibelick/motion-primitives",
+          "size": 1570,
+          "stargazersCount": 6929
+        },
+        {
+          "createdAt": "2024-03-08T14:25:35Z",
+          "defaultBranch": "main",
+          "fullName": "rolldown/tsdown",
+          "size": 8473,
+          "stargazersCount": 4339
+        },
+        {
+          "createdAt": "2025-06-03T15:21:45Z",
+          "defaultBranch": "main",
+          "fullName": "heroui-inc/heroui-native",
+          "size": 23872,
+          "stargazersCount": 3716
+        },
+        {
+          "createdAt": "2025-11-10T18:24:06Z",
+          "defaultBranch": "main",
+          "fullName": "coder/ghostty-web",
+          "size": 4621,
+          "stargazersCount": 3053
+        },
+        {
+          "createdAt": "2020-01-05T17:38:06Z",
+          "defaultBranch": "master",
+          "fullName": "intlify/vue-i18n",
+          "size": 33368,
+          "stargazersCount": 2714
+        },
+        {
+          "createdAt": "2022-04-29T12:40:18Z",
+          "defaultBranch": "main",
+          "fullName": "margelo/react-native-graph",
+          "size": 5747,
+          "stargazersCount": 2641
+        },
+        {
+          "createdAt": "2016-08-20T00:22:07Z",
+          "defaultBranch": "master",
+          "fullName": "remarkablemark/html-react-parser",
+          "size": 8133,
+          "stargazersCount": 2431
+        },
+        {
+          "createdAt": "2024-06-12T10:21:40Z",
+          "defaultBranch": "main",
+          "fullName": "margelo/nitro",
+          "size": 45303,
+          "stargazersCount": 1975
+        },
+        {
+          "createdAt": "2021-10-19T18:28:24Z",
+          "defaultBranch": "main",
+          "fullName": "saas-js/saas-ui",
+          "size": 73506,
+          "stargazersCount": 1657
+        },
+        {
+          "createdAt": "2018-05-08T19:41:24Z",
+          "defaultBranch": "master",
+          "fullName": "faastjs/faast.js",
+          "size": 22011,
+          "stargazersCount": 1483
+        },
+        {
+          "createdAt": "2024-03-04T08:18:53Z",
+          "defaultBranch": "main",
+          "fullName": "web-infra-dev/rslib",
+          "size": 11161,
+          "stargazersCount": 1043
+        },
+        {
+          "createdAt": "2018-03-17T10:18:30Z",
+          "defaultBranch": "master",
+          "fullName": "ilyashubin/scrollbooster",
+          "size": 1551,
+          "stargazersCount": 1005
+        },
+        {
+          "createdAt": "2020-02-07T04:18:11Z",
+          "defaultBranch": "main",
+          "fullName": "discordeno/discordeno",
+          "size": 39979,
+          "stargazersCount": 941
+        },
+        {
+          "createdAt": "2023-05-01T21:54:49Z",
+          "defaultBranch": "main",
+          "fullName": "lukasbach/headless-tree",
+          "size": 3975,
+          "stargazersCount": 910
+        },
+        {
+          "createdAt": "2020-05-06T05:49:08Z",
+          "defaultBranch": "master",
+          "fullName": "binance/binance-connector-js",
+          "size": 11650,
+          "stargazersCount": 755
+        },
+        {
+          "createdAt": "2018-09-19T14:18:21Z",
+          "defaultBranch": "main",
+          "fullName": "AxaFrance/oidc-client",
+          "size": 25371,
+          "stargazersCount": 681
+        },
+        {
+          "createdAt": "2019-01-16T15:51:01Z",
+          "defaultBranch": "master",
+          "fullName": "AnandChowdhary/calendar-link",
+          "size": 2190,
+          "stargazersCount": 629
+        },
+        {
+          "createdAt": "2026-07-24T01:22:52Z",
+          "defaultBranch": "main",
+          "fullName": "shadcn-labs/snapcn",
+          "size": 93082,
+          "stargazersCount": 605
+        },
+        {
+          "createdAt": "2019-12-25T19:37:27Z",
+          "defaultBranch": "master",
+          "fullName": "LouisMazel/maz-ui",
+          "size": 70709,
+          "stargazersCount": 565
+        },
+        {
+          "createdAt": "2019-07-22T11:53:56Z",
+          "defaultBranch": "master",
+          "fullName": "doodlewind/beam",
+          "size": 2251,
+          "stargazersCount": 528
+        },
+        {
+          "createdAt": "2026-05-04T08:28:59Z",
+          "defaultBranch": "main",
+          "fullName": "devmikets/hyperliquid-sdk",
+          "size": 4826,
+          "stargazersCount": 484
+        },
+        {
+          "createdAt": "2020-10-08T03:01:01Z",
+          "defaultBranch": "master",
+          "fullName": "solidstate-network/solidstate-solidity",
+          "size": 7165,
+          "stargazersCount": 472
+        },
+        {
+          "createdAt": "2024-09-17T22:49:45Z",
+          "defaultBranch": "main",
+          "fullName": "nktkas/hyperliquid",
+          "size": 4100,
+          "stargazersCount": 454
+        },
+        {
+          "createdAt": "2018-09-19T06:04:20Z",
+          "defaultBranch": "main",
+          "fullName": "cubing/cubing.js",
+          "size": 41607,
+          "stargazersCount": 373
+        },
+        {
+          "createdAt": "2020-04-09T09:17:41Z",
+          "defaultBranch": "main",
+          "fullName": "bjerkio/oidc-react",
+          "size": 2897,
+          "stargazersCount": 360
+        },
+        {
+          "createdAt": "2018-06-26T01:55:30Z",
+          "defaultBranch": "master",
+          "fullName": "rodrigogs/xvideos",
+          "size": 629,
+          "stargazersCount": 309
+        },
+        {
+          "createdAt": "2025-01-10T15:46:11Z",
+          "defaultBranch": "main",
+          "fullName": "nivandres/intl-t",
+          "size": 707,
+          "stargazersCount": 293
+        },
+        {
+          "createdAt": "2022-11-19T10:41:58Z",
+          "defaultBranch": "main",
+          "fullName": "WINOFFRG/limeplay",
+          "size": 20034,
+          "stargazersCount": 289
+        },
+        {
+          "createdAt": "2021-06-15T13:14:35Z",
+          "defaultBranch": "main",
+          "fullName": "stoatchat/javascript-client-sdk",
+          "size": 13296,
+          "stargazersCount": 287
+        },
+        {
+          "createdAt": "2021-08-13T06:09:40Z",
+          "defaultBranch": "master",
+          "fullName": "EinAeffchen/Omoide",
+          "size": 89629,
+          "stargazersCount": 277
+        },
+        {
+          "createdAt": "2019-10-14T17:12:33Z",
+          "defaultBranch": "master",
+          "fullName": "massive-com/client-js",
+          "size": 4618,
+          "stargazersCount": 272
+        },
+        {
+          "createdAt": "2020-05-28T09:48:29Z",
+          "defaultBranch": "master",
+          "fullName": "sandstone-mc/sandstone",
+          "size": 16102,
+          "stargazersCount": 256
+        },
+        {
+          "createdAt": "2016-11-09T17:24:44Z",
+          "defaultBranch": "main",
+          "fullName": "sagold/json-schema-library",
+          "size": 5007,
+          "stargazersCount": 255
+        },
+        {
+          "createdAt": "2020-03-20T07:32:01Z",
+          "defaultBranch": "main",
+          "fullName": "allianz/ng-aquila",
+          "size": 91348,
+          "stargazersCount": 250
+        },
+        {
+          "createdAt": "2024-09-27T02:15:50Z",
+          "defaultBranch": "main",
+          "fullName": "petera2c/simple-table",
+          "size": 39470,
+          "stargazersCount": 233
+        },
+        {
+          "createdAt": "2021-04-03T20:29:36Z",
+          "defaultBranch": "main",
+          "fullName": "kash/cubedesk",
+          "size": 58058,
+          "stargazersCount": 224
+        },
+        {
+          "createdAt": "2020-03-19T03:46:07Z",
+          "defaultBranch": "master",
+          "fullName": "docgeni/docgeni",
+          "size": 20136,
+          "stargazersCount": 201
+        },
+        {
+          "createdAt": "2015-08-19T14:36:53Z",
+          "defaultBranch": "develop",
+          "fullName": "matrix-org/matrix-appservice-bridge",
+          "size": 8122,
+          "stargazersCount": 187
+        },
+        {
+          "createdAt": "2021-06-21T21:12:45Z",
+          "defaultBranch": "main",
+          "fullName": "adbayb/termost",
+          "size": 1274,
+          "stargazersCount": 186
+        },
+        {
+          "createdAt": "2020-03-31T13:57:50Z",
+          "defaultBranch": "main",
+          "fullName": "danielroe/sanity-typed-queries",
+          "size": 8267,
+          "stargazersCount": 176
+        }
+      ]
+    },
+    "ts-app-paths": {
+      "search": [
+        "--language=typescript",
+        "--topic=nextjs"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2023-01-04T12:43:27Z",
+          "defaultBranch": "main",
+          "fullName": "shadcn-ui/ui",
+          "size": 75193,
+          "stargazersCount": 127819
+        },
+        {
+          "createdAt": "2023-03-10T18:27:54Z",
+          "defaultBranch": "main",
+          "fullName": "ChatGPTNextWeb/NextChat",
+          "size": 23969,
+          "stargazersCount": 88944
+        },
+        {
+          "createdAt": "2022-01-30T15:25:18Z",
+          "defaultBranch": "main",
+          "fullName": "AykutSarac/jsoncrack.com",
+          "size": 41986,
+          "stargazersCount": 44591
+        },
+        {
+          "createdAt": "2023-07-08T17:24:22Z",
+          "defaultBranch": "main",
+          "fullName": "gitroomhq/postiz-app",
+          "size": 64962,
+          "stargazersCount": 41258
+        },
+        {
+          "createdAt": "2026-03-13T11:14:39Z",
+          "defaultBranch": "master",
+          "fullName": "JCodesMore/ai-website-cloner-template",
+          "size": 1519,
+          "stargazersCount": 38948
+        },
+        {
+          "createdAt": "2024-04-19T07:49:30Z",
+          "defaultBranch": "canary",
+          "fullName": "Dokploy/dokploy",
+          "size": 35898,
+          "stargazersCount": 38388
+        },
+        {
+          "createdAt": "2025-03-23T15:03:48Z",
+          "defaultBranch": "main",
+          "fullName": "DayuanJiang/next-ai-draw-io",
+          "size": 11772,
+          "stargazersCount": 36861
+        },
+        {
+          "createdAt": "2019-10-28T18:16:01Z",
+          "defaultBranch": "main",
+          "fullName": "vercel/swr",
+          "size": 8334,
+          "stargazersCount": 32488
+        },
+        {
+          "createdAt": "2022-03-19T15:01:46Z",
+          "defaultBranch": "main",
+          "fullName": "slymnoyann/hey.xyz",
+          "size": 66069,
+          "stargazersCount": 29346
+        },
+        {
+          "createdAt": "2024-06-25T19:16:02Z",
+          "defaultBranch": "main",
+          "fullName": "onlook-dev/onlook",
+          "size": 83033,
+          "stargazersCount": 27162
+        },
+        {
+          "createdAt": "2022-08-27T22:15:11Z",
+          "defaultBranch": "main",
+          "fullName": "dubinc/dub.link",
+          "size": 94523,
+          "stargazersCount": 25148
+        },
+        {
+          "createdAt": "2025-04-06T10:52:08Z",
+          "defaultBranch": "main",
+          "fullName": "LibreSpark/LibreTV",
+          "size": 4414,
+          "stargazersCount": 24246
+        },
+        {
+          "createdAt": "2025-04-11T06:33:48Z",
+          "defaultBranch": "main",
+          "fullName": "dyad-sh/dyad",
+          "size": 63161,
+          "stargazersCount": 22256
+        },
+        {
+          "createdAt": "2025-09-28T18:16:32Z",
+          "defaultBranch": "main",
+          "fullName": "Open-Dev-Society/OpenStock",
+          "size": 3134,
+          "stargazersCount": 21407
+        },
+        {
+          "createdAt": "2023-05-19T16:36:23Z",
+          "defaultBranch": "main",
+          "fullName": "vercel/chatbot",
+          "size": 6375,
+          "stargazersCount": 21041
+        },
+        {
+          "createdAt": "2022-04-09T07:53:01Z",
+          "defaultBranch": "main",
+          "fullName": "linkwarden/linkwarden",
+          "size": 43737,
+          "stargazersCount": 20359
+        },
+        {
+          "createdAt": "2024-12-15T10:32:03Z",
+          "defaultBranch": "main",
+          "fullName": "ahmedkhaleel2004/gitdiagram",
+          "size": 15044,
+          "stargazersCount": 18839
+        },
+        {
+          "createdAt": "2026-05-01T05:09:59Z",
+          "defaultBranch": "main",
+          "fullName": "Renhuai123/ziwei-doushu",
+          "size": 3014,
+          "stargazersCount": 17442
+        },
+        {
+          "createdAt": "2020-07-22T19:47:35Z",
+          "defaultBranch": "main",
+          "fullName": "ixartz/Next-js-Boilerplate",
+          "size": 46251,
+          "stargazersCount": 13091
+        },
+        {
+          "createdAt": "2024-08-06T05:20:16Z",
+          "defaultBranch": "dev",
+          "fullName": "codexu/note-gen",
+          "size": 20189,
+          "stargazersCount": 12997
+        },
+        {
+          "createdAt": "2024-10-23T10:04:59Z",
+          "defaultBranch": "main",
+          "fullName": "blinkospace/blinko",
+          "size": 37199,
+          "stargazersCount": 11188
+        },
+        {
+          "createdAt": "2015-03-14T15:45:55Z",
+          "defaultBranch": "master",
+          "fullName": "chimurai/http-proxy-middleware",
+          "size": 4785,
+          "stargazersCount": 11129
+        },
+        {
+          "createdAt": "2024-10-15T10:05:35Z",
+          "defaultBranch": "main",
+          "fullName": "cosscom/ui",
+          "size": 27326,
+          "stargazersCount": 10812
+        },
+        {
+          "createdAt": "2026-09-02T04:36:34Z",
+          "defaultBranch": "main",
+          "fullName": "lnkiai/m3e-canvas",
+          "size": 29325,
+          "stargazersCount": 10273
+        },
+        {
+          "createdAt": "2023-12-23T22:15:18Z",
+          "defaultBranch": "main",
+          "fullName": "BartoszJarocki/cv",
+          "size": 1380,
+          "stargazersCount": 9676
+        },
+        {
+          "createdAt": "2023-05-29T20:00:15Z",
+          "defaultBranch": "main",
+          "fullName": "papermark/papermark",
+          "size": 36088,
+          "stargazersCount": 9323
+        },
+        {
+          "createdAt": "2024-04-05T13:55:29Z",
+          "defaultBranch": "main",
+          "fullName": "miurla/morphic",
+          "size": 11189,
+          "stargazersCount": 9311
+        },
+        {
+          "createdAt": "2025-06-11T13:19:26Z",
+          "defaultBranch": "main",
+          "fullName": "Snouzy/workout-cool",
+          "size": 9215,
+          "stargazersCount": 8675
+        },
+        {
+          "createdAt": "2020-04-15T22:53:26Z",
+          "defaultBranch": "master",
+          "fullName": "juliencrn/usehooks-ts",
+          "size": 11781,
+          "stargazersCount": 7864
+        },
+        {
+          "createdAt": "2024-03-29T19:25:52Z",
+          "defaultBranch": "main",
+          "fullName": "ixartz/SaaS-Boilerplate",
+          "size": 7002,
+          "stargazersCount": 7485
+        },
+        {
+          "createdAt": "2023-04-21T10:57:41Z",
+          "defaultBranch": "main",
+          "fullName": "Blazity/next-enterprise",
+          "size": 5161,
+          "stargazersCount": 7470
+        },
+        {
+          "createdAt": "2023-11-02T11:54:38Z",
+          "defaultBranch": "main",
+          "fullName": "Kiranism/next-shadcn-dashboard-starter",
+          "size": 5345,
+          "stargazersCount": 7248
+        },
+        {
+          "createdAt": "2021-01-15T16:56:21Z",
+          "defaultBranch": "main",
+          "fullName": "transitive-bullshit/nextjs-notion-starter-kit",
+          "size": 5053,
+          "stargazersCount": 7038
+        },
+        {
+          "createdAt": "2026-02-06T12:38:55Z",
+          "defaultBranch": "main",
+          "fullName": "op7418/CodePilot",
+          "size": 34624,
+          "stargazersCount": 6520
+        },
+        {
+          "createdAt": "2026-02-13T04:06:19Z",
+          "defaultBranch": "main",
+          "fullName": "builderz-labs/mission-control",
+          "size": 19457,
+          "stargazersCount": 6471
+        },
+        {
+          "createdAt": "2022-02-16T09:28:57Z",
+          "defaultBranch": "main",
+          "fullName": "bagisto/nextjs-commerce",
+          "size": 10677,
+          "stargazersCount": 6440
+        },
+        {
+          "createdAt": "2024-07-10T20:31:32Z",
+          "defaultBranch": "main",
+          "fullName": "e2b-dev/fragments",
+          "size": 5426,
+          "stargazersCount": 6407
+        },
+        {
+          "createdAt": "2023-09-17T16:56:48Z",
+          "defaultBranch": "master",
+          "fullName": "al1abb/invoify",
+          "size": 4663,
+          "stargazersCount": 6391
+        },
+        {
+          "createdAt": "2023-07-10T13:41:17Z",
+          "defaultBranch": "main",
+          "fullName": "sadmann7/tablecn",
+          "size": 10058,
+          "stargazersCount": 6379
+        },
+        {
+          "createdAt": "2018-11-09T20:23:21Z",
+          "defaultBranch": "master",
+          "fullName": "i18next/next-i18next",
+          "size": 8847,
+          "stargazersCount": 6164
+        }
+      ]
+    },
+    "ts-monorepo": {
+      "search": [
+        "--language=typescript",
+        "--topic=monorepo"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2015-12-04T09:36:55Z",
+          "defaultBranch": "main",
+          "fullName": "lerna/lerna",
+          "size": 43689,
+          "stargazersCount": 36029
+        },
+        {
+          "createdAt": "2020-07-11T02:29:21Z",
+          "defaultBranch": "main",
+          "fullName": "vbenjs/vue-vben-admin",
+          "size": 49299,
+          "stargazersCount": 33782
+        },
+        {
+          "createdAt": "2026-07-29T18:49:19Z",
+          "defaultBranch": "main",
+          "fullName": "hypit-ai/hypit",
+          "size": 52538,
+          "stargazersCount": 29000
+        },
+        {
+          "createdAt": "2021-03-05T02:35:53Z",
+          "defaultBranch": "main",
+          "fullName": "tj-actions/changed-files",
+          "size": 51560,
+          "stargazersCount": 2736
+        },
+        {
+          "createdAt": "2019-05-25T16:26:55Z",
+          "defaultBranch": "master",
+          "fullName": "NiGhTTraX/ts-monorepo",
+          "size": 7786,
+          "stargazersCount": 1631
+        },
+        {
+          "createdAt": "2021-12-17T19:38:35Z",
+          "defaultBranch": "main",
+          "fullName": "ducktors/turborepo-remote-cache",
+          "size": 4662,
+          "stargazersCount": 1492
+        },
+        {
+          "createdAt": "2020-01-22T09:03:54Z",
+          "defaultBranch": "master",
+          "fullName": "folke/ultra-runner",
+          "size": 3338,
+          "stargazersCount": 1249
+        },
+        {
+          "createdAt": "2026-05-11T11:28:43Z",
+          "defaultBranch": "main",
+          "fullName": "Mininglamp-OSS/octo-web",
+          "size": 50639,
+          "stargazersCount": 1213
+        },
+        {
+          "createdAt": "2019-04-05T14:42:26Z",
+          "defaultBranch": "main",
+          "fullName": "semaphore-protocol/semaphore",
+          "size": 13458,
+          "stargazersCount": 1097
+        },
+        {
+          "createdAt": "2020-12-21T10:02:35Z",
+          "defaultBranch": "main",
+          "fullName": "ttttonyhe/ouorz-mono",
+          "size": 24140,
+          "stargazersCount": 1069
+        },
+        {
+          "createdAt": "2016-05-24T19:41:40Z",
+          "defaultBranch": "master",
+          "fullName": "lerna/lerna-changelog",
+          "size": 4017,
+          "stargazersCount": 802
+        },
+        {
+          "createdAt": "2021-07-14T09:39:11Z",
+          "defaultBranch": "main",
+          "fullName": "bluelibs/bluelibs",
+          "size": 4297,
+          "stargazersCount": 777
+        },
+        {
+          "createdAt": "2020-12-04T12:56:03Z",
+          "defaultBranch": "main",
+          "fullName": "jscutlery/semver",
+          "size": 26842,
+          "stargazersCount": 768
+        },
+        {
+          "createdAt": "2022-09-01T06:36:37Z",
+          "defaultBranch": "main",
+          "fullName": "LucivHuang/heimdallr-sdk",
+          "size": 10641,
+          "stargazersCount": 686
+        },
+        {
+          "createdAt": "2018-10-24T11:37:34Z",
+          "defaultBranch": "master",
+          "fullName": "contentful/rich-text",
+          "size": 14448,
+          "stargazersCount": 582
+        },
+        {
+          "createdAt": "2020-07-25T17:42:17Z",
+          "defaultBranch": "main",
+          "fullName": "nx-go/nx-go",
+          "size": 1678,
+          "stargazersCount": 573
+        },
+        {
+          "createdAt": "2022-01-29T01:12:06Z",
+          "defaultBranch": "main",
+          "fullName": "lerna-lite/lerna-lite",
+          "size": 13486,
+          "stargazersCount": 566
+        },
+        {
+          "createdAt": "2024-04-01T23:24:59Z",
+          "defaultBranch": "main",
+          "fullName": "vltpkg/vltpkg",
+          "size": 37093,
+          "stargazersCount": 566
+        },
+        {
+          "createdAt": "2018-10-30T22:03:33Z",
+          "defaultBranch": "master",
+          "fullName": "entria/entria-fullstack",
+          "size": 3822,
+          "stargazersCount": 499
+        },
+        {
+          "createdAt": "2023-09-25T17:27:49Z",
+          "defaultBranch": "master",
+          "fullName": "nisabmohd/aria-docs",
+          "size": 9378,
+          "stargazersCount": 414
+        },
+        {
+          "createdAt": "2019-09-02T05:45:38Z",
+          "defaultBranch": "master",
+          "fullName": "lupu60/nestjs-toolbox",
+          "size": 13423,
+          "stargazersCount": 407
+        },
+        {
+          "createdAt": "2019-10-28T10:23:09Z",
+          "defaultBranch": "master",
+          "fullName": "bennymeg/nx-electron",
+          "size": 4750,
+          "stargazersCount": 368
+        },
+        {
+          "createdAt": "2021-12-16T14:49:12Z",
+          "defaultBranch": "main",
+          "fullName": "nrwl/monorepo.tools",
+          "size": 9252,
+          "stargazersCount": 353
+        },
+        {
+          "createdAt": "2026-04-07T14:40:05Z",
+          "defaultBranch": "main",
+          "fullName": "one-ea/Monolith",
+          "size": 2588,
+          "stargazersCount": 352
+        },
+        {
+          "createdAt": "2020-10-15T12:20:10Z",
+          "defaultBranch": "main",
+          "fullName": "Quramy/npm-ts-workspaces-example",
+          "size": 1078,
+          "stargazersCount": 332
+        },
+        {
+          "createdAt": "2023-06-06T14:41:08Z",
+          "defaultBranch": "main",
+          "fullName": "ba-archive/blue-archive",
+          "size": 60093,
+          "stargazersCount": 326
+        },
+        {
+          "createdAt": "2022-07-14T08:42:30Z",
+          "defaultBranch": "main",
+          "fullName": "nrwl/nx-recipes",
+          "size": 12969,
+          "stargazersCount": 318
+        },
+        {
+          "createdAt": "2017-12-29T15:58:24Z",
+          "defaultBranch": "master",
+          "fullName": "firsttris/vscode-jest-runner",
+          "size": 13597,
+          "stargazersCount": 304
+        },
+        {
+          "createdAt": "2025-02-13T09:44:38Z",
+          "defaultBranch": "main",
+          "fullName": "nktnet1/rt-stack",
+          "size": 2909,
+          "stargazersCount": 293
+        },
+        {
+          "createdAt": "2018-02-17T13:43:02Z",
+          "defaultBranch": "main",
+          "fullName": "pencil-js/pencil.js",
+          "size": 7015,
+          "stargazersCount": 288
+        },
+        {
+          "createdAt": "2026-01-07T08:24:56Z",
+          "defaultBranch": "main",
+          "fullName": "first-fluke/fullstack-starter",
+          "size": 5632,
+          "stargazersCount": 226
+        },
+        {
+          "createdAt": "2022-03-09T09:29:00Z",
+          "defaultBranch": "main",
+          "fullName": "soybeanjs/soybean-admin-nestjs",
+          "size": 6635,
+          "stargazersCount": 217
+        },
+        {
+          "createdAt": "2024-06-12T17:55:50Z",
+          "defaultBranch": "main",
+          "fullName": "rharkor/caching-for-turbo",
+          "size": 63656,
+          "stargazersCount": 216
+        },
+        {
+          "createdAt": "2022-01-31T23:44:23Z",
+          "defaultBranch": "main",
+          "fullName": "keadex/keadex",
+          "size": 32778,
+          "stargazersCount": 205
+        },
+        {
+          "createdAt": "2026-03-25T16:29:20Z",
+          "defaultBranch": "main",
+          "fullName": "zhitaie/mini-game-workflow",
+          "size": 18271,
+          "stargazersCount": 198
+        },
+        {
+          "createdAt": "2023-04-24T08:13:11Z",
+          "defaultBranch": "main",
+          "fullName": "Weaverse/weaverse",
+          "size": 14884,
+          "stargazersCount": 197
+        },
+        {
+          "createdAt": "2023-05-06T12:35:21Z",
+          "defaultBranch": "main",
+          "fullName": "0x80/isolate-package",
+          "size": 1273,
+          "stargazersCount": 196
+        },
+        {
+          "createdAt": "2024-04-01T07:10:02Z",
+          "defaultBranch": "main",
+          "fullName": "NamesMT/starter-monorepo",
+          "size": 6017,
+          "stargazersCount": 190
+        },
+        {
+          "createdAt": "2025-09-03T14:15:52Z",
+          "defaultBranch": "main",
+          "fullName": "gurselcakar/universal-react-monorepo",
+          "size": 3921,
+          "stargazersCount": 187
+        },
+        {
+          "createdAt": "2023-10-31T19:36:56Z",
+          "defaultBranch": "main",
+          "fullName": "Pocket/pocket-monorepo",
+          "size": 25861,
+          "stargazersCount": 181
+        }
+      ]
+    },
+    "go": {
+      "search": [
+        "--language=go"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2014-07-06T13:42:15Z",
+          "defaultBranch": "main",
+          "fullName": "avelino/awesome-go",
+          "size": 12821,
+          "stargazersCount": 193100
+        },
+        {
+          "createdAt": "2023-06-26T19:39:32Z",
+          "defaultBranch": "main",
+          "fullName": "ollama/ollama",
+          "size": 97180,
+          "stargazersCount": 186534
+        },
+        {
+          "createdAt": "2026-04-04T10:03:00Z",
+          "defaultBranch": "main",
+          "fullName": "JuliusBrussee/caveman",
+          "size": 21750,
+          "stargazersCount": 118811
+        },
+        {
+          "createdAt": "2015-12-21T15:24:59Z",
+          "defaultBranch": "dev",
+          "fullName": "fatedier/frp",
+          "size": 33195,
+          "stargazersCount": 110508
+        },
+        {
+          "createdAt": "2014-06-16T23:57:25Z",
+          "defaultBranch": "master",
+          "fullName": "gin-gonic/gin",
+          "size": 10657,
+          "stargazersCount": 89617
+        },
+        {
+          "createdAt": "2013-10-23T16:04:23Z",
+          "defaultBranch": "master",
+          "fullName": "junegunn/fzf",
+          "size": 8486,
+          "stargazersCount": 84118
+        },
+        {
+          "createdAt": "2015-01-13T19:45:03Z",
+          "defaultBranch": "master",
+          "fullName": "caddyserver/caddy",
+          "size": 22640,
+          "stargazersCount": 78948
+        },
+        {
+          "createdAt": "2019-01-02T19:53:43Z",
+          "defaultBranch": "main",
+          "fullName": "nektos/act",
+          "size": 20051,
+          "stargazersCount": 72632
+        },
+        {
+          "createdAt": "2021-12-08T15:30:18Z",
+          "defaultBranch": "main",
+          "fullName": "usememos/memos",
+          "size": 49886,
+          "stargazersCount": 64378
+        },
+        {
+          "createdAt": "2025-07-01T19:43:27Z",
+          "defaultBranch": "main",
+          "fullName": "router-for-me/CLIProxyAPI",
+          "size": 51640,
+          "stargazersCount": 58162
+        },
+        {
+          "createdAt": "2018-05-13T15:44:01Z",
+          "defaultBranch": "main",
+          "fullName": "wagoodman/dive",
+          "size": 7107,
+          "stargazersCount": 54712
+        },
+        {
+          "createdAt": "2023-11-10T19:33:36Z",
+          "defaultBranch": "main",
+          "fullName": "QuantumNous/new-api",
+          "size": 96726,
+          "stargazersCount": 51696
+        },
+        {
+          "createdAt": "2020-12-23T17:40:29Z",
+          "defaultBranch": "main",
+          "fullName": "AlistGo/alist",
+          "size": 6916,
+          "stargazersCount": 50440
+        },
+        {
+          "createdAt": "2026-05-18T02:16:36Z",
+          "defaultBranch": "main",
+          "fullName": "alibaba/open-code-review",
+          "size": 56967,
+          "stargazersCount": 49774
+        },
+        {
+          "createdAt": "2023-02-09T19:16:57Z",
+          "defaultBranch": "main",
+          "fullName": "MHSanaei/3x-ui",
+          "size": 80642,
+          "stargazersCount": 49660
+        },
+        {
+          "createdAt": "2019-10-03T15:24:53Z",
+          "defaultBranch": "trunk",
+          "fullName": "cli/cli",
+          "size": 83282,
+          "stargazersCount": 46950
+        },
+        {
+          "createdAt": "2015-09-04T11:42:53Z",
+          "defaultBranch": "master",
+          "fullName": "v2ray/v2ray-core",
+          "size": 55173,
+          "stargazersCount": 46907
+        },
+        {
+          "createdAt": "2020-01-10T21:04:03Z",
+          "defaultBranch": "main",
+          "fullName": "charmbracelet/bubbletea",
+          "size": 5920,
+          "stargazersCount": 45662
+        },
+        {
+          "createdAt": "2020-06-21T09:21:05Z",
+          "defaultBranch": "main",
+          "fullName": "juanfont/headscale",
+          "size": 71377,
+          "stargazersCount": 45547
+        },
+        {
+          "createdAt": "2020-11-09T11:23:10Z",
+          "defaultBranch": "main",
+          "fullName": "XTLS/Xray-core",
+          "size": 32656,
+          "stargazersCount": 42784
+        },
+        {
+          "createdAt": "2017-10-17T15:20:18Z",
+          "defaultBranch": "main",
+          "fullName": "schollz/croc",
+          "size": 13016,
+          "stargazersCount": 40902
+        },
+        {
+          "createdAt": "2020-01-16T03:59:20Z",
+          "defaultBranch": "main",
+          "fullName": "gofiber/fiber",
+          "size": 51137,
+          "stargazersCount": 40260
+        },
+        {
+          "createdAt": "2013-10-25T08:31:38Z",
+          "defaultBranch": "master",
+          "fullName": "go-gorm/gorm",
+          "size": 4664,
+          "stargazersCount": 39989
+        },
+        {
+          "createdAt": "2022-06-30T13:27:22Z",
+          "defaultBranch": "testing",
+          "fullName": "SagerNet/sing-box",
+          "size": 30673,
+          "stargazersCount": 39836
+        },
+        {
+          "createdAt": "2020-01-31T22:00:03Z",
+          "defaultBranch": "main",
+          "fullName": "tailscale/tailscale",
+          "size": 92094,
+          "stargazersCount": 38882
+        },
+        {
+          "createdAt": "2014-02-07T07:54:44Z",
+          "defaultBranch": "main",
+          "fullName": "harness/harness",
+          "size": 60276,
+          "stargazersCount": 38878
+        },
+        {
+          "createdAt": "2013-12-09T11:40:58Z",
+          "defaultBranch": "main",
+          "fullName": "docker/compose",
+          "size": 30566,
+          "stargazersCount": 38677
+        },
+        {
+          "createdAt": "2024-04-27T18:55:38Z",
+          "defaultBranch": "main",
+          "fullName": "glanceapp/glance",
+          "size": 20540,
+          "stargazersCount": 38130
+        },
+        {
+          "createdAt": "2014-04-27T14:07:58Z",
+          "defaultBranch": "master",
+          "fullName": "restic/restic",
+          "size": 68167,
+          "stargazersCount": 37113
+        },
+        {
+          "createdAt": "2021-10-23T19:25:32Z",
+          "defaultBranch": "main",
+          "fullName": "binwiederhier/ntfy",
+          "size": 44269,
+          "stargazersCount": 35449
+        },
+        {
+          "createdAt": "2019-01-25T18:46:02Z",
+          "defaultBranch": "master",
+          "fullName": "derailed/k9s",
+          "size": 65723,
+          "stargazersCount": 34952
+        },
+        {
+          "createdAt": "2019-04-15T10:05:54Z",
+          "defaultBranch": "master",
+          "fullName": "v2fly/v2ray-core",
+          "size": 69617,
+          "stargazersCount": 34757
+        },
+        {
+          "createdAt": "2025-03-04T16:42:04Z",
+          "defaultBranch": "main",
+          "fullName": "github/github-mcp-server",
+          "size": 57981,
+          "stargazersCount": 34361
+        },
+        {
+          "createdAt": "2025-01-06T22:22:48Z",
+          "defaultBranch": "main",
+          "fullName": "vxcontrol/pentagi",
+          "size": 60557,
+          "stargazersCount": 33862
+        },
+        {
+          "createdAt": "2017-07-18T00:06:14Z",
+          "defaultBranch": "master",
+          "fullName": "halfrost/LeetCode-Go",
+          "size": 43097,
+          "stargazersCount": 33812
+        },
+        {
+          "createdAt": "2020-08-07T15:37:57Z",
+          "defaultBranch": "master",
+          "fullName": "zeromicro/go-zero",
+          "size": 33346,
+          "stargazersCount": 33421
+        },
+        {
+          "createdAt": "2015-03-01T17:43:01Z",
+          "defaultBranch": "master",
+          "fullName": "labstack/echo",
+          "size": 6903,
+          "stargazersCount": 32797
+        },
+        {
+          "createdAt": "2020-04-03T18:47:11Z",
+          "defaultBranch": "dev",
+          "fullName": "projectdiscovery/nuclei",
+          "size": 49487,
+          "stargazersCount": 32751
+        },
+        {
+          "createdAt": "2012-02-29T02:32:08Z",
+          "defaultBranch": "master",
+          "fullName": "beego/beego",
+          "size": 11988,
+          "stargazersCount": 32432
+        },
+        {
+          "createdAt": "2016-03-21T15:30:24Z",
+          "defaultBranch": "master",
+          "fullName": "grafana/k6",
+          "size": 87539,
+          "stargazersCount": 32244
+        }
+      ]
+    },
+    "python": {
+      "search": [
+        "--language=python"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2016-03-20T23:49:42Z",
+          "defaultBranch": "master",
+          "fullName": "public-apis/public-apis",
+          "size": 15829,
+          "stargazersCount": 497833
+        },
+        {
+          "createdAt": "2013-10-11T06:50:37Z",
+          "defaultBranch": "main",
+          "fullName": "EbookFoundation/free-programming-books",
+          "size": 22279,
+          "stargazersCount": 401436
+        },
+        {
+          "createdAt": "2017-02-26T16:15:28Z",
+          "defaultBranch": "master",
+          "fullName": "donnemartin/system-design-primer",
+          "size": 11273,
+          "stargazersCount": 377544
+        },
+        {
+          "createdAt": "2014-06-27T21:00:06Z",
+          "defaultBranch": "master",
+          "fullName": "vinta/awesome-python",
+          "size": 7034,
+          "stargazersCount": 333757
+        },
+        {
+          "createdAt": "2017-04-12T05:07:46Z",
+          "defaultBranch": "master",
+          "fullName": "practical-tutorials/project-based-learning",
+          "size": 472,
+          "stargazersCount": 289463
+        },
+        {
+          "createdAt": "2016-07-16T09:44:01Z",
+          "defaultBranch": "master",
+          "fullName": "TheAlgorithms/Python",
+          "size": 18316,
+          "stargazersCount": 225986
+        },
+        {
+          "createdAt": "2020-10-26T04:22:55Z",
+          "defaultBranch": "master",
+          "fullName": "yt-dlp/yt-dlp",
+          "size": 65029,
+          "stargazersCount": 206651
+        },
+        {
+          "createdAt": "2024-11-13T19:56:40Z",
+          "defaultBranch": "main",
+          "fullName": "microsoft/markitdown",
+          "size": 6015,
+          "stargazersCount": 194737
+        },
+        {
+          "createdAt": "2025-09-22T15:53:31Z",
+          "defaultBranch": "main",
+          "fullName": "anthropics/skills",
+          "size": 5502,
+          "stargazersCount": 191916
+        },
+        {
+          "createdAt": "2016-05-04T06:24:11Z",
+          "defaultBranch": "master",
+          "fullName": "521xueweihan/HelloGitHub",
+          "size": 12768,
+          "stargazersCount": 187971
+        },
+        {
+          "createdAt": "2025-08-21T22:54:31Z",
+          "defaultBranch": "main",
+          "fullName": "github/spec-kit",
+          "size": 22400,
+          "stargazersCount": 149146
+        },
+        {
+          "createdAt": "2025-11-30T11:36:31Z",
+          "defaultBranch": "main",
+          "fullName": "nextlevelbuilder/ui-ux-pro-max-skill",
+          "size": 8716,
+          "stargazersCount": 147661
+        },
+        {
+          "createdAt": "2026-04-03T15:49:07Z",
+          "defaultBranch": "v8",
+          "fullName": "Graphify-Labs/graphify",
+          "size": 35258,
+          "stargazersCount": 145427
+        },
+        {
+          "createdAt": "2010-10-31T14:35:07Z",
+          "defaultBranch": "master",
+          "fullName": "ytdl-org/youtube-dl",
+          "size": 65532,
+          "stargazersCount": 141522
+        },
+        {
+          "createdAt": "2024-12-28T03:31:08Z",
+          "defaultBranch": "main",
+          "fullName": "TauricResearch/TradingAgents",
+          "size": 6566,
+          "stargazersCount": 121817
+        },
+        {
+          "createdAt": "2024-10-31T16:00:56Z",
+          "defaultBranch": "main",
+          "fullName": "browser-use/browser-use",
+          "size": 40312,
+          "stargazersCount": 120548
+        },
+        {
+          "createdAt": "2022-09-16T20:02:54Z",
+          "defaultBranch": "main",
+          "fullName": "openai/whisper",
+          "size": 12797,
+          "stargazersCount": 112350
+        },
+        {
+          "createdAt": "2026-02-24T02:10:24Z",
+          "defaultBranch": "main",
+          "fullName": "Panniantong/Agent-Reach",
+          "size": 3407,
+          "stargazersCount": 110832
+        },
+        {
+          "createdAt": "2018-12-24T14:30:48Z",
+          "defaultBranch": "master",
+          "fullName": "sherlock-project/sherlock",
+          "size": 19101,
+          "stargazersCount": 108457
+        },
+        {
+          "createdAt": "2018-12-08T08:21:47Z",
+          "defaultBranch": "master",
+          "fullName": "fastapi/fastapi",
+          "size": 60981,
+          "stargazersCount": 104611
+        },
+        {
+          "createdAt": "2024-10-13T20:29:53Z",
+          "defaultBranch": "main",
+          "fullName": "D4Vinci/Scrapling",
+          "size": 16312,
+          "stargazersCount": 100948
+        },
+        {
+          "createdAt": "2015-03-22T18:50:58Z",
+          "defaultBranch": "master",
+          "fullName": "3b1b/manim",
+          "size": 77331,
+          "stargazersCount": 96315
+        },
+        {
+          "createdAt": "2026-05-31T14:05:51Z",
+          "defaultBranch": "dev",
+          "fullName": "odysseus-dev/odysseus",
+          "size": 49818,
+          "stargazersCount": 95542
+        },
+        {
+          "createdAt": "2025-11-26T04:23:02Z",
+          "defaultBranch": "main",
+          "fullName": "666ghj/MiroFish",
+          "size": 16817,
+          "stargazersCount": 85153
+        },
+        {
+          "createdAt": "2016-10-18T07:29:07Z",
+          "defaultBranch": "master",
+          "fullName": "swisskyrepo/PayloadsAllTheThings",
+          "size": 23349,
+          "stargazersCount": 82555
+        },
+        {
+          "createdAt": "2020-04-11T09:21:31Z",
+          "defaultBranch": "master",
+          "fullName": "Z4nzu/hackingtool",
+          "size": 6644,
+          "stargazersCount": 81839
+        },
+        {
+          "createdAt": "2023-11-14T17:53:32Z",
+          "defaultBranch": "main",
+          "fullName": "abi/screenshot-to-code",
+          "size": 11060,
+          "stargazersCount": 81126
+        },
+        {
+          "createdAt": "2025-06-29T15:34:15Z",
+          "defaultBranch": "main",
+          "fullName": "shareAI-lab/learn-claude-code",
+          "size": 6169,
+          "stargazersCount": 80210
+        },
+        {
+          "createdAt": "2026-03-29T15:23:22Z",
+          "defaultBranch": "main",
+          "fullName": "OpenMontageInc/OpenMontage",
+          "size": 78414,
+          "stargazersCount": 79341
+        },
+        {
+          "createdAt": "2025-10-17T07:15:01Z",
+          "defaultBranch": "master",
+          "fullName": "ComposioHQ/awesome-claude-skills",
+          "size": 3663,
+          "stargazersCount": 79190
+        },
+        {
+          "createdAt": "2019-11-19T17:24:16Z",
+          "defaultBranch": "master",
+          "fullName": "Asabeneh/30-Days-Of-Python",
+          "size": 31550,
+          "stargazersCount": 78521
+        },
+        {
+          "createdAt": "2023-05-28T10:09:12Z",
+          "defaultBranch": "main",
+          "fullName": "hiyouga/LlamaFactory",
+          "size": 14269,
+          "stargazersCount": 75974
+        },
+        {
+          "createdAt": "2010-04-06T11:11:59Z",
+          "defaultBranch": "main",
+          "fullName": "pallets/flask",
+          "size": 12227,
+          "stargazersCount": 75085
+        },
+        {
+          "createdAt": "2025-08-05T21:28:30Z",
+          "defaultBranch": "main",
+          "fullName": "usestrix/strix",
+          "size": 17713,
+          "stargazersCount": 74809
+        },
+        {
+          "createdAt": "2014-07-15T19:11:19Z",
+          "defaultBranch": "master",
+          "fullName": "josephmisiti/awesome-machine-learning",
+          "size": 2887,
+          "stargazersCount": 74788
+        },
+        {
+          "createdAt": "2025-05-03T02:43:56Z",
+          "defaultBranch": "main",
+          "fullName": "asgeirtj/system_prompts_leaks",
+          "size": 23053,
+          "stargazersCount": 71131
+        },
+        {
+          "createdAt": "2026-03-18T14:33:04Z",
+          "defaultBranch": "master",
+          "fullName": "ai-job-search-dev/ai-job-search",
+          "size": 5673,
+          "stargazersCount": 71012
+        },
+        {
+          "createdAt": "2023-06-09T12:14:34Z",
+          "defaultBranch": "main",
+          "fullName": "NanmiCoder/MediaCrawler",
+          "size": 30756,
+          "stargazersCount": 70799
+        },
+        {
+          "createdAt": "2023-06-20T08:58:36Z",
+          "defaultBranch": "main",
+          "fullName": "mem0ai/mem0",
+          "size": 69859,
+          "stargazersCount": 68752
+        },
+        {
+          "createdAt": "2026-01-28T19:02:30Z",
+          "defaultBranch": "main",
+          "fullName": "Alishahryar1/free-claude-code",
+          "size": 16692,
+          "stargazersCount": 67933
+        }
+      ]
+    },
+    "young": {
+      "search": [
+        "--language=typescript",
+        "--created=>=2025-11-10"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2026-03-15T02:30:51Z",
+          "defaultBranch": "main",
+          "fullName": "Egonex-AI/Understand-Anything",
+          "size": 35557,
+          "stargazersCount": 91841
+        },
+        {
+          "createdAt": "2026-01-18T21:45:37Z",
+          "defaultBranch": "main",
+          "fullName": "colbymchenry/codegraph",
+          "size": 48358,
+          "stargazersCount": 77276
+        },
+        {
+          "createdAt": "2026-04-21T13:38:59Z",
+          "defaultBranch": "main",
+          "fullName": "tashfeenahmed/freellmapi",
+          "size": 26033,
+          "stargazersCount": 50056
+        },
+        {
+          "createdAt": "2026-03-13T11:14:39Z",
+          "defaultBranch": "master",
+          "fullName": "JCodesMore/ai-website-cloner-template",
+          "size": 1519,
+          "stargazersCount": 38948
+        },
+        {
+          "createdAt": "2026-01-14T21:31:18Z",
+          "defaultBranch": "main",
+          "fullName": "vercel-labs/skills",
+          "size": 2420,
+          "stargazersCount": 38837
+        },
+        {
+          "createdAt": "2026-04-01T03:15:49Z",
+          "defaultBranch": "main",
+          "fullName": "Twigpine/openclaude",
+          "size": 39148,
+          "stargazersCount": 34313
+        },
+        {
+          "createdAt": "2026-02-02T14:21:18Z",
+          "defaultBranch": "main",
+          "fullName": "Yeachan-Heo/oh-my-codex",
+          "size": 35843,
+          "stargazersCount": 33764
+        },
+        {
+          "createdAt": "2026-01-31T15:47:22Z",
+          "defaultBranch": "main",
+          "fullName": "nanocoai/nanoclaw",
+          "size": 37031,
+          "stargazersCount": 31098
+        },
+        {
+          "createdAt": "2025-12-08T14:22:57Z",
+          "defaultBranch": "main",
+          "fullName": "tobi/qmd",
+          "size": 8704,
+          "stargazersCount": 31027
+        },
+        {
+          "createdAt": "2026-04-07T06:34:26Z",
+          "defaultBranch": "feat/server_team",
+          "fullName": "TencentCloud/TencentDB-Agent-Memory",
+          "size": 66045,
+          "stargazersCount": 30740
+        },
+        {
+          "createdAt": "2026-02-25T07:32:52Z",
+          "defaultBranch": "main",
+          "fullName": "rohitg00/agentmemory",
+          "size": 42639,
+          "stargazersCount": 30256
+        },
+        {
+          "createdAt": "2026-07-29T18:49:19Z",
+          "defaultBranch": "main",
+          "fullName": "hypit-ai/hypit",
+          "size": 52538,
+          "stargazersCount": 29000
+        },
+        {
+          "createdAt": "2026-04-10T17:54:59Z",
+          "defaultBranch": "main",
+          "fullName": "google-labs-code/design.md",
+          "size": 317,
+          "stargazersCount": 28806
+        },
+        {
+          "createdAt": "2026-01-13T03:04:56Z",
+          "defaultBranch": "main",
+          "fullName": "JimLiu/baoyu-skills",
+          "size": 35999,
+          "stargazersCount": 27449
+        },
+        {
+          "createdAt": "2026-02-27T18:57:41Z",
+          "defaultBranch": "main",
+          "fullName": "every-app/open-seo",
+          "size": 38925,
+          "stargazersCount": 27141
+        },
+        {
+          "createdAt": "2026-03-29T12:28:19Z",
+          "defaultBranch": "main",
+          "fullName": "walkinglabs/learn-harness-engineering",
+          "size": 30164,
+          "stargazersCount": 24157
+        },
+        {
+          "createdAt": "2026-03-31T13:33:21Z",
+          "defaultBranch": "main",
+          "fullName": "claude-code-best/claude-code",
+          "size": 99182,
+          "stargazersCount": 23261
+        },
+        {
+          "createdAt": "2026-10-31T09:32:46Z",
+          "defaultBranch": "main",
+          "fullName": "deepseek-ai/dsh-superagent-prototype",
+          "size": 37,
+          "stargazersCount": 22101
+        },
+        {
+          "createdAt": "2026-04-08T11:24:01Z",
+          "defaultBranch": "main",
+          "fullName": "nashsu/llm_wiki",
+          "size": 40378,
+          "stargazersCount": 21549
+        },
+        {
+          "createdAt": "2026-01-14T17:22:39Z",
+          "defaultBranch": "main",
+          "fullName": "vercel-labs/json-render",
+          "size": 6264,
+          "stargazersCount": 19543
+        },
+        {
+          "createdAt": "2026-06-22T23:48:26Z",
+          "defaultBranch": "main",
+          "fullName": "langchain-ai/openwiki",
+          "size": 39217,
+          "stargazersCount": 17858
+        },
+        {
+          "createdAt": "2026-05-01T05:09:59Z",
+          "defaultBranch": "main",
+          "fullName": "Renhuai123/ziwei-doushu",
+          "size": 3014,
+          "stargazersCount": 17442
+        },
+        {
+          "createdAt": "2026-01-05T11:38:30Z",
+          "defaultBranch": "master",
+          "fullName": "chatfire-AI/huobao-drama",
+          "size": 48185,
+          "stargazersCount": 17211
+        },
+        {
+          "createdAt": "2026-02-02T12:14:45Z",
+          "defaultBranch": "main",
+          "fullName": "rmyndharis/OpenWA",
+          "size": 44712,
+          "stargazersCount": 16724
+        },
+        {
+          "createdAt": "2026-01-07T13:40:57Z",
+          "defaultBranch": "main",
+          "fullName": "hicccc77/WeFlow",
+          "size": 26622,
+          "stargazersCount": 15963
+        },
+        {
+          "createdAt": "2025-12-05T17:58:26Z",
+          "defaultBranch": "main",
+          "fullName": "YishenTu/claudian",
+          "size": 38458,
+          "stargazersCount": 15960
+        },
+        {
+          "createdAt": "2026-01-23T01:57:42Z",
+          "defaultBranch": "main",
+          "fullName": "cursor/plugins",
+          "size": 18623,
+          "stargazersCount": 15943
+        },
+        {
+          "createdAt": "2026-07-26T13:04:44Z",
+          "defaultBranch": "main",
+          "fullName": "miuuyy/codex-chatgpt-web",
+          "size": 28706,
+          "stargazersCount": 15652
+        },
+        {
+          "createdAt": "2026-01-22T12:09:36Z",
+          "defaultBranch": "main",
+          "fullName": "waooAI/waoowaoo",
+          "size": 12630,
+          "stargazersCount": 14826
+        },
+        {
+          "createdAt": "2026-04-02T15:26:49Z",
+          "defaultBranch": "main",
+          "fullName": "fathah/hermes-desktop",
+          "size": 36421,
+          "stargazersCount": 14558
+        },
+        {
+          "createdAt": "2026-06-10T11:52:41Z",
+          "defaultBranch": "main",
+          "fullName": "XiaomiMiMo/MiMo-Code",
+          "size": 67635,
+          "stargazersCount": 13779
+        },
+        {
+          "createdAt": "2026-02-15T14:43:03Z",
+          "defaultBranch": "main",
+          "fullName": "vercel-labs/portless",
+          "size": 3290,
+          "stargazersCount": 12881
+        },
+        {
+          "createdAt": "2025-12-28T10:57:22Z",
+          "defaultBranch": "main",
+          "fullName": "AnmolSaini16/mapcn",
+          "size": 7125,
+          "stargazersCount": 12377
+        },
+        {
+          "createdAt": "2025-11-28T11:58:07Z",
+          "defaultBranch": "main",
+          "fullName": "chthollyphile/folia-major",
+          "size": 63382,
+          "stargazersCount": 12267
+        },
+        {
+          "createdAt": "2026-07-31T09:40:58Z",
+          "defaultBranch": "main",
+          "fullName": "genspark-ai/genoffice",
+          "size": 89434,
+          "stargazersCount": 12095
+        },
+        {
+          "createdAt": "2026-07-31T21:38:51Z",
+          "defaultBranch": "release",
+          "fullName": "trycompai/crm",
+          "size": 10153,
+          "stargazersCount": 11923
+        },
+        {
+          "createdAt": "2026-08-14T04:58:15Z",
+          "defaultBranch": "main",
+          "fullName": "dsh-market/dsh-market",
+          "size": 22950,
+          "stargazersCount": 11821
+        },
+        {
+          "createdAt": "2026-04-13T22:11:53Z",
+          "defaultBranch": "main",
+          "fullName": "getagentseal/codeburn",
+          "size": 69445,
+          "stargazersCount": 11756
+        },
+        {
+          "createdAt": "2026-06-09T06:28:20Z",
+          "defaultBranch": "main",
+          "fullName": "cobusgreyling/loop-engineering",
+          "size": 6932,
+          "stargazersCount": 11746
+        },
+        {
+          "createdAt": "2026-04-15T22:22:53Z",
+          "defaultBranch": "main",
+          "fullName": "cloudflare/cloudflare-os",
+          "size": 45994,
+          "stargazersCount": 11738
+        }
+      ]
+    },
+    "generated": {
+      "search": [
+        "generated with Stainless in:readme",
+        "--language=typescript"
+      ],
+      "candidates": [
+        {
+          "createdAt": "2024-02-05T19:50:33Z",
+          "defaultBranch": "main",
+          "fullName": "cloudflare/cloudflare-typescript",
+          "size": 62140,
+          "stargazersCount": 832
+        },
+        {
+          "createdAt": "2024-12-05T12:21:01Z",
+          "defaultBranch": "main",
+          "fullName": "ivo-toby/mcp-openapi-server",
+          "size": 1110,
+          "stargazersCount": 301
+        },
+        {
+          "createdAt": "2026-03-16T02:00:33Z",
+          "defaultBranch": "main",
+          "fullName": "DMontgomery40/bambu-printer-mcp",
+          "size": 4608,
+          "stargazersCount": 300
+        },
+        {
+          "createdAt": "2024-02-15T07:14:43Z",
+          "defaultBranch": "main",
+          "fullName": "groq/groq-typescript",
+          "size": 1292,
+          "stargazersCount": 269
+        },
+        {
+          "createdAt": "2026-06-15T09:36:15Z",
+          "defaultBranch": "main",
+          "fullName": "AtlasCloudAI/awesome-seedance-2.5-prompts-skills",
+          "size": 8003,
+          "stargazersCount": 263
+        },
+        {
+          "createdAt": "2025-02-26T19:19:47Z",
+          "defaultBranch": "main",
+          "fullName": "DMontgomery40/mcp-3D-printer-server",
+          "size": 7936,
+          "stargazersCount": 261
+        },
+        {
+          "createdAt": "2019-08-02T22:19:16Z",
+          "defaultBranch": "master",
+          "fullName": "team-telnyx/telnyx-node",
+          "size": 35127,
+          "stargazersCount": 198
+        },
+        {
+          "createdAt": "2024-05-24T19:32:52Z",
+          "defaultBranch": "main",
+          "fullName": "cartesia-ai/cartesia-js",
+          "size": 1520,
+          "stargazersCount": 135
+        },
+        {
+          "createdAt": "2026-03-22T23:25:38Z",
+          "defaultBranch": "main",
+          "fullName": "dotCipher/opencode-claude-bridge",
+          "size": 113,
+          "stargazersCount": 112
+        },
+        {
+          "createdAt": "2024-03-22T21:11:25Z",
+          "defaultBranch": "main",
+          "fullName": "tscircuit/circuit-json",
+          "size": 2810,
+          "stargazersCount": 103
+        },
+        {
+          "createdAt": "2024-09-10T01:27:44Z",
+          "defaultBranch": "main",
+          "fullName": "ogx-ai/ogx-client-typescript",
+          "size": 1418,
+          "stargazersCount": 97
+        },
+        {
+          "createdAt": "2024-03-28T01:34:39Z",
+          "defaultBranch": "main",
+          "fullName": "turbopuffer/turbopuffer-typescript",
+          "size": 2229,
+          "stargazersCount": 89
+        },
+        {
+          "createdAt": "2024-05-10T05:10:08Z",
+          "defaultBranch": "main",
+          "fullName": "togethercomputer/together-typescript",
+          "size": 14210,
+          "stargazersCount": 72
+        },
+        {
+          "createdAt": "2024-10-25T00:01:16Z",
+          "defaultBranch": "main",
+          "fullName": "browserbase/sdk-node",
+          "size": 1651,
+          "stargazersCount": 67
+        },
+        {
+          "createdAt": "2025-05-27T10:01:57Z",
+          "defaultBranch": "main",
+          "fullName": "coingecko/coingecko-typescript",
+          "size": 2591,
+          "stargazersCount": 59
+        },
+        {
+          "createdAt": "2026-03-28T14:39:24Z",
+          "defaultBranch": "master",
+          "fullName": "sunwu51/nanollm",
+          "size": 3115,
+          "stargazersCount": 51
+        },
+        {
+          "createdAt": "2024-08-29T06:44:25Z",
+          "defaultBranch": "main",
+          "fullName": "nekomeowww/factorio-rcon-api",
+          "size": 4467,
+          "stargazersCount": 50
+        },
+        {
+          "createdAt": "2021-05-05T00:41:18Z",
+          "defaultBranch": "main",
+          "fullName": "knocklabs/knock-node",
+          "size": 2842,
+          "stargazersCount": 50
+        },
+        {
+          "createdAt": "2024-12-14T21:45:59Z",
+          "defaultBranch": "main",
+          "fullName": "letta-ai/letta-node",
+          "size": 11414,
+          "stargazersCount": 49
+        },
+        {
+          "createdAt": "2026-01-27T17:13:34Z",
+          "defaultBranch": "main",
+          "fullName": "sentdm/sent-dm-typescript",
+          "size": 2345,
+          "stargazersCount": 44
+        },
+        {
+          "createdAt": "2024-06-20T17:56:37Z",
+          "defaultBranch": "main",
+          "fullName": "val-town/sdk",
+          "size": 1615,
+          "stargazersCount": 42
+        },
+        {
+          "createdAt": "2024-10-13T13:23:58Z",
+          "defaultBranch": "main",
+          "fullName": "ArcadeAI/arcade-js",
+          "size": 813,
+          "stargazersCount": 36
+        },
+        {
+          "createdAt": "2024-05-14T12:17:14Z",
+          "defaultBranch": "main",
+          "fullName": "terminaldotshop/terminal-sdk-js",
+          "size": 1150,
+          "stargazersCount": 33
+        },
+        {
+          "createdAt": "2026-09-09T03:54:43Z",
+          "defaultBranch": "main",
+          "fullName": "AtlasCloudAI/awesome-gpt-image-2.5-prompts",
+          "size": 5925,
+          "stargazersCount": 33
+        },
+        {
+          "createdAt": "2026-01-18T09:50:56Z",
+          "defaultBranch": "main",
+          "fullName": "8monkey-ai/hebo-gateway",
+          "size": 1833,
+          "stargazersCount": 27
+        },
+        {
+          "createdAt": "2025-08-31T20:34:42Z",
+          "defaultBranch": "main",
+          "fullName": "parallel-web/parallel-sdk-typescript",
+          "size": 999,
+          "stargazersCount": 26
+        },
+        {
+          "createdAt": "2025-12-11T15:43:16Z",
+          "defaultBranch": "main",
+          "fullName": "warpdotdev/oz-sdk-typescript",
+          "size": 951,
+          "stargazersCount": 25
+        },
+        {
+          "createdAt": "2024-09-16T22:18:43Z",
+          "defaultBranch": "main",
+          "fullName": "runwayml/sdk-node",
+          "size": 2251,
+          "stargazersCount": 21
+        },
+        {
+          "createdAt": "2026-05-19T15:53:41Z",
+          "defaultBranch": "main",
+          "fullName": "langchain-ai/langsmith-javascript",
+          "size": 2640,
+          "stargazersCount": 17
+        },
+        {
+          "createdAt": "2025-05-08T16:35:30Z",
+          "defaultBranch": "main",
+          "fullName": "kernel/kernel-node-sdk",
+          "size": 3131,
+          "stargazersCount": 16
+        },
+        {
+          "createdAt": "2026-07-03T13:34:39Z",
+          "defaultBranch": "main",
+          "fullName": "rudra496/cnc",
+          "size": 368,
+          "stargazersCount": 16
+        },
+        {
+          "createdAt": "2026-09-11T10:35:51Z",
+          "defaultBranch": "main",
+          "fullName": "renoise-ai/awesome-gpt-image-2-5-prompts",
+          "size": 206,
+          "stargazersCount": 16
+        },
+        {
+          "createdAt": "2024-12-18T12:04:34Z",
+          "defaultBranch": "main",
+          "fullName": "mixedbread-ai/mixedbread-ts",
+          "size": 2558,
+          "stargazersCount": 14
+        },
+        {
+          "createdAt": "2026-10-15T11:36:37Z",
+          "defaultBranch": "main",
+          "fullName": "WrongStack/WrongForge",
+          "size": 1588,
+          "stargazersCount": 14
+        },
+        {
+          "createdAt": "2024-06-04T12:28:57Z",
+          "defaultBranch": "main",
+          "fullName": "writer/writer-node",
+          "size": 1934,
+          "stargazersCount": 12
+        },
+        {
+          "createdAt": "2026-10-17T14:51:55Z",
+          "defaultBranch": "main",
+          "fullName": "darknecrocities/RoadsterVerse",
+          "size": 1195,
+          "stargazersCount": 10
+        },
+        {
+          "createdAt": "2025-09-08T14:42:42Z",
+          "defaultBranch": "main",
+          "fullName": "limrun-inc/typescript-sdk",
+          "size": 20208,
+          "stargazersCount": 9
+        },
+        {
+          "createdAt": "2026-05-18T17:31:05Z",
+          "defaultBranch": "main",
+          "fullName": "crosmos-labs/ironic",
+          "size": 418,
+          "stargazersCount": 9
+        },
+        {
+          "createdAt": "2026-04-06T14:26:25Z",
+          "defaultBranch": "main",
+          "fullName": "HubSpot/hubspot-sdk-typescript",
+          "size": 4427,
+          "stargazersCount": 9
+        },
+        {
+          "createdAt": "2023-11-17T22:01:17Z",
+          "defaultBranch": "main",
+          "fullName": "openlayer-ai/openlayer-ts",
+          "size": 2883,
+          "stargazersCount": 9
+        }
+      ]
+    }
+  }
+}

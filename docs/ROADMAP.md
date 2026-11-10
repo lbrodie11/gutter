@@ -16,7 +16,7 @@ The question, since GU-29 ([DECISIONS #17](DECISIONS.md#17-explain-dont-predict-
 **Exit test (Gate A′, replaces Gate A):** checkable by an agent without human labels, on hono now and on the corpus when it exists ([`bench/gate-a-prime.ts`](../bench/gate-a-prime.ts)):
 
 - **(a) Quiet enough:** `full` share ≤ 1/3 on the median repo.
-- **(b) Facts are true:** an independent re-check confirms ≥ 95% of `broken-import` items. The re-check resolves each specifier with TypeScript's own `ts.resolveModuleName` and the repo's tsconfig at that PR's head; for non-TS files it re-checks file existence. Every `untested-change` and test-history fact matches git at that SHA (100%: these are deterministic).
+- **(b) Facts are true:** an independent re-check confirms ≥ 95% of `broken-import` items. The re-check resolves each specifier with TypeScript's own `ts.resolveModuleName` and the repo's tsconfig at that PR's head; for non-TS files it re-checks file existence. Every `untested-change` and test-history fact matches git at that SHA (100%: these are deterministic). When real PRs in the corpus produce fewer than 20 `broken-import` items, (b) is evaluated on the preregistered seeded mutations in `CORPUS.md`.
 - **(c) No predictions:** the banned-words test (`forgot`, `likely forgotten`, `you may have missed`, `untested`, `not covered`) passes on every fixture and every replayed bench page.
 
 A criterion with no items on a repository is reported as *not exercised*, never as met. **hono (2026-11-10): PASS on what hono exercises**; `broken-import` is not exercised (0 items in 200 PRs). See [`STAGE0.md`, After GU-29](benchmark/STAGE0.md#after-gu-29--explain-dont-predict-2026-11-10).
