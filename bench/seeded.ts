@@ -123,7 +123,8 @@ export interface Edge {
 }
 
 const ROOT = '/repo';
-const rel = (abs: string) => abs.replace(/^\/repo\/?/, '');
+/** Repository-relative path of a virtual absolute path; TypeScript also probes directories with a trailing slash. */
+const rel = (abs: string) => abs.replace(/^\/repo\/?/, '').replace(/\/+$/, '');
 
 /** Workspace packages: `package.json` name → directory (outside node_modules), for virtual linking. */
 function workspaceLinks(tree: Tree): Map<string, string> {

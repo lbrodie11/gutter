@@ -217,3 +217,24 @@ test('bench records: coverage, unresolvedByReason and uncheckedLanguages are pre
     rmSync(out, { recursive: true, force: true });
   }
 });
+
+test('oracle (erratum 1): directory specifiers like "." and "./dir" resolve in both TypeScript oracles', async () => {
+  const tree = memTree({
+    'src/m/index.ts': 'export const m = 1;\n',
+    'src/m/index.test.ts': "import { m } from '.';\n",
+    'src/user.ts': "import { m } from './m';\n",
+  });
+  const o = new TsOracle(tree);
+  assert.equal(o.resolve('src/m/index.test.ts', '.'), 'src/m/index.ts');
+  assert.equal(o.resolve('src/user.ts', './m'), 'src/m/index.ts');
+  const edges = o.edges(tree.files);
+  assert.deepEqual(brokenEdges('typescript', tree, edges, del('src/m/index.ts')).map((e) => e.importer).sort(), ['src/m/index.test.ts', 'src/user.ts']);
+  // gate-a-prime's TreeHost, on a real commit.
+  const r = new TempRepo().write({ 'src/m/index.ts': 'export const m = 1;\n', 'src/m/index.test.ts': "import { m } from '.';\n" }).commit('init');
+  repos.push(r);
+  const { TreeHost, resolveSpecifiers } = await import('../bench/gate-a-prime.ts');
+  const sha = r.git('rev-parse', 'HEAD').trim();
+  const host = new TreeHost(r.dir, sha);
+  const map = resolveSpecifiers("import { m } from '.';\n", 'src/m/index.test.ts', host, host.compilerOptions());
+  assert.equal(map.get('.'), 'src/m/index.ts');
+});

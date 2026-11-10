@@ -69,7 +69,8 @@ export class TreeHost {
     }
   }
   static rel(abs: string): string {
-    return abs.replace(/^\/repo\/?/, '');
+    // TypeScript also probes directories with a trailing slash (`import '.'`); GU-30 erratum 1.
+    return abs.replace(/^\/repo\/?/, '').replace(/\/+$/, '');
   }
   read(rel: string): string | undefined {
     if (!this.files.has(rel)) return undefined;
