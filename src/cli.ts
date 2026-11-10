@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { buildBrief } from './brief.ts';
-import { parseGutterConfigObject, type GutterConfig } from './config.ts';
+import { inertLegacyKeys, inertLegacyWarning, parseGutterConfigObject, type GutterConfig } from './config.ts';
 import type { GutterBrief } from './contract.ts';
 import { renderCompareLabelHtml, sampleCompare, type CompareSource } from './bench/label.ts';
 import type { BenchResultsModel } from './bench/model.ts';
@@ -53,6 +53,7 @@ bench options
   --gate-full-share <n>   max full-salience share threshold (default: 0.3333)
   --proxy-min-lift <n>    min follow-up proxy lift threshold (default: 1.5)
   --config <variant.json> tuning config variant JSON file (for GU-04)
+  --legacy-predictions    research switch: replay with pre-GU-29 behavior (reproduces Stage 0 / 0b)
   --ra-lib <path>         local repo-archaeology >= 0.4.0 library entry path
   --no-ra-cache           disable Repo Archaeology history cache
   --resume                resume from bench.partial.jsonl in --out
@@ -120,6 +121,7 @@ function brief(args: string[]): number {
   const result: GutterBrief = buildBrief({
     cwd: process.cwd(),
     base: values.base,
+    warn: (message) => process.stderr.write(`warning: .gutter.json: ${message}\n`),
     ...(values.head ? { head: values.head } : {}),
     ...(values.title ? { title: values.title } : {}),
     ...(values.intent ? { intent: values.intent } : {}),
@@ -224,7 +226,7 @@ function label(args: string[]): number {
 }
 
 /** Why a `--config` variant would not run exactly as written, or undefined when it would. */
-function configVariantProblem(raw: unknown): string | undefined {
+function configVariantProblem(raw: unknown, legacyFlag: boolean): string | undefined {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return 'must be a JSON object of .gutter.json keys';
   const parsed = parseGutterConfigObject(raw) as Record<string, unknown>;
   const rawObj = raw as Record<string, unknown>;
@@ -233,6 +235,11 @@ function configVariantProblem(raw: unknown): string | undefined {
   const changed = Object.keys(rawObj).filter((k) => parsed[k] !== rawObj[k]);
   if (changed.length > 0) {
     return `value(s) the config parser would change: ${changed.map((k) => `${k} ${JSON.stringify(rawObj[k])} -> ${JSON.stringify(parsed[k])}`).join(', ')}`;
+  }
+  // Checked last: the variant parses exactly, but some keys would have no effect (GU-29).
+  const inert = inertLegacyKeys({ ...(parsed as GutterConfig), ...(legacyFlag ? { legacyPredictions: true } : {}) });
+  if (inert.length > 0) {
+    return `${inertLegacyWarning(inert).replace(/; ignored\.$/, '')}: add "legacyPredictions": true to the variant or pass --legacy-predictions`;
   }
   return undefined;
 }
@@ -250,6 +257,7 @@ async function bench(args: string[]): Promise<number> {
       'gate-full-share': { type: 'string' },
       'proxy-min-lift': { type: 'string' },
       config: { type: 'string' },
+      'legacy-predictions': { type: 'boolean', default: false },
       'ra-lib': { type: 'string' },
       'no-ra-cache': { type: 'boolean', default: false },
       resume: { type: 'boolean', default: false },
@@ -264,13 +272,15 @@ async function bench(args: string[]): Promise<number> {
     const raw: unknown = JSON.parse(readFileSync(resolve(values.config), 'utf8'));
     // A preregistered variant must run exactly as written: refuse anything the config parser would
     // drop or change (unknown keys, invalid values, 1.5 rounded to 1), and anything that is not an object.
-    const problem = configVariantProblem(raw);
+    const problem = configVariantProblem(raw, values['legacy-predictions']);
     if (problem) {
       process.stderr.write(`error: --config ${values.config}: ${problem}\n`);
       return 2;
     }
     configVariant = parseGutterConfigObject(raw);
   }
+  // GU-29: Stage 0 / 0b and their variants ran on the pre-GU-29 defaults.
+  if (values['legacy-predictions']) configVariant = { ...configVariant, legacyPredictions: true };
 
   const outDir = resolve(values.out);
   const cwd = values.cwd ? resolve(values.cwd) : process.cwd();

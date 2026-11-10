@@ -4,8 +4,11 @@ import type { SourceReader } from './source/reader.ts';
 export interface GutterConfig {
   maxForgotten?: number;
   maxChecklist?: number;
+  /** Legacy-only (see `LEGACY_ONLY_KEYS`). */
   maxCompanionQuestions?: number;
+  /** Legacy-only. */
   minIntervalLow?: number;
+  /** Legacy-only. */
   minCalibratedPrecision?: number;
   minChurnForTestQuestion?: number;
   wideSurfaceImporters?: number;
@@ -37,6 +40,25 @@ export interface GutterConfig {
   companionMinTrackRecordFired?: number;
   noHistory?: boolean;
   noCalibration?: boolean;
+}
+
+/** Keys that only change anything under `legacyPredictions` (GU-29): they tune the retired companion questions. */
+export const LEGACY_ONLY_KEYS = [
+  'maxCompanionQuestions',
+  'minIntervalLow',
+  'minCalibratedPrecision',
+  'companionRequireGhost',
+  'companionMinTrackRecordFired',
+] as const;
+
+/** Legacy-only keys that are set while `legacyPredictions` is off, so they have no effect. */
+export function inertLegacyKeys(config: GutterConfig | undefined): string[] {
+  if (!config || config.legacyPredictions) return [];
+  return LEGACY_ONLY_KEYS.filter((k) => config[k] !== undefined);
+}
+
+export function inertLegacyWarning(keys: readonly string[]): string {
+  return `${keys.join(', ')} only appl${keys.length === 1 ? 'ies' : 'y'} with "legacyPredictions": true (GU-29, DECISIONS #17); ignored.`;
 }
 
 export interface SafeRaOriginWeights {

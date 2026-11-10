@@ -1,7 +1,7 @@
 import type { ChangeStructure, DependentsLayer, GutterBrief, TestLink } from './contract.ts';
 import { SCHEMA_VERSION } from './contract.ts';
 import type { GutterConfig, SafeRaRepoConfig } from './config.ts';
-import { readSnapshotAuxConfigs } from './config.ts';
+import { inertLegacyKeys, inertLegacyWarning, readSnapshotAuxConfigs } from './config.ts';
 import { browseUrlFromRemote, git, hasTimestampAnomaly, isShallowRepo, repoRoot, resolveSha } from './git.ts';
 import { headCommits, readChanges } from './evidence/changes.ts';
 import { buildDependents } from './evidence/imports.ts';
@@ -35,6 +35,8 @@ export interface BriefOptions {
   configRef?: string;
   reader?: SourceReader;
   now?: Date;
+  /** Receives configuration warnings (for example legacy-only keys set without `legacyPredictions`). */
+  warn?: (message: string) => void;
 }
 
 export interface ReplayBriefOptions {
@@ -221,6 +223,8 @@ export function buildBrief(opts: BriefOptions): GutterBrief {
       ...(opts.noHistory !== undefined ? { noHistory: opts.noHistory } : {}),
       ...(opts.noCalibration !== undefined ? { noCalibration: opts.noCalibration } : {}),
     };
+    const inert = inertLegacyKeys(mergedConfig);
+    if (inert.length) opts.warn?.(inertLegacyWarning(inert));
 
     const changes = readChanges(root, opts.base, head);
     const commits = headCommits(root, opts.base, head);
