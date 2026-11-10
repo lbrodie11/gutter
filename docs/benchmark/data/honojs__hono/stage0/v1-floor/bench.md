@@ -1,6 +1,6 @@
 # Gutter Benchmark Report · honojs/hono
 
-Branch: `HEAD` · Head: [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710) (`eb754bd5ef22c63f1634a4c374a86be086f85710`) · Generated: `2026-11-10T06:40:17.135Z` · Gutter `0.2.1` + Repo Archaeology `0.4.0` · schemaVersion 1 · scoringVersion 1
+Branch: `HEAD` · Head: [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710) (`eb754bd5ef22c63f1634a4c374a86be086f85710`) · Generated: `2026-11-10T07:04:21.195Z` · Gutter `0.2.1` + Repo Archaeology `0.4.0` · schemaVersion 1 · scoringVersion 1
 
 ## Gate Check
 
@@ -233,16 +233,16 @@ _Missed co-change follow-ups: 486 untouched historical co-change partner(s) acro
 
 ## Runtime per Stage
 
-Total wall time: **90299.5 ms**
+Total wall time: **92261.01 ms**
 
 | Stage | Count | Total (ms) | p50 (ms) | p95 (ms) |
 |---|---:|---:|---:|---:|
-| `discovery` | 1 | 1227.55 | 1227.55 | 1227.55 |
-| `sessionOpen` | 200 | 28361.99 | 138.3 | 163.15 |
-| `staticAnalysis` | 200 | 22064.22 | 113.36 | 123.26 |
-| `brief` | 200 | 1873.76 | 9.36 | 11.33 |
-| `scoring` | 200 | 2656.92 | 12.46 | 16.79 |
-| `report` | 1 | 33.1 | 33.1 | 33.1 |
+| `discovery` | 1 | 1224.38 | 1224.38 | 1224.38 |
+| `sessionOpen` | 200 | 29297.19 | 137.12 | 197.95 |
+| `staticAnalysis` | 200 | 22819.28 | 113.87 | 147.13 |
+| `brief` | 200 | 1815.97 | 8.81 | 11.29 |
+| `scoring` | 200 | 2685.78 | 12.16 | 18.23 |
+| `report` | 1 | 22.64 | 22.64 | 22.64 |
 
 ## Methodology Limits
 

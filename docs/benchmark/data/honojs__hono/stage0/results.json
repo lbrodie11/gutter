@@ -149,7 +149,9 @@
             "median": 0.3539,
             "high": 0.5101,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "sameAuthor": {
@@ -160,7 +162,9 @@
             "median": 0.4085,
             "high": 0.6906,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "raSignal": {
@@ -171,11 +175,13 @@
             "median": 0.4091,
             "high": 0.9057,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         }
       },
-      "totalWallMs": 90320.21
+      "totalWallMs": 91748.23
     },
     {
       "id": "v1-floor",
@@ -326,7 +332,9 @@
             "median": 0.3415,
             "high": 0.5294,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "sameAuthor": {
@@ -337,7 +345,9 @@
             "median": 0.35,
             "high": 0.6875,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "raSignal": {
@@ -348,11 +358,13 @@
             "median": 0.4444,
             "high": 1,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         }
       },
-      "totalWallMs": 90299.5
+      "totalWallMs": 92261.01
     },
     {
       "id": "v2-two-signals",
@@ -503,7 +515,9 @@
             "median": 0.3539,
             "high": 0.5101,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "sameAuthor": {
@@ -514,7 +528,9 @@
             "median": 0.4085,
             "high": 0.6906,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "raSignal": {
@@ -525,11 +541,13 @@
             "median": 0.4091,
             "high": 0.9057,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         }
       },
-      "totalWallMs": 92958.57
+      "totalWallMs": 89664.46
     },
     {
       "id": "v3-breadth-not-full",
@@ -680,7 +698,9 @@
             "median": 0.3539,
             "high": 0.5101,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "sameAuthor": {
@@ -691,7 +711,9 @@
             "median": 0.4085,
             "high": 0.6906,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         },
         "raSignal": {
@@ -702,11 +724,13 @@
             "median": 0.4091,
             "high": 0.9057,
             "resamples": 1000,
-            "seed": 20261108
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
           }
         }
       },
-      "totalWallMs": 93164.8
+      "totalWallMs": 89692.4
     }
   ]
 }

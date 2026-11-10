@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "scoringVersion": 1,
-  "generatedAt": "2026-11-10T06:40:17.157Z",
+  "generatedAt": "2026-11-10T07:04:20.675Z",
   "repo": {
     "name": "honojs/hono",
     "remoteUrl": "https://github.com/honojs/hono",
@@ -336,7 +336,9 @@
                 "median": 0.4029,
                 "high": 0.6,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "sameAuthor": {
@@ -346,7 +348,9 @@
                 "median": 0.5283,
                 "high": 0.9912,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "raSignal": {
@@ -356,7 +360,9 @@
                 "median": 0.6131,
                 "high": 1.5429,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             }
           }
@@ -441,7 +447,9 @@
                 "median": 0.9167,
                 "high": 1.5828,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "sameAuthor": {
@@ -451,17 +459,21 @@
                 "median": 1.2962,
                 "high": 3.9217,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "raSignal": {
               "lift": 1.2609,
               "bootstrapCi": {
-                "low": 0.3298,
+                "low": 0.3299,
                 "median": 1.2607,
                 "high": 5,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 1,
+                "undefinedResamples": 0
               }
             }
           }
@@ -546,7 +558,9 @@
                 "median": 0.3539,
                 "high": 0.5101,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "sameAuthor": {
@@ -556,7 +570,9 @@
                 "median": 0.4085,
                 "high": 0.6906,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "raSignal": {
@@ -566,7 +582,9 @@
                 "median": 0.4091,
                 "high": 0.9057,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             }
           }
@@ -591,7 +609,9 @@
               "median": 0.3539,
               "high": 0.5101,
               "resamples": 1000,
-              "seed": 20261108
+              "seed": 20261108,
+              "unboundedResamples": 0,
+              "undefinedResamples": 0
             }
           },
           "sameAuthor": {
@@ -602,7 +622,9 @@
               "median": 0.4085,
               "high": 0.6906,
               "resamples": 1000,
-              "seed": 20261108
+              "seed": 20261108,
+              "unboundedResamples": 0,
+              "undefinedResamples": 0
             }
           },
           "raSignal": {
@@ -613,7 +635,9 @@
               "median": 0.4091,
               "high": 0.9057,
               "resamples": 1000,
-              "seed": 20261108
+              "seed": 20261108,
+              "unboundedResamples": 0,
+              "undefinedResamples": 0
             }
           }
         }
@@ -1326,7 +1350,9 @@
                 "median": 0.4029,
                 "high": 0.6,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "sameAuthor": {
@@ -1336,7 +1362,9 @@
                 "median": 0.5283,
                 "high": 0.9912,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "raSignal": {
@@ -1346,7 +1374,9 @@
                 "median": 0.6131,
                 "high": 1.5429,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             }
           }
@@ -1431,7 +1461,9 @@
                 "median": 0.9167,
                 "high": 1.5828,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "sameAuthor": {
@@ -1441,17 +1473,21 @@
                 "median": 1.2962,
                 "high": 3.9217,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "raSignal": {
               "lift": 1.2609,
               "bootstrapCi": {
-                "low": 0.3298,
+                "low": 0.3299,
                 "median": 1.2607,
                 "high": 5,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 1,
+                "undefinedResamples": 0
               }
             }
           }
@@ -1536,7 +1572,9 @@
                 "median": 0.3539,
                 "high": 0.5101,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "sameAuthor": {
@@ -1546,7 +1584,9 @@
                 "median": 0.4085,
                 "high": 0.6906,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             },
             "raSignal": {
@@ -1556,7 +1596,9 @@
                 "median": 0.4091,
                 "high": 0.9057,
                 "resamples": 1000,
-                "seed": 20261108
+                "seed": 20261108,
+                "unboundedResamples": 0,
+                "undefinedResamples": 0
               }
             }
           }
@@ -1581,7 +1623,9 @@
               "median": 0.3539,
               "high": 0.5101,
               "resamples": 1000,
-              "seed": 20261108
+              "seed": 20261108,
+              "unboundedResamples": 0,
+              "undefinedResamples": 0
             }
           },
           "sameAuthor": {
@@ -1592,7 +1636,9 @@
               "median": 0.4085,
               "high": 0.6906,
               "resamples": 1000,
-              "seed": 20261108
+              "seed": 20261108,
+              "unboundedResamples": 0,
+              "undefinedResamples": 0
             }
           },
           "raSignal": {
@@ -1603,7 +1649,9 @@
               "median": 0.4091,
               "high": 0.9057,
               "resamples": 1000,
-              "seed": 20261108
+              "seed": 20261108,
+              "unboundedResamples": 0,
+              "undefinedResamples": 0
             }
           }
         }
@@ -44199,43 +44247,43 @@
     "aggregates": null
   },
   "timings": {
-    "totalWallMs": 90320.21,
+    "totalWallMs": 91748.23,
     "stages": {
       "discovery": {
         "count": 1,
-        "totalMs": 1228.44,
-        "p50Ms": 1228.44,
-        "p95Ms": 1228.44
+        "totalMs": 1225.46,
+        "p50Ms": 1225.46,
+        "p95Ms": 1225.46
       },
       "sessionOpen": {
         "count": 200,
-        "totalMs": 28334.7,
-        "p50Ms": 138.22,
-        "p95Ms": 158.44
+        "totalMs": 28994.63,
+        "p50Ms": 138.58,
+        "p95Ms": 186.82
       },
       "staticAnalysis": {
         "count": 200,
-        "totalMs": 22412.6,
-        "p50Ms": 115.41,
-        "p95Ms": 128.88
+        "totalMs": 22433.27,
+        "p50Ms": 112.54,
+        "p95Ms": 138.38
       },
       "brief": {
         "count": 200,
-        "totalMs": 1778.91,
-        "p50Ms": 8.77,
-        "p95Ms": 10.21
+        "totalMs": 1909.31,
+        "p50Ms": 9.23,
+        "p95Ms": 13.54
       },
       "scoring": {
         "count": 200,
-        "totalMs": 2767.57,
-        "p50Ms": 12.45,
-        "p95Ms": 16.25
+        "totalMs": 2849.84,
+        "p50Ms": 12.98,
+        "p95Ms": 17.28
       },
       "report": {
         "count": 1,
-        "totalMs": 31.31,
-        "p50Ms": 31.31,
-        "p95Ms": 31.31
+        "totalMs": 30.07,
+        "p50Ms": 30.07,
+        "p95Ms": 30.07
       }
     }
   }
