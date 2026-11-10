@@ -178,7 +178,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 |---|---|---|
 | `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
 | `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.4.0`) |
-| `calibrate` | `true` | Backtest warning accuracy on this repo (~0.3s on 1,900 commits) |
+| `calibrate` | `true` | Backtest how reliable co-change history is on this repo, shown under the page (~0.3s on 1,900 commits) |
 | `max-forgotten` | `3` | Maximum "usually changes with" pairs to display (`0` hides them; the input keeps its v1 name) |
 | `archaeology-version` | `^0.4.0` | npm version range of `repo-archaeology` to execute |
 | `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |

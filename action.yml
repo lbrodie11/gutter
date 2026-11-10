@@ -24,7 +24,7 @@ inputs:
     required: false
     default: 'true'
   calibrate:
-    description: 'Measure warning accuracy on this repo with a backtest ("true"/"false").'
+    description: 'Backtest how reliable co-change history is on this repo ("true"/"false").'
     required: false
     default: 'true'
   max-forgotten:
