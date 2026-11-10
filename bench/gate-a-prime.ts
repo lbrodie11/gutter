@@ -15,9 +15,11 @@
  *         `git log --follow`), and together <= sourceCommits. The counts themselves come from Repo
  *         Archaeology's filtered history (sweeps, bots, reverts), so raw `git log` cannot re-derive them.
  *   (c) No predictions: every replayed brief renders (HTML, Markdown, comment, CLI line) with no
- *       banned word. PR-derived free text (titles, subjects, authors, RA `why`, family labels) is
- *       replaced with placeholders first, so only Gutter's own wording is judged; raw hits that
- *       come from PR text are counted separately.
+ *       banned word in Gutter's own wording. PR-derived free text (titles, branch names, subjects,
+ *       authors, RA `why`, family labels) is replaced with placeholders, and repository paths are
+ *       removed from the rendered text (code spans, tag attributes, link targets, module names), so
+ *       a file named `forgot-password.ts` is not counted. Raw hits, PR text and paths included, are
+ *       counted separately for transparency.
  *
  *   node --experimental-strip-types bench/gate-a-prime.ts <repo dir> <default bench.json> [--out gate.json]
  *
@@ -252,6 +254,8 @@ export function checkFacts(cwd: string, prId: string, brief: GutterBrief, baseSh
 export function neutralize(brief: GutterBrief): GutterBrief {
   const b = structuredClone(brief);
   b.change.title = 'PR title';
+  b.change.base = 'base';
+  b.change.head = 'head';
   if (b.change.intent !== undefined) b.change.intent = 'PR body';
   b.change.commits = b.change.commits.map((c) => ({ ...c, subject: 'commit subject' }));
   for (const f of b.forgotten.items) {
@@ -265,8 +269,24 @@ export function neutralize(brief: GutterBrief): GutterBrief {
   return b;
 }
 
-export function bannedHits(brief: GutterBrief): string[] {
-  const texts = [renderComic(brief), renderMarkdown(brief), renderMarkdown(brief, { pageUrl: 'https://example.invalid/run' }), summaryLine(brief)];
+/**
+ * Gutter's own words in a rendered page: drop everything that carries a repository path. Renderers put
+ * every path in a code span (`<code>` in HTML, backticks in Markdown) or a link target, and module names
+ * in `<span class="mod">`; tags go too, which removes ids and hrefs built from paths.
+ */
+export function ownWords(rendered: string): string {
+  return rendered
+    .replace(/<code[^>]*>[\s\S]*?<\/code>/g, ' ')
+    .replace(/<span class="mod">[^<]*<\/span>/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/(`+)[\s\S]*?\1/g, ' ')
+    .replace(/\]\([^)\s]*\)/g, '] ');
+}
+
+/** Banned-word hits in Gutter's own words (`neutralize` first for PR text); `raw` skips the path stripping. */
+export function bannedHits(brief: GutterBrief, opts: { raw?: boolean } = {}): string[] {
+  const pages = [renderComic(brief), renderMarkdown(brief), renderMarkdown(brief, { pageUrl: 'https://example.invalid/run' }), summaryLine(brief)];
+  const texts = opts.raw ? pages : pages.map(ownWords);
   return texts.flatMap((t) => {
     const m = BANNED.exec(t);
     return m ? [t.slice(Math.max(0, m.index - 40), m.index + 30)] : [];
@@ -286,7 +306,7 @@ async function main(): Promise<void> {
   const facts: FactCheck[] = [];
   let salienceMismatches = 0;
   let checklistMismatches = 0;
-  let rawPrTextHits = 0;
+  let rawHits = 0;
   const ownWordHits: { pr: string; text: string }[] = [];
   let full = 0;
   for (const pr of bench.prs) {
@@ -298,7 +318,7 @@ async function main(): Promise<void> {
     const trees = { base: new TreeHost(repo, pr.base), head: new TreeHost(repo, pr.head) };
     facts.push(...checkFacts(repo, pr.id, b, pr.base, pr.head, trees));
     for (const text of bannedHits(neutralize(b))) ownWordHits.push({ pr: pr.id, text });
-    rawPrTextHits += bannedHits(b).length;
+    rawHits += bannedHits(b, { raw: true }).length;
   }
   const n = bench.prs.length;
   const tally = (kind: FactCheck['kind']) => {
@@ -324,7 +344,7 @@ async function main(): Promise<void> {
       untestedChange: { ...unchanged, needs: 1, met: unchanged.rate === null ? null : unchanged.rate === 1 },
       testHistory: { ...history, needs: 1, met: history.rate === null ? null : history.rate === 1 },
     },
-    c: { pagesChecked: n, ownWordingHits: ownWordHits, prTextHits: rawPrTextHits, met: ownWordHits.length === 0 },
+    c: { pagesChecked: n, ownWordingHits: ownWordHits, rawHits: rawHits, met: ownWordHits.length === 0 },
   };
   const json = JSON.stringify(result, null, 2) + '\n';
   if (values.out) writeFileSync(values.out, json);
@@ -332,7 +352,7 @@ async function main(): Promise<void> {
   process.stderr.write(
     `Gate A′ ${bench.repo.name}: (a) full ${full}/${n} · (b) broken-import ${broken.confirmed}/${broken.checked}, ` +
       `untested-change ${unchanged.confirmed}/${unchanged.checked}, test history ${history.confirmed}/${history.checked} · ` +
-      `(c) own-wording hits ${ownWordHits.length} (PR-text hits ${rawPrTextHits})\n`,
+      `(c) own-wording hits ${ownWordHits.length} (raw hits incl. PR text and paths: ${rawHits})\n`,
   );
 }
 

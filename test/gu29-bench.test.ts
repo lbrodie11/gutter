@@ -105,3 +105,16 @@ test('gate checker: a fabricated fact is rejected', () => {
   const facts = checkFacts(r.dir, 'pr', forged, base, head, trees);
   assert.deepEqual(facts.map((f) => [f.kind, f.confirmed]), [['broken-import', false], ['untested-change', false]]);
 });
+
+test('review 3: Gate A′ does not count a repository path as Gutter wording', () => {
+  const { r, brief } = fixtureRepo();
+  const b = structuredClone(brief);
+  const rename = (p: string) => p.replace('src/a.ts', 'src/auth/forgot-password.ts').replace('src/a.test.ts', 'test/untested-helpers.test.ts');
+  b.tests = b.tests.map((t) => ({ ...t, id: rename(t.id), source: rename(t.source), candidates: t.candidates.map((c) => ({ ...c, path: rename(c.path) })) }));
+  b.checklist = b.checklist.map((c) => ({ ...c, question: rename(c.question), evidence: c.evidence.map(rename) }));
+  b.changes.files = b.changes.files.map((f) => ({ ...f, path: rename(f.path) }));
+  b.change.head = 'fix/forgot-to-export';
+  assert.ok(bannedHits(b, { raw: true }).length > 0, 'the raw pages do contain the words, inside paths');
+  assert.deepEqual(bannedHits(neutralize(b)), []);
+  void r;
+});

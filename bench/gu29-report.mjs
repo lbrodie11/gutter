@@ -104,7 +104,7 @@ export function gateSummary(gate) {
     replayParity: gate.replayParity,
     a: gate.a,
     b: { brokenImport: strip(b.brokenImport), untestedChange: strip(b.untestedChange), testHistory: strip(b.testHistory) },
-    c: { pagesChecked: gate.c.pagesChecked, ownWordingHits: gate.c.ownWordingHits.length, prTextHits: gate.c.prTextHits, met: gate.c.met },
+    c: { pagesChecked: gate.c.pagesChecked, ownWordingHits: gate.c.ownWordingHits.length, rawHits: gate.c.rawHits, met: gate.c.met },
   };
 }
 
