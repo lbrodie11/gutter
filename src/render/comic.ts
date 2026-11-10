@@ -79,7 +79,10 @@ export function renderComic(brief: GutterBrief): string {
   const uCount = brief.dependents.unresolved?.count ?? 0;
   const isPartial = brief.dependents.coverage === 'partial' || uCount > 0;
   const hasAnalyzedTargets = changes.files.some((f) => f.language === 'typescript' || f.language === 'javascript');
-  const partialSentence = `${uCount} import${uCount === 1 ? ' uses' : 's use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
+  // GU-05: Repo Archaeology's resolver handles aliases and workspaces, so what is left is plainly "unresolved".
+  const partialSentence = brief.dependents.analyzers.includes('ra-import-graph')
+    ? `${uCount} import${uCount === 1 ? '' : 's'} in this repository could not be resolved to a file, so some importers may be missing.`
+    : `${uCount} import${uCount === 1 ? ' uses' : 's use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
   const depBody = deps.length
     ? `<ul class="deps">${deps.map((d) => {
         const shown = d.untouchedImporters.length ? d.untouchedImporters : d.changedImporters;
