@@ -229,6 +229,20 @@ function label(args: string[]): number {
   return 0;
 }
 
+/** Why a `--config` variant would not run exactly as written, or undefined when it would. */
+function configVariantProblem(raw: unknown): string | undefined {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return 'must be a JSON object of .gutter.json keys';
+  const parsed = parseGutterConfigObject(raw) as Record<string, unknown>;
+  const rawObj = raw as Record<string, unknown>;
+  const dropped = Object.keys(rawObj).filter((k) => !(k in parsed));
+  if (dropped.length > 0) return `unknown or invalid key(s): ${dropped.join(', ')}`;
+  const changed = Object.keys(rawObj).filter((k) => parsed[k] !== rawObj[k]);
+  if (changed.length > 0) {
+    return `value(s) the config parser would change: ${changed.map((k) => `${k} ${JSON.stringify(rawObj[k])} -> ${JSON.stringify(parsed[k])}`).join(', ')}`;
+  }
+  return undefined;
+}
+
 async function bench(args: string[]): Promise<number> {
   const { values } = parseArgs({
     args,
@@ -254,14 +268,14 @@ async function bench(args: string[]): Promise<number> {
   let configVariant: GutterConfig | undefined;
   if (values.config) {
     const raw: unknown = JSON.parse(readFileSync(resolve(values.config), 'utf8'));
-    configVariant = parseGutterConfigObject(raw);
-    // A preregistered variant must run exactly as written: refuse keys or values the config parser drops.
-    const rawKeys = raw && typeof raw === 'object' && !Array.isArray(raw) ? Object.keys(raw) : [];
-    const dropped = rawKeys.filter((k) => !(k in configVariant!));
-    if (dropped.length > 0) {
-      process.stderr.write(`error: --config ${values.config}: unknown or invalid key(s): ${dropped.join(', ')}\n`);
+    // A preregistered variant must run exactly as written: refuse anything the config parser would
+    // drop or change (unknown keys, invalid values, 1.5 rounded to 1), and anything that is not an object.
+    const problem = configVariantProblem(raw);
+    if (problem) {
+      process.stderr.write(`error: --config ${values.config}: ${problem}\n`);
       return 2;
     }
+    configVariant = parseGutterConfigObject(raw);
   }
 
   const outDir = resolve(values.out);
