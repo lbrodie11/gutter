@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "repo-archaeology",
+    "version": "0.10.0"
+  },
+  "k": 3,
+  "train": {
+    "commits": 3890,
+    "from": "2023-07-06",
+    "to": "2026-01-13"
+  },
+  "test": {
+    "commits": 949,
+    "from": "2026-01-13",
+    "to": "2026-11-03"
+  },
+  "queries": 1274,
+  "soloQueries": 86,
+  "strategies": [
+    {
+      "name": "co-change",
+      "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+      "fired": 447,
+      "coverage": 0.35086342229199374,
+      "precision": 0.5181058495821727,
+      "hitRate": 0.6890380313199105,
+      "falseAlarmRate": 0.31096196868008946,
+      "recall": 0.03283028858882711
+    },
+    {
+      "name": "co-change, no thresholds",
+      "description": "same ranking, always suggests something it has seen",
+      "fired": 1269,
+      "coverage": 0.9960753532182104,
+      "precision": 0.3044541010320478,
+      "hitRate": 0.5760441292356187,
+      "falseAlarmRate": 0.4239558707643814,
+      "recall": 0.09893213308622363
+    },
+    {
+      "name": "popularity baseline",
+      "description": "always suggests the 3 most frequently changed files",
+      "fired": 1274,
+      "coverage": 1,
+      "precision": 0.11878597592883307,
+      "hitRate": 0.2778649921507064,
+      "falseAlarmRate": 0.7221350078492935,
+      "recall": 0.04006707263260083
+    },
+    {
+      "name": "popularity, same changes",
+      "description": "the popularity guess, scored only where co-change spoke up",
+      "fired": 447,
+      "coverage": 0.35086342229199374,
+      "precision": 0.16554809843400448,
+      "hitRate": 0.3624161073825503,
+      "falseAlarmRate": 0.6375838926174496,
+      "recall": 0.019592268996558113
+    }
+  ],
+  "notes": [
+    "Right 1.9× as often as guessing popular files on the same changes: useful, but expect noise. A higher --min-confidence may help.",
+    "To tune settings without overfitting, experiment with --before <date> (an older window), then report one final run without it."
+  ],
+  "meta": {
+    "tool": "repo-archaeology",
+    "root": "/Users/brodie/.cache/gutter-bench/ollama__ollama",
+    "commitsRead": 5000,
+    "commitsAnalyzed": 4823,
+    "sweepsSkipped": 114,
+    "subjectSkipped": 0,
+    "revertsSkipped": 60,
+    "renamesFollowed": 1110,
+    "files": 2187,
+    "oldestCommit": "2023-07-03",
+    "newestCommit": "2026-11-03",
+    "origins": {
+      "human": 4819,
+      "agent": 4,
+      "bot": 0
+    },
+    "verdicts": {
+      "loaded": 0,
+      "active": 0,
+      "expired": 0,
+      "file": ".repo-archaeology.verdicts.json"
+    },
+    "settings": {
+      "maxCommits": 5000,
+      "maxFilesPerCommit": 25,
+      "minShared": 3,
+      "minConfidence": 0.4,
+      "ignore": [],
+      "useDefaultIgnores": true
+    },
+    "warnings": [],
+    "cache": {
+      "enabled": true,
+      "hits": 4999,
+      "misses": 1,
+      "dir": ".git/repo-archaeology/cache"
+    }
+  }
+}

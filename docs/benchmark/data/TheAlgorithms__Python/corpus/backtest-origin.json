@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "repo-archaeology",
+    "version": "0.10.0"
+  },
+  "k": 3,
+  "train": {
+    "commits": 3073,
+    "from": "2016-07-16",
+    "to": "2024-12-29"
+  },
+  "test": {
+    "commits": 774,
+    "from": "2024-12-29",
+    "to": "2026-11-02"
+  },
+  "queries": 884,
+  "soloQueries": 306,
+  "strategies": [
+    {
+      "name": "co-change",
+      "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+      "fired": 84,
+      "coverage": 0.09502262443438914,
+      "precision": 0.5242718446601942,
+      "hitRate": 0.6071428571428571,
+      "falseAlarmRate": 0.39285714285714285,
+      "recall": 0.014606437652150393
+    },
+    {
+      "name": "co-change, no thresholds",
+      "description": "same ranking, always suggests something it has seen",
+      "fired": 778,
+      "coverage": 0.8800904977375565,
+      "precision": 0.15029425079221367,
+      "hitRate": 0.2763496143958869,
+      "falseAlarmRate": 0.7236503856041131,
+      "recall": 0.08980254260210982
+    },
+    {
+      "name": "popularity baseline",
+      "description": "always suggests the 3 most frequently changed files",
+      "fired": 884,
+      "coverage": 1,
+      "precision": 0.07616892911010557,
+      "hitRate": 0.2160633484162896,
+      "falseAlarmRate": 0.7839366515837104,
+      "recall": 0.05463889640248851
+    },
+    {
+      "name": "popularity, same changes",
+      "description": "the popularity guess, scored only where co-change spoke up",
+      "fired": 84,
+      "coverage": 0.09502262443438914,
+      "precision": 0.07936507936507936,
+      "hitRate": 0.23809523809523808,
+      "falseAlarmRate": 0.7619047619047619,
+      "recall": 0.005409791723018664
+    }
+  ],
+  "notes": [
+    "When it speaks up it is 2.5× more often right than guessing popular files on the same changes.",
+    "To tune settings without overfitting, experiment with --before <date> (an older window), then report one final run without it."
+  ],
+  "comparisons": [
+    {
+      "spec": "bot=0,agent=0.5",
+      "defaultWeights": {
+        "human": 1,
+        "agent": 1,
+        "bot": 1
+      },
+      "weights": {
+        "human": 1,
+        "agent": 0.5,
+        "bot": 0
+      },
+      "default": {
+        "fired": 84,
+        "coverage": 0.09502262443438914,
+        "precision": 0.5242718446601942,
+        "hitRate": 0.6071428571428571,
+        "falseAlarmRate": 0.39285714285714285,
+        "recall": 0.014606437652150393,
+        "lift": 2.55,
+        "strategies": [
+          {
+            "name": "co-change",
+            "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+            "fired": 84,
+            "coverage": 0.09502262443438914,
+            "precision": 0.5242718446601942,
+            "hitRate": 0.6071428571428571,
+            "falseAlarmRate": 0.39285714285714285,
+            "recall": 0.014606437652150393
+          },
+          {
+            "name": "co-change, no thresholds",
+            "description": "same ranking, always suggests something it has seen",
+            "fired": 778,
+            "coverage": 0.8800904977375565,
+            "precision": 0.15029425079221367,
+            "hitRate": 0.2763496143958869,
+            "falseAlarmRate": 0.7236503856041131,
+            "recall": 0.08980254260210982
+          },
+          {
+            "name": "popularity baseline",
+            "description": "always suggests the 3 most frequently changed files",
+            "fired": 884,
+            "coverage": 1,
+            "precision": 0.07616892911010557,
+            "hitRate": 0.2160633484162896,
+            "falseAlarmRate": 0.7839366515837104,
+            "recall": 0.05463889640248851
+          },
+          {
+            "name": "popularity, same changes",
+            "description": "the popularity guess, scored only where co-change spoke up",
+            "fired": 84,
+            "coverage": 0.09502262443438914,
+            "precision": 0.07936507936507936,
+            "hitRate": 0.23809523809523808,
+            "falseAlarmRate": 0.7619047619047619,
+            "recall": 0.005409791723018664
+          }
+        ],
+        "byOrigin": {
+          "human": {
+            "queries": 718,
+            "fired": 56,
+            "coverage": 0.07799442896935933,
+            "precision": 0.44594594594594594,
+            "hitRate": 0.5357142857142857
+          },
+          "agent": {
+            "queries": 10,
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0
+          },
+          "bot": {
+            "queries": 156,
+            "fired": 28,
+            "coverage": 0.1794871794871795,
+            "precision": 0.7241379310344828,
+            "hitRate": 0.75
+          }
+        }
+      },
+      "weighted": {
+        "fired": 61,
+        "coverage": 0.06900452488687783,
+        "precision": 0.45569620253164556,
+        "hitRate": 0.5573770491803278,
+        "falseAlarmRate": 0.4426229508196721,
+        "recall": 0.009737625101433596,
+        "lift": 2.2666666666666666,
+        "strategies": [
+          {
+            "name": "co-change",
+            "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+            "fired": 61,
+            "coverage": 0.06900452488687783,
+            "precision": 0.45569620253164556,
+            "hitRate": 0.5573770491803278,
+            "falseAlarmRate": 0.4426229508196721,
+            "recall": 0.009737625101433596
+          },
+          {
+            "name": "co-change, no thresholds",
+            "description": "same ranking, always suggests something it has seen",
+            "fired": 778,
+            "coverage": 0.8800904977375565,
+            "precision": 0.13671344499773652,
+            "hitRate": 0.2737789203084833,
+            "falseAlarmRate": 0.7262210796915167,
+            "recall": 0.08168785501758183
+          },
+          {
+            "name": "popularity baseline",
+            "description": "always suggests the 3 most frequently changed files",
+            "fired": 884,
+            "coverage": 1,
+            "precision": 0.07616892911010557,
+            "hitRate": 0.2160633484162896,
+            "falseAlarmRate": 0.7839366515837104,
+            "recall": 0.05463889640248851
+          },
+          {
+            "name": "popularity, same changes",
+            "description": "the popularity guess, scored only where co-change spoke up",
+            "fired": 61,
+            "coverage": 0.06900452488687783,
+            "precision": 0.08196721311475409,
+            "hitRate": 0.2459016393442623,
+            "falseAlarmRate": 0.7540983606557377,
+            "recall": 0.004057343792263998
+          }
+        ],
+        "byOrigin": {
+          "human": {
+            "queries": 718,
+            "fired": 44,
+            "coverage": 0.06128133704735376,
+            "precision": 0.36065573770491804,
+            "hitRate": 0.45454545454545453
+          },
+          "agent": {
+            "queries": 10,
+            "fired": 0,
+            "coverage": 0,
+            "precision": 0,
+            "hitRate": 0
+          },
+          "bot": {
+            "queries": 156,
+            "fired": 17,
+            "coverage": 0.10897435897435898,
+            "precision": 0.7777777777777778,
+            "hitRate": 0.8235294117647058
+          }
+        }
+      },
+      "deltas": {
+        "fired": -23,
+        "coverage": -0.026018099547511303,
+        "precision": -0.06857564212854861,
+        "hitRate": -0.049765807962529274,
+        "falseAlarmRate": 0.049765807962529274,
+        "recall": -0.004868812550716797,
+        "lift": -0.2833333333333332
+      },
+      "caveat": "Overall metrics replay all held-out commits (including agent and bot commits). Inspect byOrigin.human to see accuracy on human-authored held-out commits alone."
+    }
+  ],
+  "meta": {
+    "tool": "repo-archaeology",
+    "root": "/Users/brodie/.cache/gutter-bench/TheAlgorithms__Python",
+    "commitsRead": 3918,
+    "commitsAnalyzed": 3847,
+    "sweepsSkipped": 51,
+    "subjectSkipped": 0,
+    "revertsSkipped": 6,
+    "renamesFollowed": 703,
+    "files": 2064,
+    "oldestCommit": "2016-07-16",
+    "newestCommit": "2026-11-02",
+    "origins": {
+      "human": 3658,
+      "agent": 14,
+      "bot": 175
+    },
+    "verdicts": {
+      "loaded": 0,
+      "active": 0,
+      "expired": 0,
+      "file": ".repo-archaeology.verdicts.json"
+    },
+    "settings": {
+      "maxCommits": 5000,
+      "maxFilesPerCommit": 25,
+      "minShared": 3,
+      "minConfidence": 0.4,
+      "ignore": [],
+      "useDefaultIgnores": true
+    },
+    "warnings": [],
+    "cache": {
+      "enabled": true,
+      "hits": 3918,
+      "misses": 0,
+      "dir": ".git/repo-archaeology/cache"
+    }
+  }
+}

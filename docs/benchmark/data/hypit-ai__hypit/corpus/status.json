@@ -1,0 +1,49 @@
+{
+  "repo": "hypit-ai/hypit",
+  "pinnedSha": "0762c6be56c0af43fff3cdbdb285e21414dd249b",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 1483
+    },
+    "bench": {
+      "status": "done",
+      "ms": 657146,
+      "evaluated": 200
+    },
+    "gate": {
+      "status": "done",
+      "ms": 202284
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 60288
+    },
+    "backtest": {
+      "status": "done",
+      "ms": 666
+    },
+    "backtestOrigin": {
+      "status": "done",
+      "ms": 456
+    }
+  },
+  "timedMs": 1400720,
+  "wallMs": 1403363,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

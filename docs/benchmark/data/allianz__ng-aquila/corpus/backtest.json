@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "repo-archaeology",
+    "version": "0.10.0"
+  },
+  "k": 3,
+  "train": {
+    "commits": 1416,
+    "from": "2020-09-15",
+    "to": "2025-12-23"
+  },
+  "test": {
+    "commits": 345,
+    "from": "2025-12-23",
+    "to": "2026-11-02"
+  },
+  "queries": 1349,
+  "soloQueries": 49,
+  "strategies": [
+    {
+      "name": "co-change",
+      "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+      "fired": 541,
+      "coverage": 0.4010378057820608,
+      "precision": 0.5590551181102362,
+      "hitRate": 0.7134935304990758,
+      "falseAlarmRate": 0.28650646950092423,
+      "recall": 0.045817536500766316
+    },
+    {
+      "name": "co-change, no thresholds",
+      "description": "same ranking, always suggests something it has seen",
+      "fired": 1340,
+      "coverage": 0.9933283914010378,
+      "precision": 0.35790005047955575,
+      "hitRate": 0.6194029850746269,
+      "falseAlarmRate": 0.3805970149253731,
+      "recall": 0.11438251189803984
+    },
+    {
+      "name": "popularity baseline",
+      "description": "always suggests the 3 most frequently changed files",
+      "fired": 1349,
+      "coverage": 1,
+      "precision": 0.13862120088954782,
+      "hitRate": 0.41363973313565605,
+      "falseAlarmRate": 0.586360266864344,
+      "recall": 0.04525288376220053
+    },
+    {
+      "name": "popularity, same changes",
+      "description": "the popularity guess, scored only where co-change spoke up",
+      "fired": 541,
+      "coverage": 0.4010378057820608,
+      "precision": 0.13493530499075784,
+      "hitRate": 0.4048059149722736,
+      "falseAlarmRate": 0.5951940850277264,
+      "recall": 0.01766556424941518
+    }
+  ],
+  "notes": [
+    "Right 1.8× as often as guessing popular files on the same changes: useful, but expect noise. A higher --min-confidence may help.",
+    "To tune settings without overfitting, experiment with --before <date> (an older window), then report one final run without it."
+  ],
+  "meta": {
+    "tool": "repo-archaeology",
+    "root": "/Users/brodie/.cache/gutter-bench/allianz__ng-aquila",
+    "commitsRead": 1905,
+    "commitsAnalyzed": 1758,
+    "sweepsSkipped": 128,
+    "subjectSkipped": 0,
+    "revertsSkipped": 6,
+    "renamesFollowed": 1314,
+    "files": 2707,
+    "oldestCommit": "2020-09-15",
+    "newestCommit": "2026-11-02",
+    "origins": {
+      "human": 1753,
+      "agent": 5,
+      "bot": 0
+    },
+    "verdicts": {
+      "loaded": 0,
+      "active": 0,
+      "expired": 0,
+      "file": ".repo-archaeology.verdicts.json"
+    },
+    "settings": {
+      "maxCommits": 5000,
+      "maxFilesPerCommit": 25,
+      "minShared": 3,
+      "minConfidence": 0.4,
+      "ignore": [],
+      "useDefaultIgnores": true
+    },
+    "warnings": [],
+    "cache": {
+      "enabled": true,
+      "hits": 1904,
+      "misses": 1,
+      "dir": ".git/repo-archaeology/cache"
+    }
+  }
+}

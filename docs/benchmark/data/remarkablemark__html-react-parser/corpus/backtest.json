@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "repo-archaeology",
+    "version": "0.10.0"
+  },
+  "k": 3,
+  "train": {
+    "commits": 2209,
+    "from": "2016-08-17",
+    "to": "2025-09-02"
+  },
+  "test": {
+    "commits": 553,
+    "from": "2025-09-03",
+    "to": "2026-11-03"
+  },
+  "queries": 631,
+  "soloQueries": 501,
+  "strategies": [
+    {
+      "name": "co-change",
+      "description": "your thresholds (≥3 shared, ≥40% confidence): what `diff` reports",
+      "fired": 62,
+      "coverage": 0.098256735340729,
+      "precision": 0.5916666666666667,
+      "hitRate": 0.5806451612903226,
+      "falseAlarmRate": 0.41935483870967744,
+      "recall": 0.08472553699284009
+    },
+    {
+      "name": "co-change, no thresholds",
+      "description": "same ranking, always suggests something it has seen",
+      "fired": 629,
+      "coverage": 0.9968304278922345,
+      "precision": 0.1248,
+      "hitRate": 0.16057233704292528,
+      "falseAlarmRate": 0.8394276629570747,
+      "recall": 0.27923627684964203
+    },
+    {
+      "name": "popularity baseline",
+      "description": "always suggests the 3 most frequently changed files",
+      "fired": 631,
+      "coverage": 1,
+      "precision": 0.027997886951928157,
+      "hitRate": 0.06656101426307448,
+      "falseAlarmRate": 0.9334389857369255,
+      "recall": 0.06324582338902147
+    },
+    {
+      "name": "popularity, same changes",
+      "description": "the popularity guess, scored only where co-change spoke up",
+      "fired": 62,
+      "coverage": 0.098256735340729,
+      "precision": 0.12365591397849462,
+      "hitRate": 0.3387096774193548,
+      "falseAlarmRate": 0.6612903225806451,
+      "recall": 0.027446300715990454
+    }
+  ],
+  "notes": [
+    "Right 1.7× as often as guessing popular files on the same changes: useful, but expect noise. A higher --min-confidence may help.",
+    "To tune settings without overfitting, experiment with --before <date> (an older window), then report one final run without it."
+  ],
+  "meta": {
+    "tool": "repo-archaeology",
+    "root": "/Users/brodie/.cache/gutter-bench/remarkablemark__html-react-parser",
+    "commitsRead": 2847,
+    "commitsAnalyzed": 2762,
+    "sweepsSkipped": 1,
+    "subjectSkipped": 0,
+    "revertsSkipped": 1,
+    "renamesFollowed": 70,
+    "files": 169,
+    "oldestCommit": "2016-08-17",
+    "newestCommit": "2026-11-03",
+    "origins": {
+      "human": 882,
+      "agent": 0,
+      "bot": 1880
+    },
+    "verdicts": {
+      "loaded": 0,
+      "active": 0,
+      "expired": 0,
+      "file": ".repo-archaeology.verdicts.json"
+    },
+    "settings": {
+      "maxCommits": 5000,
+      "maxFilesPerCommit": 25,
+      "minShared": 3,
+      "minConfidence": 0.4,
+      "ignore": [],
+      "useDefaultIgnores": true
+    },
+    "warnings": [],
+    "cache": {
+      "enabled": true,
+      "hits": 2846,
+      "misses": 1,
+      "dir": ".git/repo-archaeology/cache"
+    }
+  }
+}

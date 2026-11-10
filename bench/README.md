@@ -97,6 +97,18 @@ The exact commands are in STAGE0.md, "After GU-29".
 
 `gutter bench` replay now builds "What it touches" from Repo Archaeology's import graph at each PR's head, in the same session as `diff` and `backtest`, so the bench measures what users get. Results: STAGE0.md "After GU-05"; data: [`docs/benchmark/data/honojs__hono/gu05/`](../docs/benchmark/data/honojs__hono/gu05/); report: [`gu05-report.mjs`](gu05-report.mjs), which also classifies every PR record where `--legacy-predictions` differs from Stage 0b.
 
-## Stage 1 · corpus (not built)
+## GU-30 · Gate A′ on a 20-repository corpus
 
-`corpus.json`, `run-corpus.mjs`, `aggregate.mjs`, the per-question labeling mode, and the Gate A report are built only if Stage 0's preregistered rule says continue and a human confirms. As of 2026-11-10 the rule outcome is **STOP**, and GU-29 took option 1 (DECISIONS #17). The corpus is still needed for Gate A′ and for DECISIONS #17's reopen rule (a predictive rule must beat the strongest baseline on ≥ 3 corpus repos).
+Preregistered in [`docs/benchmark/CORPUS.md`](../docs/benchmark/CORPUS.md); results in [`docs/benchmark/README.md`](../docs/benchmark/README.md); how to rerun: [`docs/benchmark/REPRODUCE.md`](../docs/benchmark/REPRODUCE.md).
+
+| File | What it is |
+|---|---|
+| [`corpus.json`](corpus.json), [`corpus.schema.json`](corpus.schema.json), [`corpus.mjs`](corpus.mjs) | The 20 pinned repositories and their validator |
+| [`corpus-select.ts`](corpus-select.ts), [`corpus-candidates.json`](corpus-candidates.json), [`corpus-selection.json`](corpus-selection.json) | The selection rule, the saved GitHub search results it ran on, and every candidate's take/skip reason |
+| [`run-corpus.mjs`](run-corpus.mjs) | Per repository: clone at the pin, `gutter bench`, `gate-a-prime.ts`, the seeded run, two backtests; resumable, 45-minute timeout, versions recorded |
+| [`seeded.ts`](seeded.ts) | Seeded `broken-import` mutations and the module-resolution oracle (TS/JS, Go, Python) |
+| [`aggregate.mjs`](aggregate.mjs) | Per-repository and corpus metrics, the mechanical verdict, "Where Gutter did badly"; writes `docs/benchmark/README.md` and `results.json` |
+
+## Stage 1 · corpus (superseded by GU-30)
+
+GU-04's planned corpus, per-question labeling mode and Gate A report were never built: Stage 0's rule said STOP, GU-29 retired Gate A (DECISIONS #17), and GU-30 built the corpus for Gate A′ instead (above). DECISIONS #17's reopen rule (a predictive rule must beat the strongest baseline on ≥ 3 corpus repos) can now use these repositories.

@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-corpus-run",
+  "finishedAt": "2026-11-10T18:01:01.459Z",
+  "timeoutMin": 45,
+  "jobs": 2,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  },
+  "repos": [
+    {
+      "repo": "honojs/hono",
+      "slug": "honojs__hono",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 270431,
+      "timedMs": 269689
+    },
+    {
+      "repo": "remarkablemark/html-react-parser",
+      "slug": "remarkablemark__html-react-parser",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 254585,
+      "timedMs": 253640
+    },
+    {
+      "repo": "faastjs/faast.js",
+      "slug": "faastjs__faast.js",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 264402,
+      "timedMs": 262975
+    },
+    {
+      "repo": "binance/binance-connector-js",
+      "slug": "binance__binance-connector-js",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 1394512,
+      "timedMs": 1391734
+    },
+    {
+      "repo": "allianz/ng-aquila",
+      "slug": "allianz__ng-aquila",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 766820,
+      "timedMs": 763292
+    },
+    {
+      "repo": "matrix-org/matrix-appservice-bridge",
+      "slug": "matrix-org__matrix-appservice-bridge",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 275271,
+      "timedMs": 274281
+    },
+    {
+      "repo": "ChatGPTNextWeb/NextChat",
+      "slug": "ChatGPTNextWeb__NextChat",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 339363,
+      "timedMs": 337907
+    },
+    {
+      "repo": "DayuanJiang/next-ai-draw-io",
+      "slug": "DayuanJiang__next-ai-draw-io",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 313834,
+      "timedMs": 312192
+    },
+    {
+      "repo": "slymnoyann/hey.xyz",
+      "slug": "slymnoyann__hey.xyz",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 468780,
+      "timedMs": 467353
+    },
+    {
+      "repo": "lerna/lerna",
+      "slug": "lerna__lerna",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 542734,
+      "timedMs": 540679
+    },
+    {
+      "repo": "vbenjs/vue-vben-admin",
+      "slug": "vbenjs__vue-vben-admin",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 490164,
+      "timedMs": 488183
+    },
+    {
+      "repo": "hypit-ai/hypit",
+      "slug": "hypit-ai__hypit",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 1403363,
+      "timedMs": 1400720
+    },
+    {
+      "repo": "ollama/ollama",
+      "slug": "ollama__ollama",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 611954,
+      "timedMs": 608250
+    },
+    {
+      "repo": "fatedier/frp",
+      "slug": "fatedier__frp",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 348898,
+      "timedMs": 347449
+    },
+    {
+      "repo": "gin-gonic/gin",
+      "slug": "gin-gonic__gin",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 201337,
+      "timedMs": 200896
+    },
+    {
+      "repo": "TheAlgorithms/Python",
+      "slug": "TheAlgorithms__Python",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 170597,
+      "timedMs": 455535
+    },
+    {
+      "repo": "yt-dlp/yt-dlp",
+      "slug": "yt-dlp__yt-dlp",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 443655,
+      "timedMs": 442688
+    },
+    {
+      "repo": "github/spec-kit",
+      "slug": "github__spec-kit",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 472132,
+      "timedMs": 471181
+    },
+    {
+      "repo": "colbymchenry/codegraph",
+      "slug": "colbymchenry__codegraph",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 954358,
+      "timedMs": 950878
+    },
+    {
+      "repo": "team-telnyx/telnyx-node",
+      "slug": "team-telnyx__telnyx-node",
+      "completed": true,
+      "failure": null,
+      "evaluated": 200,
+      "note": null,
+      "wallMs": 533390,
+      "timedMs": 531655
+    }
+  ]
+}
