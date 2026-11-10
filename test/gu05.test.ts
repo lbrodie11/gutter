@@ -252,3 +252,42 @@ test('schema: the new additive fields validate on a library brief', async () => 
   assert.equal(b.forgotten.items[0]?.evidence[0]?.origin, 'human');
   assert.deepEqual(b.dependents.unresolved.byReason, {});
 });
+
+// ---- Re-measurement on hono (requirement 9) ---------------------------------------------------
+
+const DATA = new URL('../docs/benchmark/data/honojs__hono/', import.meta.url);
+const loadData = (rel: string) => JSON.parse(readFileSync(new URL(rel, DATA), 'utf8'));
+
+test('bench: both GU-05 hono runs are committed, on the pinned SHA, with the import graph', () => {
+  for (const [run, overrides] of [['default', {}], ['legacy', { legacyPredictions: true }]] as const) {
+    const m = loadData(`gu05/${run}/bench.json`);
+    assert.equal(m.repo.headSha, 'eb754bd5ef22c63f1634a4c374a86be086f85710');
+    assert.equal(m.tools.repoArchaeology, '0.10.0');
+    assert.equal(m.prs.length, 200);
+    assert.deepEqual(m.settings.configOverrides ?? {}, overrides);
+  }
+  const gate = loadData('gu05/gate-a-prime.json');
+  assert.equal(gate.prsEvaluated, 200);
+  assert.deepEqual(gate.replayParity, { salienceMismatches: 0, checklistKindMismatches: 0 });
+});
+
+test('bench: the GU-05 report reproduces results.json and the STAGE0.md block exactly', async () => {
+  // @ts-expect-error: plain .mjs report script without type declarations
+  const { buildResults, renderGu05, MARK_GU05_START, MARK_GU05_END } = await import('../bench/gu05-report.mjs');
+  const results = buildResults({
+    defaultModel: loadData('gu05/default/bench.json'),
+    legacyModel: loadData('gu05/legacy/bench.json'),
+    stage0bModel: loadData('stage0b/default/bench.json'),
+    gu29Results: loadData('gu29/results.json'),
+    gate: loadData('gu05/gate-a-prime.json'),
+  });
+  const committed = loadData('gu05/results.json');
+  assert.deepEqual(results, committed);
+  const doc = readFileSync(new URL('../docs/benchmark/STAGE0.md', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+  assert.equal(doc.slice(doc.indexOf(MARK_GU05_START), doc.indexOf(MARK_GU05_END) + MARK_GU05_END.length), renderGu05(committed));
+  // The legacy deltas are fully explained: interval rounding or the resolver's wide-surface items.
+  const reasons = new Set(committed.legacy.deltas.rows.flatMap((r: { reasons: string[] }) => r.reasons));
+  for (const r of reasons) assert.ok(['interval', 'dependents', 'salience'].includes(r as string), `unexplained delta: ${r}`);
+  assert.ok(committed.legacy.deltas.maxIntervalDelta <= 0.0001);
+  assert.equal(committed.legacy.summary.fullSalienceShare.numerator, committed.legacy.stage0b.fullSalienceShare.numerator);
+});

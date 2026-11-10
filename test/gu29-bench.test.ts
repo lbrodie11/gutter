@@ -45,7 +45,8 @@ test('bench: the report generator reproduces results.json and the STAGE0.md bloc
   assert.equal(committed.default.salience.full.numerator, 0);
   assert.equal(committed.default.byKind['forgotten-companion'], 0);
   assert.equal(evaluateGate(committed.gate).verdict, 'PASS (partly unexercised)');
-  assert.match(doc.trimEnd(), /Decision: see \[DECISIONS #17\]\([^)]+\)\.\*\*$/);
+  // GU-29's closing decision line ends its section (later sections, such as GU-05's, follow it).
+  assert.match(doc, /\n\*\*2026-11-10 · Decision: see \[DECISIONS #17\]\([^)]+\)\.\*\*\n\n## After GU-05/);
 });
 
 test('bench: Gate A′ never calls a criterion met when it had no items', () => {
