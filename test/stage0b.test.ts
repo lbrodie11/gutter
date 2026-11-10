@@ -190,7 +190,8 @@ test('consumer: the installed repo-archaeology 0.10 library returns a track reco
     assert.ok(suggestion, 'b is suggested');
     const tr = normalizeTrackRecord(suggestion.trackRecord);
     assert.ok(tr && tr.reason === null && (tr.fired ?? 0) >= 3, `expected a measured track record, got ${JSON.stringify(suggestion.trackRecord)}`);
-    assert.ok(!JSON.stringify(res.brief).includes('trackRecord'), 'gutter.json schema v1 is unchanged');
+    // The field never enters gutter.json; since GU-05 its *name* may appear in provenance.engines[].features.
+    assert.ok(!JSON.stringify(res.brief).includes('"trackRecord":'), 'gutter.json schema v1 is unchanged');
 
     // Default brief asks about b; with V4 the answer depends only on the relationship (RA calls this pair "unknown":
     // both files are plain constants with no shared signal), so V4 drops it.

@@ -32,9 +32,9 @@ inputs:
     required: false
     default: '3'
   archaeology-version:
-    description: 'npm version spec of repo-archaeology to run.'
+    description: 'npm version spec of repo-archaeology. Installed into an isolated prefix under RUNNER_TEMP (cached) and loaded as a library; npx is the fallback.'
     required: false
-    default: '^0.4.0'
+    default: '^0.10.0'
   working-directory:
     description: 'Directory inside GITHUB_WORKSPACE to analyze.'
     required: false
@@ -67,6 +67,14 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    # GU-05: repo-archaeology lives in an isolated prefix under RUNNER_TEMP, never in the user's repo.
+    - name: Cache repo-archaeology
+      if: ${{ inputs.history != 'false' }}
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/gutter-ra
+        key: gutter-ra-${{ runner.os }}-${{ inputs.archaeology-version }}
+
     - id: brief
       name: Brief this pull request
       shell: bash
@@ -104,7 +112,22 @@ runs:
           set_out status error
           exit 0
         fi
-        NODE_OPTIONS="" node "$GITHUB_ACTION_PATH/dist/action/main.js"
+        # Repo Archaeology as a library (one session per brief), installed into an isolated prefix from
+        # RUNNER_TEMP so the PR checkout's package.json/.npmrc are never read or written. No install scripts run.
+        RA_PREFIX="${RUNNER_TEMP:-/tmp}/gutter-ra"
+        RA_LIB=""
+        if [ "${INPUT_HISTORY:-true}" != "false" ]; then
+          if [ -f "$RA_PREFIX/node_modules/repo-archaeology/package.json" ]; then
+            RA_LIB="$RA_PREFIX/node_modules/repo-archaeology"
+          elif printf '%s' "$INPUT_ARCHAEOLOGY_VERSION" | grep -Eq '^[A-Za-z0-9.^~<>=*| -]+$' && \
+            (cd "${RUNNER_TEMP:-/tmp}" && npm install --no-save --no-audit --no-fund --ignore-scripts --prefix "$RA_PREFIX" "repo-archaeology@$INPUT_ARCHAEOLOGY_VERSION" >/dev/null 2>&1) && \
+            [ -f "$RA_PREFIX/node_modules/repo-archaeology/package.json" ]; then
+            RA_LIB="$RA_PREFIX/node_modules/repo-archaeology"
+          else
+            echo "::notice::Gutter could not install repo-archaeology into $RA_PREFIX; falling back to npx."
+          fi
+        fi
+        NODE_OPTIONS="" GUTTER_RA_LIB="$RA_LIB" node "$GITHUB_ACTION_PATH/dist/action/main.js"
 
     - name: Upload the comic page
       if: ${{ inputs.upload-page == 'true' && steps.brief.outputs.status == 'analyzed' }}

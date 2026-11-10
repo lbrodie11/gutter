@@ -2,7 +2,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { buildBrief } from './brief.ts';
+import { buildBriefAsync } from './brief.ts';
 import { inertLegacyKeys, inertLegacyWarning, parseGutterConfigObject, type GutterConfig } from './config.ts';
 import type { GutterBrief } from './contract.ts';
 import { renderCompareLabelHtml, sampleCompare, type CompareSource } from './bench/label.ts';
@@ -37,8 +37,10 @@ brief options
   --pr <number>           PR number, for the page header
   --ra-diff <file>        use a saved \`repo-archaeology diff --json\` result
   --ra-backtest <file>    use a saved \`repo-archaeology backtest --json\` result
-  --ra-bin <path>         repo-archaeology binary or dist/cli.js (or set GUTTER_RA_BIN)
-  --ra-version <spec>     npm version spec when running repo-archaeology via npx (default ^0.4.0)
+  --ra-lib <path>         repo-archaeology library (package dir or entry file; or set GUTTER_RA_LIB).
+                          Preferred: one session for history and the import graph. Default: the installed package
+  --ra-bin <path>         repo-archaeology binary or dist/cli.js (or set GUTTER_RA_BIN); used when no library loads
+  --ra-version <spec>     npm version spec for the npx last resort (default ^0.10.0)
   --no-history            skip co-change history entirely
   --no-calibration        skip the per-repo accuracy backtest
   --max-forgotten <n>     "usually changes with" pairs to show (default 3)
@@ -84,7 +86,7 @@ async function main(argv: string[]): Promise<number> {
     process.stdout.write(HELP);
     return 0;
   }
-  if (cmd === 'brief') return brief(rest);
+  if (cmd === 'brief') return await brief(rest);
   if (cmd === 'bench') return await bench(rest);
   if (cmd === 'label') return label(rest);
   if (cmd === 'render') return render(rest);
@@ -92,7 +94,7 @@ async function main(argv: string[]): Promise<number> {
   return 2;
 }
 
-function brief(args: string[]): number {
+async function brief(args: string[]): Promise<number> {
   const { values } = parseArgs({
     args,
     options: {
@@ -107,6 +109,7 @@ function brief(args: string[]): number {
       'ra-diff': { type: 'string' },
       'ra-backtest': { type: 'string' },
       'ra-bin': { type: 'string' },
+      'ra-lib': { type: 'string' },
       'ra-version': { type: 'string' },
       'no-history': { type: 'boolean' },
       'no-calibration': { type: 'boolean' },
@@ -118,8 +121,9 @@ function brief(args: string[]): number {
     process.stderr.write('error: --base is required (e.g. --base main)\n');
     return 2;
   }
-  const result: GutterBrief = buildBrief({
+  const result: GutterBrief = await buildBriefAsync({
     cwd: process.cwd(),
+    ...(values['ra-lib'] ? { raLib: resolve(values['ra-lib']) } : {}),
     base: values.base,
     warn: (message) => process.stderr.write(`warning: .gutter.json: ${message}\n`),
     ...(values.head ? { head: values.head } : {}),

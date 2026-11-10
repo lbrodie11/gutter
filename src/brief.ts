@@ -1,17 +1,19 @@
-import type { ChangeStructure, DependentsLayer, GutterBrief, TestLink } from './contract.ts';
+import type { ChangeStructure, DependentsLayer, EngineInfo, GutterBrief, TestLink } from './contract.ts';
 import { SCHEMA_VERSION } from './contract.ts';
 import type { GutterConfig, SafeRaRepoConfig } from './config.ts';
 import { inertLegacyKeys, inertLegacyWarning, readSnapshotAuxConfigs } from './config.ts';
 import { browseUrlFromRemote, git, hasTimestampAnomaly, isShallowRepo, repoRoot, resolveSha } from './git.ts';
 import { headCommits, readChanges } from './evidence/changes.ts';
 import { buildDependents } from './evidence/imports.ts';
+import { dependentsFromImportGraph } from './evidence/import-graph.ts';
 import { attachTestHistory, linkTests } from './evidence/tests.ts';
 import { buildChecklist, salienceOf } from './evidence/checklist.ts';
 import type { SourceReader } from './source/reader.ts';
 import { GitTreeReader, WorkingTreeReader } from './source/reader.ts';
 import type { RaBacktest, RaDiff, RaRunner } from './sources/archaeology.ts';
-import { runBacktest, runDiff, toCalibration, toForgotten, trackRecordsByTarget } from './sources/archaeology.ts';
-import { loadRaLibrary } from './sources/archaeology-lib.ts';
+import { detectRaFeatures, runBacktest, runDiff, toCalibration, toForgotten, trackRecordsByTarget } from './sources/archaeology.ts';
+import type { LoadedRaLibrary, RaProgress } from './sources/archaeology-lib.ts';
+import { analyzeWithLibrary, loadRaLibrary } from './sources/archaeology-lib.ts';
 import { GUTTER_VERSION } from './version.ts';
 
 export interface BriefOptions {
@@ -37,7 +39,13 @@ export interface BriefOptions {
   now?: Date;
   /** Receives configuration warnings (for example legacy-only keys set without `legacyPredictions`). */
   warn?: (message: string) => void;
+  /** Library path only: Repo Archaeology's structured progress (history load, model build). */
+  onProgress?: (e: RaProgress) => void;
+  /** Library path only: called with the number of Repo Archaeology history loads (always 1). */
+  onSession?: (sessions: number) => void;
 }
+
+export type RaMode = 'library' | 'subprocess' | 'npx';
 
 export interface ReplayBriefOptions {
   cwd: string;
@@ -96,6 +104,11 @@ export interface AssembleBriefInput {
   raDiff?: RaDiff;
   raBacktest?: RaBacktest;
   unavailable?: string;
+  /** GU-05: how Repo Archaeology ran, and which optional fields it produced (provenance). */
+  raMode?: RaMode;
+  raFeatures?: string[];
+  /** GU-05: appended to `forgotten.note` (for example when Repo Archaeology ran through npx). */
+  historyNote?: string;
   noHistory?: boolean;
   noCalibration?: boolean;
   maxForgotten?: number;
@@ -123,9 +136,14 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
   const noCalibration = Boolean(mergedConfig.noCalibration);
   const maxForgotten = mergedConfig.maxForgotten ?? 3;
 
-  const engines: { name: string; version: string }[] = [{ name: 'gutter', version: GUTTER_VERSION }];
+  const engines: EngineInfo[] = [{ name: 'gutter', version: GUTTER_VERSION }];
   if (!noHistory && input.raDiff) {
-    engines.push({ name: 'repo-archaeology', version: input.raDiff.tool.version });
+    engines.push({
+      name: 'repo-archaeology',
+      version: input.raDiff.tool.version,
+      ...(input.raMode ? { mode: input.raMode } : {}),
+      ...(input.raFeatures ? { features: input.raFeatures } : {}),
+    });
   }
 
   let unavailable = input.unavailable;
@@ -137,6 +155,7 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
   const forgottenLayer = toForgotten(noHistory ? undefined : input.raDiff, { maxItems: maxForgotten, maxEvidence: 5 }, unavailable);
   // GU-29: co-change history is context. `presentation` sits right after `status` so the legacy
   // object (no `presentation`) serializes exactly as before.
+  if (input.historyNote) forgottenLayer.note = forgottenLayer.note ? `${forgottenLayer.note} ${input.historyNote}` : input.historyNote;
   const { status: historyStatus, ...historyRest } = forgottenLayer;
   const forgotten = legacy ? forgottenLayer : { status: historyStatus, presentation: 'context' as const, ...historyRest };
   const calibration = toCalibration(noHistory ? undefined : input.raBacktest, noCalibration);
@@ -185,7 +204,22 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
   };
 }
 
-export function buildBrief(opts: BriefOptions): GutterBrief {
+interface PreparedBrief {
+  root: string;
+  head: string;
+  baseSha: string;
+  headSha: string;
+  reader: SourceReader;
+  ownReader: boolean;
+  mergedConfig: GutterConfig;
+  changes: ChangeStructure;
+  commits: { sha: string; subject: string }[];
+  tests: TestLink[];
+  repoUrl?: string;
+}
+
+/** Everything a live brief needs before co-change history and dependents (shared by sync and async paths). */
+function prepareBrief(opts: BriefOptions): PreparedBrief {
   const root = repoRoot(opts.cwd);
   const head = opts.head ?? 'HEAD';
   const baseSha = resolveSha(root, opts.base);
@@ -228,65 +262,160 @@ export function buildBrief(opts: BriefOptions): GutterBrief {
 
     const changes = readChanges(root, opts.base, head);
     const commits = headCommits(root, opts.base, head);
-    const dependents = buildDependents(root, changes, reader);
     const tests = linkTests(root, changes, reader);
-
-    // Co-change history: Repo Archaeology CLI analyzes the checked-out HEAD, so only
-    // run it ourselves when `head` is what is checked out.
-    let raDiff = opts.raDiff;
-    let raBacktest = opts.raBacktest;
-    let unavailable: string | undefined;
-    const noHistory = Boolean(mergedConfig.noHistory);
-    const noCalibration = Boolean(mergedConfig.noCalibration);
-
-    if (!noHistory && !raDiff) {
-      const checkedOut = resolveSha(root, 'HEAD');
-      if (checkedOut !== headSha) {
-        unavailable = `Co-change history needs ${head} checked out; it was skipped.`;
-      } else {
-        try {
-          raDiff = runDiff(root, opts.base, opts.runner ?? {});
-          if (!noCalibration && !raBacktest) {
-            try {
-              raBacktest = runBacktest(root, opts.runner ?? {});
-            } catch {
-              raBacktest = undefined;
-            }
-          }
-        } catch (err) {
-          unavailable = `Repo Archaeology could not run: ${(err as Error).message.split('\n')[0]}`;
-        }
-      }
-    }
-
     const remote = git(root, ['remote', 'get-url', 'origin'], { allowFail: true });
     const repoUrl = opts.repoUrl ?? browseUrlFromRemote(remote);
-
-    return assembleBrief({
-      base: opts.base,
-      head,
-      baseSha,
-      headSha,
-      title: opts.title,
-      intent: opts.intent,
-      repoUrl,
-      prNumber: opts.prNumber,
-      changes,
-      commits,
-      dependents,
-      tests,
-      raDiff,
-      raBacktest,
-      unavailable,
-      noHistory,
-      noCalibration,
-      maxForgotten: mergedConfig.maxForgotten,
-      config: mergedConfig,
-      reader,
-      now: opts.now,
-    });
-  } finally {
+    return { root, head, baseSha, headSha, reader, ownReader, mergedConfig, changes, commits, tests, ...(repoUrl ? { repoUrl } : {}) };
+  } catch (err) {
     if (ownReader) reader.close();
+    throw err;
+  }
+}
+
+interface HistoryResult {
+  raDiff?: RaDiff;
+  raBacktest?: RaBacktest;
+  unavailable?: string;
+  mode?: RaMode;
+  note?: string;
+}
+
+/** Shown when Repo Archaeology ran through npx, the last resort before "unavailable" (GU-05). */
+export const NPX_NOTE =
+  'Repo Archaeology ran through npx because the library is not installed; install repo-archaeology for a single-session analysis and import-graph dependents.';
+
+/**
+ * Fallback history (GU-05 steps 2-4): `GUTTER_RA_BIN` / `--ra-bin` subprocess, then `npx`, then unavailable.
+ * The CLI analyzes the checked-out HEAD, so it only runs when `head` is what is checked out.
+ */
+function subprocessHistory(opts: BriefOptions, p: PreparedBrief): HistoryResult {
+  const noHistory = Boolean(p.mergedConfig.noHistory);
+  const noCalibration = Boolean(p.mergedConfig.noCalibration);
+  const out: HistoryResult = { ...(opts.raDiff ? { raDiff: opts.raDiff } : {}), ...(opts.raBacktest ? { raBacktest: opts.raBacktest } : {}) };
+  if (noHistory || opts.raDiff) return out;
+  if (resolveSha(p.root, 'HEAD') !== p.headSha) {
+    out.unavailable = `Co-change history needs ${p.head} checked out; it was skipped.`;
+    return out;
+  }
+  const runner = opts.runner ?? {};
+  const mode: RaMode = runner.bin ?? process.env.GUTTER_RA_BIN ? 'subprocess' : 'npx';
+  try {
+    out.raDiff = runDiff(p.root, opts.base, runner);
+    out.mode = mode;
+    if (mode === 'npx') {
+      out.note = NPX_NOTE;
+      opts.warn?.(NPX_NOTE);
+    }
+    if (!noCalibration && !out.raBacktest) {
+      try {
+        out.raBacktest = runBacktest(p.root, runner);
+      } catch {
+        out.raBacktest = undefined;
+      }
+    }
+  } catch (err) {
+    out.unavailable = `Repo Archaeology could not run: ${(err as Error).message.split('\n')[0]}`;
+  }
+  return out;
+}
+
+function assemblePrepared(opts: BriefOptions, p: PreparedBrief, dependents: DependentsLayer, h: HistoryResult, features: string[] = []): GutterBrief {
+  return assembleBrief({
+    base: opts.base,
+    head: p.head,
+    baseSha: p.baseSha,
+    headSha: p.headSha,
+    title: opts.title,
+    intent: opts.intent,
+    repoUrl: p.repoUrl,
+    prNumber: opts.prNumber,
+    changes: p.changes,
+    commits: p.commits,
+    dependents,
+    tests: p.tests,
+    raDiff: h.raDiff,
+    raBacktest: h.raBacktest,
+    unavailable: h.unavailable,
+    noHistory: Boolean(p.mergedConfig.noHistory),
+    noCalibration: Boolean(p.mergedConfig.noCalibration),
+    maxForgotten: p.mergedConfig.maxForgotten,
+    config: p.mergedConfig,
+    reader: p.reader,
+    now: opts.now,
+    ...(h.mode ? { raMode: h.mode, raFeatures: [...new Set([...features, ...detectRaFeatures(h.raDiff, h.raBacktest)])].sort() } : {}),
+    ...(h.note ? { historyNote: h.note } : {}),
+  });
+}
+
+/**
+ * Synchronous brief without the Repo Archaeology library: the interim relative-import scanner for
+ * dependents, and co-change history through a subprocess (`--ra-bin` / `GUTTER_RA_BIN`) or `npx`.
+ * The CLI and the Action use `buildBriefAsync`, which tries the library first.
+ */
+export function buildBrief(opts: BriefOptions): GutterBrief {
+  const p = prepareBrief(opts);
+  try {
+    const dependents = buildDependents(p.root, p.changes, p.reader);
+    return assemblePrepared(opts, p, dependents, subprocessHistory(opts, p));
+  } finally {
+    if (p.ownReader) p.reader.close();
+  }
+}
+
+/**
+ * The product path (CLI and Action), GU-05. Order of preference for Repo Archaeology:
+ *  1. the library (`opts.raLib` path, `GUTTER_RA_LIB`, or the installed package): ONE session for diff,
+ *     backtest and the import graph; dependents come from the import graph; head need not be checked out;
+ *  2. `GUTTER_RA_BIN` / `--ra-bin` subprocess; 3. `npx` (with a note); 4. unavailable.
+ * In 2-4, dependents come from the interim relative-import scanner. `noHistory` skips Repo Archaeology
+ * entirely (an offline static run with the scanner).
+ */
+export async function buildBriefAsync(opts: BriefOptions & { raLib?: string | false }): Promise<GutterBrief> {
+  const p = prepareBrief(opts);
+  try {
+    const noHistory = Boolean(p.mergedConfig.noHistory);
+    let lib: LoadedRaLibrary | undefined;
+    if (!noHistory && opts.raLib !== false) {
+      try {
+        lib = await loadRaLibrary(opts.raLib === undefined ? undefined : opts.raLib);
+      } catch {
+        lib = undefined;
+      }
+    }
+    if (lib) {
+      const headFiles = new Set(
+        git(p.root, ['ls-tree', '-r', '-z', '--name-only', p.headSha]).split('\0').filter(Boolean),
+      );
+      try {
+        const a = await analyzeWithLibrary(lib, {
+          cwd: p.root,
+          head: p.headSha,
+          base: opts.base,
+          changedFiles: p.changes.files.map((f) => f.path),
+          headFiles,
+          noCalibration: Boolean(p.mergedConfig.noCalibration) || Boolean(opts.raBacktest),
+          skipDiff: Boolean(opts.raDiff),
+          ...(opts.onProgress ? { onProgress: opts.onProgress } : {}),
+        });
+        opts.onSession?.(a.sessions);
+        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph) : buildDependents(p.root, p.changes, p.reader);
+        const raDiff = opts.raDiff ?? a.raDiff;
+        const shallow = Boolean(raDiff?.meta?.shallow);
+        const h: HistoryResult = {
+          ...(raDiff && !shallow ? { raDiff } : {}),
+          ...((opts.raBacktest ?? a.raBacktest) && !shallow ? { raBacktest: opts.raBacktest ?? a.raBacktest } : {}),
+          ...(shallow ? { unavailable: 'Co-change history is unavailable in a shallow or truncated clone.' } : {}),
+          mode: 'library',
+        };
+        return assemblePrepared(opts, p, dependents, h, a.graph ? ['importGraph'] : []);
+      } catch (err) {
+        opts.warn?.(`Repo Archaeology library failed (${(err as Error).message.split('\n')[0]}); falling back to the subprocess.`);
+      }
+    }
+    const dependents = buildDependents(p.root, p.changes, p.reader);
+    return assemblePrepared(opts, p, dependents, subprocessHistory(opts, p));
+  } finally {
+    if (p.ownReader) p.reader.close();
   }
 }
 
@@ -388,7 +517,9 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
 
     const changes = readChanges(root, opts.base, headSha);
     const commits = headCommits(root, opts.base, headSha);
-    const dependents = buildDependents(root, changes, reader);
+    // Dependents come from Repo Archaeology's import graph at this head when the session runs (GU-05);
+    // the interim scanner is the fallback (no history, shallow clone, or an older library).
+    let dependents: DependentsLayer | undefined;
     const tests = linkTests(root, changes, reader);
     const staticAnalysisMs = performance.now() - tStaticStart;
 
@@ -398,6 +529,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
     let historyStatus: 'available' | 'unavailable' = shallow ? 'unavailable' : 'available';
     let raVersion: string | undefined;
     let sessionOpenMs = 0;
+    const raFeatures: string[] = [];
 
     const noHistory = Boolean(mergedConfig.noHistory);
     const noCalibration = Boolean(mergedConfig.noCalibration);
@@ -405,47 +537,54 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
     if (shallow && !opts.raDiff) {
       unavailable = 'Co-change history is unavailable in a shallow or truncated clone.';
       historyStatus = 'unavailable';
-    } else if (!noHistory && !raDiff) {
-      const raLib = await loadRaLibrary(opts.raLib);
-      raVersion = raLib.version;
-      const tSessionStart = performance.now();
-      let repo;
-      try {
-        repo = await raLib.openRepository({
+    } else if (!noHistory) {
+      // Bench replay requires the library (`RaLibUnavailableError` otherwise), unless a diff was supplied.
+      let raLib: LoadedRaLibrary | undefined;
+      if (raDiff) {
+        try {
+          raLib = await loadRaLibrary(opts.raLib);
+        } catch {
+          raLib = undefined;
+        }
+      } else {
+        raLib = await loadRaLibrary(opts.raLib);
+      }
+      if (raLib) {
+        raVersion = raLib.version;
+        const tSessionStart = performance.now();
+        // ONE session at this PR's head: diff, backtest and the import graph (nothing later is read).
+        const a = await analyzeWithLibrary(raLib, {
           cwd: root,
           head: headSha,
           base: opts.base,
+          changedFiles: changes.files.map((f) => f.path),
+          headFiles: new Set(reader.listFiles()),
           settings: opts.raSettings ?? {},
           useConfigFile: raConfigValid,
+          skipDiff: Boolean(raDiff),
+          noCalibration: noCalibration || opts.raBacktest !== undefined,
         });
-      } catch {
-        repo = await raLib.openRepository({
-          cwd: root,
-          head: headSha,
-          base: opts.base,
-          settings: opts.raSettings ?? {},
-          useConfigFile: false,
-        });
-      }
-      sessionOpenMs = performance.now() - tSessionStart;
-      try {
-        raDiff = await repo.diff({ base: opts.base, limit: 25 });
-        if (raDiff.meta?.shallow) {
-          historyStatus = 'unavailable';
-          unavailable = 'Co-change history is unavailable in a shallow or truncated clone.';
-          raDiff = undefined;
-          raBacktest = undefined;
-        } else if (opts.raBacktest === undefined && !noCalibration) {
-          try {
-            raBacktest = await repo.backtest();
-          } catch {
+        sessionOpenMs = performance.now() - tSessionStart;
+        if (a.graph) {
+          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph);
+          raFeatures.push('importGraph');
+        }
+        if (!raDiff) {
+          raDiff = a.raDiff;
+          if (raDiff?.meta?.shallow) {
+            historyStatus = 'unavailable';
+            unavailable = 'Co-change history is unavailable in a shallow or truncated clone.';
+            raDiff = undefined;
             raBacktest = undefined;
+          } else if (opts.raBacktest === undefined && !noCalibration) {
+            raBacktest = a.raBacktest;
           }
         }
-      } finally {
-        await repo.close();
       }
     }
+    dependents ??= buildDependents(root, changes, reader);
+    const raMode: RaMode | undefined = raVersion && raDiff ? 'library' : undefined;
+    const provenance = raMode ? { raMode, raFeatures: [...new Set([...raFeatures, ...detectRaFeatures(raDiff, raBacktest)])].sort() } : {};
 
     const tBriefStart = performance.now();
     const remote = git(root, ['remote', 'get-url', 'origin'], { allowFail: true });
@@ -473,6 +612,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
       config: mergedConfig,
       reader,
       now: opts.now,
+      ...provenance,
     });
 
     const ungatedBrief = assembleBrief({
@@ -497,6 +637,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
       config: { ...mergedConfig, noCalibration: true },
       reader,
       now: opts.now,
+      ...provenance,
     });
     const briefMs = performance.now() - tBriefStart;
 

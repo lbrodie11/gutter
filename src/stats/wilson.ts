@@ -1,4 +1,6 @@
 /**
+ * FALLBACK ONLY (GU-05) for co-change items: Repo Archaeology's `interval` (RA-05) is used when present.
+ *
  * 95% Wilson score interval for k successes out of n trials.
  * Used to show "14 of 19 commits (95% CI 51–89%)" instead of a bare 74%,
  * so sparse history reads as uncertain rather than authoritative.

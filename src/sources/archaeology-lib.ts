@@ -4,6 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { RaBacktest, RaDiff } from './archaeology.ts';
 
+/** First release with `openRepository` (RA-03) and the import resolver behind `importGraph` (RA-09). */
 export const MIN_RA_LIB_VERSION = '0.4.0';
 
 export class RaLibUnavailableError extends Error {
@@ -33,8 +34,23 @@ export interface RaRepositorySession {
     followUps?: boolean;
     followUpWindowHours?: number;
   }): Promise<RaBacktest>;
+  /** RA-09 (>= 0.4.0): internal import graph; `files` limits `from` to them plus their reverse importers. */
+  importGraph?(opts?: { files?: string[] }): Promise<RaImportGraph>;
   close(): Promise<void>;
 }
+
+/** `schema/import-graph.schema.json` (v1). `via`, `reasonCode` and `languages` may grow: tolerate unknown values. */
+export interface RaImportGraph {
+  schemaVersion: 1;
+  tool: { name: string; version: string };
+  meta: { imports?: { unresolvedByReason?: Record<string, number> } & Record<string, unknown>; warnings?: string[] } & Record<string, unknown>;
+  files: string[];
+  edges: { from: string; to: string; specifier: string; kind: string; via?: string; heuristic?: boolean }[];
+  unresolved: { from: string; specifier: string; reason: string; reasonCode?: string }[];
+  languages: string[];
+}
+
+export interface RaProgress { phase: string; done?: number; total?: number }
 
 export interface RaLibraryModule {
   openRepository(opts: {
@@ -43,6 +59,7 @@ export interface RaLibraryModule {
     base?: string;
     settings?: Record<string, unknown>;
     useConfigFile?: boolean;
+    onProgress?: (e: RaProgress) => void;
   }): Promise<RaRepositorySession>;
   version?: string;
 }
@@ -156,4 +173,85 @@ export async function loadRaLibrary(raLibPath?: string): Promise<LoadedRaLibrary
     openRepository: mod.openRepository as RaLibraryModule['openRepository'],
     version: finalVersion,
   };
+}
+
+export interface LibraryAnalysis {
+  raDiff?: RaDiff;
+  raBacktest?: RaBacktest;
+  /** `importGraph({ files })`: the changed files present at head plus every file importing them. */
+  graph?: RaImportGraph;
+  /** `importGraph()` unfiltered, read from the same session's index: repo-wide `unresolved` (coverage, dangling imports). */
+  repoGraph?: RaImportGraph;
+  /** History loads in this analysis (always 1: one `openRepository` per brief). */
+  sessions: number;
+}
+
+/**
+ * GU-05: everything Gutter needs from Repo Archaeology in ONE session (one history load): `diff`, `backtest`
+ * (unless `noCalibration`), and the import graph for the changed files. `close()` always runs.
+ * The session is opened at `head`, so nothing after that commit is read (bench replay relies on this).
+ */
+export async function analyzeWithLibrary(
+  lib: LoadedRaLibrary,
+  opts: {
+    cwd: string;
+    head: string;
+    base: string;
+    /** Changed paths; those missing at head (deleted, renamed away) are not passed to `importGraph`. */
+    changedFiles: readonly string[];
+    headFiles: ReadonlySet<string>;
+    noHistory?: boolean;
+    noCalibration?: boolean;
+    settings?: Record<string, unknown>;
+    useConfigFile?: boolean;
+    onProgress?: (e: RaProgress) => void;
+    /** Skip `diff` when the caller already has one (CLI `--ra-diff`); the graph still comes from this session. */
+    skipDiff?: boolean;
+    skipBacktest?: boolean;
+  },
+): Promise<LibraryAnalysis> {
+  const open = (useConfigFile: boolean | undefined) =>
+    lib.openRepository({
+      cwd: opts.cwd,
+      head: opts.head,
+      base: opts.base,
+      ...(opts.settings ? { settings: opts.settings } : {}),
+      ...(useConfigFile !== undefined ? { useConfigFile } : {}),
+      ...(opts.onProgress ? { onProgress: opts.onProgress } : {}),
+    });
+  let repo: RaRepositorySession;
+  try {
+    repo = await open(opts.useConfigFile);
+  } catch (err) {
+    // An invalid .repo-archaeology.json must not cost the whole analysis: retry once without it.
+    if (opts.useConfigFile === false) throw err;
+    repo = await open(false);
+  }
+  const out: LibraryAnalysis = { sessions: 1 };
+  try {
+    if (!opts.noHistory && !opts.skipDiff) {
+      // `base` as the CLI's `diff --base` and the pre-GU-05 replay passed it, so results stay identical.
+      out.raDiff = await repo.diff({ base: opts.base, limit: 25 });
+    }
+    if (!opts.noHistory && !opts.noCalibration && !opts.skipBacktest && !out.raDiff?.meta?.shallow) {
+      try {
+        out.raBacktest = await repo.backtest();
+      } catch {
+        out.raBacktest = undefined;
+      }
+    }
+    if (typeof repo.importGraph === 'function') {
+      const files = opts.changedFiles.filter((f) => opts.headFiles.has(f));
+      try {
+        out.graph = await repo.importGraph({ files });
+        out.repoGraph = await repo.importGraph();
+      } catch {
+        out.graph = undefined;
+        out.repoGraph = undefined;
+      }
+    }
+    return out;
+  } finally {
+    await repo.close();
+  }
 }

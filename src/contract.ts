@@ -102,8 +102,12 @@ export interface DependentsLayer {
   unchecked: string[];
   /** 'full' when all non-external imports were resolved; 'partial' when unresolved imports exist. */
   coverage: 'full' | 'partial';
-  /** Unresolved non-relative, non-external imports (`<file> → <specifier>`), capped at 5 sorted samples. */
-  unresolved: { count: number; samples: string[] };
+  /**
+   * Imports that could not be resolved to a repository file (`<file> → <specifier>`), capped at 5 sorted
+   * samples. GU-05, additive: `byReason` counts them by Repo Archaeology's `reasonCode` when its import
+   * graph produced the layer (`alias-unmatched`, `unknown-package`, `target-missing`, …; may grow).
+   */
+  unresolved: { count: number; samples: string[]; byReason?: Record<string, number> };
   /** @deprecated Legacy v1 field normalized into `unresolved.count`. */
   unresolvedAliases?: number;
   scannedFiles: number;
@@ -114,7 +118,10 @@ export interface CommitRef {
   date: string;
   author: string;
   subject: string;
+  /** `origin === 'bot'` when Repo Archaeology classified the commit; else Gutter's author-name fallback. */
   automated: boolean;
+  /** GU-05, additive: Repo Archaeology's commit origin (repo-archaeology >= 0.4 with origin support). */
+  origin?: 'human' | 'agent' | 'bot';
 }
 
 export interface ForgottenItem {
@@ -129,13 +136,15 @@ export interface ForgottenItem {
   changedTotal: number;
   /** Directional confidence shared/changedTotal. */
   confidence: number;
-  /** 95% Wilson interval for that proportion. */
+  /** 95% Wilson interval for that proportion: Repo Archaeology's `interval` when present, else computed locally. */
   interval: { low: number; high: number };
   lastTogether?: string;
   evidence: CommitRef[];
-  /** Share of supporting commits authored by bots/automation (0..1). */
+  /** Share of supporting commits authored by bots/automation (0..1): `originShare.bot` when present. */
   automationShare: number;
   alsoLinkedFrom: string[];
+  /** GU-05, additive: Repo Archaeology's share of shared commits by origin (sums to 1). */
+  originShare?: { human: number; agent: number; bot: number };
 }
 
 export interface FamilyItem {
@@ -231,6 +240,15 @@ export interface Calibration {
 
 export interface Provenance {
   generatedAt: string;
-  engines: { name: string; version: string }[];
+  engines: EngineInfo[];
   deterministic: true;
+}
+
+export interface EngineInfo {
+  name: string;
+  version: string;
+  /** GU-05, additive: how Repo Archaeology ran. `library` = one in-process session. */
+  mode?: 'library' | 'subprocess' | 'npx';
+  /** GU-05, additive: optional Repo Archaeology fields detected in this run (e.g. `interval`, `origin`, `trackRecord`, `importGraph`). */
+  features?: string[];
 }
