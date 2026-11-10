@@ -6,11 +6,13 @@ import {
   type BenchResultsModel,
   type BootstrapInterval,
   type ExemplarQuestion,
+  type LiftBootstrapInterval,
   OUTCOME_NAMES,
   type OutcomeName,
   type PolicyAggregateSummary,
   type ProportionMetric,
 } from './model.ts';
+import { baselineOutcomeRate, policyOutcomeRate } from './metrics.ts';
 import { sanitizeAuthorName, sanitizePath, sanitizeText } from './sanitize.ts';
 import { assertValidBenchResults } from './validate.ts';
 
@@ -21,6 +23,13 @@ function fmtProportionHtml(m: ProportionMetric): string {
     return `${m.numerator} / ${m.denominator} <span class="small">(N/A)</span>`;
   }
   return `<b>${m.rate}</b> <span class="small">(${m.numerator}/${m.denominator} · [${m.interval.low}, ${m.interval.high}])</span>`;
+}
+
+function fmtLiftBootstrapHtml(b: LiftBootstrapInterval | null): string {
+  if (!b) return '<span class="small">N/A</span>';
+  const v = (x: number | null) => (x === null ? '∞' : String(x));
+  const unbounded = b.unboundedResamples > 0 ? `, ${b.unboundedResamples} unbounded` : '';
+  return `[${v(b.low)}, ${v(b.high)}] <span class="small">(median ${v(b.median)}, n=${b.resamples}, seed=${b.seed}${unbounded})</span>`;
 }
 
 function fmtBootstrapHtml(b: BootstrapInterval | null): string {
@@ -142,24 +151,15 @@ function renderOutcomeLiftHtml(summary: PolicyAggregateSummary): string {
     sameAuthor: 'Same-author follow-up',
     raSignal: 'RA-signal follow-up',
   };
-  const policyRate: Record<OutcomeName, ProportionMetric> = {
-    followUp: acc.fileLevelFollowUpPrecision,
-    sameAuthor: acc.sameAuthorFollowUpRate,
-    raSignal: acc.raSignalFollowUpRate,
-  };
-  const baselineRate = (name: BaselineName, outcome: OutcomeName): ProportionMetric | undefined => {
-    const b = summary.baselines[name];
-    return outcome === 'followUp' ? b.fileLevelFollowUp : outcome === 'sameAuthor' ? b.sameAuthorFollowUpRate : b.raSignalFollowUpRate;
-  };
   const rows = OUTCOME_NAMES.map((outcome) => {
     const hl = byOutcome[outcome];
     const cells = (['popular', 'popular-near', 'recent'] as const)
       .map((name) => {
-        const m = baselineRate(name, outcome);
+        const m = baselineOutcomeRate(summary.baselines[name], outcome);
         return `<td>${m ? fmtProportionHtml(m) : 'N/A'}</td>`;
       })
       .join('');
-    return `<tr><td>${labels[outcome]}</td><td>${fmtProportionHtml(policyRate[outcome])}</td>${cells}<td><code class="path">${html(hl.strongestBaseline ?? 'N/A')}</code></td><td>${fmtLiftHtml(hl.lift)}</td><td>${fmtBootstrapHtml(hl.bootstrapCi)}</td></tr>`;
+    return `<tr><td>${labels[outcome]}</td><td>${fmtProportionHtml(policyOutcomeRate(acc, outcome))}</td>${cells}<td><code class="path">${html(hl.strongestBaseline ?? 'N/A')}</code></td><td>${fmtLiftHtml(hl.lift)}</td><td>${fmtLiftBootstrapHtml(hl.bootstrapCi)}</td></tr>`;
   }).join('\n');
   return `
   <p class="small">Lift by outcome: each outcome is compared against its own strongest baseline.</p>

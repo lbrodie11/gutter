@@ -160,7 +160,25 @@ export interface OutcomeLift {
   /** Policy rate / baseline rate on this outcome, or `null` when either rate is missing or the baseline rate is 0. */
   lift: number | null;
   /** Paired PR-clustered bootstrap interval for `lift`. */
-  bootstrapCi: BootstrapInterval | null;
+  bootstrapCi: LiftBootstrapInterval | null;
+}
+
+/**
+ * Bootstrap interval for a lift. Resamples where the baseline has no hits but the policy does
+ * have an infinite lift and are kept (dropping them would bias the interval down); when they
+ * reach a reported quantile, that bound is `null` (unbounded). Resamples with no hits on either
+ * side have no defined lift and are dropped.
+ */
+export interface LiftBootstrapInterval {
+  low: number | null;
+  high: number | null;
+  median: number | null;
+  resamples: number;
+  seed: number;
+  /** Resamples whose lift was infinite (baseline 0 hits, policy > 0). */
+  unboundedResamples: number;
+  /** Resamples with no hits on either side (lift undefined), excluded from the quantiles. */
+  undefinedResamples: number;
 }
 
 export interface BaselineAggregateSummary {

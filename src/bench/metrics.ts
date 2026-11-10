@@ -9,10 +9,12 @@ import type {
   ExemplarQuestion,
   IntervalBucketBreakdownRow,
   KindBreakdownRow,
+  LiftBootstrapInterval,
   OutcomeLift,
   OutcomeName,
   PolicyAggregateSummary,
   PolicyName,
+  ProportionMetric,
   StageTimingSummary,
   TargetOutcomeRecord,
 } from './model.ts';
@@ -41,7 +43,7 @@ export function isScoredStatus(status: TargetOutcomeRecord['status']): status is
 }
 
 /** Deterministic Mulberry32 PRNG for reproducible PR-clustered bootstrap intervals. */
-function mulberry32(seed: number): () => number {
+export function mulberry32(seed: number): () => number {
   let state = seed >>> 0;
   return () => {
     state = (state + 0x6d2b79f5) >>> 0;
@@ -100,8 +102,76 @@ export function bootstrapPrPrecision(
   };
 }
 
+/** Quantile that returns `null` when it lands on (or interpolates toward) an infinite value. */
+function quantileOrUnbounded(sorted: readonly number[], q: number): number | null {
+  const pos = (sorted.length - 1) * q;
+  const lo = Math.floor(pos);
+  const hi = Math.ceil(pos);
+  const weight = pos - lo;
+  if (!Number.isFinite(sorted[lo]!) || (weight > 0 && !Number.isFinite(sorted[hi]!))) return null;
+  return Number(quantile(sorted, q).toFixed(4));
+}
+
+/**
+ * GU-04: PR-clustered paired bootstrap for lift that keeps zero-baseline resamples as infinite
+ * lift instead of discarding them (see `LiftBootstrapInterval`). Used for `liftByOutcome`, where
+ * same-author and RA-signal baselines are often sparse. Same seed and resample count as GU-03.
+ */
+export function bootstrapPrLiftUnbiased(
+  pairedCounts: readonly { policyHits: number; policyTotal: number; baseHits: number; baseTotal: number }[],
+  resamples: number = DEFAULT_BOOTSTRAP_RESAMPLES,
+  seed: number = DEFAULT_BOOTSTRAP_SEED,
+): LiftBootstrapInterval | null {
+  // Same clusters as the pooled point estimate: every PR where either side proposed a scored target.
+  const active = pairedCounts.filter((p) => p.policyTotal > 0 || p.baseTotal > 0);
+  if (active.length === 0) return null;
+  const rng = mulberry32(seed);
+  const lifts: number[] = [];
+  const n = active.length;
+  let unbounded = 0;
+  let undefinedCount = 0;
+  for (let r = 0; r < resamples; r++) {
+    let pHits = 0;
+    let pTot = 0;
+    let bHits = 0;
+    let bTot = 0;
+    for (let i = 0; i < n; i++) {
+      const pick = active[Math.floor(rng() * n)]!;
+      pHits += pick.policyHits;
+      pTot += pick.policyTotal;
+      bHits += pick.baseHits;
+      bTot += pick.baseTotal;
+    }
+    if (pTot === 0 || bTot === 0) {
+      undefinedCount++;
+      continue;
+    }
+    if (bHits === 0) {
+      if (pHits === 0) undefinedCount++;
+      else {
+        unbounded++;
+        lifts.push(Number.POSITIVE_INFINITY);
+      }
+      continue;
+    }
+    lifts.push(pHits / pTot / (bHits / bTot));
+  }
+  if (lifts.length === 0) return null;
+  lifts.sort((a, b) => a - b);
+  return {
+    low: quantileOrUnbounded(lifts, 0.025),
+    median: quantileOrUnbounded(lifts, 0.5),
+    high: quantileOrUnbounded(lifts, 0.975),
+    resamples,
+    seed,
+    unboundedResamples: unbounded,
+    undefinedResamples: undefinedCount,
+  };
+}
+
 /**
  * PR-clustered paired bootstrap over `prs` (1,000 resamples, seeded) for lift (`policyRate / baselineRate`).
+ * GU-03 semantics, kept for `bootstrapLiftCi`: resamples with zero baseline hits are dropped.
  */
 export function bootstrapPrLift(
   pairedCounts: readonly { policyHits: number; policyTotal: number; baseHits: number; baseTotal: number }[],
@@ -155,10 +225,18 @@ function ratioOrNull(num: number | null, den: number | null): number | null {
   return num !== null && den !== null && den > 0 ? Number((num / den).toFixed(4)) : null;
 }
 
-function outcomeRateOf(b: BaselineAggregateSummary, outcome: OutcomeName): number | null {
-  if (outcome === 'followUp') return b.fileLevelFollowUp.rate;
-  if (outcome === 'sameAuthor') return b.sameAuthorFollowUpRate.rate;
-  return b.raSignalFollowUpRate?.rate ?? null;
+/** A baseline's rate on one outcome (absent on GU-03-era files for `raSignal`). */
+export function baselineOutcomeRate(b: BaselineAggregateSummary, outcome: OutcomeName): ProportionMetric | undefined {
+  if (outcome === 'followUp') return b.fileLevelFollowUp;
+  if (outcome === 'sameAuthor') return b.sameAuthorFollowUpRate;
+  return b.raSignalFollowUpRate;
+}
+
+/** The policy's rate on one outcome. */
+export function policyOutcomeRate(acc: PolicyAggregateSummary['accuracyProxy'], outcome: OutcomeName): ProportionMetric {
+  if (outcome === 'followUp') return acc.fileLevelFollowUpPrecision;
+  if (outcome === 'sameAuthor') return acc.sameAuthorFollowUpRate;
+  return acc.raSignalFollowUpRate;
 }
 
 /**
@@ -174,7 +252,7 @@ export function strongestBaselinesByOutcome(
     let best: BaselineName | null = null;
     let bestRate = -1;
     for (const name of ['popular-near', 'recent', 'popular'] as const) {
-      const rate = outcomeRateOf(baselines[name], outcome);
+      const rate = baselineOutcomeRate(baselines[name], outcome)?.rate ?? null;
       if (rate !== null && rate > bestRate) {
         bestRate = rate;
         best = name;
@@ -596,7 +674,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
       bootstrapRateCi[outcome] = bootstrapPrPrecision(rows.map((r) => ({ hits: r.baseHits, total: r.baseTotal })));
       liftByOutcome[outcome] = {
         lift: ratioOrNull(policyRates[outcome], baselineRates[outcome]),
-        bootstrapCi: bootstrapPrLift(rows),
+        bootstrapCi: bootstrapPrLiftUnbiased(rows),
       };
     }
 
@@ -622,19 +700,11 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
     };
   }
 
-  // Headline baseline = strongest baseline (highest fileLevelFollowUp.rate; tie-breaker: popular-near -> recent -> popular)
-  let strongestBaseline: BaselineName | null = null;
-  let highestBaselineRate = -1;
-  for (const bName of ['popular-near', 'recent', 'popular'] as const) {
-    const bSummary = baselineSummaries[bName];
-    if (bSummary.fileLevelFollowUp.rate !== null && bSummary.fileLevelFollowUp.rate > highestBaselineRate) {
-      highestBaselineRate = bSummary.fileLevelFollowUp.rate;
-      strongestBaseline = bName;
-    }
-  }
-
-  const headlineSummary = strongestBaseline ? baselineSummaries[strongestBaseline] : null;
+  // Headline baseline = strongest on any follow-up (highest fileLevelFollowUp.rate; ties: popular-near -> recent -> popular).
+  // GU-03's headline fields keep their own lift and bootstrap (bootstrapPrLift) so published numbers do not move.
   const byOutcome = strongestBaselinesByOutcome(baselineSummaries);
+  const strongestBaseline = byOutcome.followUp.strongestBaseline;
+  const headlineSummary = strongestBaseline ? baselineSummaries[strongestBaseline] : null;
 
   // Breakdowns
   const byKind = {} as Record<ChecklistKind, KindBreakdownRow>;

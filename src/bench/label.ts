@@ -13,7 +13,7 @@ import { createHash } from 'node:crypto';
 import { commitUrl, fileUrl, html, safeBase, short } from '../render/escape.ts';
 import { FRAME12_TOKENS, TOKENS_ID } from '../render/frame12-tokens.ts';
 import type { BaselineName, BenchPrRecord, BenchResultsModel, TargetOutcomeRecord } from './model.ts';
-import { isScoredStatus } from './metrics.ts';
+import { isScoredStatus, mulberry32 } from './metrics.ts';
 import { sanitizePath, sanitizeText } from './sanitize.ts';
 
 export type LabelValue = 'useful' | 'irrelevant' | 'wrong';
@@ -60,17 +60,6 @@ export interface CompareSample {
     headSha: string;
     settingsHash: string;
     windowDays: number;
-  };
-}
-
-/** Deterministic Mulberry32 PRNG (same generator as the bench bootstrap). */
-function mulberry32(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state = (state + 0x6d2b79f5) >>> 0;
-    let t = Math.imul(state ^ (state >>> 15), 1 | state);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 

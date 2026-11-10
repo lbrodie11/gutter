@@ -100,6 +100,41 @@ test('stage 0 metrics: every baseline reports same-author and RA-signal rates wi
   assert.ok(byOutcome.sameAuthor.bootstrapCi, 'paired PR-clustered bootstrap on same-author lift');
 });
 
+test('lift bootstrap: zero-hit baseline resamples count as unbounded instead of being dropped', () => {
+  // Gutter: 2 author follow-ups in 10 PRs. recent: a single author follow-up in 10 PRs, so many
+  // resamples contain no recent hit. Dropping them (GU-03's bootstrapPrLift) biases the upper bound down.
+  const prs = Array.from({ length: 10 }, (_, i) =>
+    pr({
+      n: i + 1,
+      questions: [question('forgotten-companion', target({ file: `src/g${i}.ts`, followedUp: i < 2, sameAuthor: true }))],
+      baselines: {
+        recent: [target({ file: `src/r${i}.ts`, followedUp: true, sameAuthor: i === 0 })],
+        'popular-near': [target({ file: `src/n${i}.ts`, followedUp: false })],
+        popular: [target({ file: `src/p${i}.ts`, followedUp: false })],
+      },
+    }),
+  );
+  const agg = computePolicyAggregates(prs, 'production');
+  const sa = agg.headlineBaseline.byOutcome!.sameAuthor;
+  assert.equal(sa.strongestBaseline, 'recent');
+  assert.equal(sa.lift, 2);
+  const ci = sa.bootstrapCi!;
+  assert.ok(ci.unboundedResamples > 25, `expected many zero-hit resamples, got ${ci.unboundedResamples}`);
+  assert.equal(ci.high, null, 'the 97.5% bound is unbounded once > 2.5% of resamples are infinite');
+  assert.equal(ci.resamples, 1000);
+  assert.equal(ci.unboundedResamples + ci.undefinedResamples <= 1000, true);
+  assert.ok(ci.low !== null && ci.low >= 0);
+
+  // The headline (any follow-up) fields keep GU-03's semantics and numbers.
+  assert.equal(agg.headlineBaseline.strongestBaseline, 'recent');
+  assert.equal(agg.headlineBaseline.bootstrapLiftCi, agg.baselines.recent.bootstrapLiftCi);
+
+  const model = benchModel(prs);
+  assert.deepEqual(validateBenchResults(model), [], 'null bounds validate');
+  assert.match(renderBenchMarkdown(model), /\| Same-author follow-up \|.*\[[0-9.]+, ∞\] \(median [0-9.∞]+, n=1000, seed=20261108, \d+ unbounded\)/);
+  assert.deepEqual(lintPage(renderBenchHtml(model)), []);
+});
+
 test('stage 0 metrics: bench.json with the new fields validates, and both reports render the lift-by-outcome table', () => {
   const model = benchModel(stage0Prs());
   assert.deepEqual(validateBenchResults(model), []);
@@ -189,6 +224,25 @@ test('CLI: gutter bench --config refuses unknown or invalid keys so a preregiste
     );
     assert.equal(res.status, 2);
     assert.match(res.stderr, /unknown or invalid key\(s\): salienceFullMinSignalz/);
+
+    // Values the parser would silently change, and non-objects, are refused too.
+    const cases: [unknown, RegExp][] = [
+      [{ salienceFullMinSignals: 1.5 }, /would change: salienceFullMinSignals 1\.5 -> 1/],
+      [{ maxChecklist: 3.9 }, /would change: maxChecklist 3\.9 -> 3/],
+      [null, /must be a JSON object/],
+      [[], /must be a JSON object/],
+      [7, /must be a JSON object/],
+    ];
+    for (const [content, expected] of cases) {
+      writeFileSync(bad, JSON.stringify(content));
+      const r = spawnSync(
+        process.execPath,
+        ['--experimental-strip-types', resolve('src/cli.ts'), 'bench', '--config', bad, '--cwd', dir],
+        { encoding: 'utf8' },
+      );
+      assert.equal(r.status, 2, `${JSON.stringify(content)} is refused`);
+      assert.match(r.stderr, expected);
+    }
 
     for (const file of ['stage0-v1-floor.json', 'stage0-v2-two-signals.json', 'stage0-v3-breadth-not-full.json']) {
       const raw = JSON.parse(readFileSync(join('bench/variants', file), 'utf8')) as Record<string, unknown>;

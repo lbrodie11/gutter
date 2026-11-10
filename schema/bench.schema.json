@@ -568,8 +568,26 @@
       "required": ["lift", "bootstrapCi"],
       "properties": {
         "lift": { "type": ["number", "null"] },
-        "bootstrapCi": { "$ref": "#/$defs/BootstrapInterval" }
+        "bootstrapCi": { "$ref": "#/$defs/LiftBootstrapInterval" }
       }
+    },
+    "LiftBootstrapInterval": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["low", "high", "median", "resamples", "seed", "unboundedResamples", "undefinedResamples"],
+          "properties": {
+            "low": { "type": ["number", "null"] },
+            "high": { "type": ["number", "null"] },
+            "median": { "type": ["number", "null"] },
+            "resamples": { "type": "integer", "minimum": 1 },
+            "seed": { "type": "integer" },
+            "unboundedResamples": { "type": "integer", "minimum": 0 },
+            "undefinedResamples": { "type": "integer", "minimum": 0 }
+          }
+        }
+      ]
     },
     "StrongestBaselineForOutcome": {
       "type": "object",
@@ -577,7 +595,7 @@
       "properties": {
         "strongestBaseline": { "enum": ["popular", "popular-near", "recent", null] },
         "lift": { "type": ["number", "null"] },
-        "bootstrapCi": { "$ref": "#/$defs/BootstrapInterval" }
+        "bootstrapCi": { "$ref": "#/$defs/LiftBootstrapInterval" }
       }
     },
     "KindBreakdownRow": {
