@@ -6,6 +6,7 @@
 **Worth a look**
 
 1. `src/middleware/serve-static/index.ts` changed \(\+12/−0\); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR\.<br><sub>receipts: [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts)</sub>
+2. `src/middleware/serve-static/index.ts` is imported by 6 files this PR doesn't touch\. Is its public shape unchanged?<br><sub>receipts: [`adapters/bun/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/bun/src/serve-static.ts) · [`adapters/cloudflare-workers/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/cloudflare-workers/src/serve-static.ts)</sub>
 
 <details><summary><b>Usually changes with</b> (history, not a prediction) · 3 pairs · 1 parallel group</summary>
 
@@ -20,12 +21,12 @@
 
 <details><summary><b>What it touches</b> · 2 changed files with importers outside this PR (partial)</summary>
 
-- [`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts) ← [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts), [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts), [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts)
+- [`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts) ← [`adapters/bun/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/bun/src/serve-static.ts), [`adapters/cloudflare-workers/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/cloudflare-workers/src/serve-static.ts), [`adapters/deno/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/deno/src/serve-static.ts), [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) +2 more
 - [`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts) ← [`src/adapter/bun/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/index.ts)
 
 </details>
 
-<sub>84 imports use aliases or packages Gutter can't resolve yet, so some importers may be missing.</sub>
+<sub>5 imports in this repository could not be resolved to a file, so some importers may be missing.</sub>
 
 <details><summary><b>Tests</b> · 0 updated · 1 unchanged · 1 with no test found</summary>
 
@@ -44,4 +45,4 @@
 
 </details>
 
-<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(6\.8× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.3.0 + repo-archaeology 0.3.0</sub>
+<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(8\.4× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.3.0 + repo-archaeology 0.10.0</sub>

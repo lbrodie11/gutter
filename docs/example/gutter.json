@@ -22,7 +22,7 @@
   "salience": {
     "level": "brief",
     "reasons": [
-      "1 item worth a look"
+      "2 items worth a look"
     ]
   },
   "changes": {
@@ -71,7 +71,9 @@
   },
   "dependents": {
     "analyzers": [
-      "ts-js-relative-imports"
+      "ra-import-graph",
+      "exports",
+      "relative"
     ],
     "entries": [
       {
@@ -82,6 +84,9 @@
           "src/adapter/bun/serve-static.ts"
         ],
         "untouchedImporters": [
+          "adapters/bun/src/serve-static.ts",
+          "adapters/cloudflare-workers/src/serve-static.ts",
+          "adapters/deno/src/serve-static.ts",
           "src/adapter/cloudflare-workers/serve-static.ts",
           "src/adapter/deno/serve-static.ts",
           "src/middleware/serve-static/index.test.ts"
@@ -100,16 +105,20 @@
     "unchecked": [],
     "coverage": "partial",
     "unresolved": {
-      "count": 84,
+      "count": 5,
       "samples": [
-        "adapters/aws-lambda/src/conninfo.test.ts → hono",
-        "adapters/aws-lambda/src/conninfo.ts → hono",
-        "adapters/aws-lambda/src/conninfo.ts → hono/conninfo",
-        "adapters/aws-lambda/src/handler.test.ts → hono",
-        "adapters/aws-lambda/src/handler.test.ts → hono/body-limit"
-      ]
+        "perf-measures/type-check/client.ts → ./generated/app",
+        "runtime-tests/deno-jsx/jsx.test.tsx → @std/assert",
+        "runtime-tests/deno/hono.test.ts → @std/assert",
+        "runtime-tests/deno/middleware.test.tsx → @std/assert",
+        "runtime-tests/deno/stream.test.ts → @std/assert"
+      ],
+      "byReason": {
+        "target-missing": 1,
+        "unknown-package": 4
+      }
     },
-    "scannedFiles": 459
+    "scannedFiles": 453
   },
   "forgotten": {
     "status": "analyzed",
@@ -125,8 +134,8 @@
         "changedTotal": 20,
         "confidence": 0.85,
         "interval": {
-          "low": 0.639581135259243,
-          "high": 0.9476312541037835
+          "low": 0.6395,
+          "high": 0.9477
         },
         "lastTogether": "2026-10-16",
         "evidence": [
@@ -135,25 +144,33 @@
             "date": "2026-10-16",
             "author": "otoneko.",
             "subject": "fix(serve-static): respect q-values in Accept-Encoding for precompressed files (#5436)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           },
           {
             "sha": "588ec13fa68ea44fed1b5e1b503341db2bf09d70",
             "date": "2026-10-13",
             "author": "Taku Amano",
             "subject": "fix(serve-static): only serve GET and HEAD requests (#5514)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           },
           {
             "sha": "8b05c774ef1555c70f5ba5e2991b7e77cc3635cc",
             "date": "2026-09-29",
             "author": "Taku Amano",
             "subject": "Merge commit from fork",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           }
         ],
         "automationShare": 0,
-        "alsoLinkedFrom": []
+        "alsoLinkedFrom": [],
+        "originShare": {
+          "human": 1,
+          "agent": 0,
+          "bot": 0
+        }
       },
       {
         "id": "forgotten:1",
@@ -165,8 +182,8 @@
         "changedTotal": 11,
         "confidence": 0.818,
         "interval": {
-          "low": 0.523019438039156,
-          "high": 0.9486323102539149
+          "low": 0.523,
+          "high": 0.9487
         },
         "lastTogether": "2026-05-16",
         "evidence": [
@@ -175,25 +192,33 @@
             "date": "2026-05-16",
             "author": "mixelburg",
             "subject": "fix(serveStatic): make options parameter optional in all adapters (#4934)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           },
           {
             "sha": "1196f14b94e589e2ac44fa7f1c8785d70c1cf83e",
             "date": "2025-08-07",
             "author": "Yusuke Wada",
             "subject": "feat(serve-static): use `join` to correct path resolution (#4291)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           },
           {
             "sha": "246a06aa1d35aa206dcf11186b3aa90badb2de72",
             "date": "2024-09-24",
             "author": "Yusuke Wada",
             "subject": "feat(serve-static): support absolute root (#3420)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           }
         ],
         "automationShare": 0,
-        "alsoLinkedFrom": []
+        "alsoLinkedFrom": [],
+        "originShare": {
+          "human": 1,
+          "agent": 0,
+          "bot": 0
+        }
       },
       {
         "id": "forgotten:2",
@@ -205,8 +230,8 @@
         "changedTotal": 11,
         "confidence": 0.545,
         "interval": {
-          "low": 0.28009153740932197,
-          "high": 0.7872872837754022
+          "low": 0.28,
+          "high": 0.7873
         },
         "lastTogether": "2026-05-16",
         "evidence": [
@@ -215,25 +240,33 @@
             "date": "2026-05-16",
             "author": "mixelburg",
             "subject": "fix(serveStatic): make options parameter optional in all adapters (#4934)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           },
           {
             "sha": "f8371ab356f79fcf762c66aa372448a8018bcfc7",
             "date": "2024-02-24",
             "author": "Yusuke Wada",
             "subject": "fix(serve-static): support extensionless files and refactor (#2260)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           },
           {
             "sha": "d74d95d11c8d06ff7588a3a2e899e3843c4a7d1e",
             "date": "2024-01-29",
             "author": "ryu",
             "subject": "feat(serve-static): `mimes` option for serve-static (#2094)",
-            "automated": false
+            "automated": false,
+            "origin": "human"
           }
         ],
         "automationShare": 0,
-        "alsoLinkedFrom": []
+        "alsoLinkedFrom": [],
+        "originShare": {
+          "human": 1,
+          "agent": 0,
+          "bot": 0
+        }
       }
     ],
     "total": 6,
@@ -256,9 +289,10 @@
         ]
       }
     ],
-    "commitsAnalyzed": 1868,
+    "commitsAnalyzed": 1861,
     "warnings": [
-      "This is a shallow clone, so only part of the history is available. Run `git fetch --unshallow` for complete results."
+      "This is a shallow clone, so only part of the history is available. Run `git fetch --unshallow` for complete results.",
+      "History cache is read-only in a shallow clone: newly parsed commits were not saved."
     ]
   },
   "tests": [
@@ -296,23 +330,32 @@
         "tests:src/middleware/serve-static/index.ts"
       ],
       "priority": 4
+    },
+    {
+      "id": "check:surface:src/middleware/serve-static/index.ts",
+      "kind": "wide-surface",
+      "question": "`src/middleware/serve-static/index.ts` is imported by 6 files this PR doesn't touch. Is its public shape unchanged?",
+      "evidence": [
+        "deps:src/middleware/serve-static/index.ts"
+      ],
+      "priority": 5
     }
   ],
   "calibration": {
     "status": "measured",
-    "note": "Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did.",
-    "precision": 0.5691868758915835,
-    "hitRate": 0.7286821705426356,
-    "lift": 6.836363636363636,
+    "note": "Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did.",
+    "precision": 0.5724533715925395,
+    "hitRate": 0.7315175097276264,
+    "lift": 8.355555555555556,
     "testCommits": 375,
-    "fired": 516,
+    "fired": 514,
     "window": {
-      "from": "2026-02-23",
-      "to": "2026-11-07"
+      "from": "2026-02-21",
+      "to": "2026-11-05"
     }
   },
   "provenance": {
-    "generatedAt": "2026-11-10T09:15:31.159Z",
+    "generatedAt": "2026-11-10T14:16:26.505Z",
     "engines": [
       {
         "name": "gutter",
@@ -320,7 +363,15 @@
       },
       {
         "name": "repo-archaeology",
-        "version": "0.3.0"
+        "version": "0.10.0",
+        "mode": "library",
+        "features": [
+          "importGraph",
+          "interval",
+          "origin",
+          "originShare",
+          "trackRecord"
+        ]
       }
     ],
     "deterministic": true

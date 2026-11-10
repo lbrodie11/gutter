@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reproduce the Hono example from scratch against real honojs/hono history.
-# Requires: git, Node.js >= 22.6, and npx access to repo-archaeology@^0.3.0.
+# Requires: git, Node.js >= 22.6, and `npm ci` in Gutter (repo-archaeology 0.10.0, loaded as a library).
 set -euo pipefail
 
 GUTTER_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -45,7 +45,7 @@ node "$GUTTER_ROOT/dist/cli.js" brief \
   --title "feat(serve-static): add cacheControl option" \
   --intent "Adds a cacheControl option so static responses can set Cache-Control without custom middleware." \
   --repo-url "https://github.com/honojs/hono" \
-  --ra-version "0.3.0" \
+  --ra-lib "$GUTTER_ROOT/node_modules/repo-archaeology" \
   --out "$WORK_DIR/.gutter"
 
 # Pin headSha to BASE_SHA and commits[0].sha to "local-sim" so GitHub file links resolve upstream

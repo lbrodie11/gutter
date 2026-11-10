@@ -93,6 +93,10 @@ GU-29 stops Gutter's default output from predicting omissions ([DECISIONS #17](.
 
 The exact commands are in STAGE0.md, "After GU-29".
 
+## GU-05 · Repo Archaeology's session and import resolver
+
+`gutter bench` replay now builds "What it touches" from Repo Archaeology's import graph at each PR's head, in the same session as `diff` and `backtest`, so the bench measures what users get. Results: STAGE0.md "After GU-05"; data: [`docs/benchmark/data/honojs__hono/gu05/`](../docs/benchmark/data/honojs__hono/gu05/); report: [`gu05-report.mjs`](gu05-report.mjs), which also classifies every PR record where `--legacy-predictions` differs from Stage 0b.
+
 ## Stage 1 · corpus (not built)
 
 `corpus.json`, `run-corpus.mjs`, `aggregate.mjs`, the per-question labeling mode, and the Gate A report are built only if Stage 0's preregistered rule says continue and a human confirms. As of 2026-11-10 the rule outcome is **STOP**, and GU-29 took option 1 (DECISIONS #17). The corpus is still needed for Gate A′ and for DECISIONS #17's reopen rule (a predictive rule must beat the strongest baseline on ≥ 3 corpus repos).

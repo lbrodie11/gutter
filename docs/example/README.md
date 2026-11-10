@@ -1,6 +1,8 @@
 # Reproducing the Hono Example (`docs/example/*` & `docs/images/*`)
 
-The files in `docs/example/` (`gutter.json`, `brief.md`, `gutter.html`) and screenshots in `docs/images/` are generated from a deterministic local simulation against [`honojs/hono`](https://github.com/honojs/hono) at pinned commit `eb754bd5ef22c63f1634a4c374a86be086f85710` using `repo-archaeology@0.3.0`.
+The files in `docs/example/` (`gutter.json`, `brief.md`, `gutter.html`) and screenshots in `docs/images/` are generated from a deterministic local simulation against [`honojs/hono`](https://github.com/honojs/hono) at pinned commit `eb754bd5ef22c63f1634a4c374a86be086f85710` using `repo-archaeology` 0.10.0 loaded as a library (Gutter's pinned dev dependency; before GU-05 the example used `repo-archaeology@0.3.0` through `npx`).
+
+Since GU-05, "What it touches" comes from Repo Archaeology's import graph, which also finds the three `adapters/*/src/serve-static.ts` files that import the middleware through the package's `exports`, so the page adds a `wide-surface` item.
 
 Since GU-29 the illustrative edit adds 12 lines to the middleware (previously 8), so it passes the `minChurnForTestQuestion` gate (10 changed lines) and the page is `brief`: the unchanged-test fact, the Tests row with its history and the "Usually changes with" context are all visible. The co-change history is the same as before (same commit, same analyzer).
 
@@ -14,12 +16,12 @@ node dist/cli.js render docs/example/gutter.json --format html > docs/example/gu
 
 ## 2. Reproduce the full analysis from scratch against `honojs/hono`
 
-Requires `git`, Node.js ≥ 22, and `repo-archaeology@0.3.0`:
+Requires `git`, Node.js ≥ 22, and `npm ci` in Gutter (which installs `repo-archaeology` 0.10.0):
 
 ```bash
 # Run the reproduction script (fetches honojs/hono at eb754bd5ef22c63f1634a4c374a86be086f85710,
 # creates branch feat/serve-static-cache-control with the 2-file cacheControl edit,
-# runs `gutter brief` with repo-archaeology@0.3.0, and rewrites change.headSha to
+# runs `gutter brief` with the repo-archaeology library, and rewrites change.headSha to
 # eb754bd5ef22c63f1634a4c374a86be086f85710 and change.commits[0].sha to "local-sim"
 # before re-rendering brief.md and gutter.html so GitHub blob links resolve upstream):
 bash docs/example/reproduce.sh /tmp/hono-repro
@@ -42,7 +44,7 @@ node /path/to/gutter/dist/cli.js brief \
   --title "feat(serve-static): add cacheControl option" \
   --intent "Adds a cacheControl option so static responses can set Cache-Control without custom middleware." \
   --repo-url "https://github.com/honojs/hono" \
-  --ra-version "0.3.0" \
+  --ra-lib /path/to/gutter/node_modules/repo-archaeology \
   --out /tmp/hono-repro/.gutter
 ```
 
