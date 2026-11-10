@@ -16,6 +16,14 @@ export interface GutterConfig {
   salienceFullMinSignals?: number;
   /** When false, breadth alone never makes a brief `full` (default true). */
   salienceBreadthFull?: boolean;
+  /** Keep a `forgotten-companion` question only when the pair's relationship is `ghost` (default false). */
+  companionRequireGhost?: boolean;
+  /**
+   * Keep a `forgotten-companion` question only when Repo Archaeology's per-pair `trackRecord`
+   * (repo-archaeology >= 0.10) has at least this many fired episodes. `never_fired`,
+   * `limited_history` and a missing track record all drop the question. Unset by default.
+   */
+  companionMinTrackRecordFired?: number;
   noHistory?: boolean;
   noCalibration?: boolean;
 }
@@ -52,6 +60,8 @@ export interface SafeRaRepoConfig {
   useDefaultIgnores?: boolean;
   skipCommits?: string;
   skipCommitPrefixes?: string[];
+  /** repo-archaeology >= 0.6: skip mechanical `Revert "…"` / `Reapply "…"` commits (RA's default is true). */
+  skipReverts?: boolean;
   origin?: SafeRaOriginConfig;
   style?: 'classic' | 'rich';
   cache?: { enabled?: boolean; dir?: string };
@@ -76,6 +86,7 @@ const KNOWN_RA_CONFIG_KEYS = new Set([
   'halfLifeDays',
   'skipCommits',
   'skipCommitPrefixes',
+  'skipReverts',
   'origin',
   'style',
   'cache',
@@ -355,6 +366,12 @@ export function validateRaRepoConfig(
     }
     out.skipCommitPrefixes = [...raw.skipCommitPrefixes];
   }
+  if (raw.skipReverts !== undefined) {
+    if (typeof raw.skipReverts !== 'boolean') {
+      return { valid: false, config: undefined };
+    }
+    out.skipReverts = raw.skipReverts;
+  }
   if (out.skipCommits !== undefined || out.skipCommitPrefixes !== undefined) {
     try {
       compileRaSkipPattern(out.skipCommits, out.skipCommitPrefixes);
@@ -468,6 +485,16 @@ export function parseGutterConfigObject(raw: unknown): GutterConfig {
   }
   if (typeof obj.salienceBreadthFull === 'boolean') {
     out.salienceBreadthFull = obj.salienceBreadthFull;
+  }
+  if (typeof obj.companionRequireGhost === 'boolean') {
+    out.companionRequireGhost = obj.companionRequireGhost;
+  }
+  if (
+    typeof obj.companionMinTrackRecordFired === 'number' &&
+    Number.isInteger(obj.companionMinTrackRecordFired) &&
+    obj.companionMinTrackRecordFired >= 1
+  ) {
+    out.companionMinTrackRecordFired = obj.companionMinTrackRecordFired;
   }
   if (typeof obj.noHistory === 'boolean') {
     out.noHistory = obj.noHistory;

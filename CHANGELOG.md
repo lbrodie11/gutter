@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- `GU-28` Stage 0b (option 2, proven pairs), preregistered in `docs/benchmark/STAGE0.md` before the upgrade and any run. Verdict on hono: **INSUFFICIENT**. The V4 variant leaves no companion question, because only 2 of 90 are `ghost` pairs; with RA 0.10.0 the default run's headline numbers are unchanged from 0.4.0.
+- `repo-archaeology` devDependency pinned to exactly `0.10.0` for the benchmark; the peer range stays `>=0.4.0`. Audit of 0.5.0–0.10.0: the only adapter change needed is accepting `skipReverts` (0.6.0) in `.repo-archaeology.json`, which Gutter's validator previously rejected, dropping the whole file during replay.
+- Gutter reads Repo Archaeology's per-pair `trackRecord` (RA-06, ≥ 0.10.0) from `diff` JSON and validates its three shapes (`fired`, `never_fired`, `limited_history`). Bench question records carry it (additive, optional in `schema/bench.schema.json`); `gutter.json` does not.
+- New opt-in `.gutter.json` keys `companionRequireGhost` and `companionMinTrackRecordFired` gate companion questions on the pair's relationship and track record. Defaults are unchanged (both off).
+- `bench/stage0-report.mjs --stage0b` and `bench/stage0b-funnel.ts`; CI checks out full history so a test can verify each preregistration commit precedes its data.
 - `GU-04` Stage 0 (hono go/no-go), preregistered in `docs/benchmark/STAGE0.md` before any run or label. Rule outcome: **STOP** (the lift condition fails before labeling); the corpus is not built and a human decides among the documented options.
 - `gutter bench`: every baseline now also reports `raSignalFollowUpRate`, PR-clustered bootstrap intervals for each outcome (`bootstrapRateCi`), and `liftByOutcome`; `headlineBaseline.byOutcome` names the strongest baseline per outcome; the policy reports `bootstrapSameAuthorCi` / `bootstrapRaSignalCi`; PR records carry a capped `changedFiles` list. All additive and optional in `schema/bench.schema.json` (`schemaVersion` stays 1, existing numbers unchanged). `bench.md` and `bench.html` gain a lift-by-outcome table.
 - `gutter label --compare <bench.json>`: blinded comparison labeling page (self-contained HTML, offline, `localStorage` progress, `labels.json` export with `source`). The per-question labeling mode is not built yet; it lands with the corpus if Stage 0 continues.

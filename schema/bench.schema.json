@@ -384,7 +384,17 @@
           "items": { "$ref": "#/$defs/TargetOutcomeRecord" }
         },
         "sameAuthorHit": { "type": "boolean" },
-        "matchesRaFollowUpHit": { "type": "boolean" }
+        "matchesRaFollowUpHit": { "type": "boolean" },
+        "trackRecord": {
+          "type": "object",
+          "required": ["fired", "confirmed", "precision", "reason"],
+          "properties": {
+            "fired": { "type": ["integer", "null"], "minimum": 0 },
+            "confirmed": { "type": ["integer", "null"], "minimum": 0 },
+            "precision": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+            "reason": { "enum": ["never_fired", "limited_history", null] }
+          }
+        }
       }
     },
     "BaselineProposalSet": {

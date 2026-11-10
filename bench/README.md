@@ -59,6 +59,26 @@ node bench/stage0-report.mjs --results docs/benchmark/data/honojs__hono/stage0/r
 }
 ```
 
+## Stage 0b · option 2, proven pairs (`GU-28`)
+
+Tests STAGE0.md section 5's option 2 with Repo Archaeology 0.10.0's per-pair `trackRecord`. Rules: STAGE0.md "Stage 0b"; data: [`docs/benchmark/data/honojs__hono/stage0b/`](../docs/benchmark/data/honojs__hono/stage0b/).
+
+| File | What it is |
+|---|---|
+| [`variants/stage0b-v4-proven-pairs.json`](variants/stage0b-v4-proven-pairs.json) | `ghost` + `trackRecord.fired ≥ 3` + `interval.low ≥ 0.3` |
+| [`stage0b-funnel.ts`](stage0b-funnel.ts) | Post-hoc: relationship × track record for each default companion question |
+
+```bash
+# Same hono checkout as Stage 0; npm ci installs repo-archaeology 0.10.0 (pinned)
+H=~/.cache/gutter-bench/honojs__hono; OUT=/tmp/gutter-stage0b
+node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --out $OUT/default
+node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --config bench/variants/stage0b-v4-proven-pairs.json --out $OUT/v4-proven-pairs
+node bench/stage0-report.mjs --stage0b --runs $OUT --compare-bench docs/benchmark/data/honojs__hono/stage0/default/bench.json --write-results /tmp/stage0b-results.json --stage0-results docs/benchmark/data/honojs__hono/stage0/results.json
+node --experimental-strip-types bench/stage0b-funnel.ts $H $OUT/default/bench.json
+```
+
+Merge Stage 0b's PR with a merge commit, not a squash: `test/stage0b-report.test.ts` checks that the preregistration commit precedes the data commit.
+
 ## Stage 1 · corpus (not built)
 
 `corpus.json`, `run-corpus.mjs`, `aggregate.mjs`, the per-question labeling mode, and the Gate A report are built only if Stage 0's preregistered rule says continue and a human confirms. As of 2026-11-10 the rule outcome is **STOP**; see STAGE0.md section 5 for the options awaiting a decision.
