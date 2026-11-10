@@ -1,6 +1,6 @@
 {
   "name": "gutter-brief",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A one-page, evidence-backed briefing for every pull request: what changed, what it touches, its tests and its history — with receipts.",
   "type": "module",
   "bin": {

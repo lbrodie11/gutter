@@ -1,0 +1,2089 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu05-results",
+  "repo": "honojs/hono",
+  "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+  "gutterVersion": "0.4.0",
+  "raVersion": "0.10.0",
+  "gu29": {
+    "default": {
+      "prsEvaluated": 200,
+      "configOverrides": {},
+      "salience": {
+        "quiet": {
+          "numerator": 121,
+          "denominator": 200,
+          "rate": 0.605,
+          "interval": {
+            "low": 0.5358834915928536,
+            "high": 0.6701589898679203
+          }
+        },
+        "brief": {
+          "numerator": 79,
+          "denominator": 200,
+          "rate": 0.395,
+          "interval": {
+            "low": 0.32984101013207967,
+            "high": 0.46411650840714636
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        }
+      },
+      "checklistItems": 66,
+      "checklistItemsPerPr": 0.33,
+      "prsWithItems": {
+        "numerator": 60,
+        "denominator": 200,
+        "rate": 0.3,
+        "interval": {
+          "low": 0.24074744682371402,
+          "high": 0.3667906837271926
+        }
+      },
+      "byKind": {
+        "broken-import": 0,
+        "forgotten-companion": 0,
+        "family-drift": 0,
+        "untested-change": 10,
+        "wide-surface": 56
+      },
+      "prsWithKind": {
+        "broken-import": 0,
+        "forgotten-companion": 0,
+        "family-drift": 0,
+        "untested-change": 10,
+        "wide-surface": 56
+      }
+    },
+    "gate": {
+      "tools": {
+        "gutter": "0.3.0",
+        "repoArchaeology": "0.10.0",
+        "typescript": "6.0.3"
+      },
+      "prsEvaluated": 200,
+      "replayParity": {
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0
+      },
+      "a": {
+        "full": 0,
+        "evaluated": 200,
+        "share": 0,
+        "budget": 0.3333333333333333,
+        "met": true
+      },
+      "b": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null,
+          "needs": 0.95,
+          "met": null,
+          "failures": 0
+        },
+        "untestedChange": {
+          "checked": 10,
+          "confirmed": 10,
+          "rate": 1,
+          "needs": 1,
+          "met": true,
+          "failures": 0
+        },
+        "testHistory": {
+          "checked": 43,
+          "confirmed": 43,
+          "rate": 1,
+          "needs": 1,
+          "met": true,
+          "failures": 0
+        }
+      },
+      "c": {
+        "pagesChecked": 200,
+        "ownWordingHits": 0,
+        "rawHits": 0,
+        "met": true
+      }
+    }
+  },
+  "default": {
+    "prsEvaluated": 200,
+    "configOverrides": {},
+    "salience": {
+      "quiet": {
+        "numerator": 119,
+        "denominator": 200,
+        "rate": 0.595,
+        "interval": {
+          "low": 0.5257971008133869,
+          "high": 0.6606222871749323
+        }
+      },
+      "brief": {
+        "numerator": 81,
+        "denominator": 200,
+        "rate": 0.405,
+        "interval": {
+          "low": 0.3393777128250676,
+          "high": 0.47420289918661307
+        }
+      },
+      "full": {
+        "numerator": 0,
+        "denominator": 200,
+        "rate": 0,
+        "interval": {
+          "low": 1.7020320458977177e-18,
+          "high": 0.018845326377266575
+        }
+      }
+    },
+    "checklistItems": 69,
+    "checklistItemsPerPr": 0.345,
+    "prsWithItems": {
+      "numerator": 63,
+      "denominator": 200,
+      "rate": 0.315,
+      "interval": {
+        "low": 0.2546232099022851,
+        "high": 0.38234956085730354
+      }
+    },
+    "byKind": {
+      "broken-import": 0,
+      "forgotten-companion": 0,
+      "family-drift": 0,
+      "untested-change": 10,
+      "wide-surface": 59
+    },
+    "prsWithKind": {
+      "broken-import": 0,
+      "forgotten-companion": 0,
+      "family-drift": 0,
+      "untested-change": 10,
+      "wide-surface": 59
+    }
+  },
+  "gate": {
+    "tools": {
+      "gutter": "0.4.0",
+      "repoArchaeology": "0.10.0",
+      "typescript": "6.0.3"
+    },
+    "prsEvaluated": 200,
+    "replayParity": {
+      "salienceMismatches": 0,
+      "checklistKindMismatches": 0
+    },
+    "a": {
+      "full": 0,
+      "evaluated": 200,
+      "share": 0,
+      "budget": 0.3333333333333333,
+      "met": true
+    },
+    "b": {
+      "brokenImport": {
+        "checked": 0,
+        "confirmed": 0,
+        "rate": null,
+        "needs": 0.95,
+        "met": null,
+        "failures": 0
+      },
+      "untestedChange": {
+        "checked": 10,
+        "confirmed": 10,
+        "rate": 1,
+        "needs": 1,
+        "met": true,
+        "failures": 0
+      },
+      "testHistory": {
+        "checked": 43,
+        "confirmed": 43,
+        "rate": 1,
+        "needs": 1,
+        "met": true,
+        "failures": 0
+      }
+    },
+    "c": {
+      "pagesChecked": 200,
+      "ownWordingHits": 0,
+      "rawHits": 0,
+      "met": true
+    }
+  },
+  "legacy": {
+    "shape": {
+      "prsEvaluated": 200,
+      "configOverrides": {
+        "legacyPredictions": true
+      },
+      "salience": {
+        "quiet": {
+          "numerator": 79,
+          "denominator": 200,
+          "rate": 0.395,
+          "interval": {
+            "low": 0.32984101013207967,
+            "high": 0.46411650840714636
+          }
+        },
+        "brief": {
+          "numerator": 41,
+          "denominator": 200,
+          "rate": 0.205,
+          "interval": {
+            "low": 0.15486176203836208,
+            "high": 0.26625698052422514
+          }
+        },
+        "full": {
+          "numerator": 80,
+          "denominator": 200,
+          "rate": 0.4,
+          "interval": {
+            "low": 0.3346057856680734,
+            "high": 0.46916327960737997
+          }
+        }
+      },
+      "checklistItems": 164,
+      "checklistItemsPerPr": 0.82,
+      "prsWithItems": {
+        "numerator": 110,
+        "denominator": 200,
+        "rate": 0.55,
+        "interval": {
+          "low": 0.4807561513847569,
+          "high": 0.6173593159775166
+        }
+      },
+      "byKind": {
+        "broken-import": 0,
+        "forgotten-companion": 90,
+        "family-drift": 9,
+        "untested-change": 7,
+        "wide-surface": 58
+      },
+      "prsWithKind": {
+        "broken-import": 0,
+        "forgotten-companion": 69,
+        "family-drift": 8,
+        "untested-change": 7,
+        "wide-surface": 58
+      }
+    },
+    "stage0b": {
+      "id": "stage0b-default",
+      "repo": "honojs/hono",
+      "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "settingsHash": "63a836d7b4058728",
+      "configOverrides": {},
+      "gutterVersion": "0.2.1",
+      "raVersion": "0.10.0",
+      "prsEvaluated": 200,
+      "prsScored": 70,
+      "questionsTotal": 161,
+      "fullSalienceShare": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      },
+      "gutter": {
+        "followUp": {
+          "numerator": 25,
+          "denominator": 107,
+          "rate": 0.2336,
+          "interval": {
+            "low": 0.16356165995161556,
+            "high": 0.32219032665650293
+          }
+        },
+        "sameAuthor": {
+          "numerator": 13,
+          "denominator": 107,
+          "rate": 0.1215,
+          "interval": {
+            "low": 0.07239434166761743,
+            "high": 0.19683216561760356
+          }
+        },
+        "raSignal": {
+          "numerator": 9,
+          "denominator": 107,
+          "rate": 0.0841,
+          "interval": {
+            "low": 0.044881945524203326,
+            "high": 0.15216940198671847
+          }
+        }
+      },
+      "baselines": {
+        "popular": {
+          "followUp": {
+            "numerator": 61,
+            "denominator": 106,
+            "rate": 0.5755,
+            "interval": {
+              "low": 0.48036088516716324,
+              "high": 0.6653036041047654
+            }
+          },
+          "sameAuthor": {
+            "numerator": 24,
+            "denominator": 106,
+            "rate": 0.2264,
+            "interval": {
+              "low": 0.15713470742524072,
+              "high": 0.3148315189640176
+            }
+          },
+          "raSignal": {
+            "numerator": 14,
+            "denominator": 106,
+            "rate": 0.1321,
+            "interval": {
+              "low": 0.08033205324120549,
+              "high": 0.20955356155814195
+            }
+          }
+        },
+        "popular-near": {
+          "followUp": {
+            "numerator": 27,
+            "denominator": 105,
+            "rate": 0.2571,
+            "interval": {
+              "low": 0.18315909307507203,
+              "high": 0.34826945857620983
+            }
+          },
+          "sameAuthor": {
+            "numerator": 10,
+            "denominator": 105,
+            "rate": 0.0952,
+            "interval": {
+              "low": 0.0525563098634332,
+              "high": 0.16649127622203672
+            }
+          },
+          "raSignal": {
+            "numerator": 7,
+            "denominator": 105,
+            "rate": 0.0667,
+            "interval": {
+              "low": 0.03266588465602071,
+              "high": 0.1312556486825412
+            }
+          }
+        },
+        "recent": {
+          "followUp": {
+            "numerator": 69,
+            "denominator": 106,
+            "rate": 0.6509,
+            "interval": {
+              "low": 0.5563658870548236,
+              "high": 0.7349630914890337
+            }
+          },
+          "sameAuthor": {
+            "numerator": 31,
+            "denominator": 106,
+            "rate": 0.2925,
+            "interval": {
+              "low": 0.21433337400446412,
+              "high": 0.3850892804977318
+            }
+          },
+          "raSignal": {
+            "numerator": 21,
+            "denominator": 106,
+            "rate": 0.1981,
+            "interval": {
+              "low": 0.13338893526287282,
+              "high": 0.2839531076494123
+            }
+          }
+        }
+      },
+      "byOutcome": {
+        "followUp": {
+          "strongestBaseline": "recent",
+          "lift": 0.3589,
+          "bootstrapCi": {
+            "low": 0.2329,
+            "median": 0.3539,
+            "high": 0.5101,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "sameAuthor": {
+          "strongestBaseline": "recent",
+          "lift": 0.4154,
+          "bootstrapCi": {
+            "low": 0.2141,
+            "median": 0.4085,
+            "high": 0.6906,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "raSignal": {
+          "strongestBaseline": "recent",
+          "lift": 0.4245,
+          "bootstrapCi": {
+            "low": 0.1427,
+            "median": 0.4091,
+            "high": 0.9057,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        }
+      },
+      "totalWallMs": 94904.27,
+      "companionCoverage": {
+        "numerator": 69,
+        "denominator": 200,
+        "rate": 0.345
+      },
+      "companionQuestions": 90,
+      "companionScoredTargets": 84,
+      "companionFollowUp": {
+        "numerator": 20,
+        "denominator": 84,
+        "rate": 0.2381,
+        "interval": {
+          "low": 0.15974690895549554,
+          "high": 0.3393506630712311
+        }
+      },
+      "companionSameAuthor": {
+        "numerator": 10,
+        "denominator": 84,
+        "rate": 0.119,
+        "interval": {
+          "low": 0.0659654924759903,
+          "high": 0.2054491577447029
+        }
+      }
+    },
+    "summary": {
+      "id": "gu05-legacy",
+      "repo": "honojs/hono",
+      "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "settingsHash": "a4900710039afa8f",
+      "configOverrides": {
+        "legacyPredictions": true
+      },
+      "gutterVersion": "0.4.0",
+      "raVersion": "0.10.0",
+      "prsEvaluated": 200,
+      "prsScored": 70,
+      "questionsTotal": 164,
+      "fullSalienceShare": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      },
+      "gutter": {
+        "followUp": {
+          "numerator": 25,
+          "denominator": 107,
+          "rate": 0.2336,
+          "interval": {
+            "low": 0.16356165995161556,
+            "high": 0.32219032665650293
+          }
+        },
+        "sameAuthor": {
+          "numerator": 13,
+          "denominator": 107,
+          "rate": 0.1215,
+          "interval": {
+            "low": 0.07239434166761743,
+            "high": 0.19683216561760356
+          }
+        },
+        "raSignal": {
+          "numerator": 9,
+          "denominator": 107,
+          "rate": 0.0841,
+          "interval": {
+            "low": 0.044881945524203326,
+            "high": 0.15216940198671847
+          }
+        }
+      },
+      "baselines": {
+        "popular": {
+          "followUp": {
+            "numerator": 61,
+            "denominator": 106,
+            "rate": 0.5755,
+            "interval": {
+              "low": 0.48036088516716324,
+              "high": 0.6653036041047654
+            }
+          },
+          "sameAuthor": {
+            "numerator": 24,
+            "denominator": 106,
+            "rate": 0.2264,
+            "interval": {
+              "low": 0.15713470742524072,
+              "high": 0.3148315189640176
+            }
+          },
+          "raSignal": {
+            "numerator": 14,
+            "denominator": 106,
+            "rate": 0.1321,
+            "interval": {
+              "low": 0.08033205324120549,
+              "high": 0.20955356155814195
+            }
+          }
+        },
+        "popular-near": {
+          "followUp": {
+            "numerator": 27,
+            "denominator": 105,
+            "rate": 0.2571,
+            "interval": {
+              "low": 0.18315909307507203,
+              "high": 0.34826945857620983
+            }
+          },
+          "sameAuthor": {
+            "numerator": 10,
+            "denominator": 105,
+            "rate": 0.0952,
+            "interval": {
+              "low": 0.0525563098634332,
+              "high": 0.16649127622203672
+            }
+          },
+          "raSignal": {
+            "numerator": 7,
+            "denominator": 105,
+            "rate": 0.0667,
+            "interval": {
+              "low": 0.03266588465602071,
+              "high": 0.1312556486825412
+            }
+          }
+        },
+        "recent": {
+          "followUp": {
+            "numerator": 69,
+            "denominator": 106,
+            "rate": 0.6509,
+            "interval": {
+              "low": 0.5563658870548236,
+              "high": 0.7349630914890337
+            }
+          },
+          "sameAuthor": {
+            "numerator": 31,
+            "denominator": 106,
+            "rate": 0.2925,
+            "interval": {
+              "low": 0.21433337400446412,
+              "high": 0.3850892804977318
+            }
+          },
+          "raSignal": {
+            "numerator": 21,
+            "denominator": 106,
+            "rate": 0.1981,
+            "interval": {
+              "low": 0.13338893526287282,
+              "high": 0.2839531076494123
+            }
+          }
+        }
+      },
+      "byOutcome": {
+        "followUp": {
+          "strongestBaseline": "recent",
+          "lift": 0.3589,
+          "bootstrapCi": {
+            "low": 0.2329,
+            "median": 0.3539,
+            "high": 0.5101,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "sameAuthor": {
+          "strongestBaseline": "recent",
+          "lift": 0.4154,
+          "bootstrapCi": {
+            "low": 0.2141,
+            "median": 0.4085,
+            "high": 0.6906,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "raSignal": {
+          "strongestBaseline": "recent",
+          "lift": 0.4245,
+          "bootstrapCi": {
+            "low": 0.1427,
+            "median": 0.4091,
+            "high": 0.9057,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        }
+      },
+      "totalWallMs": 107033.98,
+      "companionCoverage": {
+        "numerator": 69,
+        "denominator": 200,
+        "rate": 0.345
+      },
+      "companionQuestions": 90,
+      "companionScoredTargets": 84,
+      "companionFollowUp": {
+        "numerator": 20,
+        "denominator": 84,
+        "rate": 0.2381,
+        "interval": {
+          "low": 0.15974690895549554,
+          "high": 0.3393506630712311
+        }
+      },
+      "companionSameAuthor": {
+        "numerator": 10,
+        "denominator": 84,
+        "rate": 0.119,
+        "interval": {
+          "low": 0.0659654924759903,
+          "high": 0.2054491577447029
+        }
+      }
+    },
+    "deltas": {
+      "prsCompared": 200,
+      "prsDiffering": 71,
+      "byReason": {
+        "interval": 69,
+        "dependents": 3,
+        "salience": 2
+      },
+      "intervalOnly": 68,
+      "maxIntervalDelta": 0.000099,
+      "rows": [
+        {
+          "pr": "#5512",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5381",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5430",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5449",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5609",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5597",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5590",
+          "reasons": [
+            "dependents",
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5495",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5563",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5436",
+          "reasons": [
+            "dependents",
+            "salience"
+          ],
+          "before": {
+            "salience": "quiet",
+            "kinds": []
+          },
+          "after": {
+            "salience": "brief",
+            "kinds": [
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5451",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5450",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5314",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5514",
+          "reasons": [
+            "dependents",
+            "salience"
+          ],
+          "before": {
+            "salience": "quiet",
+            "kinds": []
+          },
+          "after": {
+            "salience": "brief",
+            "kinds": [
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5476",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5439",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5485",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5479",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5466",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5463",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "family-drift",
+              "family-drift"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "family-drift",
+              "family-drift"
+            ]
+          }
+        },
+        {
+          "pr": "#5447",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "family-drift",
+              "untested-change"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "family-drift",
+              "untested-change"
+            ]
+          }
+        },
+        {
+          "pr": "#5456",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5446",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5444",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5443",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5442",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5437",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5435",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "untested-change",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "untested-change",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5379",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5380",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5311",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5343",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5291",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5297",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5246",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5283",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5255",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5256",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5280",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5272",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5244",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5267",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5266",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "family-drift",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "family-drift",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5239",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5214",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5215",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5205",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5202",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5199",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#4988",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5154",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "untested-change",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "untested-change",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5166",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5145",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5142",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#5136",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5131",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5116",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5107",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5100",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5081",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5092",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5086",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5037",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5036",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#5012",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#4991",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#4971",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#4955",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "family-drift"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "family-drift"
+            ]
+          }
+        },
+        {
+          "pr": "#4952",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion"
+            ]
+          }
+        },
+        {
+          "pr": "#4947",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        },
+        {
+          "pr": "#4942",
+          "reasons": [
+            "interval"
+          ],
+          "before": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          },
+          "after": {
+            "salience": "full",
+            "kinds": [
+              "forgotten-companion",
+              "wide-surface"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

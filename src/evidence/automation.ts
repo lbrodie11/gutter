@@ -1,4 +1,8 @@
 /**
+ * FALLBACK ONLY (GU-05). Repo Archaeology owns commit-origin classification: when its evidence carries
+ * `origin` (and suggestions carry `originShare`), `toForgotten` uses those and never calls this. This list
+ * is no longer maintained; extend Repo Archaeology's `origin` patterns instead (`.repo-archaeology.json`).
+ *
  * Flag commits authored by bots and automation. Sweeping automated commits
  * (dependency bumps, formatters, agent-generated mass edits) can manufacture
  * co-change that means nothing, so a warning backed mostly by them is

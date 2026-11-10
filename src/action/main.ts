@@ -10,7 +10,7 @@
  */
 import { appendFileSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { buildBrief } from '../brief.ts';
+import { buildBriefAsync } from '../brief.ts';
 import { writeBrief } from '../output.ts';
 import { renderMarkdown } from '../render/markdown.ts';
 import { GitHubPermissionError, upsertComment } from '../github/comment.ts';
@@ -59,7 +59,9 @@ async function run(): Promise<void> {
   }
 
   const maxForgottenRaw = Number(input('max-forgotten', '3'));
-  const brief = buildBrief({
+  // GU-05: the composite step installs repo-archaeology into $RUNNER_TEMP/gutter-ra and exports
+  // GUTTER_RA_LIB; loadRaLibrary imports it by absolute path. Never installed into the user's repo.
+  const brief = await buildBriefAsync({
     cwd,
     base,
     configRef: base,
@@ -67,11 +69,11 @@ async function run(): Promise<void> {
     ...(pr.body ? { intent: pr.body } : {}),
     ...(repository ? { repoUrl: `${server}/${repository}` } : {}),
     prNumber: pr.number,
-    runner: { spec: input('archaeology-version', '^0.4.0') },
+    runner: { spec: input('archaeology-version', '^0.10.0') },
     noHistory: input('history', 'true') === 'false',
     noCalibration: input('calibrate', 'true') === 'false',
     maxForgotten: Number.isFinite(maxForgottenRaw) ? Math.max(0, Math.trunc(maxForgottenRaw)) : 3,
-    warn: (message) => console.log(`::warning::Gutter .gutter.json: ${message}`),
+    warn: (message) => console.log(`::warning::Gutter: ${message}`),
   });
 
   const runUrl = process.env.GITHUB_RUN_ID ? `${server}/${repository}/actions/runs/${process.env.GITHUB_RUN_ID}` : undefined;

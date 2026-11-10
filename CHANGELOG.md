@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 0.4.0 · 2026-11-10
+
+- **`GU-05` Repo Archaeology as a library, one session per brief ([DECISIONS #18](docs/DECISIONS.md#18-repo-archaeology-is-loaded-as-a-library-one-session-per-brief-gu-05)).**
+  - The CLI and the Action (`buildBriefAsync`) load `repo-archaeology` as a library first and run `diff`, `backtest` and `importGraph` in one `openRepository` session (one history load, closed in a `finally`). Fallbacks, in order: `--ra-bin` / `GUTTER_RA_BIN` subprocess, `npx` (now noted in `forgotten.note` and as a warning), then "history unavailable". New `gutter brief --ra-lib <path>` / `GUTTER_RA_LIB`. On the library path, history no longer needs `head` checked out, and the backtest is base-isolated (the PR's own commits are no longer in its window).
+  - "What it touches" comes from Repo Archaeology's import graph: relative imports, tsconfig `paths`, workspaces, package `exports`/`imports`, Go and Python. Importers of deleted or renamed-away files come from `target-missing` entries and stay broken-import candidates. `coverage` is `partial` when any import in the repository is unresolved. New optional `dependents.unresolved.byReason`; `dependents.analyzers` lists `ra-import-graph` and the edge `via` kinds; `unchecked` follows `importGraph.languages`. The relative-import scanner is the fallback. Rendered "partial" text no longer blames aliases when the import graph produced the layer.
+  - Co-change items use Repo Archaeology's `interval` and `originShare`, and evidence uses its `origin` (new optional `CommitRef.origin` and `ForgottenItem.originShare`); Gutter's Wilson computation and bot-name list are fallbacks only.
+  - `provenance.engines[]` gains optional `mode` (`library` / `subprocess` / `npx`) and `features`.
+  - `gutter bench` replay builds dependents from the import graph at each PR's head, in the same session.
+  - Action: installs `repo-archaeology@<archaeology-version>` into an isolated, cached prefix under `RUNNER_TEMP`, one per requested spec (never into your repository; no install scripts; the PR's `.npmrc` is never read), and falls back to `npx` with a notice.
+  - With `configRef` (the Action), the library session uses the base tree's `.repo-archaeology.json`, never the PR's, so a pull request cannot hide its own broken import with an `ignore` rule. Default `archaeology-version` (and the npx spec) is now `^0.10.0`, because `^0.4.0` caps at 0.4.x.
+  - hono rerun (`docs/benchmark/data/honojs__hono/gu05/`): full share still 0/200; `wide-surface` on 59 PRs (was 56); `broken-import` still 0; Gate A′ unchanged (PASS, broken-import unexercised). Under `legacyPredictions` every rate, lift and full share matches Stage 0b; 68 records differ only in an interval's fourth decimal and 3 gained a `wide-surface` item.
+  - The hono example is regenerated with the library: the same co-change pairs, plus a `wide-surface` item (the middleware is imported by 6 files outside the PR, 3 of them through `exports`).
+
 ## 0.3.0 · 2026-11-10
 
 - **`GU-29` Explain, don't predict ([DECISIONS #17](docs/DECISIONS.md#17-explain-dont-predict-gu-29)).** Gutter's default output no longer predicts omissions. The checklist holds only facts (`broken-import`, `untested-change`, `wide-surface`); co-change history can neither add nor suppress an item. Decided by the agent on the maintainer's explicit delegation, after Stage 0 (STOP) and Stage 0b (INSUFFICIENT) on hono.

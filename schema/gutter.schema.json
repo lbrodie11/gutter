@@ -62,7 +62,7 @@
       "type": "object",
       "required": ["analyzers", "entries", "unchecked", "coverage", "unresolved", "scannedFiles"],
       "properties": {
-        "analyzers": { "type": "array", "items": { "type": "string" } },
+        "analyzers": { "type": "array", "items": { "type": "string" }, "description": "Which analyzers ran. With Repo Archaeology's import graph (GU-05): ra-import-graph plus the edge via kinds seen (relative, paths, workspace, exports, imports, go-package, python-module; may grow). Fallback: ts-js-relative-imports." },
         "entries": {
           "type": "array",
           "items": {
@@ -82,10 +82,11 @@
         "unresolved": {
           "type": "object",
           "required": ["count", "samples"],
-          "description": "Unresolved non-relative, non-external imports (<file> → <specifier>), with up to 5 sorted samples.",
+          "description": "Imports that could not be resolved to a repository file (<file> → <specifier>), with up to 5 sorted samples.",
           "properties": {
             "count": { "type": "integer", "minimum": 0 },
-            "samples": { "type": "array", "maxItems": 5, "items": { "type": "string" } }
+            "samples": { "type": "array", "maxItems": 5, "items": { "type": "string" } },
+            "byReason": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 }, "description": "GU-05, optional: counts by Repo Archaeology reasonCode (alias-unmatched, unknown-package, target-missing, not-exported, invalid-target, unsupported-config, ambiguous-package, unknown; may grow)." }
           }
         },
         "unresolvedAliases": { "type": "integer", "minimum": 0, "description": "Deprecated legacy v1 count normalized into unresolved.count." },
@@ -182,7 +183,16 @@
         "generatedAt": { "type": "string", "format": "date-time" },
         "engines": {
           "type": "array",
-          "items": { "type": "object", "required": ["name", "version"], "properties": { "name": { "type": "string" }, "version": { "type": "string" } } }
+          "items": {
+            "type": "object",
+            "required": ["name", "version"],
+            "properties": {
+              "name": { "type": "string" },
+              "version": { "type": "string" },
+              "mode": { "enum": ["library", "subprocess", "npx"], "description": "GU-05, optional: how Repo Archaeology ran. Consumers must tolerate unknown enum values." },
+              "features": { "type": "array", "items": { "type": "string" }, "description": "GU-05, optional: optional Repo Archaeology fields detected in this run (interval, origin, originShare, trackRecord, followUps, owners, importGraph; may grow)." }
+            }
+          }
         },
         "deterministic": { "const": true }
       }
@@ -224,11 +234,17 @@
           "items": {
             "type": "object",
             "required": ["sha", "date", "author", "subject", "automated"],
-            "properties": { "sha": { "type": "string" }, "date": { "type": "string" }, "author": { "type": "string" }, "subject": { "type": "string" }, "automated": { "type": "boolean" } }
+            "properties": { "sha": { "type": "string" }, "date": { "type": "string" }, "author": { "type": "string" }, "subject": { "type": "string" }, "automated": { "type": "boolean" }, "origin": { "enum": ["human", "agent", "bot"], "description": "GU-05, optional: Repo Archaeology commit origin. Consumers must tolerate unknown enum values." } }
           }
         },
         "automationShare": { "type": "number", "minimum": 0, "maximum": 1 },
-        "alsoLinkedFrom": { "type": "array", "items": { "type": "string" } }
+        "alsoLinkedFrom": { "type": "array", "items": { "type": "string" } },
+        "originShare": {
+          "type": "object",
+          "required": ["human", "agent", "bot"],
+          "description": "GU-05, optional: Repo Archaeology share of shared commits by origin.",
+          "properties": { "human": { "type": "number", "minimum": 0, "maximum": 1 }, "agent": { "type": "number", "minimum": 0, "maximum": 1 }, "bot": { "type": "number", "minimum": 0, "maximum": 1 } }
+        }
       }
     }
   }

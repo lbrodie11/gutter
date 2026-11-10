@@ -14,7 +14,14 @@ import { isAutomatedAuthor } from '../evidence/automation.ts';
 
 // ---- Minimal v1 shapes (consumers must ignore unknown fields) ---------------
 
-export interface RaEvidence { hash: string; date: string; author: string; subject: string }
+export interface RaEvidence {
+  hash: string;
+  date: string;
+  author: string;
+  subject: string;
+  /** repo-archaeology with origin attribution (RA-08). */
+  origin?: unknown;
+}
 
 export interface RaSuggestion {
   from: string;
@@ -31,6 +38,11 @@ export interface RaSuggestion {
   alsoLinkedFrom?: string[];
   /** repo-archaeology >= 0.10.0 (RA-06). Read only through `normalizeTrackRecord`. */
   trackRecord?: unknown;
+  /** RA-05: raw 95% Wilson interval for shared/fromChanges. Read only through `normalizeInterval`. */
+  interval?: unknown;
+  /** RA-08: share of shared commits by origin. Read only through `normalizeOriginShare`. */
+  originShare?: unknown;
+  owners?: unknown;
 }
 
 /**
@@ -48,6 +60,40 @@ export interface CompanionTrackRecord {
 }
 
 const nonNegInt = (x: unknown): x is number => typeof x === 'number' && Number.isInteger(x) && x >= 0;
+const unit = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x) && x >= 0 && x <= 1;
+
+/** RA-05 `interval`: `{ low, high }` with 0 <= low <= high <= 1, else undefined (Gutter computes its own). */
+export function normalizeInterval(raw: unknown): { low: number; high: number } | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const r = raw as Record<string, unknown>;
+  return unit(r.low) && unit(r.high) && r.low <= r.high ? { low: r.low, high: r.high } : undefined;
+}
+
+/** RA-08 `originShare`: `{ human, agent, bot }`, each in [0, 1], else undefined. */
+export function normalizeOriginShare(raw: unknown): { human: number; agent: number; bot: number } | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const r = raw as Record<string, unknown>;
+  return unit(r.human) && unit(r.agent) && unit(r.bot) ? { human: r.human, agent: r.agent, bot: r.bot } : undefined;
+}
+
+/** RA-08 evidence `origin`. Unknown values are ignored (Gutter's author-name fallback applies). */
+export function normalizeOrigin(raw: unknown): 'human' | 'agent' | 'bot' | undefined {
+  return raw === 'human' || raw === 'agent' || raw === 'bot' ? raw : undefined;
+}
+
+/** Optional Repo Archaeology fields present in a diff/backtest, for `provenance.engines[].features`. */
+export function detectRaFeatures(diff: RaDiff | undefined, backtest?: RaBacktest): string[] {
+  const out = new Set<string>();
+  for (const s of diff?.suggestions ?? []) {
+    if (normalizeInterval(s.interval)) out.add('interval');
+    if (normalizeOriginShare(s.originShare)) out.add('originShare');
+    if (s.evidence.some((e) => normalizeOrigin(e.origin))) out.add('origin');
+    if (s.trackRecord !== undefined) out.add('trackRecord');
+    if (s.owners !== undefined) out.add('owners');
+  }
+  if (backtest?.strategies.some((x) => x.followUpPrecision !== undefined || x.followUpHitRate !== undefined)) out.add('followUps');
+  return [...out].sort();
+}
 
 /**
  * Validate an untrusted `trackRecord` against the three RA 0.10 shapes; anything else is `undefined`
@@ -123,7 +169,8 @@ export interface RaRunner {
   spec?: string;
 }
 
-export const DEFAULT_RA_SPEC = '^0.4.0';
+/** npx last resort (GU-05). `^0.4.0` would cap at 0.4.x, which lacks `interval`, `origin` and track records. */
+export const DEFAULT_RA_SPEC = '^0.10.0';
 
 export interface RaCommandContext {
   env?: NodeJS.ProcessEnv;
@@ -212,10 +259,17 @@ export function toForgotten(diff: RaDiff | undefined, opts: ForgottenOptions, un
   assertV1(diff, 'diff JSON');
 
   const items: ForgottenItem[] = diff.suggestions.slice(0, opts.maxItems).map((s, i) => {
-    const evidence: CommitRef[] = s.evidence.slice(0, opts.maxEvidence).map((e) => ({
-      sha: e.hash, date: e.date, author: e.author, subject: e.subject, automated: isAutomatedAuthor(e.author),
-    }));
+    // GU-05: Repo Archaeology's origin classifier wins; the author-name list is the fallback.
+    const evidence: CommitRef[] = s.evidence.slice(0, opts.maxEvidence).map((e) => {
+      const origin = normalizeOrigin(e.origin);
+      return {
+        sha: e.hash, date: e.date, author: e.author, subject: e.subject,
+        automated: origin ? origin === 'bot' : isAutomatedAuthor(e.author),
+        ...(origin ? { origin } : {}),
+      };
+    });
     const automated = evidence.filter((e) => e.automated).length;
+    const originShare = normalizeOriginShare(s.originShare);
     return {
       id: `forgotten:${i}`,
       changed: s.from,
@@ -225,11 +279,12 @@ export function toForgotten(diff: RaDiff | undefined, opts: ForgottenOptions, un
       shared: s.shared,
       changedTotal: s.fromChanges,
       confidence: s.confidence,
-      interval: wilsonInterval(s.shared, s.fromChanges),
+      interval: normalizeInterval(s.interval) ?? wilsonInterval(s.shared, s.fromChanges),
       ...(s.lastTogether ? { lastTogether: s.lastTogether } : {}),
       evidence,
-      automationShare: evidence.length ? automated / evidence.length : 0,
+      automationShare: originShare ? originShare.bot : evidence.length ? automated / evidence.length : 0,
       alsoLinkedFrom: s.alsoLinkedFrom ?? [],
+      ...(originShare ? { originShare } : {}),
     };
   });
 

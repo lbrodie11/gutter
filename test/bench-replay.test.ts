@@ -4,7 +4,7 @@ import childProcess from 'node:child_process';
 import { existsSync, mkdtempSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { buildBrief, replayBrief, replayBriefWithMeta } from '../src/brief.ts';
+import { buildBrief, buildBriefAsync, replayBrief, replayBriefWithMeta } from '../src/brief.ts';
 import { validateRaRepoConfig } from '../src/config.ts';
 import { analyzeMergeResolution, discoverChangeUnits } from '../src/bench/discover.ts';
 import { GitTreeReader, WorkingTreeReader } from '../src/source/reader.ts';
@@ -191,7 +191,8 @@ test('golden equivalence: replayBrief() at HEAD and buildBrief() produce identic
     const localRaCli = join(process.cwd(), 'node_modules', 'repo-archaeology', 'dist', 'cli.js');
     const fixedNow = new Date('2026-11-08T12:00:00Z');
 
-    const syncBrief = buildBrief({ config: LEGACY,
+    // GU-05: the product path (CLI/Action) is buildBriefAsync; replay must match what users get.
+    const syncBrief = await buildBriefAsync({ config: LEGACY,
       cwd: repo.dir,
       base: baseSha,
       runner: { bin: localRaCli },

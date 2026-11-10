@@ -4,7 +4,7 @@
 
 Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, what the tests show, and what the history says — with clickable commit receipts. You decide what matters.
 
-`Experimental · v0.3.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+`Experimental · v0.4.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -34,7 +34,7 @@ jobs:
 
 ### See what the diff doesn't tell you
 
-Gutter combines `git diff` structure, static import analysis, test-file conventions, and [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) co-change history into a compact, evidence-backed briefing for human reviewers.
+Gutter combines `git diff` structure, test-file conventions, and [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology)'s import graph and co-change history into a compact, evidence-backed briefing for human reviewers.
 
 **Gutter doesn't replace your judgment.** It never writes AI verdicts, suggests code rewrites, guesses at omissions, or blocks a merge. Instead, it gives you verifiable repository evidence — with clickable commit receipts and a per-repo backtest of how reliable the history is — so you can decide where to spend your attention.
 
@@ -52,7 +52,7 @@ Gutter combines `git diff` structure, static import analysis, test-file conventi
 
 ## Example: a Hono change, briefed
 
-> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,868` commits). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts and supporting commit receipts are genuine.
+> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,861` commits, repo-archaeology 0.10.0). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts and supporting commit receipts are genuine.
 >
 > **Reproduce locally:**
 > ```bash
@@ -71,6 +71,7 @@ Suppose a pull request adds a `cacheControl` option to Hono's shared static-file
 | Where | What Gutter says | Evidence |
 |---|---|---|
 | **Check these** | `src/middleware/serve-static/index.ts` changed (+12/−0); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR. | `git diff`, test-file naming |
+| **Check these** | `src/middleware/serve-static/index.ts` is imported by 6 files this PR doesn't touch. Is its public shape unchanged? | Repo Archaeology's import graph: 3 relative importers in `src/`, plus the 3 `adapters/*/src/serve-static.ts` files that import it through the package's `exports` |
 | **Tests** | [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts) — unchanged in this PR · changed together with `src/middleware/serve-static/index.ts` in **17 of 20** commits | [`d54720d`](https://github.com/honojs/hono/commit/d54720da80134a180f5fe2dd98a7676cfc8f08b4) · [`588ec13`](https://github.com/honojs/hono/commit/588ec13fa68ea44fed1b5e1b503341db2bf09d70) · [`8b05c77`](https://github.com/honojs/hono/commit/8b05c774ef1555c70f5ba5e2991b7e77cc3635cc) |
 | **Usually changes with** | `src/adapter/bun/serve-static.ts` and [`src/adapter/deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) changed together in **9 of 11** commits; the Deno adapter isn't in this PR | [`26f8c33`](https://github.com/honojs/hono/commit/26f8c33f23e6151873d165107f2dbcadf1204d15) · [`1196f14`](https://github.com/honojs/hono/commit/1196f14b94e589e2ac44fa7f1c8785d70c1cf83e) · [`246a06a`](https://github.com/honojs/hono/commit/246a06aa1d35aa206dcf11186b3aa90badb2de72) |
 | **Usually changes with** | This PR changes 1 of 3 parallel implementations (`serve-static.ts` across `src/adapter/*`); Cloudflare Workers and Deno aren't in this PR | [`cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) · [`deno/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/deno/serve-static.ts) |
@@ -79,7 +80,7 @@ None of these is a verdict. The test row is a historical fact; whether this chan
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.3.0 + repo-archaeology 0.3.0; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.4.0 + repo-archaeology 0.10.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
@@ -88,10 +89,11 @@ GitHub pull request comments cannot render custom CSS, so Gutter posts **one com
 > **Worth a look**
 >
 > 1. `src/middleware/serve-static/index.ts` changed (+12/−0); its test file `src/middleware/serve-static/index.test.ts` didn't change in this PR.<br><sub>receipts: [`src/middleware/serve-static/index.test.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.test.ts)</sub>
+> 2. `src/middleware/serve-static/index.ts` is imported by 6 files this PR doesn't touch. Is its public shape unchanged?<br><sub>receipts: [`adapters/bun/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/bun/src/serve-static.ts) · [`adapters/cloudflare-workers/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/cloudflare-workers/src/serve-static.ts)</sub>
 >
 > *(Plus collapsed `<details>` sections: **Usually changes with** (history, not a prediction), **What it touches**, **Tests**, and **What changed**.)*
 >
-> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (6.8× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.3.0 + repo-archaeology 0.3.0</sub>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.4.0 + repo-archaeology 0.10.0</sub>
 
 ### 3 · The full six-panel page (`gutter.html` artifact)
 
@@ -103,7 +105,7 @@ Alongside the Markdown comment, Gutter writes a self-contained, offline HTML pag
 |---|---|---|
 | **C-01 · Intent** | What is this change trying to do? | PR title/body, commit subjects |
 | **C-02 · What changed** | How big is it, and where? | `git diff` grouped into modules, churn as screentone |
-| **C-03 · What it touches** | Who depends on what changed? | Relative import scan for TS/JS; unresolved aliases or packages mark `dependents.coverage` as **`partial`** (with sample receipts), and other languages are reported as **`unchecked`** — never silently as "no dependents" |
+| **C-03 · What it touches** | Who depends on what changed? | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology)'s import graph (relative imports, tsconfig `paths`, workspaces, package `exports`/`imports`, Go packages, Python modules); any unresolved import in the repository marks `dependents.coverage` as **`partial`** (with sample receipts), and languages the resolver doesn't cover are reported as **`unchecked`** — never silently as "no dependents". Without the library, a relative-import scanner for TS/JS is the fallback |
 | **C-04 · Usually changes with** | Which files historically change with these files? (History, not a prediction; never the page's hero) | [Repo Archaeology](https://github.com/lbrodie11/repo-archaeology) directional co-change history with commit receipts |
 | **C-05 · Tests** | Which related test files changed, which didn't, and how often did they change together before? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` naming conventions, plus co-change pairs between a file and its test |
 | **C-06 · Check these** | Where should I focus first? | Up to 4 deterministic facts (broken imports, unchanged test files, wide import surfaces), each required to cite evidence IDs from panels C-03 to C-05. It is the hero panel when it has items; otherwise C-03 is |
@@ -119,7 +121,7 @@ Historical co-change is context, not proof of anything. Two files that usually c
 To show how reliable the history is on *your specific repository*, Gutter runs Repo Archaeology's walk-forward backtest on recent history and prints the result under the page:
 
 - **Evaluated window (`375` held-out test commits on Hono):** Each held-out commit is replayed using only history prior to that commit.
-- **Query hit rate (`73%` across `516` fired file-level queries, `6.8×` lift over guessing busy files):** Among the `516` file-level queries where historical suggestions were returned, `73%` had at least one suggestion that genuinely changed in the same commit.
+- **Query hit rate (`73%` across `514` fired file-level queries, `8.4×` lift over guessing busy files):** Among the `514` file-level queries where historical suggestions were returned, `73%` had at least one suggestion that genuinely changed in the same commit.
 - **Per-suggestion precision (`57%`):** Across all individual file suggestions emitted across those queries, `57%` matched files that changed in the same commit.
 
 Pairs backed mostly by bot commits (`dependabot`, `renovate`, etc.) are marked as such. Co-change never becomes a checklist item and never makes a page louder. (Under the `legacyPredictions` research switch, measured precision below `25%` still suppresses the old companion questions, and weak or bot-backed pairs never become questions, exactly as before GU-29.)
@@ -131,7 +133,7 @@ Pairs backed mostly by bot commits (`dependabot`, `renovate`, etc.) are marked a
 Before trusting historical co-change or static questions on a repository, `gutter bench` replays the newest $N$ merged pull requests strictly **as of each PR** using the same question-generation code (`assembleBrief`) as production Gutter, scores what happened next on the first-parent branch, compares against matched baselines, and writes [`bench.json`](schema/bench.schema.json), `bench.md`, and a FRAME/12 `bench.html` page from one schema-validated results model.
 
 ```bash
-# Replay the newest 200 eligible PRs on the current branch (offline; requires local repo-archaeology >= 0.4.0)
+# Replay the newest 200 eligible PRs on the current branch (offline; requires the repo-archaeology library >= 0.4.0, 0.10.0 recommended)
 node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
 ```
 
@@ -152,8 +154,8 @@ node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
    - `popular-near`: most frequently changed files sharing a top-level directory or module with a file touched by the PR.
    - `recent`: most frequently changed files in the 30 days prior to `base`.
    Headline lift is reported against the **strongest** baseline on the repository, with 95% Wilson intervals and a seeded 1,000-resample PR-clustered bootstrap.
-6. **Why same-commit backtest lift (`6.8×`) and 7-day post-merge follow-up proxy (`×0.36` vs. `recent`) differ:**
-   - **Same-commit backtest (`repo-archaeology backtest`):** Holds out files *within a single commit* and asks whether historical co-change predicts the other files modified in that same commit (`73%` hit rate, `6.8×` lift over popularity on Hono). This measures whether the files genuinely form a coupled pair when a change is complete.
+6. **Why same-commit backtest lift (`8.4×`) and 7-day post-merge follow-up proxy (`×0.36` vs. `recent`) differ:**
+   - **Same-commit backtest (`repo-archaeology backtest`):** Holds out files *within a single commit* and asks whether historical co-change predicts the other files modified in that same commit (`73%` hit rate, `8.4×` lift over popularity on Hono with repo-archaeology 0.10.0). This measures whether the files genuinely form a coupled pair when a change is complete.
    - **Post-merge follow-up proxy (`gutter bench`):** Replays merged PRs where a companion or test was left *untouched* in the PR and observes whether that file is edited in a *separate* commit within the next 7 days (`0.23` follow-up proxy on Hono). Over a 7-day post-merge window on an active repository, central/recently-busy files (`recent`, `popular`) naturally accumulate unrelated feature edits at a high rate (`0.65` on Hono), whereas specific companion/test targets change later only when a follow-up test or fix commit lands.
    - Because 7-day post-merge edits conflate genuine omissions with background churn on busy files, `gutter bench` always marks Gate A as `UNVERIFIED` and leaves usefulness to human review (GU-04 labels, then M1).
 
@@ -172,15 +174,15 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
 
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.3.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.3.0^{commit}`), never an unbuilt `main` branch commit SHA.
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.4.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.4.0^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|
 | `post` | `auto` | `auto` skips quiet PRs (but updates an existing sticky comment), `always`, or `never` (job summary + artifact only) |
-| `history` | `true` | Run Repo Archaeology co-change analysis (`npx --yes repo-archaeology@^0.4.0`) |
+| `history` | `true` | Run Repo Archaeology: co-change history and the import graph in one library session. The Action installs it into an isolated, cached prefix under `RUNNER_TEMP` (never into your repository) and falls back to `npx` with a notice if that install fails. `false` runs offline with a relative-import scanner |
 | `calibrate` | `true` | Backtest how reliable co-change history is on this repo, shown under the page (~0.3s on 1,900 commits) |
 | `max-forgotten` | `3` | Maximum "usually changes with" pairs to display (`0` hides them; the input keeps its v1 name) |
-| `archaeology-version` | `^0.4.0` | npm version range of `repo-archaeology` to execute |
+| `archaeology-version` | `^0.10.0` | npm version range of `repo-archaeology` to install (also the cache key) |
 | `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
 
 Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count` (checklist items), `forgotten-count` ("usually changes with" pairs shown; the output keeps its v1 name), `json-path`, `html-path`.
@@ -193,9 +195,9 @@ npx gutter-brief brief --base main --print md        # also print the Markdown c
 npx gutter-brief render .gutter/gutter.json --format html > page.html
 ```
 
-Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
+Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-lib <path>` (a local Repo Archaeology library), `--ra-bin <path>` (a Repo Archaeology binary, used when no library loads), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
 
-**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
+**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` and `.repo-archaeology.json` are read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
 
 **How loud a page is (salience).** Each checklist item with priority ≤ 2 counts as one signal, and breadth (≥ 8 files or ≥ 3 modules) counts as one more when `salienceBreadthFull` is `true` (the default). A page is `full` when it has at least `salienceFullMinSignals` signals (default `2`). By default only `broken-import` has priority ≤ 2, so a page is `full` when it has **two or more broken imports, or one broken import plus breadth**. Breadth alone is never `full`. Any checklist item makes a page at least `brief`, and so does a change to more than three files; otherwise it is `quiet`. Co-change history and test history never count.
 
@@ -236,16 +238,16 @@ In comics, the *gutter* is the space between panels where the reader connects tw
 ## Architecture, Privacy & Dependencies
 
 ```
-git diff ─────────────┐
-git ls-files + imports ┤
-test-file conventions ─┼─▶ evidence engine ─▶ gutter.json ─┬─▶ compact Markdown (PR comment)
-repo-archaeology diff ─┤                      (contract)    └─▶ comic page (FRAME/12 HTML artifact)
-repo-archaeology       ┘
-  backtest
+git diff ───────────────────┐
+test-file conventions ──────┤
+repo-archaeology session ───┼─▶ evidence engine ─▶ gutter.json ─┬─▶ compact Markdown (PR comment)
+  (one history load:        │                      (contract)    └─▶ comic page (FRAME/12 HTML artifact)
+   diff · backtest ·        │
+   importGraph)             ┘
 ```
 
 - **Privacy & data handling:** Analysis runs entirely on your local machine or your GitHub Actions runner. Gutter never transmits source code, diffs, or git history to any Gutter-operated service. When run in GitHub Actions, the Markdown comment (`post: auto|always`) and optional `gutter-brief` artifact (`upload-page: true`) are stored by GitHub in your repository's pull request and workflow run.
-- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty). When co-change history is enabled (the default), Gutter invokes [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) via `npx --yes repo-archaeology@^0.4.0` (or a pre-installed binary via `--ra-bin` / `GUTTER_RA_BIN`, or the `repo-archaeology >= 0.4.0` library API during historical replay). Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
+- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty); [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) is an optional peer (`>=0.4.0`). Gutter prefers it as a library: one `openRepository` session per brief loads history once and serves `diff`, `backtest` and the import graph (`--ra-lib` / `GUTTER_RA_LIB`, or the installed package). Without the library it falls back to a binary (`--ra-bin` / `GUTTER_RA_BIN`), then to `npx --yes repo-archaeology@^0.10.0` (noted on the page), then to "history unavailable", with a relative-import scanner for dependents. Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
 - **Security:** Designed for `pull_request`, **never `pull_request_target`**. All PR-derived text is escaped per output format; links are built only from `http(s)` base URLs and hex SHAs; git is invoked strictly with argument vectors. See [SECURITY.md](SECURITY.md) for the full threat model.
 
 ## Development
