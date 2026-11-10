@@ -6,10 +6,15 @@ import type { GutterConfig } from '../config.ts';
 import { pct } from '../stats/wilson.ts';
 
 /**
- * Deterministic reviewer questions. Rules of the house:
- *  - Ask, never judge ("Does X need…?" not "X is broken").
+ * Deterministic reviewer checklist. Rules of the house:
+ *  - Explain, don't predict (GU-29, DECISIONS #17): by default only facts become items
+ *    (`broken-import`, `untested-change`, `wide-surface`). Co-change history never creates
+ *    or suppresses an item; it is shown as context instead.
+ *  - Ask or state, never judge ("X no longer exists, but Y still imports it", not "X is broken").
  *  - Every item cites evidence ids that exist in the brief.
  *  - Few beats many: a muted bot helps nobody.
+ *
+ * `legacyPredictions: true` runs `buildLegacyChecklist`, the pre-GU-29 code path, unchanged.
  */
 export const MAX_CHECKLIST = 4;
 const MAX_COMPANION_QUESTIONS = 2;
@@ -56,6 +61,74 @@ const code = (s: string) => `\`${s.replace(/`/g, "'").replace(/[\r\n]+/g, ' ')}\
 const more = (n: number) => (n > 0 ? ` (+${n} more)` : '');
 
 export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
+  return input.config?.legacyPredictions ? buildLegacyChecklist(input) : buildFactsChecklist(input);
+}
+
+/**
+ * Default checklist: facts only. Same gates, caps and priorities as the legacy path for the three
+ * kinds it keeps; no `forgotten` input is read, so co-change can neither add nor suppress an item.
+ */
+export function buildFactsChecklist(input: Omit<ChecklistInput, 'forgotten' | 'calibration' | 'trackRecords'>): ChecklistItem[] {
+  const items: ChecklistItem[] = [];
+  const { changes, dependents, tests, config } = input;
+  const maxChecklist = config?.maxChecklist ?? MAX_CHECKLIST;
+  const minChurnForTestQuestion = config?.minChurnForTestQuestion ?? MIN_CHURN_FOR_TEST_QUESTION;
+  const wideSurfaceImporters = config?.wideSurfaceImporters ?? WIDE_SURFACE_IMPORTERS;
+  const churn = new Map(changes.files.map((f) => [f.path, f.additions + f.deletions]));
+
+  items.push(...brokenImportItems(dependents));
+
+  const unchangedTest = tests
+    .filter((t) => t.status === 'test-untouched' && (churn.get(t.source) ?? 0) >= minChurnForTestQuestion)
+    .sort((a, b) => (churn.get(b.source) ?? 0) - (churn.get(a.source) ?? 0))
+    .slice(0, 1);
+  for (const t of unchangedTest) {
+    const f = changes.files.find((x) => x.path === t.source)!;
+    items.push({
+      id: `check:test:${t.source}`,
+      kind: 'untested-change',
+      question: `${code(t.source)} changed (+${f.additions}/−${f.deletions}); its test file ${code(t.candidates[0]!.path)} didn't change in this PR.`,
+      evidence: [t.id],
+      priority: 4,
+    });
+  }
+
+  items.push(...wideSurfaceItems(dependents, wideSurfaceImporters));
+  return items.sort((a, b) => a.priority - b.priority).slice(0, maxChecklist);
+}
+
+function brokenImportItems(dependents: DependentsLayer): ChecklistItem[] {
+  const items: ChecklistItem[] = [];
+  for (const d of dependents.entries) {
+    if (!d.deleted) continue;
+    const importers = [...d.untouchedImporters, ...d.changedImporters];
+    if (!importers.length) continue;
+    items.push({
+      id: `check:broken:${d.file}`,
+      kind: 'broken-import',
+      question: `${code(d.file)} no longer exists at this path, but ${code(importers[0]!)}${more(importers.length - 1)} still imports it. Is something missing?`,
+      evidence: [d.id],
+      priority: 1,
+    });
+  }
+  return items;
+}
+
+function wideSurfaceItems(dependents: DependentsLayer, wideSurfaceImporters: number): ChecklistItem[] {
+  return dependents.entries
+    .filter((d) => !d.deleted && d.untouchedImporters.length >= wideSurfaceImporters)
+    .slice(0, 1)
+    .map((d) => ({
+      id: `check:surface:${d.file}`,
+      kind: 'wide-surface' as const,
+      question: `${code(d.file)} is imported by ${d.untouchedImporters.length} files this PR doesn't touch. Is its public shape unchanged?`,
+      evidence: [d.id],
+      priority: 5,
+    }));
+}
+
+/** Pre-GU-29 checklist, kept byte-for-byte for `legacyPredictions` (research only). */
+export function buildLegacyChecklist(input: ChecklistInput): ChecklistItem[] {
   const items: ChecklistItem[] = [];
   const { changes, dependents, forgotten, tests, calibration, config, trackRecords } = input;
   const maxChecklist = config?.maxChecklist ?? MAX_CHECKLIST;
@@ -149,20 +222,33 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
   return items.sort((a, b) => a.priority - b.priority).slice(0, maxChecklist);
 }
 
+/**
+ * How loud a brief is. `full` needs `salienceFullMinSignals` independent signals (default 2; 1 under
+ * `legacyPredictions`): each priority <= 2 item counts once, breadth counts once. By default only
+ * `broken-import` has priority <= 2, so a page is `full` with two broken imports, or one plus breadth;
+ * breadth alone is `brief`. Any checklist item makes a page at least `brief`. Co-change context and
+ * test history never contribute: they are not checklist items.
+ */
 export function salienceOf(changes: ChangeStructure, checklist: ChecklistItem[], config?: GutterConfig): Salience {
-  const minSignals = config?.salienceFullMinSignals ?? 1;
+  const legacy = Boolean(config?.legacyPredictions);
+  const minSignals = config?.salienceFullMinSignals ?? (legacy ? 1 : 2);
   const breadthCanBeFull = config?.salienceBreadthFull ?? true;
   const reasons: string[] = [];
   const urgent = checklist.filter((c) => c.priority <= 2).length;
-  if (urgent) reasons.push(`${urgent} high-signal question${urgent > 1 ? 's' : ''}`);
+  if (urgent) {
+    reasons.push(legacy ? `${urgent} high-signal question${urgent > 1 ? 's' : ''}` : `${urgent} high-priority item${urgent > 1 ? 's' : ''}`);
+  }
   const breadthReasons: string[] = [];
   if (changes.totals.files >= 8) breadthReasons.push(`${changes.totals.files} files changed`);
   if (changes.totals.modules >= 3) breadthReasons.push(`${changes.totals.modules} modules touched`);
   const breadthSignal = breadthCanBeFull && breadthReasons.length > 0 ? 1 : 0;
   if (breadthSignal) reasons.push(...breadthReasons);
-  // With the defaults (1 signal, breadth counts) this is exactly the original rule.
+  // With 1 signal and breadth counting (the legacy defaults) this is exactly the original rule.
   if (reasons.length && urgent + breadthSignal >= minSignals) return { level: 'full', reasons };
-  if (checklist.length) return { level: 'brief', reasons: [`${checklist.length} question${checklist.length > 1 ? 's' : ''} worth a look`] };
+  if (checklist.length) {
+    const noun = legacy ? 'question' : 'item';
+    return { level: 'brief', reasons: [`${checklist.length} ${noun}${checklist.length > 1 ? 's' : ''} worth a look`] };
+  }
   if (changes.totals.files > 3) return { level: 'brief', reasons: [`${changes.totals.files} files changed`] };
   return { level: 'quiet', reasons: ['small change with nothing to flag'] };
 }

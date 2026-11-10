@@ -1,5 +1,5 @@
 import { posix } from 'node:path';
-import type { ChangeStructure, TestLink } from '../contract.ts';
+import type { ChangeStructure, ForgottenItem, ForgottenLayer, TestLink } from '../contract.ts';
 import type { SourceReader } from '../source/reader.ts';
 import { WorkingTreeReader } from '../source/reader.ts';
 import { isTestPath } from './changes.ts';
@@ -66,6 +66,43 @@ export function linkTests(
     links.push({ id: `tests:${f.path}`, source: f.path, status, candidates });
   }
   return links;
+}
+
+/** A co-change partner counts as a test pairing when RA classified it as `test` or its path is a test path. */
+function isTestPartner(item: ForgottenItem): boolean {
+  return item.relationship === 'test' || isTestPath(item.file);
+}
+
+/**
+ * GU-29: attach co-change history to test links, as facts for the Tests panel.
+ *
+ * For each link, co-change items whose `changed` is the link's source and whose partner is a test file
+ * become `history` (the strongest one's counts; every matching item's id as evidence). A partner the
+ * naming heuristics already found stays one candidate; a partner they missed is appended as a candidate.
+ * Returns new objects and never touches the checklist: callers build the checklist first, from the
+ * naming-only links, so history cannot add, remove or reword an item or move salience.
+ */
+export function attachTestHistory(tests: readonly TestLink[], forgotten: Pick<ForgottenLayer, 'items'>): TestLink[] {
+  return tests.map((t) => {
+    const pairs = forgotten.items.filter((f) => f.changed === t.source && isTestPartner(f));
+    if (!pairs.length) return t;
+    const candidates = [...t.candidates];
+    for (const p of pairs) {
+      if (!candidates.some((c) => c.path === p.file)) candidates.push({ path: p.file, changed: false });
+    }
+    const strongest = [...pairs].sort((a, b) => b.shared / Math.max(1, b.changedTotal) - a.shared / Math.max(1, a.changedTotal) || b.shared - a.shared)[0]!;
+    const status: TestLink['status'] = candidates.some((c) => c.changed)
+      ? 'test-changed'
+      : candidates.length
+        ? 'test-untouched'
+        : 'no-test-found';
+    return {
+      ...t,
+      status,
+      candidates,
+      history: { together: strongest.shared, sourceCommits: strongest.changedTotal, evidence: pairs.map((p) => p.id) },
+    };
+  });
 }
 
 export { isTestPath };

@@ -5,7 +5,7 @@ import { readSnapshotAuxConfigs } from './config.ts';
 import { browseUrlFromRemote, git, hasTimestampAnomaly, isShallowRepo, repoRoot, resolveSha } from './git.ts';
 import { headCommits, readChanges } from './evidence/changes.ts';
 import { buildDependents } from './evidence/imports.ts';
-import { linkTests } from './evidence/tests.ts';
+import { attachTestHistory, linkTests } from './evidence/tests.ts';
 import { buildChecklist, salienceOf } from './evidence/checklist.ts';
 import type { SourceReader } from './source/reader.ts';
 import { GitTreeReader, WorkingTreeReader } from './source/reader.ts';
@@ -131,7 +131,12 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
     unavailable = 'Co-change history was turned off for this run.';
   }
 
-  const forgotten = toForgotten(noHistory ? undefined : input.raDiff, { maxItems: maxForgotten, maxEvidence: 5 }, unavailable);
+  const legacy = Boolean(mergedConfig.legacyPredictions);
+  const forgottenLayer = toForgotten(noHistory ? undefined : input.raDiff, { maxItems: maxForgotten, maxEvidence: 5 }, unavailable);
+  // GU-29: co-change history is context. `presentation` sits right after `status` so the legacy
+  // object (no `presentation`) serializes exactly as before.
+  const { status: historyStatus, ...historyRest } = forgottenLayer;
+  const forgotten = legacy ? forgottenLayer : { status: historyStatus, presentation: 'context' as const, ...historyRest };
   const calibration = toCalibration(noHistory ? undefined : input.raBacktest, noCalibration);
   const checklist = buildChecklist({
     changes: input.changes,
@@ -143,6 +148,8 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
     trackRecords: noHistory ? undefined : trackRecordsByTarget(input.raDiff),
   });
   const salience = salienceOf(input.changes, checklist, mergedConfig);
+  // Built after the checklist and salience, from their output only: test history cannot change either.
+  const tests = legacy ? input.tests : attachTestHistory(input.tests, forgotten);
 
   const title = (input.title ?? input.commits[0]?.subject ?? `${input.base}…${input.head}`).trim();
   const intent = input.intent?.trim().slice(0, INTENT_MAX);
@@ -165,7 +172,7 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
     changes: input.changes,
     dependents: input.dependents,
     forgotten,
-    tests: input.tests,
+    tests,
     checklist,
     calibration,
     provenance: {
@@ -546,6 +553,12 @@ export function assertEvidenceResolves(brief: GutterBrief): void {
   for (const c of brief.checklist) {
     for (const ref of c.evidence) {
       if (!ids.has(ref)) throw new Error(`checklist item ${c.id} cites missing evidence ${ref}`);
+    }
+  }
+  // GU-29: a test-history fact must cite co-change items that exist too.
+  for (const t of brief.tests) {
+    for (const ref of t.history?.evidence ?? []) {
+      if (!ids.has(ref)) throw new Error(`test link ${t.id} cites missing history evidence ${ref}`);
     }
   }
 }
