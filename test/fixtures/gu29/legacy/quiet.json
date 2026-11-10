@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "util: tidy format()",
+    "commits": [
+      {
+        "sha": "0000000000000000000000000000000000000385",
+        "subject": "util: tidy format()"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "quiet",
+    "reasons": [
+      "small change with nothing to flag"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/util/format.ts",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/util",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/util",
+        "files": 1,
+        "additions": 3,
+        "deletions": 1
+      }
+    ],
+    "totals": {
+      "files": 1,
+      "additions": 3,
+      "deletions": 1,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/util/format.ts",
+        "file": "src/util/format.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/a.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "note": "These files have no files that usually change with them.",
+    "items": [],
+    "total": 0,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/util/format.ts",
+      "source": "src/util/format.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/util/format.test.ts",
+          "changed": false
+        }
+      ]
+    }
+  ],
+  "checklist": [],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 75% of the time (7.5× better than guessing busy files), and 60% of all flagged files did.",
+    "precision": 0.6,
+    "hitRate": 0.75,
+    "lift": 7.5,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

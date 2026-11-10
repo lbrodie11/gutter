@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "pay: rename a field",
+    "commits": [
+      {
+        "sha": "000000000000000000000000000000000000038c",
+        "subject": "pay: rename a field"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "full",
+    "reasons": [
+      "2 high-signal questions"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/pay/charge.ts",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/pay",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/pay/refund.ts",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/pay",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/pay",
+        "files": 2,
+        "additions": 8,
+        "deletions": 3
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 8,
+      "deletions": 3,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "items": [
+      {
+        "id": "forgotten:0",
+        "changed": "src/pay/charge.ts",
+        "file": "db/payments.sql",
+        "relationship": "ghost",
+        "why": "shared table name \"payments\"",
+        "shared": 15,
+        "changedTotal": 18,
+        "confidence": 0.8333333333333334,
+        "interval": {
+          "low": 0.6077796189608428,
+          "high": 0.9416342319413855
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "000000000000000000000000000000000000003c",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 60",
+            "automated": false
+          },
+          {
+            "sha": "000000000000000000000000000000000000003d",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 61",
+            "automated": false
+          },
+          {
+            "sha": "000000000000000000000000000000000000003e",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 62",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:1",
+        "changed": "src/pay/charge.ts",
+        "file": "src/pay/ledger.ts",
+        "relationship": "unknown",
+        "why": "no import link detected in the current code",
+        "shared": 12,
+        "changedTotal": 18,
+        "confidence": 0.6666666666666666,
+        "interval": {
+          "low": 0.437494672959451,
+          "high": 0.8372122524916631
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "0000000000000000000000000000000000000046",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 70",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000047",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 71",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000048",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 72",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      }
+    ],
+    "total": 2,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/pay/charge.ts",
+      "source": "src/pay/charge.ts",
+      "status": "no-test-found",
+      "candidates": []
+    },
+    {
+      "id": "tests:src/pay/refund.ts",
+      "source": "src/pay/refund.ts",
+      "status": "no-test-found",
+      "candidates": []
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:companion:db/payments.sql",
+      "kind": "forgotten-companion",
+      "question": "`db/payments.sql` changed alongside `src/pay/charge.ts` in 15 of its 18 commits (95% CI 61%–94%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:0"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:companion:src/pay/ledger.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/pay/ledger.ts` changed alongside `src/pay/charge.ts` in 12 of its 18 commits (95% CI 44%–84%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:1"
+      ],
+      "priority": 2
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 75% of the time (7.5× better than guessing busy files), and 60% of all flagged files did.",
+    "precision": 0.6,
+    "hitRate": 0.75,
+    "lift": 7.5,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

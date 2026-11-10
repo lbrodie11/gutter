@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "fresh: new module",
+    "commits": [
+      {
+        "sha": "000000000000000000000000000000000000038a",
+        "subject": "fresh: new module"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "brief",
+    "reasons": [
+      "1 question worth a look"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/fresh/new.ts",
+        "status": "added",
+        "additions": 25,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/fresh",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/fresh/other.ts",
+        "status": "modified",
+        "additions": 14,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/fresh",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/fresh",
+        "files": 2,
+        "additions": 39,
+        "deletions": 2
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 39,
+      "deletions": 2,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "insufficient-history",
+    "note": "The changed files are new or have too little history.",
+    "items": [],
+    "total": 0,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/fresh/new.ts",
+      "source": "src/fresh/new.ts",
+      "status": "no-test-found",
+      "candidates": []
+    },
+    {
+      "id": "tests:src/fresh/other.ts",
+      "source": "src/fresh/other.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/fresh/other.test.ts",
+          "changed": false
+        }
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:test:src/fresh/other.ts",
+      "kind": "untested-change",
+      "question": "`src/fresh/other.ts` changed (+14/−2) but `src/fresh/other.test.ts` didn't. Is the new behavior covered?",
+      "evidence": [
+        "tests:src/fresh/other.ts"
+      ],
+      "priority": 4
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 75% of the time (7.5× better than guessing busy files), and 60% of all flagged files did.",
+    "precision": 0.6,
+    "hitRate": 0.75,
+    "lift": 7.5,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

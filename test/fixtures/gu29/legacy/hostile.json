@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "<script>alert(\"t\")</script> </details> | `x` [y](javascript:z) @here",
+    "intent": "<iframe src=//evil></iframe> </details> | [y](javascript:z)",
+    "commits": [
+      {
+        "sha": "000000000000000000000000000000000000038e",
+        "subject": "</details><script>alert(3)</script> | `c` [l](javascript:q)"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "full",
+    "reasons": [
+      "2 high-signal questions"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+        "status": "modified",
+        "additions": 20,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/x",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/x/ok.ts",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/x",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/x",
+        "files": 2,
+        "additions": 22,
+        "deletions": 3
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 22,
+      "deletions": 3,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+        "file": "src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/x/<b>imp</b>|`t`.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "items": [
+      {
+        "id": "forgotten:0",
+        "changed": "src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+        "file": "src/x/</details><img src=x onerror=alert(2)>.test.ts",
+        "relationship": "test",
+        "why": "</details><script>w</script>",
+        "shared": 9,
+        "changedTotal": 10,
+        "confidence": 0.9,
+        "interval": {
+          "low": 0.5958499732047616,
+          "high": 0.9821237869049271
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "000000000000000000000000000000000000005a",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "</details><script>alert(4)</script> | `s` [k](javascript:v)",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:1",
+        "changed": "src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+        "file": "src/x/[z](javascript:p)|</details>.ts",
+        "relationship": "ghost",
+        "why": "<b>w</b>",
+        "shared": 8,
+        "changedTotal": 10,
+        "confidence": 0.8,
+        "interval": {
+          "low": 0.4901624715366418,
+          "high": 0.9433178485456247
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "000000000000000000000000000000000000005f",
+            "date": "2026-10-02",
+            "author": "Ada",
+            "subject": "pipe | and `tick` and </details>",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      }
+    ],
+    "total": 2,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+      "source": "src/x/<script>alert(1)</script>|`[a](javascript:x)`.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/x/</details><img src=x onerror=alert(2)>.test.ts",
+          "changed": false
+        }
+      ]
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:companion:src/x/</details><img src=x onerror=alert(2)>.test.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/x/</details><img src=x onerror=alert(2)>.test.ts` changed alongside `src/x/<script>alert(1)</script>|'[a](javascript:x)'.ts` in 9 of its 10 commits (95% CI 60%–98%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:0"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:companion:src/x/[z](javascript:p)|</details>.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/x/[z](javascript:p)|</details>.ts` changed alongside `src/x/<script>alert(1)</script>|'[a](javascript:x)'.ts` in 8 of its 10 commits (95% CI 49%–94%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:1"
+      ],
+      "priority": 2
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 75% of the time (7.5× better than guessing busy files), and 60% of all flagged files did.",
+    "precision": 0.6,
+    "hitRate": 0.75,
+    "lift": 7.5,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

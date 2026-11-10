@@ -1,0 +1,694 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "refactor: split the widget engine",
+    "commits": [
+      {
+        "sha": "0000000000000000000000000000000000000387",
+        "subject": "refactor: move alpha"
+      },
+      {
+        "sha": "0000000000000000000000000000000000000388",
+        "subject": "refactor: move beta"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets",
+    "prNumber": 77
+  },
+  "salience": {
+    "level": "full",
+    "reasons": [
+      "3 high-signal questions",
+      "38 files changed",
+      "6 modules touched"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/alpha/f0.ts",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/f1.ts",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/f2.ts",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/f3.ts",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/f4.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/f5.ts",
+        "status": "modified",
+        "additions": 25,
+        "deletions": 5,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/beta/f0.ts",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/beta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/beta/f1.ts",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/beta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/beta/f2.ts",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/beta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/beta/f3.ts",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/beta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/beta/f4.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/beta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/beta/f5.ts",
+        "status": "modified",
+        "additions": 25,
+        "deletions": 5,
+        "binary": false,
+        "module": "src/beta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/gamma/f0.ts",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/gamma",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/gamma/f1.ts",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/gamma",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/gamma/f2.ts",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/gamma",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/gamma/f3.ts",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/gamma",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/gamma/f4.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/gamma",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/gamma/f5.ts",
+        "status": "modified",
+        "additions": 25,
+        "deletions": 5,
+        "binary": false,
+        "module": "src/gamma",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/delta/f0.ts",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/delta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/delta/f1.ts",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/delta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/delta/f2.ts",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/delta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/delta/f3.ts",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/delta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/delta/f4.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/delta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/delta/f5.ts",
+        "status": "modified",
+        "additions": 25,
+        "deletions": 5,
+        "binary": false,
+        "module": "src/delta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/epsilon/f0.ts",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/epsilon",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/epsilon/f1.ts",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/epsilon",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/epsilon/f2.ts",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/epsilon",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/epsilon/f3.ts",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/epsilon",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/epsilon/f4.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/epsilon",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/epsilon/f5.ts",
+        "status": "modified",
+        "additions": 25,
+        "deletions": 5,
+        "binary": false,
+        "module": "src/epsilon",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/zeta/f0.ts",
+        "status": "modified",
+        "additions": 10,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/zeta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/zeta/f1.ts",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1,
+        "binary": false,
+        "module": "src/zeta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/zeta/f2.ts",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 2,
+        "binary": false,
+        "module": "src/zeta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/zeta/f3.ts",
+        "status": "modified",
+        "additions": 19,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/zeta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/zeta/f4.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/zeta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/zeta/f5.ts",
+        "status": "modified",
+        "additions": 25,
+        "deletions": 5,
+        "binary": false,
+        "module": "src/zeta",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/old.ts",
+        "status": "deleted",
+        "additions": 0,
+        "deletions": 40,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/alpha/f0.test.ts",
+        "status": "modified",
+        "additions": 5,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/alpha",
+        "isTest": true,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/alpha",
+        "files": 8,
+        "additions": 110,
+        "deletions": 55
+      },
+      {
+        "name": "src/beta",
+        "files": 6,
+        "additions": 105,
+        "deletions": 15
+      },
+      {
+        "name": "src/delta",
+        "files": 6,
+        "additions": 105,
+        "deletions": 15
+      },
+      {
+        "name": "src/epsilon",
+        "files": 6,
+        "additions": 105,
+        "deletions": 15
+      },
+      {
+        "name": "src/gamma",
+        "files": 6,
+        "additions": 105,
+        "deletions": 15
+      },
+      {
+        "name": "src/zeta",
+        "files": 6,
+        "additions": 105,
+        "deletions": 15
+      }
+    ],
+    "totals": {
+      "files": 38,
+      "additions": 635,
+      "deletions": 130,
+      "modules": 6
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/alpha/old.ts",
+        "file": "src/alpha/old.ts",
+        "deleted": true,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/legacy/uses-old.ts"
+        ]
+      },
+      {
+        "id": "deps:src/beta/f0.ts",
+        "file": "src/beta/f0.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/x1.ts",
+          "src/x2.ts",
+          "src/x3.ts",
+          "src/x4.ts",
+          "src/x5.ts",
+          "src/x6.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "items": [
+      {
+        "id": "forgotten:0",
+        "changed": "src/zeta/f5.ts",
+        "file": "src/zeta/f5.test.ts",
+        "relationship": "test",
+        "why": "a test and the code it covers",
+        "shared": 9,
+        "changedTotal": 12,
+        "confidence": 0.75,
+        "interval": {
+          "low": 0.46769466506643437,
+          "high": 0.9110583316059452
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "0000000000000000000000000000000000000028",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 40",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000029",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 41",
+            "automated": false
+          },
+          {
+            "sha": "000000000000000000000000000000000000002a",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 42",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      },
+      {
+        "id": "forgotten:1",
+        "changed": "src/gamma/f4.ts",
+        "file": "src/gamma/index.ts",
+        "relationship": "direct",
+        "why": "index.ts imports f4.ts",
+        "shared": 8,
+        "changedTotal": 10,
+        "confidence": 0.8,
+        "interval": {
+          "low": 0.4901624715366418,
+          "high": 0.9433178485456247
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "0000000000000000000000000000000000000032",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 50",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000033",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 51",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000034",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 52",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      }
+    ],
+    "total": 2,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/alpha/f0.ts",
+      "source": "src/alpha/f0.ts",
+      "status": "test-changed",
+      "candidates": [
+        {
+          "path": "src/alpha/f0.test.ts",
+          "changed": true
+        }
+      ]
+    },
+    {
+      "id": "tests:src/zeta/f5.ts",
+      "source": "src/zeta/f5.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/zeta/f5.test.ts",
+          "changed": false
+        }
+      ]
+    },
+    {
+      "id": "tests:src/gamma/f4.ts",
+      "source": "src/gamma/f4.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/gamma/f4.test.ts",
+          "changed": false
+        }
+      ]
+    },
+    {
+      "id": "tests:src/delta/f1.ts",
+      "source": "src/delta/f1.ts",
+      "status": "no-test-found",
+      "candidates": []
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:broken:src/alpha/old.ts",
+      "kind": "broken-import",
+      "question": "`src/alpha/old.ts` no longer exists at this path, but `src/legacy/uses-old.ts` still imports it. Is something missing?",
+      "evidence": [
+        "deps:src/alpha/old.ts"
+      ],
+      "priority": 1
+    },
+    {
+      "id": "check:companion:src/zeta/f5.test.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/zeta/f5.test.ts` changed alongside `src/zeta/f5.ts` in 9 of its 12 commits (95% CI 47%–91%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:0"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:companion:src/gamma/index.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/gamma/index.ts` changed alongside `src/gamma/f4.ts` in 8 of its 10 commits (95% CI 49%–94%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:1"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:test:src/gamma/f4.ts",
+      "kind": "untested-change",
+      "question": "`src/gamma/f4.ts` changed (+22/−4) but `src/gamma/f4.test.ts` didn't. Is the new behavior covered?",
+      "evidence": [
+        "tests:src/gamma/f4.ts"
+      ],
+      "priority": 4
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 70% of the time (7.0× better than guessing busy files), and 55% of all flagged files did.",
+    "precision": 0.55,
+    "hitRate": 0.7000000000000001,
+    "lift": 7,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

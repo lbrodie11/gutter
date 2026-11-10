@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "core: router tweaks",
+    "commits": [
+      {
+        "sha": "0000000000000000000000000000000000000386",
+        "subject": "core: router tweaks"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "full",
+    "reasons": [
+      "1 high-signal question"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/core/router.ts",
+        "status": "modified",
+        "additions": 12,
+        "deletions": 3,
+        "binary": false,
+        "module": "src/core",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/core/types.ts",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/core",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "docs/router.md",
+        "status": "modified",
+        "additions": 5,
+        "deletions": 1,
+        "binary": false,
+        "module": "docs",
+        "isTest": false,
+        "language": null
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/core",
+        "files": 2,
+        "additions": 14,
+        "deletions": 3
+      },
+      {
+        "name": "docs",
+        "files": 1,
+        "additions": 5,
+        "deletions": 1
+      }
+    ],
+    "totals": {
+      "files": 3,
+      "additions": 19,
+      "deletions": 4,
+      "modules": 2
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/core/router.ts",
+        "file": "src/core/router.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/app.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "partial",
+    "unresolved": {
+      "count": 7,
+      "samples": [
+        "src/app.ts → @/core",
+        "src/b.ts → @/x",
+        "src/c.ts → @/y",
+        "src/d.ts → @/z",
+        "src/e.ts → @/w"
+      ]
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "analyzed",
+    "items": [
+      {
+        "id": "forgotten:0",
+        "changed": "src/core/router.ts",
+        "file": "src/core/compose.ts",
+        "relationship": "direct",
+        "why": "router.ts imports compose.ts",
+        "shared": 11,
+        "changedTotal": 16,
+        "confidence": 0.6875,
+        "interval": {
+          "low": 0.44404355834740666,
+          "high": 0.8583535614521797
+        },
+        "lastTogether": "2026-10-01",
+        "evidence": [
+          {
+            "sha": "000000000000000000000000000000000000001e",
+            "date": "2026-10-01",
+            "author": "Ada",
+            "subject": "widgets: change 30",
+            "automated": false
+          },
+          {
+            "sha": "000000000000000000000000000000000000001f",
+            "date": "2026-09-02",
+            "author": "Ada",
+            "subject": "widgets: change 31",
+            "automated": false
+          },
+          {
+            "sha": "0000000000000000000000000000000000000020",
+            "date": "2026-08-03",
+            "author": "Bea",
+            "subject": "widgets: change 32",
+            "automated": false
+          }
+        ],
+        "automationShare": 0,
+        "alsoLinkedFrom": []
+      }
+    ],
+    "total": 1,
+    "families": [],
+    "commitsAnalyzed": 640,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/core/router.ts",
+      "source": "src/core/router.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/core/router.test.ts",
+          "changed": false
+        }
+      ]
+    },
+    {
+      "id": "tests:src/core/types.ts",
+      "source": "src/core/types.ts",
+      "status": "no-test-found",
+      "candidates": []
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:companion:src/core/compose.ts",
+      "kind": "forgotten-companion",
+      "question": "`src/core/compose.ts` changed alongside `src/core/router.ts` in 11 of its 16 commits (95% CI 44%–86%) but is untouched here. Does it need a matching change?",
+      "evidence": [
+        "forgotten:0"
+      ],
+      "priority": 2
+    },
+    {
+      "id": "check:test:src/core/router.ts",
+      "kind": "untested-change",
+      "question": "`src/core/router.ts` changed (+12/−3) but `src/core/router.test.ts` didn't. Is the new behavior covered?",
+      "evidence": [
+        "tests:src/core/router.ts"
+      ],
+      "priority": 4
+    }
+  ],
+  "calibration": {
+    "status": "measured",
+    "note": "Replayed on the last 300 commits: when it flagged files, at least one really did change 65% of the time (6.5× better than guessing busy files), and 50% of all flagged files did.",
+    "precision": 0.5,
+    "hitRate": 0.65,
+    "lift": 6.5,
+    "testCommits": 300,
+    "fired": 200,
+    "window": {
+      "from": "2026-03-01",
+      "to": "2026-11-01"
+    }
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      },
+      {
+        "name": "repo-archaeology",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}

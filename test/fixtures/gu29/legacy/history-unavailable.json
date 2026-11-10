@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "tool": {
+    "name": "gutter",
+    "version": "<version>"
+  },
+  "change": {
+    "base": "main",
+    "head": "feature",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "headSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "title": "orders: rework totals",
+    "commits": [
+      {
+        "sha": "0000000000000000000000000000000000000389",
+        "subject": "orders: rework totals"
+      }
+    ],
+    "repoUrl": "https://github.com/example/widgets"
+  },
+  "salience": {
+    "level": "brief",
+    "reasons": [
+      "1 question worth a look"
+    ]
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "src/orders/a.ts",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 4,
+        "binary": false,
+        "module": "src/orders",
+        "isTest": false,
+        "language": "typescript"
+      },
+      {
+        "path": "src/orders/c.ts",
+        "status": "modified",
+        "additions": 3,
+        "deletions": 0,
+        "binary": false,
+        "module": "src/orders",
+        "isTest": false,
+        "language": "typescript"
+      }
+    ],
+    "modules": [
+      {
+        "name": "src/orders",
+        "files": 2,
+        "additions": 25,
+        "deletions": 4
+      }
+    ],
+    "totals": {
+      "files": 2,
+      "additions": 25,
+      "deletions": 4,
+      "modules": 1
+    }
+  },
+  "dependents": {
+    "analyzers": [
+      "ts-js-relative-imports"
+    ],
+    "entries": [
+      {
+        "id": "deps:src/orders/a.ts",
+        "file": "src/orders/a.ts",
+        "deleted": false,
+        "changedImporters": [],
+        "untouchedImporters": [
+          "src/api/orders.ts"
+        ]
+      }
+    ],
+    "unchecked": [],
+    "coverage": "full",
+    "unresolved": {
+      "count": 0,
+      "samples": []
+    },
+    "scannedFiles": 120
+  },
+  "forgotten": {
+    "status": "unavailable",
+    "note": "Co-change history needs feature checked out; it was skipped.",
+    "items": [],
+    "total": 0,
+    "families": [],
+    "commitsAnalyzed": 0,
+    "warnings": []
+  },
+  "tests": [
+    {
+      "id": "tests:src/orders/a.ts",
+      "source": "src/orders/a.ts",
+      "status": "test-untouched",
+      "candidates": [
+        {
+          "path": "src/orders/a.test.ts",
+          "changed": false
+        }
+      ]
+    },
+    {
+      "id": "tests:src/orders/c.ts",
+      "source": "src/orders/c.ts",
+      "status": "no-test-found",
+      "candidates": []
+    }
+  ],
+  "checklist": [
+    {
+      "id": "check:test:src/orders/a.ts",
+      "kind": "untested-change",
+      "question": "`src/orders/a.ts` changed (+22/−4) but `src/orders/a.test.ts` didn't. Is the new behavior covered?",
+      "evidence": [
+        "tests:src/orders/a.ts"
+      ],
+      "priority": 4
+    }
+  ],
+  "calibration": {
+    "status": "unavailable",
+    "note": "No backtest ran, so warning accuracy on this repository is unknown."
+  },
+  "provenance": {
+    "generatedAt": "<time>",
+    "engines": [
+      {
+        "name": "gutter",
+        "version": "<version>"
+      }
+    ],
+    "deterministic": true
+  }
+}
