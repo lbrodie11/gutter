@@ -176,8 +176,11 @@ export interface TestLink {
   /**
    * GU-29, additive: co-change history pairing `source` with one of its test candidates (a historical
    * fact, not a claim that the test must change). `together` of the source's `sourceCommits` commits
-   * also changed the test; `evidence` cites the `forgotten` item(s) that carry the receipts.
-   * Never affects the checklist or salience. Absent under `legacyPredictions`.
+   * also changed the test named by `evidence[0]` (the pair with the naming-convention test when there is
+   * one, else the strongest pair); later `evidence` ids are the source's other test partners.
+   * A partner the naming conventions missed is appended to `candidates`, so `status` can read
+   * `test-untouched` where naming alone found no test. Never affects the checklist or salience, which
+   * are computed from the naming-only links. Absent under `legacyPredictions`.
    */
   history?: TestHistory;
 }

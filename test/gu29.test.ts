@@ -343,3 +343,104 @@ test('default mode: replayBrief() and buildBrief() agree on checklist, salience 
   assert.deepEqual(kinds(built), ['untested-change']);
   assert.deepEqual(built.tests[0]!.history, { together: 14, sourceCommits: 19, evidence: ['forgotten:0'] });
 });
+
+// ---- Review fixes (PR #16) ------------------------------------------------------------------
+
+/** `normal` with its a.ts → a.test.ts pair (17/20) plus, optionally, a stronger pair with a test naming missed. */
+function twoPartners(keepNamed: boolean): GutterBrief {
+  const s = byName('normal');
+  const named = s.raDiff!.suggestions[0]!;
+  const other = {
+    ...named,
+    to: 'test/orders/a.int.test.ts',
+    shared: 19,
+    evidence: named.evidence.map((e, i) => ({ ...e, hash: String(i + 7).repeat(40), subject: `integration ${i}` })),
+  };
+  const suggestions = keepNamed ? [other, named, ...s.raDiff!.suggestions.slice(1)] : [other, ...s.raDiff!.suggestions.slice(1)];
+  return assembleBrief({ ...s, raDiff: { ...s.raDiff!, suggestions, totalSuggestions: suggestions.length } });
+}
+
+test('review 1: a test row cites only its own pair; counts follow the naming-convention test', () => {
+  const b = twoPartners(true);
+  const t = b.tests.find((x) => x.source === 'src/orders/a.ts')!;
+  assert.deepEqual(t.history, { together: 17, sourceCommits: 20, evidence: ['forgotten:1', 'forgotten:0'] }, 'the named pair first, though weaker');
+  const md = renderMarkdown(b);
+  const row = md.split('\n').find((l) => l.includes('unchanged in this PR'))!;
+  assert.match(row, /^- \[`src\/orders\/a\.test\.ts`\].* in 17 of 20 commits<br>/);
+  assert.ok(!row.includes('7777777') && !row.includes('8888888'), 'no receipt from the other test pair');
+  assert.ok(row.includes('/commit/0000000000000000000000000000000000000001'), 'receipts come from the named pair');
+});
+
+test('review 2: the Tests row and the checklist name the same test; another history partner is a separate clause', () => {
+  const b = twoPartners(false);
+  const item = b.checklist.find((c) => c.kind === 'untested-change')!;
+  assert.match(item.question, /its test file `src\/orders\/a\.test\.ts` didn't change/);
+  const t = b.tests.find((x) => x.source === 'src/orders/a.ts')!;
+  assert.deepEqual(t.candidates.map((c) => c.path), ['src/orders/a.test.ts', 'test/orders/a.int.test.ts']);
+  for (const text of [renderMarkdown(b), renderComic(b)]) {
+    const row = text.split(/\n|<li /).find((l) => l.includes('unchanged in this PR'))!;
+    assert.ok(row.includes('src/orders/a.test.ts'), 'row names the checklist test');
+    assert.match(row.replace(/\\(.)/g, '$1'), /history checked: no co-change pairing with .*src\/orders\/a\.ts.* · .*src\/orders\/a\.ts.* changed together with .*test\/orders\/a\.int\.test\.ts.* in 19 of 20 commits/);
+  }
+});
+
+test('review 4: an untested-change item cites only the test file it names', () => {
+  const b = twoPartners(false);
+  const item = b.checklist.find((c) => c.kind === 'untested-change')!;
+  const md = renderMarkdown(b);
+  const line = md.split('\n').find((l) => l.includes(item.question.slice(1, 20)))!;
+  assert.ok(line.includes('src/orders/a.test.ts') && !line.includes('a.int.test.ts'), line);
+});
+
+test('review 5: Markdown, CLI and Action count co-change pairs the same way; families are counted apart', () => {
+  const b = brief(byName('normal'));
+  assert.match(renderMarkdown(b), /\(history, not a prediction\) · 3 pairs · 1 parallel group<\/summary>/);
+  assert.match(summaryLine(b), / 3 usually-changes-with pairs /);
+});
+
+test('review 6: legacy-only keys without legacyPredictions are reported, and bench --config refuses them', async () => {
+  const { inertLegacyKeys } = await import('../src/config.ts');
+  assert.deepEqual(inertLegacyKeys({ minIntervalLow: 0.5, companionRequireGhost: true, salienceFullMinSignals: 2 }), ['minIntervalLow', 'companionRequireGhost']);
+  assert.deepEqual(inertLegacyKeys({ minIntervalLow: 0.5, legacyPredictions: true }), []);
+
+  const r = new TempRepo().write({ 'src/a.ts': 'export const a = 1;\n', '.gutter.json': JSON.stringify({ minIntervalLow: 0.5 }) }).commit('init').branch('f');
+  repos.push(r);
+  r.write({ 'src/a.ts': 'export const a = 2;\n' }).commit('edit');
+  const warnings: string[] = [];
+  buildBrief({ cwd: r.dir, base: 'main', noHistory: true, warn: (m) => warnings.push(m) });
+  assert.deepEqual(warnings, ['minIntervalLow only applies with "legacyPredictions": true (GU-29, DECISIONS #17); ignored.']);
+
+  const { spawnSync } = await import('node:child_process');
+  const cli = (...args: string[]) => spawnSync(process.execPath, ['--experimental-strip-types', 'src/cli.ts', 'bench', ...args, '--cwd', r.dir, '--prs', '0'], { encoding: 'utf8' });
+  const refused = cli('--config', 'bench/variants/stage0-v1-floor.json');
+  assert.equal(refused.status, 2);
+  assert.match(refused.stderr, /minIntervalLow only applies with "legacyPredictions": true .*pass --legacy-predictions/);
+  const accepted = cli('--config', 'bench/variants/stage0-v1-floor.json', '--legacy-predictions');
+  assert.doesNotMatch(accepted.stderr, /only applies with/);
+});
+
+test('review: the HTML Tests panel carries the same legend as the comment', () => {
+  const page = renderComic(brief(byName('normal')));
+  assert.ok(page.includes('Test rows are facts about this PR and past commits, not a request to change anything.'));
+});
+
+test('review (consumer lens): old and legacy briefs without TestLink.history still show the pair C-04 lists', () => {
+  const golden = JSON.parse(readFileSync(new URL('normal.json', LEGACY_DIR), 'utf8')) as GutterBrief;
+  assert.ok(golden.tests.every((t) => !('history' in t)), 'a pre-GU-29 brief');
+  for (const text of [renderMarkdown(golden), renderComic(golden), renderMarkdown(legacy(byName('normal')))]) {
+    const row = text.split(/\n|<li /).find((l) => l.includes('unchanged in this PR'))!;
+    assert.match(row, /changed together with .*src\/orders\/a\.ts.* in 17 of 20 commits/);
+    assert.doesNotMatch(row, /no co-change pairing/);
+  }
+});
+
+test('review (consumer lens): pairs hidden by max-forgotten are never reported as "none"', () => {
+  const b = assembleBrief({ ...byName('cochange-only'), changes: { ...byName('cochange-only').changes, totals: { ...byName('cochange-only').changes.totals, files: 5 } }, config: { maxForgotten: 0 } });
+  assert.equal(b.forgotten.items.length, 0);
+  assert.equal(b.forgotten.total, 2);
+  const md = renderMarkdown(b);
+  assert.match(md, /\(history, not a prediction\) · none listed<\/summary>/);
+  assert.ok(md.replace(/\\(.)/g, '$1').includes('2 pairs found, none listed (display limit: max-forgotten).'));
+  assert.ok(renderComic(b).includes('2 pairs found, none listed (display limit: max-forgotten).'));
+  for (const t of [md, renderComic(b)]) assert.ok(!t.includes('No file outside this PR usually changes'));
+});

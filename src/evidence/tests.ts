@@ -77,8 +77,12 @@ function isTestPartner(item: ForgottenItem): boolean {
  * GU-29: attach co-change history to test links, as facts for the Tests panel.
  *
  * For each link, co-change items whose `changed` is the link's source and whose partner is a test file
- * become `history` (the strongest one's counts; every matching item's id as evidence). A partner the
- * naming heuristics already found stays one candidate; a partner they missed is appended as a candidate.
+ * become `history`. The counts describe one pair, cited first in `evidence`: the pair with the test the
+ * naming conventions found (so the Tests row and the checklist name the same file), else the strongest
+ * pair. Other test partners of the same source follow in `evidence`. A partner the naming heuristics
+ * already found stays one candidate; a partner they missed is appended as a candidate, which can turn
+ * `no-test-found` into `test-untouched`.
+ *
  * Returns new objects and never touches the checklist: callers build the checklist first, from the
  * naming-only links, so history cannot add, remove or reword an item or move salience.
  */
@@ -86,11 +90,14 @@ export function attachTestHistory(tests: readonly TestLink[], forgotten: Pick<Fo
   return tests.map((t) => {
     const pairs = forgotten.items.filter((f) => f.changed === t.source && isTestPartner(f));
     if (!pairs.length) return t;
+    const strength = (f: ForgottenItem) => f.shared / Math.max(1, f.changedTotal);
+    const byStrength = [...pairs].sort((a, b) => strength(b) - strength(a) || b.shared - a.shared);
+    const named = t.candidates.map((c) => pairs.find((p) => p.file === c.path)).find((p): p is ForgottenItem => Boolean(p));
+    const primary = named ?? byStrength[0]!;
     const candidates = [...t.candidates];
-    for (const p of pairs) {
+    for (const p of byStrength) {
       if (!candidates.some((c) => c.path === p.file)) candidates.push({ path: p.file, changed: false });
     }
-    const strongest = [...pairs].sort((a, b) => b.shared / Math.max(1, b.changedTotal) - a.shared / Math.max(1, a.changedTotal) || b.shared - a.shared)[0]!;
     const status: TestLink['status'] = candidates.some((c) => c.changed)
       ? 'test-changed'
       : candidates.length
@@ -100,7 +107,11 @@ export function attachTestHistory(tests: readonly TestLink[], forgotten: Pick<Fo
       ...t,
       status,
       candidates,
-      history: { together: strongest.shared, sourceCommits: strongest.changedTotal, evidence: pairs.map((p) => p.id) },
+      history: {
+        together: primary.shared,
+        sourceCommits: primary.changedTotal,
+        evidence: [primary.id, ...byStrength.filter((p) => p !== primary).map((p) => p.id)],
+      },
     };
   });
 }

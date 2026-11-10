@@ -4,7 +4,7 @@ import { pct } from '../stats/wilson.ts';
 import { commitUrl, fileUrl, html, short } from './escape.ts';
 import { FRAME12_TOKENS, TOKENS_ID } from './frame12-tokens.ts';
 import { receiptsFor } from './receipts.ts';
-import { CONTEXT_SUBTITLE, CONTEXT_TITLE, historyClause, unchangedTestRows } from './context.ts';
+import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, noPairsLine, unchangedTestRows } from './context.ts';
 
 /** DOM anchor for an evidence id. Co-change ids (`forgotten:n` in gutter.json) anchor as `history-n`. */
 const domId = (id: string) => id.replace(/^forgotten:/, 'history-');
@@ -124,7 +124,7 @@ export function renderComic(brief: GutterBrief): string {
      <p class="small">Not in this PR: ${f.untouchedMembers.slice(0, 5).map((p) => fileLink(p, 'dashed')).join(' ')}</p></div>`).join('');
   const fgBody = wires || families
     ? `<p class="small">${html(CONTEXT_SUBTITLE[0]!.toUpperCase() + CONTEXT_SUBTITLE.slice(1))}: files that changed together in past commits.</p>${wires ? `<ul class="wires">${wires}</ul>` : ''}${families}${fg.total > fg.items.length ? `<p class="small">${fg.total - fg.items.length} weaker pairs not shown.</p>` : ''}`
-    : `<div class="balloon thought"><p class="said">${html(fg.note ?? 'No file outside this PR usually changes with these files.')}</p></div>`;
+    : `<div class="balloon thought"><p class="said">${html(noPairsLine(fg))}</p></div>`;
   panels.push(panel(4, CONTEXT_TITLE, fgBody, { area: 'history' }));
 
   // C-05 · Tests (facts; history rows say what happened before, not what must happen now)
@@ -134,8 +134,11 @@ export function renderComic(brief: GutterBrief): string {
   const nNone = t.filter((x) => x.status === 'no-test-found').length;
   const testRowsHtml = testRows.slice(0, 4).map((row) => {
     const clause = historyClause(row);
-    const receipts = row.receipts.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
-    return `<li class="test-row" id="${html(domId(row.id))}">${fileLink(row.test, 'dashed')}<span class="fact">unchanged in this PR · ${html(clause.before)}${ref(row.source)}${html(clause.after)}</span>${receipts ? `<span class="importers">${receipts}</span>` : ''}</li>`;
+    const other = row.other
+      ? ` · ${ref(row.source)} changed together with ${ref(row.other.test)} in ${row.other.together} of ${row.other.sourceCommits} commits`
+      : '';
+    const receipts = (row.other?.receipts ?? row.receipts).slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
+    return `<li class="test-row" id="${html(domId(row.id))}">${fileLink(row.test, 'dashed')}<span class="fact">unchanged in this PR · ${html(clause.before)}${ref(row.source)}${html(clause.after)}${other}</span>${receipts ? `<span class="importers">${receipts}</span>` : ''}</li>`;
   }).join('');
   panels.push(panel(5, 'Tests', `
   <dl class="metrics">
@@ -143,7 +146,7 @@ export function renderComic(brief: GutterBrief): string {
     <div><dt>unchanged</dt><dd>${testRows.length}</dd></div>
     <div><dt>none found</dt><dd>${nNone}</dd></div>
   </dl>
-  ${testRowsHtml ? `<ul class="deps">${testRowsHtml}</ul>` : ''}`, { area: 'tests' }));
+  ${testRowsHtml ? `<ul class="deps">${testRowsHtml}</ul><p class="small">${html(TESTS_LEGEND)}</p>` : ''}`, { area: 'tests' }));
 
   // C-06 · Check these — only link to evidence that is actually on the page
   const rendered = new Set([...panels.join('').matchAll(/ id="([^"]+)"/g)].map((m) => m[1]));

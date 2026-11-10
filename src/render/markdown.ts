@@ -2,7 +2,7 @@ import type { GutterBrief } from '../contract.ts';
 import { assertEvidenceResolves } from '../brief.ts';
 import { commitUrl, fileUrl, mdCell, mdCode, mdText, safeBase, short } from './escape.ts';
 import { receiptsFor } from './receipts.ts';
-import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, unchangedTestRows } from './context.ts';
+import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, noPairsLine, unchangedTestRows } from './context.ts';
 
 /** Hidden marker so the Action updates one sticky comment instead of stacking new ones. */
 export const COMMENT_MARKER = '<!-- gutter:brief -->';
@@ -65,12 +65,14 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
   const families = fg.families.filter((f) => f.changedMembers.length && f.untouchedMembers.length);
   const pairs = fg.items.length + families.length;
   const state = pairs
-    ? plural(pairs, 'pair')
+    ? [fg.items.length ? plural(fg.items.length, 'pair') : '', families.length ? plural(families.length, 'parallel group') : ''].filter(Boolean).join(' · ')
     : fg.status === 'unavailable'
       ? 'history not checked'
       : fg.status === 'insufficient-history'
         ? 'too little history'
-        : 'none outside this PR';
+        : fg.total > 0
+          ? 'none listed'
+          : 'none outside this PR';
   out.push(`<details><summary><b>${CONTEXT_TITLE}</b> (${CONTEXT_SUBTITLE}) · ${state}</summary>`, '');
   for (const f of fg.items) {
     const receipts = f.evidence.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
@@ -86,8 +88,8 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
     const extra = fam.untouchedMembers.length > 4 ? ` +${fam.untouchedMembers.length - 4} more` : '';
     out.push(`- Parallel implementations (${mdText(fam.label)}): this PR changes ${fam.changedMembers.length} of ${fam.members.length}; not in this PR: ${shown}${extra}`);
   }
-  if (!pairs) out.push(mdText(fg.note ?? 'No file outside this PR usually changes with these files.'));
-  if (fg.total > fg.items.length) out.push('', `<sub>${fg.total - fg.items.length} weaker pairs not shown.</sub>`);
+  if (!pairs) out.push(mdText(noPairsLine(fg)));
+  else if (fg.total > fg.items.length) out.push('', `<sub>${fg.total - fg.items.length} weaker pairs not shown.</sub>`);
   out.push('', '</details>', '');
 
   // What it touches
@@ -122,8 +124,11 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
     out.push(`<details><summary><b>Tests</b> · ${changedT} updated · ${rows.length} unchanged · ${none} with no test found</summary>`, '');
     for (const row of rows.slice(0, 6)) {
       const clause = historyClause(row);
-      const receipts = row.receipts.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
-      out.push(`- ${fileLink(row.test)} — unchanged in this PR · ${mdText(clause.before)}${fileLink(row.source)}${mdText(clause.after)}${receipts ? `<br><sub>receipts: ${receipts}</sub>` : ''}`);
+      const other = row.other
+        ? ` · ${fileLink(row.source)} changed together with ${fileLink(row.other.test)} in ${row.other.together} of ${row.other.sourceCommits} commits`
+        : '';
+      const receipts = (row.other?.receipts ?? row.receipts).slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
+      out.push(`- ${fileLink(row.test)} — unchanged in this PR · ${mdText(clause.before)}${fileLink(row.source)}${mdText(clause.after)}${other}${receipts ? `<br><sub>receipts: ${receipts}</sub>` : ''}`);
     }
     if (rows.length) out.push('', `<sub>${mdText(TESTS_LEGEND)}</sub>`);
     out.push('', '</details>', '');
