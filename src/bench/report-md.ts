@@ -6,6 +6,8 @@ import {
   type BenchResultsModel,
   type BootstrapInterval,
   type ExemplarQuestion,
+  OUTCOME_NAMES,
+  type OutcomeName,
   type PolicyAggregateSummary,
   type ProportionMetric,
 } from './model.ts';
@@ -118,6 +120,48 @@ function renderBaselinesTable(summary: PolicyAggregateSummary): string[] {
     const b: BaselineAggregateSummary = summary.baselines[name];
     lines.push(
       `| ${mdCell(mdCode(b.baseline))} | ${b.proposedTargets} | ${b.shortfallPrs} (${b.shortfallTargets}) | ${mdCell(fmtProportion(b.fileLevelFollowUp))} | ${mdCell(fmtProportion(b.questionLevelHitRate))} | ${mdCell(fmtProportion(b.sameAuthorFollowUpRate))} | ${fmtLift(b.liftVsBaseline)} | ${mdCell(fmtBootstrap(b.bootstrapLiftCi))} |`,
+    );
+  }
+  lines.push('');
+  lines.push(...renderOutcomeLiftTable(summary));
+  return lines;
+}
+
+const OUTCOME_LABELS: Record<OutcomeName, string> = {
+  followUp: 'Any follow-up',
+  sameAuthor: 'Same-author follow-up',
+  raSignal: 'RA-signal follow-up',
+};
+
+function outcomeRate(b: BaselineAggregateSummary, outcome: OutcomeName): ProportionMetric | undefined {
+  if (outcome === 'followUp') return b.fileLevelFollowUp;
+  if (outcome === 'sameAuthor') return b.sameAuthorFollowUpRate;
+  return b.raSignalFollowUpRate;
+}
+
+/** GU-04 Stage 0: every baseline on every outcome, with lift per outcome vs that outcome's strongest baseline. */
+function renderOutcomeLiftTable(summary: PolicyAggregateSummary): string[] {
+  const byOutcome = summary.headlineBaseline.byOutcome;
+  if (!byOutcome) return [];
+  const acc = summary.accuracyProxy;
+  const policyRate: Record<OutcomeName, ProportionMetric> = {
+    followUp: acc.fileLevelFollowUpPrecision,
+    sameAuthor: acc.sameAuthorFollowUpRate,
+    raSignal: acc.raSignalFollowUpRate,
+  };
+  const lines: string[] = [];
+  lines.push(`**Lift by outcome (${mdCode(summary.policy)}).** Each outcome picks its own strongest baseline.`);
+  lines.push('');
+  lines.push('| Outcome | Gutter | `popular` | `popular-near` | `recent` | Strongest | Lift | Bootstrap Lift CI |');
+  lines.push('|---|---|---|---|---|---|---:|---|');
+  for (const outcome of OUTCOME_NAMES) {
+    const hl = byOutcome[outcome];
+    const cells = (['popular', 'popular-near', 'recent'] as const).map((name) => {
+      const m = outcomeRate(summary.baselines[name], outcome);
+      return m ? mdCell(fmtProportion(m)) : 'N/A';
+    });
+    lines.push(
+      `| ${OUTCOME_LABELS[outcome]} | ${mdCell(fmtProportion(policyRate[outcome]))} | ${cells.join(' | ')} | ${hl.strongestBaseline ? mdCode(hl.strongestBaseline) : 'N/A'} | ${fmtLift(hl.lift)} | ${mdCell(fmtBootstrap(hl.bootstrapCi))} |`,
     );
   }
   lines.push('');

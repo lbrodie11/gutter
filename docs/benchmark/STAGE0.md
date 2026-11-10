@@ -15,7 +15,7 @@ GU-03's hono run found follow-up precision 0.23 [0.16–0.32] for Gutter against
 Every baseline in `bench.json` (`aggregates.<policy>.baselines.<name>`) now also reports, over the same scored target files as its plain follow-up precision:
 
 - `sameAuthorFollowUpRate`: a follow-up commit by an author of the PR (already present; now also bootstrapped);
-- `raSignalFollowUpRate`: a follow-up commit matching Repo Archaeology's follow-up signal (same author as the PR, or a fix/follow-up subject);
+- `raSignalFollowUpRate`: a follow-up commit matching Repo Archaeology's follow-up signal, exactly as GU-03 scores it for Gutter (`src/bench/outcomes.ts`): by an author of the PR **and** either touching a file the PR touched, landing as the first commit after the merge, or carrying a fix/follow-up subject;
 - a PR-clustered bootstrap interval (seed `20261108`, 1,000 resamples) for both, next to the Wilson interval;
 - `liftByOutcome.{followUp,sameAuthor,raSignal}`: Gutter's rate divided by the baseline's rate on that outcome, with a paired PR-clustered bootstrap interval.
 

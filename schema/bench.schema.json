@@ -473,6 +473,20 @@
         "mergedAt": { "type": "string" },
         "subject": { "type": "string" },
         "changedFilesCount": { "type": "integer", "minimum": 0 },
+        "changedFiles": {
+          "type": "array",
+          "maxItems": 40,
+          "items": {
+            "type": "object",
+            "required": ["path", "status", "additions", "deletions"],
+            "properties": {
+              "path": { "type": "string" },
+              "status": { "type": "string" },
+              "additions": { "type": "integer", "minimum": 0 },
+              "deletions": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
         "timestampAnomaly": { "type": "boolean" },
         "history": { "enum": ["available", "unavailable"] },
         "mergeDiffers": { "type": "boolean" },
@@ -527,7 +541,43 @@
         "questionLevelHitRate": { "$ref": "#/$defs/ProportionMetric" },
         "sameAuthorFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
         "liftVsBaseline": { "type": ["number", "null"] },
-        "bootstrapLiftCi": { "$ref": "#/$defs/BootstrapInterval" }
+        "bootstrapLiftCi": { "$ref": "#/$defs/BootstrapInterval" },
+        "raSignalFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
+        "bootstrapRateCi": {
+          "type": "object",
+          "required": ["followUp", "sameAuthor", "raSignal"],
+          "properties": {
+            "followUp": { "$ref": "#/$defs/BootstrapInterval" },
+            "sameAuthor": { "$ref": "#/$defs/BootstrapInterval" },
+            "raSignal": { "$ref": "#/$defs/BootstrapInterval" }
+          }
+        },
+        "liftByOutcome": {
+          "type": "object",
+          "required": ["followUp", "sameAuthor", "raSignal"],
+          "properties": {
+            "followUp": { "$ref": "#/$defs/OutcomeLift" },
+            "sameAuthor": { "$ref": "#/$defs/OutcomeLift" },
+            "raSignal": { "$ref": "#/$defs/OutcomeLift" }
+          }
+        }
+      }
+    },
+    "OutcomeLift": {
+      "type": "object",
+      "required": ["lift", "bootstrapCi"],
+      "properties": {
+        "lift": { "type": ["number", "null"] },
+        "bootstrapCi": { "$ref": "#/$defs/BootstrapInterval" }
+      }
+    },
+    "StrongestBaselineForOutcome": {
+      "type": "object",
+      "required": ["strongestBaseline", "lift", "bootstrapCi"],
+      "properties": {
+        "strongestBaseline": { "enum": ["popular", "popular-near", "recent", null] },
+        "lift": { "type": ["number", "null"] },
+        "bootstrapCi": { "$ref": "#/$defs/BootstrapInterval" }
       }
     },
     "KindBreakdownRow": {
@@ -724,7 +774,9 @@
             "sameAuthorFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
             "sameAuthorShareOfFollowedUp": { "$ref": "#/$defs/ProportionMetric" },
             "raSignalFollowUpRate": { "$ref": "#/$defs/ProportionMetric" },
-            "bootstrapFilePrecisionCi": { "$ref": "#/$defs/BootstrapInterval" }
+            "bootstrapFilePrecisionCi": { "$ref": "#/$defs/BootstrapInterval" },
+            "bootstrapSameAuthorCi": { "$ref": "#/$defs/BootstrapInterval" },
+            "bootstrapRaSignalCi": { "$ref": "#/$defs/BootstrapInterval" }
           }
         },
         "missedFollowUps": {
@@ -751,7 +803,16 @@
           "properties": {
             "strongestBaseline": { "enum": ["popular", "popular-near", "recent", null] },
             "lift": { "type": ["number", "null"] },
-            "bootstrapLiftCi": { "$ref": "#/$defs/BootstrapInterval" }
+            "bootstrapLiftCi": { "$ref": "#/$defs/BootstrapInterval" },
+            "byOutcome": {
+              "type": "object",
+              "required": ["followUp", "sameAuthor", "raSignal"],
+              "properties": {
+                "followUp": { "$ref": "#/$defs/StrongestBaselineForOutcome" },
+                "sameAuthor": { "$ref": "#/$defs/StrongestBaselineForOutcome" },
+                "raSignal": { "$ref": "#/$defs/StrongestBaselineForOutcome" }
+              }
+            }
           }
         },
         "breakdowns": {

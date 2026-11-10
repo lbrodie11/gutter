@@ -9,6 +9,8 @@ import type {
   ExemplarQuestion,
   IntervalBucketBreakdownRow,
   KindBreakdownRow,
+  OutcomeLift,
+  OutcomeName,
   PolicyAggregateSummary,
   PolicyName,
   StageTimingSummary,
@@ -18,6 +20,7 @@ import {
   DEFAULT_BOOTSTRAP_RESAMPLES,
   DEFAULT_BOOTSTRAP_SEED,
   makeProportionMetric,
+  OUTCOME_NAMES,
   SAMPLE_SIZE_FLOOR,
   UNGATED_POLICY_LABEL,
 } from './model.ts';
@@ -146,6 +149,47 @@ export function bootstrapPrLift(
   };
 }
 
+type PairedRow = { policyHits: number; policyTotal: number; baseHits: number; baseTotal: number };
+
+function ratioOrNull(num: number | null, den: number | null): number | null {
+  return num !== null && den !== null && den > 0 ? Number((num / den).toFixed(4)) : null;
+}
+
+function outcomeRateOf(b: BaselineAggregateSummary, outcome: OutcomeName): number | null {
+  if (outcome === 'followUp') return b.fileLevelFollowUp.rate;
+  if (outcome === 'sameAuthor') return b.sameAuthorFollowUpRate.rate;
+  return b.raSignalFollowUpRate?.rate ?? null;
+}
+
+/**
+ * GU-04 Stage 0: the strongest baseline is chosen separately for each outcome
+ * (highest rate on that outcome; ties go to popular-near, then recent, then popular),
+ * and lift on that outcome is measured against it.
+ */
+export function strongestBaselinesByOutcome(
+  baselines: Record<BaselineName, BaselineAggregateSummary>,
+): NonNullable<PolicyAggregateSummary['headlineBaseline']['byOutcome']> {
+  const out = {} as NonNullable<PolicyAggregateSummary['headlineBaseline']['byOutcome']>;
+  for (const outcome of OUTCOME_NAMES) {
+    let best: BaselineName | null = null;
+    let bestRate = -1;
+    for (const name of ['popular-near', 'recent', 'popular'] as const) {
+      const rate = outcomeRateOf(baselines[name], outcome);
+      if (rate !== null && rate > bestRate) {
+        bestRate = rate;
+        best = name;
+      }
+    }
+    const lift = best ? baselines[best].liftByOutcome?.[outcome] : undefined;
+    out[outcome] = {
+      strongestBaseline: best,
+      lift: lift?.lift ?? null,
+      bootstrapCi: lift?.bootstrapCi ?? null,
+    };
+  }
+  return out;
+}
+
 export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName): PolicyAggregateSummary {
   const policyLabel = policy === 'production' ? 'production (calibrated)' : UNGATED_POLICY_LABEL;
 
@@ -197,6 +241,8 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
   let companionFollowedUpCount = 0;
 
   const prPrecisionPairs: { hits: number; total: number }[] = [];
+  /** Per-PR hit counts on the stricter outcomes, aligned with `prPrecisionPairs`. */
+  const prOutcomeHits: { sameAuthor: number; raSignal: number }[] = [];
   const allCandidateExemplars: ExemplarQuestion[] = [];
 
   const kindStats = new Map<
@@ -239,6 +285,8 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
     let prHasScoredQuestion = false;
     let prHits = 0;
     let prTotal = 0;
+    let prSameHits = 0;
+    let prRaHits = 0;
     const prCompanionScoredTargets: TargetOutcomeRecord[] = [];
     const seenCompanionFiles = new Set<string>();
     const seenKindTargetFiles = new Map<ChecklistKind, Set<string>>();
@@ -351,12 +399,14 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
           }
           if (t.sameAuthor) {
             sameAuthorHits++;
+            prSameHits++;
             if (entry.intervalLowBucket !== 'none') {
               bucketStats[entry.intervalLowBucket].same++;
             }
           }
           if (t.matchesRaFollowUp) {
             raSignalHits++;
+            prRaHits++;
           }
         }
 
@@ -382,6 +432,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
       prsScoredCount++;
     }
     prPrecisionPairs.push({ hits: prHits, total: prTotal });
+    prOutcomeHits.push({ sameAuthor: prSameHits, raSignal: prRaHits });
 
     if (prCompanionScoredTargets.length > 0) {
       pAt1Queries++;
@@ -444,6 +495,17 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
   const sameAuthorShareOfFollowedUp = makeProportionMetric(sameAuthorHits, scoredTargetsNum);
   const raSignalFollowUpRate = makeProportionMetric(raSignalHits, scoredTargetsDen);
   const bootstrapFilePrecisionCi = bootstrapPrPrecision(prPrecisionPairs);
+  const bootstrapSameAuthorCi = bootstrapPrPrecision(
+    prPrecisionPairs.map((p, i) => ({ hits: prOutcomeHits[i]!.sameAuthor, total: p.total })),
+  );
+  const bootstrapRaSignalCi = bootstrapPrPrecision(
+    prPrecisionPairs.map((p, i) => ({ hits: prOutcomeHits[i]!.raSignal, total: p.total })),
+  );
+  const policyRates: Record<OutcomeName, number | null> = {
+    followUp: fileLevelFollowUpPrecision.rate,
+    sameAuthor: sameAuthorFollowUpRate.rate,
+    raSignal: raSignalFollowUpRate.rate,
+  };
 
   // Baselines aggregation
   const baselineSummaries = {} as Record<BaselineName, BaselineAggregateSummary>;
@@ -454,9 +516,11 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
     let bHits = 0;
     let bDen = 0;
     let bSameHits = 0;
+    let bRaHits = 0;
     let bQuestionHits = 0;
     let bQuestionDen = 0;
     const pairedLiftRows: { policyHits: number; policyTotal: number; baseHits: number; baseTotal: number }[] = [];
+    const pairedByOutcome: Record<OutcomeName, PairedRow[]> = { followUp: [], sameAuthor: [], raSignal: [] };
 
     for (let i = 0; i < evaluatedPrs.length; i++) {
       const pr = evaluatedPrs[i]!;
@@ -470,6 +534,8 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
 
       let prBHits = 0;
       let prBDen = 0;
+      let prBSame = 0;
+      let prBRa = 0;
       for (const t of bSet.targets) {
         if (isScoredStatus(t.status)) {
           bDen++;
@@ -477,7 +543,14 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
           if (t.status === 'followedUp') {
             bHits++;
             prBHits++;
-            if (t.sameAuthor) bSameHits++;
+            if (t.sameAuthor) {
+              bSameHits++;
+              prBSame++;
+            }
+            if (t.matchesRaFollowUp) {
+              bRaHits++;
+              prBRa++;
+            }
           }
         }
       }
@@ -491,11 +564,41 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
         baseHits: prBHits,
         baseTotal: prBDen,
       });
+      const pOutcome = prOutcomeHits[i]!;
+      pairedByOutcome.followUp.push(pairedLiftRows[pairedLiftRows.length - 1]!);
+      pairedByOutcome.sameAuthor.push({
+        policyHits: pOutcome.sameAuthor,
+        policyTotal: pCounts.total,
+        baseHits: prBSame,
+        baseTotal: prBDen,
+      });
+      pairedByOutcome.raSignal.push({
+        policyHits: pOutcome.raSignal,
+        policyTotal: pCounts.total,
+        baseHits: prBRa,
+        baseTotal: prBDen,
+      });
     }
 
     const bFilePrecision = makeProportionMetric(bHits, bDen);
     const bQuestionHit = makeProportionMetric(bQuestionHits, bQuestionDen);
     const bSameRate = makeProportionMetric(bSameHits, bDen);
+    const bRaRate = makeProportionMetric(bRaHits, bDen);
+    const baselineRates: Record<OutcomeName, number | null> = {
+      followUp: bFilePrecision.rate,
+      sameAuthor: bSameRate.rate,
+      raSignal: bRaRate.rate,
+    };
+    const bootstrapRateCi = {} as Record<OutcomeName, BootstrapInterval | null>;
+    const liftByOutcome = {} as Record<OutcomeName, OutcomeLift>;
+    for (const outcome of OUTCOME_NAMES) {
+      const rows = pairedByOutcome[outcome];
+      bootstrapRateCi[outcome] = bootstrapPrPrecision(rows.map((r) => ({ hits: r.baseHits, total: r.baseTotal })));
+      liftByOutcome[outcome] = {
+        lift: ratioOrNull(policyRates[outcome], baselineRates[outcome]),
+        bootstrapCi: bootstrapPrLift(rows),
+      };
+    }
 
     const pRate = fileLevelFollowUpPrecision.rate;
     const bRate = bFilePrecision.rate;
@@ -513,6 +616,9 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
       sameAuthorFollowUpRate: bSameRate,
       liftVsBaseline,
       bootstrapLiftCi,
+      raSignalFollowUpRate: bRaRate,
+      bootstrapRateCi,
+      liftByOutcome,
     };
   }
 
@@ -528,6 +634,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
   }
 
   const headlineSummary = strongestBaseline ? baselineSummaries[strongestBaseline] : null;
+  const byOutcome = strongestBaselinesByOutcome(baselineSummaries);
 
   // Breakdowns
   const byKind = {} as Record<ChecklistKind, KindBreakdownRow>;
@@ -642,6 +749,8 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
       sameAuthorShareOfFollowedUp,
       raSignalFollowUpRate,
       bootstrapFilePrecisionCi,
+      bootstrapSameAuthorCi,
+      bootstrapRaSignalCi,
     },
     missedFollowUps: {
       missedFilesTotal,
@@ -653,6 +762,7 @@ export function computePolicyAggregates(prs: BenchPrRecord[], policy: PolicyName
       strongestBaseline,
       lift: headlineSummary?.liftVsBaseline ?? null,
       bootstrapLiftCi: headlineSummary?.bootstrapLiftCi ?? null,
+      byOutcome,
     },
     breakdowns: {
       byKind,

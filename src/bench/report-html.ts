@@ -6,6 +6,8 @@ import {
   type BenchResultsModel,
   type BootstrapInterval,
   type ExemplarQuestion,
+  OUTCOME_NAMES,
+  type OutcomeName,
   type PolicyAggregateSummary,
   type ProportionMetric,
 } from './model.ts';
@@ -125,6 +127,45 @@ function renderBaselinesTableHtml(summary: PolicyAggregateSummary): string {
   <table class="bench-table">
     <thead>
       <tr><th>Baseline</th><th>Proposed</th><th>Shortfall PRs (Slots)</th><th>File-Level Follow-Up</th><th>Question Hit Rate</th><th>Same-Author Rate</th><th>Lift</th><th>Bootstrap Lift CI</th></tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>${renderOutcomeLiftHtml(summary)}`;
+}
+
+/** GU-04 Stage 0: lift per outcome, each against that outcome's strongest baseline. */
+function renderOutcomeLiftHtml(summary: PolicyAggregateSummary): string {
+  const byOutcome = summary.headlineBaseline.byOutcome;
+  if (!byOutcome) return '';
+  const acc = summary.accuracyProxy;
+  const labels: Record<OutcomeName, string> = {
+    followUp: 'Any follow-up',
+    sameAuthor: 'Same-author follow-up',
+    raSignal: 'RA-signal follow-up',
+  };
+  const policyRate: Record<OutcomeName, ProportionMetric> = {
+    followUp: acc.fileLevelFollowUpPrecision,
+    sameAuthor: acc.sameAuthorFollowUpRate,
+    raSignal: acc.raSignalFollowUpRate,
+  };
+  const baselineRate = (name: BaselineName, outcome: OutcomeName): ProportionMetric | undefined => {
+    const b = summary.baselines[name];
+    return outcome === 'followUp' ? b.fileLevelFollowUp : outcome === 'sameAuthor' ? b.sameAuthorFollowUpRate : b.raSignalFollowUpRate;
+  };
+  const rows = OUTCOME_NAMES.map((outcome) => {
+    const hl = byOutcome[outcome];
+    const cells = (['popular', 'popular-near', 'recent'] as const)
+      .map((name) => {
+        const m = baselineRate(name, outcome);
+        return `<td>${m ? fmtProportionHtml(m) : 'N/A'}</td>`;
+      })
+      .join('');
+    return `<tr><td>${labels[outcome]}</td><td>${fmtProportionHtml(policyRate[outcome])}</td>${cells}<td><code class="path">${html(hl.strongestBaseline ?? 'N/A')}</code></td><td>${fmtLiftHtml(hl.lift)}</td><td>${fmtBootstrapHtml(hl.bootstrapCi)}</td></tr>`;
+  }).join('\n');
+  return `
+  <p class="small">Lift by outcome: each outcome is compared against its own strongest baseline.</p>
+  <table class="bench-table">
+    <thead>
+      <tr><th>Outcome</th><th>Gutter</th><th>popular</th><th>popular-near</th><th>recent</th><th>Strongest</th><th>Lift</th><th>Bootstrap Lift CI</th></tr>
     </thead>
     <tbody>${rows}</tbody>
   </table>`;
