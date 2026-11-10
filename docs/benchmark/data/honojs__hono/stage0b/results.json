@@ -1,0 +1,434 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-stage0b-results",
+  "runs": [
+    {
+      "id": "default",
+      "repo": "honojs/hono",
+      "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "settingsHash": "63a836d7b4058728",
+      "configOverrides": {},
+      "gutterVersion": "0.2.1",
+      "raVersion": "0.10.0",
+      "prsEvaluated": 200,
+      "prsScored": 70,
+      "questionsTotal": 161,
+      "fullSalienceShare": {
+        "numerator": 80,
+        "denominator": 200,
+        "rate": 0.4,
+        "interval": {
+          "low": 0.3346057856680734,
+          "high": 0.46916327960737997
+        }
+      },
+      "gutter": {
+        "followUp": {
+          "numerator": 25,
+          "denominator": 107,
+          "rate": 0.2336,
+          "interval": {
+            "low": 0.16356165995161556,
+            "high": 0.32219032665650293
+          }
+        },
+        "sameAuthor": {
+          "numerator": 13,
+          "denominator": 107,
+          "rate": 0.1215,
+          "interval": {
+            "low": 0.07239434166761743,
+            "high": 0.19683216561760356
+          }
+        },
+        "raSignal": {
+          "numerator": 9,
+          "denominator": 107,
+          "rate": 0.0841,
+          "interval": {
+            "low": 0.044881945524203326,
+            "high": 0.15216940198671847
+          }
+        }
+      },
+      "baselines": {
+        "popular": {
+          "followUp": {
+            "numerator": 61,
+            "denominator": 106,
+            "rate": 0.5755,
+            "interval": {
+              "low": 0.48036088516716324,
+              "high": 0.6653036041047654
+            }
+          },
+          "sameAuthor": {
+            "numerator": 24,
+            "denominator": 106,
+            "rate": 0.2264,
+            "interval": {
+              "low": 0.15713470742524072,
+              "high": 0.3148315189640176
+            }
+          },
+          "raSignal": {
+            "numerator": 14,
+            "denominator": 106,
+            "rate": 0.1321,
+            "interval": {
+              "low": 0.08033205324120549,
+              "high": 0.20955356155814195
+            }
+          }
+        },
+        "popular-near": {
+          "followUp": {
+            "numerator": 27,
+            "denominator": 105,
+            "rate": 0.2571,
+            "interval": {
+              "low": 0.18315909307507203,
+              "high": 0.34826945857620983
+            }
+          },
+          "sameAuthor": {
+            "numerator": 10,
+            "denominator": 105,
+            "rate": 0.0952,
+            "interval": {
+              "low": 0.0525563098634332,
+              "high": 0.16649127622203672
+            }
+          },
+          "raSignal": {
+            "numerator": 7,
+            "denominator": 105,
+            "rate": 0.0667,
+            "interval": {
+              "low": 0.03266588465602071,
+              "high": 0.1312556486825412
+            }
+          }
+        },
+        "recent": {
+          "followUp": {
+            "numerator": 69,
+            "denominator": 106,
+            "rate": 0.6509,
+            "interval": {
+              "low": 0.5563658870548236,
+              "high": 0.7349630914890337
+            }
+          },
+          "sameAuthor": {
+            "numerator": 31,
+            "denominator": 106,
+            "rate": 0.2925,
+            "interval": {
+              "low": 0.21433337400446412,
+              "high": 0.3850892804977318
+            }
+          },
+          "raSignal": {
+            "numerator": 21,
+            "denominator": 106,
+            "rate": 0.1981,
+            "interval": {
+              "low": 0.13338893526287282,
+              "high": 0.2839531076494123
+            }
+          }
+        }
+      },
+      "byOutcome": {
+        "followUp": {
+          "strongestBaseline": "recent",
+          "lift": 0.3589,
+          "bootstrapCi": {
+            "low": 0.2329,
+            "median": 0.3539,
+            "high": 0.5101,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "sameAuthor": {
+          "strongestBaseline": "recent",
+          "lift": 0.4154,
+          "bootstrapCi": {
+            "low": 0.2141,
+            "median": 0.4085,
+            "high": 0.6906,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "raSignal": {
+          "strongestBaseline": "recent",
+          "lift": 0.4245,
+          "bootstrapCi": {
+            "low": 0.1427,
+            "median": 0.4091,
+            "high": 0.9057,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        }
+      },
+      "totalWallMs": 94904.27,
+      "companionCoverage": {
+        "numerator": 69,
+        "denominator": 200,
+        "rate": 0.345
+      },
+      "companionQuestions": 90,
+      "companionScoredTargets": 84,
+      "companionFollowUp": {
+        "numerator": 20,
+        "denominator": 84,
+        "rate": 0.2381,
+        "interval": {
+          "low": 0.15974690895549554,
+          "high": 0.3393506630712311
+        }
+      },
+      "companionSameAuthor": {
+        "numerator": 10,
+        "denominator": 84,
+        "rate": 0.119,
+        "interval": {
+          "low": 0.0659654924759903,
+          "high": 0.2054491577447029
+        }
+      }
+    },
+    {
+      "id": "v4-proven-pairs",
+      "repo": "honojs/hono",
+      "headSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "settingsHash": "166e33444cca5733",
+      "configOverrides": {
+        "minIntervalLow": 0.3,
+        "companionRequireGhost": true,
+        "companionMinTrackRecordFired": 3
+      },
+      "gutterVersion": "0.2.1",
+      "raVersion": "0.10.0",
+      "prsEvaluated": 200,
+      "prsScored": 13,
+      "questionsTotal": 75,
+      "fullSalienceShare": {
+        "numerator": 23,
+        "denominator": 200,
+        "rate": 0.115,
+        "interval": {
+          "low": 0.07786373232561955,
+          "high": 0.16664716898487572
+        }
+      },
+      "gutter": {
+        "followUp": {
+          "numerator": 5,
+          "denominator": 26,
+          "rate": 0.1923,
+          "interval": {
+            "low": 0.08507061148942409,
+            "high": 0.37876257119317
+          }
+        },
+        "sameAuthor": {
+          "numerator": 3,
+          "denominator": 26,
+          "rate": 0.1154,
+          "interval": {
+            "low": 0.04003244623610616,
+            "high": 0.2897590321171364
+          }
+        },
+        "raSignal": {
+          "numerator": 3,
+          "denominator": 26,
+          "rate": 0.1154,
+          "interval": {
+            "low": 0.04003244623610616,
+            "high": 0.2897590321171364
+          }
+        }
+      },
+      "baselines": {
+        "popular": {
+          "followUp": {
+            "numerator": 10,
+            "denominator": 26,
+            "rate": 0.3846,
+            "interval": {
+              "low": 0.22428594435712798,
+              "high": 0.5746514991488447
+            }
+          },
+          "sameAuthor": {
+            "numerator": 3,
+            "denominator": 26,
+            "rate": 0.1154,
+            "interval": {
+              "low": 0.04003244623610616,
+              "high": 0.2897590321171364
+            }
+          },
+          "raSignal": {
+            "numerator": 2,
+            "denominator": 26,
+            "rate": 0.0769,
+            "interval": {
+              "low": 0.021355088472276205,
+              "high": 0.24141553771629057
+            }
+          }
+        },
+        "popular-near": {
+          "followUp": {
+            "numerator": 1,
+            "denominator": 26,
+            "rate": 0.0385,
+            "interval": {
+              "low": 0.006821984993543487,
+              "high": 0.18892778903034757
+            }
+          },
+          "sameAuthor": {
+            "numerator": 1,
+            "denominator": 26,
+            "rate": 0.0385,
+            "interval": {
+              "low": 0.006821984993543487,
+              "high": 0.18892778903034757
+            }
+          },
+          "raSignal": {
+            "numerator": 1,
+            "denominator": 26,
+            "rate": 0.0385,
+            "interval": {
+              "low": 0.006821984993543487,
+              "high": 0.18892778903034757
+            }
+          }
+        },
+        "recent": {
+          "followUp": {
+            "numerator": 15,
+            "denominator": 26,
+            "rate": 0.5769,
+            "interval": {
+              "low": 0.3894861374659171,
+              "high": 0.7445555668634343
+            }
+          },
+          "sameAuthor": {
+            "numerator": 6,
+            "denominator": 26,
+            "rate": 0.2308,
+            "interval": {
+              "low": 0.11033849405783289,
+              "high": 0.42051554078943687
+            }
+          },
+          "raSignal": {
+            "numerator": 5,
+            "denominator": 26,
+            "rate": 0.1923,
+            "interval": {
+              "low": 0.08507061148942409,
+              "high": 0.37876257119317
+            }
+          }
+        }
+      },
+      "byOutcome": {
+        "followUp": {
+          "strongestBaseline": "recent",
+          "lift": 0.3333,
+          "bootstrapCi": {
+            "low": 0,
+            "median": 0.3333,
+            "high": 0.6875,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "sameAuthor": {
+          "strongestBaseline": "recent",
+          "lift": 0.5,
+          "bootstrapCi": {
+            "low": 0,
+            "median": 0.5,
+            "high": 1.4304,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 0
+          }
+        },
+        "raSignal": {
+          "strongestBaseline": "recent",
+          "lift": 0.6001,
+          "bootstrapCi": {
+            "low": 0,
+            "median": 0.6,
+            "high": 2,
+            "resamples": 1000,
+            "seed": 20261108,
+            "unboundedResamples": 0,
+            "undefinedResamples": 4
+          }
+        }
+      },
+      "totalWallMs": 95398.98,
+      "companionCoverage": {
+        "numerator": 0,
+        "denominator": 200,
+        "rate": 0
+      },
+      "companionQuestions": 0,
+      "companionScoredTargets": 0,
+      "companionFollowUp": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null,
+        "interval": null
+      },
+      "companionSameAuthor": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null,
+        "interval": null
+      }
+    }
+  ],
+  "analyzerDelta": {
+    "fromRa": "0.4.0",
+    "toRa": "0.10.0",
+    "prsCompared": 200,
+    "prsMissing": 0,
+    "prsWithOtherChanges": 3,
+    "prsWithOtherChangesList": [
+      "#5239",
+      "#5205",
+      "#5199"
+    ],
+    "calibrationPrecisionChanged": 66,
+    "calibrationStatusChanged": 0,
+    "calibrationDelta": {
+      "min": 0.0012,
+      "max": 0.0013
+    }
+  }
+}
