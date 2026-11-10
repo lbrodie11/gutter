@@ -186,6 +186,34 @@ test('stage0-report: STOP when lift fails regardless of labels; INCOMPLETE then 
     assert.match(cont.stdout, /\| `gutter` \| 6 \| 5 \| 0 \| 1 \| 0\.83 \[/);
     assert.match(cont.stdout, /Gutter 0\.83 vs better baseline `recent` 0\.33 \+ 0\.15 = 0\.48\. \*\*MET\.\*\*/);
 
+    // The decision counts the blind first label, not a label changed after the reveal.
+    const flipped = labelsDoc(full);
+    for (const l of flipped.labels as { source: string; label: string; firstLabel?: string; changedAfterReveal?: boolean }[]) {
+      if (l.source === 'gutter') {
+        l.firstLabel = 'irrelevant';
+        l.changedAfterReveal = l.label !== 'irrelevant';
+      }
+    }
+    writeFileSync(join(dir, 'flipped.json'), JSON.stringify(flipped));
+    const flip = report(['--results', join(dir, 'win.json'), '--labels', join(dir, 'flipped.json')]);
+    assert.match(flip.stderr, /stage0: STOP/, 'post-reveal changes to useful do not count');
+    assert.match(flip.stdout, /\| `gutter` \| 6 \| 0 \| 6 \| 0 \|/);
+    assert.match(flip.stdout, /6 label\(s\) changed after the reveal, and those changes are ignored/);
+
+    // Exporting twice does not double-count, and two anonymous halves do not make a complete set.
+    const twice = report(['--results', join(dir, 'win.json'), '--labels', join(dir, 'labels.json'), '--labels', join(dir, 'labels.json')]);
+    assert.match(twice.stdout, /\| `gutter` \| 6 \| 5 \| 0 \| 1 \|/);
+    assert.match(twice.stderr, /stage0: CONTINUE/);
+    const anon = labelsDoc(full);
+    for (const l of anon.labels as { labeler: string }[]) l.labeler = '';
+    const firstHalf = { ...anon, labels: anon.labels.slice(0, 6) };
+    const secondHalf = { ...anon, labels: anon.labels.slice(6) };
+    writeFileSync(join(dir, 'anon1.json'), JSON.stringify(firstHalf));
+    writeFileSync(join(dir, 'anon2.json'), JSON.stringify(secondHalf));
+    const halves = report(['--results', join(dir, 'win.json'), '--labels', join(dir, 'anon1.json'), '--labels', join(dir, 'anon2.json')]);
+    assert.match(halves.stderr, /stage0: INCOMPLETE/);
+    assert.match(halves.stdout, /\(unnamed, file 1\) \(6\/12\), \(unnamed, file 2\) \(6\/12\)/);
+
     // Partial labels -> INCOMPLETE; labels from another run are rejected.
     const partial = labelsDoc(full);
     partial.labels = partial.labels.slice(0, 5);

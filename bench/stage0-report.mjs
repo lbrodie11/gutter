@@ -48,7 +48,9 @@ function prop(m) {
   if (!m || m.denominator === 0 || m.rate === null) return 'N/A';
   return `${f2(m.rate)} [${f2(m.interval.low)}–${f2(m.interval.high)}] (${m.numerator}/${m.denominator})`;
 }
-const boot = (b) => (b ? `[${f2(b.low)}–${f2(b.high)}]` : 'N/A');
+const bound = (x) => (x === null || x === undefined ? '∞' : x.toFixed(2));
+/** Lift bootstrap: a null bound is unbounded (zero-hit baseline resamples reached that quantile). */
+const boot = (b) => (b ? `[${bound(b.low)}–${bound(b.high)}]` : 'N/A');
 const lift = (x) => (x === null || x === undefined ? 'N/A' : `×${f2(x)}`);
 
 function outcomeMetric(source, outcome) {
@@ -57,7 +59,7 @@ function outcomeMetric(source, outcome) {
   return source.raSignalFollowUpRate;
 }
 
-/** Keep only what the report needs; bench.json itself stays local (it is ~1.4 MB per run). */
+/** Keep only what the report needs (the variants' ~1.5 MB bench.json files are not committed; the default run's is). */
 export function summarizeRun(id, model) {
   const a = model.aggregates.production;
   if (!a.headlineBaseline.byOutcome) {
@@ -98,36 +100,56 @@ export function buildResults(runsDir) {
   return { schemaVersion: 1, kind: 'gutter-stage0-results', runs };
 }
 
-/** Pool label files; rates per source, per labeler, and completeness against the sample size. */
+/**
+ * Pool label files; rates per source, per labeler, and completeness against the sample size.
+ *
+ * - The decision counts each item's blind choice (`firstLabel`, made before the reveal), never
+ *   a label changed after the source and outcome were shown.
+ * - One vote per (labeler, item): re-exports and duplicate files collapse to the latest label.
+ * - A file without a labeler name is its own labeler, so two anonymous halves never add up to "complete".
+ */
 export function summarizeLabels(docs, defaultRun) {
   const problems = [];
-  const labels = [];
+  const byKey = new Map();
   let total = null;
-  for (const doc of docs) {
+  let sampleId = null;
+  docs.forEach((doc, fileIndex) => {
     if (doc?.kind !== 'gutter-labels' || doc.mode !== 'compare') {
       problems.push('a labels file is not a gutter label --compare export');
-      continue;
+      return;
     }
     if (defaultRun && (doc.bench?.headSha !== defaultRun.headSha || doc.bench?.settingsHash !== defaultRun.settingsHash)) {
       problems.push(`labels for sample ${doc.sampleId} come from a different bench run than the default run`);
-      continue;
+      return;
     }
+    if (sampleId !== null && doc.sampleId !== sampleId) {
+      problems.push(`labels for sample ${doc.sampleId} do not match sample ${sampleId}; ignored`);
+      return;
+    }
+    sampleId = doc.sampleId;
     total = total ?? doc.total;
     for (const l of doc.labels ?? []) {
-      if (!SOURCES.includes(l.source) || !LABEL_VALUES.includes(l.label)) continue;
-      labels.push({ ...l, labeler: l.labeler || '(unnamed)' });
+      const blind = LABEL_VALUES.includes(l.firstLabel) ? l.firstLabel : l.label;
+      if (!SOURCES.includes(l.source) || !LABEL_VALUES.includes(blind) || typeof l.questionId !== 'string') continue;
+      const labeler = l.labeler ? String(l.labeler) : `(unnamed, file ${fileIndex + 1})`;
+      const key = `${labeler}\u0000${l.questionId}`;
+      const prev = byKey.get(key);
+      if (!prev || String(l.labeledAt ?? '') >= String(prev.labeledAt ?? '')) {
+        byKey.set(key, { ...l, labeler, blind });
+      }
     }
-  }
+  });
+  const labels = [...byKey.values()];
   const labelers = [...new Set(labels.map((l) => l.labeler))].sort();
   const bySource = {};
   for (const s of SOURCES) {
     const ls = labels.filter((l) => l.source === s);
-    const useful = ls.filter((l) => l.label === 'useful').length;
+    const useful = ls.filter((l) => l.blind === 'useful').length;
     bySource[s] = {
       labeled: ls.length,
       useful,
-      irrelevant: ls.filter((l) => l.label === 'irrelevant').length,
-      wrong: ls.filter((l) => l.label === 'wrong').length,
+      irrelevant: ls.filter((l) => l.blind === 'irrelevant').length,
+      wrong: ls.filter((l) => l.blind === 'wrong').length,
       rate: ls.length ? useful / ls.length : null,
       interval: wilson(useful, ls.length),
     };
@@ -140,7 +162,7 @@ export function summarizeLabels(docs, defaultRun) {
   let agreement = null;
   if (labelers.length >= 2) {
     const [a, b] = labelers;
-    const byItem = (name) => new Map(labels.filter((l) => l.labeler === name).map((l) => [l.questionId, l.label]));
+    const byItem = (name) => new Map(labels.filter((l) => l.labeler === name).map((l) => [l.questionId, l.blind]));
     const ma = byItem(a);
     const mb = byItem(b);
     const shared = [...ma.keys()].filter((k) => mb.has(k));
@@ -222,7 +244,7 @@ export function renderResults(results, labelSummary) {
   } else {
     lines.push(
       `Labelers: ${labelSummary.labelers.map((l) => `${l.name} (${l.count}/${labelSummary.total})`).join(', ')}. ` +
-        `Labels changed after the reveal: ${labelSummary.changedAfterReveal}.`,
+        `Rates use each item's blind first label; ${labelSummary.changedAfterReveal} label(s) changed after the reveal, and those changes are ignored.`,
     );
     if (labelSummary.agreement) {
       const a = labelSummary.agreement;
