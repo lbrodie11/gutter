@@ -1,8 +1,8 @@
 import type { GutterBrief } from '../contract.ts';
 import { assertEvidenceResolves } from '../brief.ts';
-import { pct } from '../stats/wilson.ts';
 import { commitUrl, fileUrl, mdCell, mdCode, mdText, safeBase, short } from './escape.ts';
 import { receiptsFor } from './receipts.ts';
+import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, unchangedTestRows } from './context.ts';
 
 /** Hidden marker so the Action updates one sticky comment instead of stacking new ones. */
 export const COMMENT_MARKER = '<!-- gutter:brief -->';
@@ -60,26 +60,35 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
     out.push('');
   }
 
-  // Likely forgotten
+  // Usually changes with: co-change history as context, collapsed, never a question (GU-29).
   const fg = brief.forgotten;
-  if (fg.items.length) {
-    out.push(`<details${salience.level === 'full' ? ' open' : ''}><summary><b>Likely forgotten</b> · ${plural(fg.items.length, 'file')} that usually change with this PR</summary>`);
-    out.push('');
-    out.push('| Untouched file | Usually changes with | Together | 95% CI | Last together | Receipts |');
-    out.push('|---|---|---|---|---|---|');
-    for (const f of fg.items) {
-      const receipts = f.evidence.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
-      const auto = f.automationShare >= 0.5 ? ' ⚙︎ mostly bot commits' : '';
-      out.push(
-        `| ${mdCell(fileLink(f.file))} | ${mdCell(fileLink(f.changed))} | ${f.shared}/${f.changedTotal}${auto} | ` +
-          `${pct(f.interval.low)}–${pct(f.interval.high)} | ${f.lastTogether ?? '—'} | ${mdCell(receipts)} |`,
-      );
-    }
-    if (fg.total > fg.items.length) out.push(`\n<sub>${fg.total - fg.items.length} weaker matches not shown.</sub>`);
-    out.push('', '</details>', '');
-  } else {
-    out.push(`<sub>Likely forgotten: ${mdText(fg.note ?? 'nothing usually changes with these files that was left out.')}</sub>`, '');
+  const families = fg.families.filter((f) => f.changedMembers.length && f.untouchedMembers.length);
+  const pairs = fg.items.length + families.length;
+  const state = pairs
+    ? plural(pairs, 'pair')
+    : fg.status === 'unavailable'
+      ? 'history not checked'
+      : fg.status === 'insufficient-history'
+        ? 'too little history'
+        : 'none outside this PR';
+  out.push(`<details><summary><b>${CONTEXT_TITLE}</b> (${CONTEXT_SUBTITLE}) · ${state}</summary>`, '');
+  for (const f of fg.items) {
+    const receipts = f.evidence.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
+    const auto = f.automationShare >= 0.5 ? ' · ⚙︎ mostly bot commits' : '';
+    const last = f.lastTogether ? ` · last together ${mdText(f.lastTogether)}` : '';
+    out.push(
+      `- ${fileLink(f.changed)} and ${fileLink(f.file)} changed together in ${f.shared} of ${f.changedTotal} commits; ` +
+        `${fileLink(f.file)} isn't in this PR${last}${auto}${receipts ? `<br><sub>receipts: ${receipts}</sub>` : ''}`,
+    );
   }
+  for (const fam of families) {
+    const shown = fam.untouchedMembers.slice(0, 4).map(fileLink).join(', ');
+    const extra = fam.untouchedMembers.length > 4 ? ` +${fam.untouchedMembers.length - 4} more` : '';
+    out.push(`- Parallel implementations (${mdText(fam.label)}): this PR changes ${fam.changedMembers.length} of ${fam.members.length}; not in this PR: ${shown}${extra}`);
+  }
+  if (!pairs) out.push(mdText(fg.note ?? 'No file outside this PR usually changes with these files.'));
+  if (fg.total > fg.items.length) out.push('', `<sub>${fg.total - fg.items.length} weaker pairs not shown.</sub>`);
+  out.push('', '</details>', '');
 
   // What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted);
@@ -104,14 +113,19 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
     out.push(`<sub>Imports not analyzed for ${plural(brief.dependents.unchecked.length, 'file')} (language not supported yet).</sub>`, '');
   }
 
-  // Tests
+  // Tests: facts about this PR and the history, never a claim that a test must change.
   const t = brief.tests;
   if (t.length) {
     const changedT = t.filter((x) => x.status === 'test-changed').length;
-    const untouched = t.filter((x) => x.status === 'test-untouched');
+    const rows = unchangedTestRows(brief);
     const none = t.filter((x) => x.status === 'no-test-found').length;
-    out.push(`<details><summary><b>Tests</b> · ${changedT} updated · ${untouched.length} untouched · ${none} with no test found</summary>`, '');
-    for (const x of untouched.slice(0, 6)) out.push(`- ${fileLink(x.source)} → ${fileLink(x.candidates[0]!.path)} not changed`);
+    out.push(`<details><summary><b>Tests</b> · ${changedT} updated · ${rows.length} unchanged · ${none} with no test found</summary>`, '');
+    for (const row of rows.slice(0, 6)) {
+      const clause = historyClause(row);
+      const receipts = row.receipts.slice(0, 3).map((e) => commitLink(e.sha)).join(' ');
+      out.push(`- ${fileLink(row.test)} — unchanged in this PR · ${mdText(clause.before)}${fileLink(row.source)}${mdText(clause.after)}${receipts ? `<br><sub>receipts: ${receipts}</sub>` : ''}`);
+    }
+    if (rows.length) out.push('', `<sub>${mdText(TESTS_LEGEND)}</sub>`);
     out.push('', '</details>', '');
   }
 

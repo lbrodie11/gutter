@@ -41,7 +41,7 @@ brief options
   --ra-version <spec>     npm version spec when running repo-archaeology via npx (default ^0.4.0)
   --no-history            skip co-change history entirely
   --no-calibration        skip the per-repo accuracy backtest
-  --max-forgotten <n>     companions to show (default 3)
+  --max-forgotten <n>     "usually changes with" pairs to show (default 3)
 
 bench options
   --branch <ref>          first-parent branch to replay (default: branch at HEAD)
@@ -152,8 +152,8 @@ function brief(args: string[]): number {
   const fg = result.forgotten;
   process.stderr.write(
     `gutter: ${result.salience.level} · ${result.changes.totals.files} file${result.changes.totals.files === 1 ? '' : 's'} · ` +
-      `${result.checklist.length} question${result.checklist.length === 1 ? '' : 's'} · ` +
-      `${fg.items.length} likely-forgotten (${fg.status}) · calibration ${result.calibration.status}\n` +
+      `${result.checklist.length} checklist item${result.checklist.length === 1 ? '' : 's'} · ` +
+      `${fg.items.length} usually-changes-with pair${fg.items.length === 1 ? '' : 's'} (history ${fg.status}) · calibration ${result.calibration.status}\n` +
       `  ${paths.json}\n  ${paths.markdown}\n  ${paths.html}\n`,
   );
   return 0;
