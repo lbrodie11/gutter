@@ -152,7 +152,13 @@ node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
    - **Post-merge follow-up proxy (`gutter bench`):** Replays merged PRs where a companion or test was left *untouched* in the PR and observes whether that file is edited in a *separate* commit within the next 7 days (`0.23` follow-up proxy on Hono). Over a 7-day post-merge window on an active repository, central/recently-busy files (`recent`, `popular`) naturally accumulate unrelated feature edits at a high rate (`0.65` on Hono), whereas specific companion/test targets change later only when a follow-up test or fix commit lands.
    - Because 7-day post-merge edits conflate genuine omissions with background churn on busy files, `gutter bench` always marks Roadmap Gate A as `UNVERIFIED` and defers usefulness verdicts to human review labels in **GU-04**.
 
-Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](docs/benchmark/METHOD.md).
+7. **Stricter outcomes for every baseline (`GU-04` Stage 0):**
+   Every baseline is also scored on same-author follow-up and on Repo Archaeology's follow-up signal, with Wilson and PR-clustered bootstrap intervals, and `bench.md` shows lift on each outcome against that outcome's strongest baseline. On Hono, `recent` still leads on all three (same-author `0.29` vs. Gutter `0.12`, lift `×0.42`), so the gap is not only busy-file churn. See [`docs/benchmark/STAGE0.md`](docs/benchmark/STAGE0.md).
+8. **Blinded comparison labeling (`gutter label --compare`):**
+   `gutter label --compare bench.json` writes one self-contained HTML page (no server, works offline) that mixes Gutter companion questions with `recent` and `popular-near` proposals, renders them identically as "Should this PR also have changed `<file>`?", and reveals the source, evidence, and automatic outcome only after each label. Progress is kept in the browser; **Export labels.json** downloads the labels with their `source`.
+9. **Salience variants (`--config <variant.json>`):** a variant is any `.gutter.json`-shaped file; unknown or invalid keys are refused so a preregistered variant cannot silently run as the default. The Stage 0 variants live in [`bench/variants/`](bench/variants/).
+
+Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](docs/benchmark/METHOD.md). Stage 0 go/no-go on Hono: [`docs/benchmark/STAGE0.md`](docs/benchmark/STAGE0.md).
 
 ---
 
@@ -183,7 +189,7 @@ npx gutter-brief render .gutter/gutter.json --format html > page.html
 
 Useful flags: `--title` / `--intent` (PR text), `--pr <n>`, `--ra-bin <path>` (use a local Repo Archaeology build), `--ra-diff` / `--ra-backtest` (use saved JSON), `--no-history`, `--no-calibration`. Run `gutter --help` for the full list.
 
-**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `noHistory`, `noCalibration`). Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
+**Optional `.gutter.json` repository configuration:** Repositories may place a `.gutter.json` file at the repository root to customize thresholds (`maxForgotten`, `maxChecklist`, `maxCompanionQuestions`, `minIntervalLow`, `minCalibratedPrecision`, `minChurnForTestQuestion`, `wideSurfaceImporters`, `salienceFullMinSignals`, `salienceBreadthFull`, `noHistory`, `noCalibration`). `salienceFullMinSignals` (default `1`) is how many independent signals a `full` page needs, where each high-signal question counts once and breadth (≥ 8 files or ≥ 3 modules) counts once; `salienceBreadthFull: false` stops breadth alone from making a page `full`. Precedence is `CLI flags / Action inputs > .gutter.json > defaults`. In the GitHub Action, `.gutter.json` is read from the `base` commit tree so an untrusted pull request cannot silence Gutter on itself.
 
 ### Option 3 · Run locally from source
 
