@@ -128,13 +128,19 @@ export function buildChecklist(input: ChecklistInput): ChecklistItem[] {
   return items.sort((a, b) => a.priority - b.priority).slice(0, maxChecklist);
 }
 
-export function salienceOf(changes: ChangeStructure, checklist: ChecklistItem[]): Salience {
+export function salienceOf(changes: ChangeStructure, checklist: ChecklistItem[], config?: GutterConfig): Salience {
+  const minSignals = config?.salienceFullMinSignals ?? 1;
+  const breadthCanBeFull = config?.salienceBreadthFull ?? true;
   const reasons: string[] = [];
   const urgent = checklist.filter((c) => c.priority <= 2).length;
   if (urgent) reasons.push(`${urgent} high-signal question${urgent > 1 ? 's' : ''}`);
-  if (changes.totals.files >= 8) reasons.push(`${changes.totals.files} files changed`);
-  if (changes.totals.modules >= 3) reasons.push(`${changes.totals.modules} modules touched`);
-  if (reasons.length) return { level: 'full', reasons };
+  const breadthReasons: string[] = [];
+  if (changes.totals.files >= 8) breadthReasons.push(`${changes.totals.files} files changed`);
+  if (changes.totals.modules >= 3) breadthReasons.push(`${changes.totals.modules} modules touched`);
+  const breadthSignal = breadthCanBeFull && breadthReasons.length > 0 ? 1 : 0;
+  if (breadthSignal) reasons.push(...breadthReasons);
+  // With the defaults (1 signal, breadth counts) this is exactly the original rule.
+  if (reasons.length && urgent + breadthSignal >= minSignals) return { level: 'full', reasons };
   if (checklist.length) return { level: 'brief', reasons: [`${checklist.length} question${checklist.length > 1 ? 's' : ''} worth a look`] };
   if (changes.totals.files > 3) return { level: 'brief', reasons: [`${changes.totals.files} files changed`] };
   return { level: 'quiet', reasons: ['small change with nothing to flag'] };

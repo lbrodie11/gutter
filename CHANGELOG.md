@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- `GU-04` Stage 0 (hono go/no-go), preregistered in `docs/benchmark/STAGE0.md` before any run or label. Rule outcome: **STOP** (the lift condition fails before labeling); the corpus is not built and a human decides among the documented options.
+- `gutter bench`: every baseline now also reports `raSignalFollowUpRate`, PR-clustered bootstrap intervals for each outcome (`bootstrapRateCi`), and `liftByOutcome`; `headlineBaseline.byOutcome` names the strongest baseline per outcome; the policy reports `bootstrapSameAuthorCi` / `bootstrapRaSignalCi`; PR records carry a capped `changedFiles` list. All additive and optional in `schema/bench.schema.json` (`schemaVersion` stays 1, existing numbers unchanged). `bench.md` and `bench.html` gain a lift-by-outcome table.
+- `gutter label --compare <bench.json>`: blinded comparison labeling page (self-contained HTML, offline, `localStorage` progress, `labels.json` export with `source`). The per-question labeling mode is not built yet; it lands with the corpus if Stage 0 continues.
+- `gutter bench --config <variant.json>` validates the variant through the `.gutter.json` parser and exits 2 on unknown or invalid keys, on values the parser would change (such as `1.5` rounded to `1`), and on files that are not a JSON object (previously all of these ran silently).
+- New opt-in `.gutter.json` keys `salienceFullMinSignals` and `salienceBreadthFull`; defaults reproduce the existing salience rule exactly.
+- `bench/stage0-report.mjs` regenerates the Stage 0 results and decision from `results.json` and exported labels. It counts only each item's blind first label, collapses duplicate exports to one vote per labeler and item, and treats unnamed files as separate labelers.
+- Per-outcome lift intervals (`liftByOutcome`, `headlineBaseline.byOutcome`) keep bootstrap resamples where the baseline has zero hits as unbounded lift instead of dropping them, report open bounds as `null` (shown as ∞), and record `unboundedResamples` / `undefinedResamples`. GU-03's `bootstrapLiftCi` is unchanged.
+- Dev dependency `playwright` (exact `1.64.1`) for the labeling page's browser test; CI installs Chromium on the Ubuntu jobs only.
+
 ## 0.2.1 · 2026-11-09
 
 - `gutter <command> --help` / `-h` (`brief`, `bench`, `render`) now prints usage and exits 0 instead of failing with `Unknown option '--help'`.

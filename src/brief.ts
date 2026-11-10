@@ -141,7 +141,7 @@ export function assembleBrief(input: AssembleBriefInput): GutterBrief {
     calibration,
     config: mergedConfig,
   });
-  const salience = salienceOf(input.changes, checklist);
+  const salience = salienceOf(input.changes, checklist, mergedConfig);
 
   const title = (input.title ?? input.commits[0]?.subject ?? `${input.base}…${input.head}`).trim();
   const intent = input.intent?.trim().slice(0, INTENT_MAX);

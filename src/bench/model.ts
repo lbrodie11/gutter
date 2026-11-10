@@ -101,6 +101,15 @@ export interface PrPolicyEvaluation {
   missedFollowUpFiles: string[];
 }
 
+export const MAX_RECORDED_CHANGED_FILES = 40 as const;
+
+export interface BenchChangedFile {
+  path: string;
+  status: string;
+  additions: number;
+  deletions: number;
+}
+
 export interface PrConfounders {
   botOrAgentOrigin: boolean;
   generatedPaths: boolean;
@@ -119,6 +128,11 @@ export interface BenchPrRecord {
   mergedAt: string;
   subject: string;
   changedFilesCount: number;
+  /**
+   * GU-04: the first `MAX_RECORDED_CHANGED_FILES` changed paths with +/- counts, for the
+   * labeling tool's diff summary. Absent in GU-03-era files.
+   */
+  changedFiles?: BenchChangedFile[];
   timestampAnomaly: boolean;
   history: 'available' | 'unavailable';
   mergeDiffers: boolean;
@@ -138,6 +152,35 @@ export interface BootstrapInterval {
   seed: number;
 }
 
+/** Outcomes every policy and baseline is scored on (GU-04 Stage 0). */
+export type OutcomeName = 'followUp' | 'sameAuthor' | 'raSignal';
+export const OUTCOME_NAMES: readonly OutcomeName[] = ['followUp', 'sameAuthor', 'raSignal'];
+
+export interface OutcomeLift {
+  /** Policy rate / baseline rate on this outcome, or `null` when either rate is missing or the baseline rate is 0. */
+  lift: number | null;
+  /** Paired PR-clustered bootstrap interval for `lift`. */
+  bootstrapCi: LiftBootstrapInterval | null;
+}
+
+/**
+ * Bootstrap interval for a lift. Resamples where the baseline has no hits but the policy does
+ * have an infinite lift and are kept (dropping them would bias the interval down); when they
+ * reach a reported quantile, that bound is `null` (unbounded). Resamples with no hits on either
+ * side have no defined lift and are dropped.
+ */
+export interface LiftBootstrapInterval {
+  low: number | null;
+  high: number | null;
+  median: number | null;
+  resamples: number;
+  seed: number;
+  /** Resamples whose lift was infinite (baseline 0 hits, policy > 0). */
+  unboundedResamples: number;
+  /** Resamples with no hits on either side (lift undefined), excluded from the quantiles. */
+  undefinedResamples: number;
+}
+
 export interface BaselineAggregateSummary {
   baseline: BaselineName;
   proposedTargets: number;
@@ -148,6 +191,17 @@ export interface BaselineAggregateSummary {
   sameAuthorFollowUpRate: ProportionMetric;
   liftVsBaseline: number | null;
   bootstrapLiftCi: BootstrapInterval | null;
+  /** GU-04: RA-signal follow-up rate over the same scored targets as `fileLevelFollowUp`. */
+  raSignalFollowUpRate?: ProportionMetric;
+  /** GU-04: PR-clustered bootstrap intervals for each outcome rate. */
+  bootstrapRateCi?: Record<OutcomeName, BootstrapInterval | null>;
+  /** GU-04: the policy's lift over this baseline on each outcome. */
+  liftByOutcome?: Record<OutcomeName, OutcomeLift>;
+}
+
+export interface StrongestBaselineForOutcome extends OutcomeLift {
+  /** Baseline with the highest rate on this outcome (ties: popular-near, recent, popular). */
+  strongestBaseline: BaselineName | null;
 }
 
 export interface KindBreakdownRow {
@@ -229,6 +283,9 @@ export interface PolicyAggregateSummary {
     sameAuthorShareOfFollowedUp: ProportionMetric;
     raSignalFollowUpRate: ProportionMetric;
     bootstrapFilePrecisionCi: BootstrapInterval | null;
+    /** GU-04: PR-clustered bootstrap intervals for the same-author and RA-signal rates. */
+    bootstrapSameAuthorCi?: BootstrapInterval | null;
+    bootstrapRaSignalCi?: BootstrapInterval | null;
   };
   missedFollowUps: {
     missedFilesTotal: number;
@@ -240,6 +297,8 @@ export interface PolicyAggregateSummary {
     strongestBaseline: BaselineName | null;
     lift: number | null;
     bootstrapLiftCi: BootstrapInterval | null;
+    /** GU-04: strongest baseline and lift, chosen separately for each outcome. */
+    byOutcome?: Record<OutcomeName, StrongestBaselineForOutcome>;
   };
   breakdowns: {
     byKind: Record<ChecklistKind, KindBreakdownRow>;

@@ -6,9 +6,13 @@ import {
   type BenchResultsModel,
   type BootstrapInterval,
   type ExemplarQuestion,
+  type LiftBootstrapInterval,
+  OUTCOME_NAMES,
+  type OutcomeName,
   type PolicyAggregateSummary,
   type ProportionMetric,
 } from './model.ts';
+import { baselineOutcomeRate, policyOutcomeRate } from './metrics.ts';
 import { sanitizeAuthorName, sanitizePath, sanitizeText } from './sanitize.ts';
 import { assertValidBenchResults } from './validate.ts';
 
@@ -118,6 +122,44 @@ function renderBaselinesTable(summary: PolicyAggregateSummary): string[] {
     const b: BaselineAggregateSummary = summary.baselines[name];
     lines.push(
       `| ${mdCell(mdCode(b.baseline))} | ${b.proposedTargets} | ${b.shortfallPrs} (${b.shortfallTargets}) | ${mdCell(fmtProportion(b.fileLevelFollowUp))} | ${mdCell(fmtProportion(b.questionLevelHitRate))} | ${mdCell(fmtProportion(b.sameAuthorFollowUpRate))} | ${fmtLift(b.liftVsBaseline)} | ${mdCell(fmtBootstrap(b.bootstrapLiftCi))} |`,
+    );
+  }
+  lines.push('');
+  lines.push(...renderOutcomeLiftTable(summary));
+  return lines;
+}
+
+const OUTCOME_LABELS: Record<OutcomeName, string> = {
+  followUp: 'Any follow-up',
+  sameAuthor: 'Same-author follow-up',
+  raSignal: 'RA-signal follow-up',
+};
+
+function fmtLiftBootstrap(b: LiftBootstrapInterval | null): string {
+  if (!b) return 'N/A';
+  const v = (x: number | null) => (x === null ? '∞' : String(x));
+  const unbounded = b.unboundedResamples > 0 ? `, ${b.unboundedResamples} unbounded` : '';
+  return `[${v(b.low)}, ${v(b.high)}] (median ${v(b.median)}, n=${b.resamples}, seed=${b.seed}${unbounded})`;
+}
+
+/** GU-04 Stage 0: every baseline on every outcome, with lift per outcome vs that outcome's strongest baseline. */
+function renderOutcomeLiftTable(summary: PolicyAggregateSummary): string[] {
+  const byOutcome = summary.headlineBaseline.byOutcome;
+  if (!byOutcome) return [];
+  const acc = summary.accuracyProxy;
+  const lines: string[] = [];
+  lines.push(`**Lift by outcome (${mdCode(summary.policy)}).** Each outcome picks its own strongest baseline.`);
+  lines.push('');
+  lines.push('| Outcome | Gutter | `popular` | `popular-near` | `recent` | Strongest | Lift | Bootstrap Lift CI |');
+  lines.push('|---|---|---|---|---|---|---:|---|');
+  for (const outcome of OUTCOME_NAMES) {
+    const hl = byOutcome[outcome];
+    const cells = (['popular', 'popular-near', 'recent'] as const).map((name) => {
+      const m = baselineOutcomeRate(summary.baselines[name], outcome);
+      return m ? mdCell(fmtProportion(m)) : 'N/A';
+    });
+    lines.push(
+      `| ${OUTCOME_LABELS[outcome]} | ${mdCell(fmtProportion(policyOutcomeRate(acc, outcome)))} | ${cells.join(' | ')} | ${hl.strongestBaseline ? mdCode(hl.strongestBaseline) : 'N/A'} | ${fmtLift(hl.lift)} | ${mdCell(fmtLiftBootstrap(hl.bootstrapCi))} |`,
     );
   }
   lines.push('');

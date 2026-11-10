@@ -34,6 +34,7 @@ import type {
 import {
   BENCH_SCHEMA_VERSION,
   BENCH_SCORING_VERSION,
+  MAX_RECORDED_CHANGED_FILES,
   UNGATED_POLICY_LABEL,
 } from './model.ts';
 import { loadFirstParentStream, scoreBriefQuestions } from './outcomes.ts';
@@ -537,6 +538,12 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         mergedAt: unit.mergedAt,
         subject: sanitizeText(unit.subject),
         changedFilesCount: brief.changes.totals.files,
+        changedFiles: brief.changes.files.slice(0, MAX_RECORDED_CHANGED_FILES).map((f) => ({
+          path: sanitizePath(f.path),
+          status: f.status,
+          additions: f.additions,
+          deletions: f.deletions,
+        })),
         timestampAnomaly: unit.timestampAnomaly || meta.timestampAnomaly,
         history: meta.history,
         mergeDiffers: mergeResolution.mergeDiffers,

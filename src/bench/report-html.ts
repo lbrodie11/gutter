@@ -6,9 +6,13 @@ import {
   type BenchResultsModel,
   type BootstrapInterval,
   type ExemplarQuestion,
+  type LiftBootstrapInterval,
+  OUTCOME_NAMES,
+  type OutcomeName,
   type PolicyAggregateSummary,
   type ProportionMetric,
 } from './model.ts';
+import { baselineOutcomeRate, policyOutcomeRate } from './metrics.ts';
 import { sanitizeAuthorName, sanitizePath, sanitizeText } from './sanitize.ts';
 import { assertValidBenchResults } from './validate.ts';
 
@@ -19,6 +23,13 @@ function fmtProportionHtml(m: ProportionMetric): string {
     return `${m.numerator} / ${m.denominator} <span class="small">(N/A)</span>`;
   }
   return `<b>${m.rate}</b> <span class="small">(${m.numerator}/${m.denominator} · [${m.interval.low}, ${m.interval.high}])</span>`;
+}
+
+function fmtLiftBootstrapHtml(b: LiftBootstrapInterval | null): string {
+  if (!b) return '<span class="small">N/A</span>';
+  const v = (x: number | null) => (x === null ? '∞' : String(x));
+  const unbounded = b.unboundedResamples > 0 ? `, ${b.unboundedResamples} unbounded` : '';
+  return `[${v(b.low)}, ${v(b.high)}] <span class="small">(median ${v(b.median)}, n=${b.resamples}, seed=${b.seed}${unbounded})</span>`;
 }
 
 function fmtBootstrapHtml(b: BootstrapInterval | null): string {
@@ -125,6 +136,36 @@ function renderBaselinesTableHtml(summary: PolicyAggregateSummary): string {
   <table class="bench-table">
     <thead>
       <tr><th>Baseline</th><th>Proposed</th><th>Shortfall PRs (Slots)</th><th>File-Level Follow-Up</th><th>Question Hit Rate</th><th>Same-Author Rate</th><th>Lift</th><th>Bootstrap Lift CI</th></tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>${renderOutcomeLiftHtml(summary)}`;
+}
+
+/** GU-04 Stage 0: lift per outcome, each against that outcome's strongest baseline. */
+function renderOutcomeLiftHtml(summary: PolicyAggregateSummary): string {
+  const byOutcome = summary.headlineBaseline.byOutcome;
+  if (!byOutcome) return '';
+  const acc = summary.accuracyProxy;
+  const labels: Record<OutcomeName, string> = {
+    followUp: 'Any follow-up',
+    sameAuthor: 'Same-author follow-up',
+    raSignal: 'RA-signal follow-up',
+  };
+  const rows = OUTCOME_NAMES.map((outcome) => {
+    const hl = byOutcome[outcome];
+    const cells = (['popular', 'popular-near', 'recent'] as const)
+      .map((name) => {
+        const m = baselineOutcomeRate(summary.baselines[name], outcome);
+        return `<td>${m ? fmtProportionHtml(m) : 'N/A'}</td>`;
+      })
+      .join('');
+    return `<tr><td>${labels[outcome]}</td><td>${fmtProportionHtml(policyOutcomeRate(acc, outcome))}</td>${cells}<td><code class="path">${html(hl.strongestBaseline ?? 'N/A')}</code></td><td>${fmtLiftHtml(hl.lift)}</td><td>${fmtLiftBootstrapHtml(hl.bootstrapCi)}</td></tr>`;
+  }).join('\n');
+  return `
+  <p class="small">Lift by outcome: each outcome is compared against its own strongest baseline.</p>
+  <table class="bench-table">
+    <thead>
+      <tr><th>Outcome</th><th>Gutter</th><th>popular</th><th>popular-near</th><th>recent</th><th>Strongest</th><th>Lift</th><th>Bootstrap Lift CI</th></tr>
     </thead>
     <tbody>${rows}</tbody>
   </table>`;
