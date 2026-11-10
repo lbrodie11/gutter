@@ -55,7 +55,18 @@ const shallow = (() => {
   }
 })();
 const preregCommit = () => git(['log', '--reverse', '--format=%H', '-S', HEADING, '--', 'docs/benchmark/CORPUS.md']).split('\n')[0] || undefined;
-const sections = (doc: string) => doc.replace(/\r\n/g, '\n').slice(doc.indexOf('## 1. Corpus'), doc.indexOf('## Results'));
+/** §1–§5 of CORPUS.md: normalize line endings first, then take both offsets from the normalized text. */
+const sections = (doc: string) => {
+  const lf = doc.replace(/\r\n/g, '\n');
+  return lf.slice(lf.indexOf('## 1. Corpus'), lf.indexOf('## Results'));
+};
+
+test('sections(): a CRLF checkout (Windows) gives the same §1–§5 as LF', () => {
+  const lf = '# Title\n\nIntro line\n\n## 1. Corpus\n\nA\nB\n\n## 5. Verdict rule\n\nC\n\n## Results\n\nD\n';
+  const crlf = lf.replace(/\n/g, '\r\n');
+  assert.equal(sections(crlf), sections(lf));
+  assert.equal(sections(lf), '## 1. Corpus\n\nA\nB\n\n## 5. Verdict rule\n\nC\n\n');
+});
 
 test('preregistration: §1–§5, the ROADMAP amendment and corpus.json came in one commit before every result, unchanged since', { skip: shallow && process.env.CI !== 'true' ? 'shallow clone: no history to check' : false }, () => {
   assert.equal(shallow, false, 'CI must check out full history (fetch-depth: 0) for this test');
