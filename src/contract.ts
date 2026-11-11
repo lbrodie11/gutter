@@ -92,6 +92,19 @@ export interface DependentsEntry {
   changedImporters: string[];
   /** Files that statically import `file` and were NOT changed in this PR. */
   untouchedImporters: string[];
+  /**
+   * GU-32, additive: `partial` when an unresolved import could resolve to `file` (it is counted in
+   * `DependentsLayer.unresolved.relevant`), so `file` may have importers that are not listed; else `full`.
+   * Absent in briefs written before GU-32.
+   */
+  coverage?: 'full' | 'partial';
+}
+
+/** Unresolved imports: a count, up to 5 sorted `<file> → <specifier>` samples, and counts by reason code. */
+export interface UnresolvedImports {
+  count: number;
+  samples: string[];
+  byReason?: Record<string, number>;
 }
 
 export interface DependentsLayer {
@@ -100,14 +113,20 @@ export interface DependentsLayer {
   entries: DependentsEntry[];
   /** Changed files whose language has no static analyzer yet. */
   unchecked: string[];
-  /** 'full' when all non-external imports were resolved; 'partial' when unresolved imports exist. */
+  /**
+   * GU-32 (DECISIONS #21): `full` when every import that could reach this PR's changed or removed files
+   * resolved; `partial` when one could not (`unresolved.relevant.count > 0`). Before GU-32 (no
+   * `unresolved.relevant`), `partial` meant any import anywhere in the repository was unresolved.
+   */
   coverage: 'full' | 'partial';
   /**
-   * Imports that could not be resolved to a repository file (`<file> → <specifier>`), capped at 5 sorted
-   * samples. GU-05, additive: `byReason` counts them by Repo Archaeology's `reasonCode` when its import
-   * graph produced the layer (`alias-unmatched`, `unknown-package`, `target-missing`, …; may grow).
+   * Imports in the whole repository that could not be resolved to a repository file (`<file> → <specifier>`),
+   * capped at 5 sorted samples. GU-05, additive: `byReason` counts them by Repo Archaeology's `reasonCode` when
+   * its import graph produced the layer (`alias-unmatched`, `unknown-package`, `target-missing`, …; may grow).
+   * GU-32, additive: `relevant` is the subset that could resolve to one of this PR's changed or removed files
+   * (same shape); it decides `coverage`. Absent in briefs written before GU-32.
    */
-  unresolved: { count: number; samples: string[]; byReason?: Record<string, number> };
+  unresolved: UnresolvedImports & { relevant?: UnresolvedImports };
   /** @deprecated Legacy v1 field normalized into `unresolved.count`. */
   unresolvedAliases?: number;
   scannedFiles: number;

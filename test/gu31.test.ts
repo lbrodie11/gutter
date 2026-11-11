@@ -539,10 +539,11 @@ test('fallback golden: without the library the relative scanner is unchanged and
   const b = await buildBriefAsync({ cwd: r.dir, base, now: NOW, raLib: false, noHistory: true });
   assert.deepEqual(b.dependents, {
     analyzers: ['ts-js-relative-imports'],
-    entries: [{ id: 'deps:src/a.ts', file: 'src/a.ts', deleted: true, changedImporters: [], untouchedImporters: ['src/b.ts'] }],
+    // GU-32: `@/a` could reach the removed src/a.ts (its last segment is the file's stem), so it is relevant.
+    entries: [{ id: 'deps:src/a.ts', file: 'src/a.ts', deleted: true, changedImporters: [], untouchedImporters: ['src/b.ts'], coverage: 'partial' }],
     unchecked: ['pkg/x.go'],
     coverage: 'partial',
-    unresolved: { count: 1, samples: ['src/c.ts → @/a'] },
+    unresolved: { count: 1, samples: ['src/c.ts → @/a'], relevant: { count: 1, samples: ['src/c.ts → @/a'] } },
     scannedFiles: 2,
     method: 'relative-scan',
   });

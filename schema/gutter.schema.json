@@ -73,20 +73,31 @@
               "file": { "type": "string" },
               "deleted": { "type": "boolean" },
               "changedImporters": { "type": "array", "items": { "type": "string" } },
-              "untouchedImporters": { "type": "array", "items": { "type": "string" } }
+              "untouchedImporters": { "type": "array", "items": { "type": "string" } },
+              "coverage": { "enum": ["full", "partial"], "description": "GU-32, optional: 'partial' when an unresolved import could resolve to this file (it is counted in unresolved.relevant), so it may have importers that are not listed; else 'full'. Absent before GU-32. Consumers must tolerate unknown enum values." }
             }
           }
         },
         "unchecked": { "type": "array", "items": { "type": "string" }, "description": "Changed files with no analyzer for their language. Never reported as 'no dependents'." },
-        "coverage": { "enum": ["full", "partial"], "description": "'full' when all non-external imports were resolved; 'partial' when unresolved imports exist. Consumers must tolerate unknown enum values." },
+        "coverage": { "enum": ["full", "partial"], "description": "GU-32 (DECISIONS #21): 'full' when every import that could reach this PR's changed or removed files resolved; 'partial' when one could not (unresolved.relevant.count > 0). In briefs without unresolved.relevant (before GU-32), 'partial' meant any import in the repository was unresolved. Consumers must tolerate unknown enum values." },
         "unresolved": {
           "type": "object",
           "required": ["count", "samples"],
-          "description": "Imports that could not be resolved to a repository file (<file> → <specifier>), with up to 5 sorted samples.",
+          "description": "Imports in the whole repository that could not be resolved to a repository file (<file> → <specifier>), with up to 5 sorted samples.",
           "properties": {
             "count": { "type": "integer", "minimum": 0 },
             "samples": { "type": "array", "maxItems": 5, "items": { "type": "string" } },
-            "byReason": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 }, "description": "GU-05, optional: counts by Repo Archaeology reasonCode (alias-unmatched, unknown-package, target-missing, not-exported, invalid-target, unsupported-config, ambiguous-package, unknown; may grow)." }
+            "byReason": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 }, "description": "GU-05, optional: counts by Repo Archaeology reasonCode (alias-unmatched, unknown-package, target-missing, not-exported, invalid-target, unsupported-config, ambiguous-package, unknown; may grow)." },
+            "relevant": {
+              "type": "object",
+              "required": ["count", "samples"],
+              "description": "GU-32, optional: the unresolved imports that could resolve to one of this PR's changed or removed files (the rule in DECISIONS #21); they decide coverage. Same shape as unresolved. Absent before GU-32.",
+              "properties": {
+                "count": { "type": "integer", "minimum": 0 },
+                "samples": { "type": "array", "maxItems": 5, "items": { "type": "string" } },
+                "byReason": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } }
+              }
+            }
           }
         },
         "unresolvedAliases": { "type": "integer", "minimum": 0, "description": "Deprecated legacy v1 count normalized into unresolved.count." },
