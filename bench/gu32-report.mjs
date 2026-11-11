@@ -62,6 +62,7 @@ export function gu32Results(dataRoot = join(ROOT, 'docs', 'benchmark', 'data'), 
             scoreMismatches: sc.records.scoreMismatches.length,
             missReasonMoves: sc.records.missReasonMoves,
             otherMissReasonChanges: sc.records.otherMissReasonChanges.length,
+            baseline: sc.baseline ? { commit: sc.baseline.commit, compared: sc.baseline.records.compared, scoreMismatches: sc.baseline.records.scoreMismatches.length, summaryMismatches: sc.baseline.summaryMismatches } : null,
           }
         : null,
     });
@@ -109,6 +110,8 @@ export function gu32Results(dataRoot = join(ROOT, 'docs', 'benchmark', 'data'), 
         scoreMismatches: sum((r) => r.seeded?.scoreMismatches ?? 0),
         missReasonMoves: moves,
         otherMissReasonChanges: sum((r) => r.seeded?.otherMissReasonChanges ?? 0),
+        /** Repositories that differ from Rerun 1, rescored with the base code (main without GU-32). */
+        baseline: done.filter((r) => r.seeded?.baseline).map((r) => ({ repo: r.repo, ...r.seeded.baseline })),
       },
     },
   };
@@ -137,10 +140,13 @@ export function renderCoverageMd(res) {
   L.push('');
   L.push(`By reason, repository-wide: ${reasons(s.unresolvedByReason)}.`, '');
   L.push(`By reason, could reach the PR's files: ${reasons(s.relevantByReason)}.`, '');
-  L.push('## Nothing else moved', '');
+  L.push('## Salience, checklist and seeded results', '');
   L.push(`- **Salience and checklist** (coverage never creates or suppresses an item): compared with GU-31's replays of the same ${s.gu31.compared} PRs (Rerun 1, \`rerun1/gate-a-prime.json\`), **${s.gu31.salienceMismatches}** salience and **${s.gu31.checklistKindMismatches}** checklist-kind mismatches${s.gu31.missing ? `; ${s.gu31.missing} PRs had no GU-31 replay` : ''}. "Before" equals GU-31's \`coverage\` on ${s.gu31.compared - s.gu31.beforeMismatches} of ${s.gu31.compared} PRs.`);
   const moves = Object.entries(s.seeded.missReasonMoves);
   L.push(`- **Seeded mutations** (Rerun 1's, same seed \`20261111\`, regenerated and rescored): ${s.seeded.compared} records compared${s.seeded.missing ? ` (${s.seeded.missing} missing)` : ''}; **${s.seeded.scoreMismatches}** differ in what was reported, confirmed or detected; repositories whose detection, precision or false positives changed: **${s.seeded.reposWithSummaryMismatches.length ? s.seeded.reposWithSummaryMismatches.join(', ') : 'none'}**. \`missReason\` labels moved: ${moves.length ? moves.map(([k, v]) => `${k.replace('→', ' → ')} ${v}`).join(', ') : 'none'}${s.seeded.otherMissReasonChanges ? ` (${s.seeded.otherMissReasonChanges} other than \`partial\` → \`missed\`)` : ''}.`);
+  for (const b of s.seeded.baseline) {
+    L.push(`  - \`${b.repo}\` differs from Rerun 1, so its mutations were rescored with the code GU-32 is based on (\`${b.commit.slice(0, 7)}\`, without GU-32): **${b.scoreMismatches}** of ${b.compared} records and **${b.summaryMismatches.length ? b.summaryMismatches.join(', ') : 'no'}** summary numbers differ from GU-32. The difference with Rerun 1 is the base code's, not GU-32's.`);
+  }
   L.push('');
   L.push('## Per repository', '');
   L.push('| Repository | Lang | PRs | `partial` before | `partial` after | Unresolved, repository-wide (by reason) | Could reach the PR\'s files (by reason) | Entries `partial` | vs GU-31: salience · kinds | Seeded: score diffs · `missReason` moves |');

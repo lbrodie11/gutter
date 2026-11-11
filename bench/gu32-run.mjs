@@ -4,12 +4,15 @@
 // mutations with the same seed (bench/seeded.ts --seed 20261111) and compare them record by record with Rerun 1.
 // A measurement, not a gate: nothing here is preregistered, because no verdict depends on it.
 //
-//   node bench/gu32-run.mjs [--jobs 2] [--only owner__repo,...] [--rerun1-root <dir>] [--fresh]
+//   node bench/gu32-run.mjs [--jobs 2] [--only owner__repo,...] [--rerun1-root <dir>] [--baseline <checkout>] [--fresh]
 //
 // Clones come from $GUTTER_BENCH_CACHE (default ~/.cache/gutter-bench), as for the corpus run. Output goes to
 // docs/benchmark/data/<owner>__<repo>/gu32/ (coverage.json, seeded/, seeded-compare.json); a repository whose
 // files exist is skipped unless --fresh. `--rerun1-root` is where Rerun 1's data lives (default: this checkout's
-// docs/benchmark/data).
+// docs/benchmark/data). `--baseline` is a checkout of the code GU-32 is based on (main without GU-32): for a repository
+// whose seeded records differ from Rerun 1, the same mutations are rescored with that code (gu32/seeded-baseline/), so
+// a difference can be told apart from changes main made after Rerun 1.
+import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
@@ -59,7 +62,8 @@ export function compareSeeded(mine, rerun1) {
 export const SEEDED_INVARIANTS = ['positives', 'negatives', 'reportedItems', 'confirmedItems', 'precision', 'detected', 'recall', 'falsePositives', 'falsePositiveRate', 'errors'];
 
 async function main() {
-  const { values } = parseArgs({ options: { jobs: { type: 'string', default: '2' }, only: { type: 'string' }, 'rerun1-root': { type: 'string' }, fresh: { type: 'boolean', default: false } } });
+  const { values } = parseArgs({ options: { jobs: { type: 'string', default: '2' }, only: { type: 'string' }, 'rerun1-root': { type: 'string' }, baseline: { type: 'string' }, fresh: { type: 'boolean', default: false } } });
+  const baseline = values.baseline ? resolve(values.baseline) : undefined;
   const corpus = readJson(join(ROOT, 'bench', 'corpus.json'));
   const cache = process.env.GUTTER_BENCH_CACHE ?? join(homedir(), '.cache', 'gutter-bench');
   const dataRoot = join(ROOT, 'docs', 'benchmark', 'data');
@@ -90,7 +94,22 @@ async function main() {
     const theirs = readJson(join(r1, 'seeded', 'seeded-summary.json'));
     const records = compareSeeded(readJsonl(join(out, 'seeded', 'seeded.jsonl')), readJsonl(join(r1, 'seeded', 'seeded.jsonl')));
     const summaryMismatches = SEEDED_INVARIANTS.filter((k) => JSON.stringify(mine[k]) !== JSON.stringify(theirs[k]));
-    writeFileSync(join(out, 'seeded-compare.json'), JSON.stringify({ schemaVersion: 1, kind: 'gutter-gu32-seeded-compare', repo: repoName(repo.url), seed: GU32_SEED, summaryMismatches, records }, null, 2) + '\n');
+    let base;
+    if (baseline && (records.scoreMismatches.length || summaryMismatches.length)) {
+      const bdir = join(out, 'seeded-baseline');
+      if (!existsSync(join(bdir, 'seeded-summary.json'))) {
+        const r = await runCommand(node, ['--experimental-strip-types', join(baseline, 'bench', 'seeded.ts'), '--cwd', dir, '--language', repo.language, '--bench', benchJson, '--out', bdir, '--name', repoName(repo.url), '--seed', String(GU32_SEED)], {});
+        if (r.code !== 0) throw new Error(`${slug}: baseline seeded exited ${r.code}: ${r.stderrTail}`);
+      }
+      const b = readJson(join(bdir, 'seeded-summary.json'));
+      const vs = compareSeeded(readJsonl(join(out, 'seeded', 'seeded.jsonl')), readJsonl(join(bdir, 'seeded.jsonl')));
+      base = {
+        commit: execFileSync('git', ['-C', baseline, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+        summaryMismatches: SEEDED_INVARIANTS.filter((k) => JSON.stringify(mine[k]) !== JSON.stringify(b[k])),
+        records: { compared: vs.compared, missing: vs.missing, scoreMismatches: vs.scoreMismatches },
+      };
+    }
+    writeFileSync(join(out, 'seeded-compare.json'), JSON.stringify({ schemaVersion: 1, kind: 'gutter-gu32-seeded-compare', repo: repoName(repo.url), seed: GU32_SEED, summaryMismatches, records, ...(base ? { baseline: base } : {}) }, null, 2) + '\n');
     process.stderr.write(`${slug}: done in ${Math.round((Date.now() - t0) / 1000)} s; seeded summary mismatches ${summaryMismatches.length}, record score mismatches ${records.scoreMismatches.length}\n`);
   };
 

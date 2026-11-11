@@ -66,5 +66,11 @@ test('COVERAGE.md and results-gu32.json are what the report computes from the co
   assert.equal(res.summary.missing, 0, 'all 20 repositories measured');
   assert.equal(res.summary.gu31.salienceMismatches, 0, 'coverage never changes salience');
   assert.equal(res.summary.gu31.checklistKindMismatches, 0, 'coverage never creates or suppresses an item');
-  assert.equal(res.summary.seeded.scoreMismatches, 0, 'seeded detection and precision unchanged');
+  // Seeded records that differ from Rerun 1 must be the base code's (main after Rerun 1), not GU-32's: rescored with
+  // the base code, they match GU-32 exactly.
+  for (const r of res.repos.filter((x: { seeded?: { scoreMismatches: number; summaryMismatches: string[] } | null }) => x.seeded && (x.seeded.scoreMismatches || x.seeded.summaryMismatches.length))) {
+    assert.ok(r.seeded.baseline, `${r.repo}: differs from Rerun 1 and was not rescored with the base code`);
+    assert.equal(r.seeded.baseline.scoreMismatches, 0, `${r.repo}: GU-32 changes seeded scoring`);
+    assert.deepEqual(r.seeded.baseline.summaryMismatches, [], `${r.repo}: GU-32 changes a seeded summary number`);
+  }
 });
