@@ -175,6 +175,18 @@ test('isAncestorInit: only an __init__.py strictly above the named module', () =
   assert.equal(isAncestorInit('app/x/m.py', '..sub.deep', 'app/sub/__init__.py'), true);
   assert.equal(isAncestorInit('app/x/m.py', '..sub', 'app/sub/__init__.py'), false);
   assert.equal(isAncestorInit('use.py', 'app.util', 'app/util.py'), false);
+  // The named module's own __init__.py is the leaf even when its directory repeats a segment (review fix).
+  assert.equal(isAncestorInit('use.py', 'a.a', 'a/a/__init__.py'), false);
+  assert.equal(isAncestorInit('use.py', 'core.api.core', 'src/core/api/core/__init__.py'), false);
+  assert.equal(isAncestorInit('use.py', 'a.a.b', 'a/a/__init__.py'), true);
+});
+
+test('Python: `import a.a` breaks when a/a/__init__.py is deleted (a repeated segment is still the leaf)', async () => {
+  const res = await replay(
+    { 'pyproject.toml': '[project]\nname = "a"\n', 'a/__init__.py': 'X = 1\n', 'a/a/__init__.py': 'Y = 1\n', 'use.py': 'import a.a\n' },
+    (r) => r.rm('a/a/__init__.py'),
+  );
+  assert.deepEqual(broken(res.brief), { 'a/a/__init__.py': ['use.py'] });
 });
 
 // ---- Negative controls ----------------------------------------------------------------------
@@ -301,11 +313,74 @@ test('a failing base session falls back to the relative scan of the head graph (
   };
   const a = await analyzeWithLibrary(flaky, { cwd: r.dir, head, base, changedFiles: ['src/a.ts'], headFiles: new Set(['src/b.ts']), noHistory: true, removedFiles: ['src/a.ts'], baseTree: base });
   assert.equal(a.baseGraph, undefined);
-  assert.equal(a.sessions, 2);
+  assert.equal(a.sessions, 1, 'the base session never opened');
   const changes: ChangeStructure = { files: [{ path: 'src/a.ts', status: 'deleted', additions: 0, deletions: 1, binary: false, module: 'src', isTest: false, language: 'typescript' }], modules: [], totals: { files: 1, additions: 0, deletions: 1, modules: 1 } };
   const d = dependentsFromImportGraph(changes, a.graph!, a.repoGraph, a.baseGraph);
   assert.equal(d.method, 'relative-scan');
   assert.deepEqual(d.entries.map((e) => [e.file, e.untouchedImporters]), [['src/a.ts', ['src/b.ts']]]);
+});
+
+test('a removed path RA cannot scope at the base tree falls back to the unscoped base graph, not to relative-scan', async () => {
+  const { r, base, head } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
+  const real = await loadRaLibrary();
+  const strict: LoadedRaLibrary = {
+    version: real.version,
+    openRepository: async (o) => {
+      const repo = await real.openRepository(o);
+      const base = (o.settings as { maxCommits?: number } | undefined)?.maxCommits === 1;
+      return { ...repo, root: repo.root, headSha: repo.headSha, diff: (x) => repo.diff(x), backtest: (x) => repo.backtest(x), close: () => repo.close(),
+        importGraph: async (x?: { files?: string[] }) => {
+          if (base && x?.files) throw new Error('UsageError: path does not exist at head: vendor/sub');
+          return repo.importGraph!(x);
+        } };
+    },
+  };
+  const a = await analyzeWithLibrary(strict, { cwd: r.dir, head, base, changedFiles: ['src/alias.ts'], headFiles: new Set(['src/user.ts']), noHistory: true, removedFiles: ['src/alias.ts', 'vendor/sub'], baseTree: base });
+  assert.ok(a.baseGraph, 'unscoped base graph');
+  assert.equal(a.sessions, 2);
+});
+
+test('bench cache: a failed base graph is not cached (the next PR on that base tries again)', async () => {
+  const { r, base, head } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
+  const real = await loadRaLibrary();
+  let fail = true;
+  const flaky: LoadedRaLibrary = {
+    version: real.version,
+    openRepository: async (o) => {
+      if ((o.settings as { maxCommits?: number } | undefined)?.maxCommits === 1 && fail) {
+        fail = false;
+        throw new Error('transient');
+      }
+      return real.openRepository(o);
+    },
+  };
+  const cache = new Map();
+  const opts = { cwd: r.dir, head, base, changedFiles: ['src/alias.ts'], headFiles: new Set(['src/user.ts']), noHistory: true, removedFiles: ['src/alias.ts'], baseTree: base, baseGraphCache: cache };
+  assert.equal((await analyzeWithLibrary(flaky, opts)).baseGraph, undefined);
+  assert.equal(cache.size, 0);
+  assert.ok((await analyzeWithLibrary(flaky, opts)).baseGraph);
+  assert.equal(cache.size, 1);
+});
+
+test('coverage keeps its meaning: a new file importing the removed path relatively is not counted as unresolved', async () => {
+  const res = await replay(
+    { 'src/a.ts': 'export const a = 1;\n', 'src/b.ts': "import { a } from './a';\nexport const b = a;\n" },
+    (r) => {
+      r.mv('src/a.ts', 'src/a2.ts');
+      r.write({ 'src/c.ts': "import { a } from './a';\nexport const c = a;\n" });
+    },
+  );
+  assert.equal(res.brief.dependents.method, 'base-graph');
+  assert.deepEqual(broken(res.brief), { 'src/a.ts': ['src/b.ts'] });
+  assert.equal(res.brief.dependents.coverage, 'full');
+});
+
+test('bench-only noBaseGraph: the replay skips the base graph and uses the relative scan', async () => {
+  const { r, base, head } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
+  const res = await replayBriefWithMeta({ cwd: r.dir, base, head, now: NOW, noCalibration: true, noBaseGraph: true });
+  assert.equal(res.brief.dependents.method, 'relative-scan', 'removed paths, no base graph: the relative scan of the head graph');
+  assert.equal(res.meta.stageTimingsMs.baseGraph, 0);
+  assert.deepEqual(broken(res.brief), {}, 'an alias import is invisible to the relative scan');
 });
 
 // ---- Fallback: the relative scanner, unchanged ---------------------------------------------

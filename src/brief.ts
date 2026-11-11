@@ -5,7 +5,7 @@ import { inertLegacyKeys, inertLegacyWarning, readSnapshotAuxConfigs } from './c
 import { browseUrlFromRemote, git, hasTimestampAnomaly, isShallowRepo, repoRoot, resolveSha } from './git.ts';
 import { headCommits, readChanges } from './evidence/changes.ts';
 import { buildDependents } from './evidence/imports.ts';
-import { dependentsFromImportGraph } from './evidence/import-graph.ts';
+import { dependentsFromImportGraph, removedPaths } from './evidence/import-graph.ts';
 import { attachTestHistory, linkTests } from './evidence/tests.ts';
 import { buildChecklist, salienceOf } from './evidence/checklist.ts';
 import type { SourceReader } from './source/reader.ts';
@@ -68,6 +68,8 @@ export interface ReplayBriefOptions {
   now?: Date;
   /** GU-31, bench only: reuse the base import graph across PRs on the same base tree. */
   baseGraphCache?: BaseGraphCache;
+  /** GU-31, bench only: skip the base import graph (relative scan for removed paths), to measure its cost. */
+  noBaseGraph?: boolean;
 }
 
 export interface ReplayMeta {
@@ -366,10 +368,10 @@ function assemblePrepared(opts: BriefOptions, p: PreparedBrief, dependents: Depe
  * nothing gets neither, so no base session is opened.
  */
 function removedForBaseGraph(root: string, baseSha: string, headSha: string, changes: ChangeStructure): { removedFiles?: string[]; baseTree?: string } {
-  const removed = changes.files.flatMap((f) => [...(f.status === 'deleted' ? [f.path] : []), ...(f.oldPath ? [f.oldPath] : [])]);
-  if (!removed.length) return {};
+  const removedFiles = removedPaths(changes);
+  if (!removedFiles.length) return {};
   const baseTree = git(root, ['merge-base', baseSha, headSha], { allowFail: true }).trim() || baseSha;
-  return { removedFiles: [...new Set(removed)].sort(), baseTree };
+  return { removedFiles, baseTree };
 }
 
 /**
@@ -592,7 +594,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
           useConfigFile: raConfigValid,
           skipDiff: Boolean(raDiff),
           noCalibration: noCalibration || opts.raBacktest !== undefined,
-          ...removedForBaseGraph(root, baseSha, headSha, changes),
+          ...(opts.noBaseGraph ? {} : removedForBaseGraph(root, baseSha, headSha, changes)),
           ...(opts.baseGraphCache ? { baseGraphCache: opts.baseGraphCache } : {}),
         });
         sessionOpenMs = performance.now() - tSessionStart;

@@ -100,7 +100,8 @@ export function percentile(xs, q) {
 
 /**
  * GU-31 performance (CORPUS.md §6): per-PR replay wall time, split by whether the PR removes a file. For PRs that
- * do, `withoutBaseGraph` subtracts the base graph's own time, so the growth it causes is p95(total) / p95(without).
+ * do, `withoutBaseGraph` is the same replay run again with the base graph off (the base graph runs alongside the
+ * head work, so its own time cannot be subtracted), and the growth it causes is p95(total) / p95(without) − 1.
  */
 export function replayRuntime(replays) {
   const pick = (rs, f) => rs.map(f);
@@ -109,7 +110,7 @@ export function replayRuntime(replays) {
   const plain = replays.filter((r) => !r.removes);
   const built = removes.filter((r) => r.baseGraphMs > 0);
   const total = q(pick(removes, (r) => r.ms));
-  const without = q(pick(removes, (r) => r.ms - r.baseGraphMs));
+  const without = q(pick(removes.filter((r) => typeof r.msWithoutBaseGraph === 'number'), (r) => r.msWithoutBaseGraph));
   return {
     replayP50Ms: percentile(pick(replays, (r) => r.ms), 0.5),
     replayP95Ms: percentile(pick(replays, (r) => r.ms), 0.95),
@@ -424,7 +425,7 @@ export function renderRerun(res, rr) {
     L.push(`| \`${r.repo}\` | ${r.group} | ${rec(o)} | ${rec(r)} | ${pre(o)} | ${pre(r)} | ${fp(o)} | ${fp(r)} | ${p(r.loudness?.full)} | ${r.completed ? obj(r.seeded?.shortfalls) : r.failure} |`);
   }
   L.push('', '### Cost of the base import graph (Rerun 1 replays of the real PRs)', '');
-  L.push('Per-PR replay wall time (ms, nearest-rank percentiles). A PR that deletes or renames a file builds the base graph; "without" subtracts the base graph\'s own time from the same replays. Within a bench run the base graph is cached per base tree (DECISIONS #20), so a PR whose base tree was already analyzed adds no base-graph time.', '');
+  L.push('Per-PR replay wall time (ms, nearest-rank percentiles), on the product path (no cache). A PR that deletes or renames a file builds the base graph in a second session alongside the head work; "without" is the same PR replayed again with the base graph off, run second so warm caches favor it (the growth is an upper bound). "Base graph" is that session\'s own wall time.', '');
   L.push('| Repository | PRs removing files | Replay p50 / p95, with | Replay p50 / p95, without | p95 growth | Base graph p50 / p95 (built) | Other PRs: replay p50 / p95 |', '|---|---:|---|---|---:|---|---|');
   const ms = (x) => (x === null || x === undefined ? 'n/a' : `${x}`);
   for (const r of rr.repos) {

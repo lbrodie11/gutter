@@ -65,16 +65,17 @@ test('gate replays: one record per PR with salience, kinds, coverage, removal, m
   const r = replayRecord('#1', brief({ removes: true, method: 'base-graph', salience: 'brief', kinds: ['broken-import'] }), 1234.4, 400.6);
   assert.deepEqual(r, { pr: '#1', salience: 'brief', kinds: ['broken-import'], coverage: 'partial', unresolvedByReason: { 'unknown-package': 1 }, uncheckedLanguages: [], method: 'base-graph', removes: true, ms: 1234, baseGraphMs: 401 });
   assert.equal(replayRecord('#2', brief(), 10, 0).removes, false);
+  assert.equal(replayRecord('#3', brief({ removes: true }), 10, 4, 7.6).msWithoutBaseGraph, 8);
 });
 
-test('replayRuntime: p95 growth from the base graph, only over PRs that remove files', () => {
+test('replayRuntime: p95 growth from the base graph (a second replay without it), only over PRs that remove files', () => {
   assert.equal(percentile([5, 1, 3, 2, 4], 0.5), 3);
   assert.equal(percentile([], 0.95), null);
   const replays = [
     ...Array.from({ length: 10 }, (_, i) => ({ removes: false, ms: 100 + i, baseGraphMs: 0 })),
-    { removes: true, ms: 300, baseGraphMs: 100 },
-    { removes: true, ms: 600, baseGraphMs: 200 },
-    { removes: true, ms: 250, baseGraphMs: 0 },
+    { removes: true, ms: 300, baseGraphMs: 100, msWithoutBaseGraph: 200 },
+    { removes: true, ms: 600, baseGraphMs: 200, msWithoutBaseGraph: 400 },
+    { removes: true, ms: 250, baseGraphMs: 0, msWithoutBaseGraph: 250 },
   ];
   const rt = replayRuntime(replays);
   assert.equal(rt.plain.prs, 10);
@@ -88,7 +89,7 @@ test('replayRuntime: p95 growth from the base graph, only over PRs that remove f
 
 /** A minimal rerun input: gate with replays, a seeded summary, no bench. */
 function rerunInput(fullPrs: number, recall: [number, number]) {
-  const replays = Array.from({ length: 10 }, (_, i) => ({ pr: `#${i}`, salience: i < fullPrs ? 'full' : 'quiet', kinds: [], coverage: 'full', unresolvedByReason: {}, uncheckedLanguages: [], removes: i === 0, ms: 100, baseGraphMs: i === 0 ? 50 : 0 }));
+  const replays = Array.from({ length: 10 }, (_, i) => ({ pr: `#${i}`, salience: i < fullPrs ? 'full' : 'quiet', kinds: [], coverage: 'full', unresolvedByReason: {}, uncheckedLanguages: [], removes: i === 0, ms: 100, baseGraphMs: i === 0 ? 50 : 0, ...(i === 0 ? { msWithoutBaseGraph: 50 } : {}) }));
   const [det, pos] = recall;
   return {
     status: { completed: true, wallMs: 60000, steps: {} },

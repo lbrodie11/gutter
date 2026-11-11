@@ -24,6 +24,16 @@ const MAX_SAMPLE_LEN = 200;
 export const BROKEN_IMPORT_KINDS: ReadonlySet<string> = new Set(['static', 'dynamic', 'reexport', 'require']);
 
 type Edge = RaImportGraph['edges'][number];
+
+/** Paths a PR removes: deleted files and the old paths of renamed ones (sorted, unique). */
+export function removedPaths(changes: ChangeStructure): string[] {
+  const out = new Set<string>();
+  for (const f of changes.files) {
+    if (f.status === 'deleted') out.add(f.path);
+    if (f.oldPath) out.add(f.oldPath);
+  }
+  return [...out].sort();
+}
 const pairKey = (from: string, specifier: string) => `${from}\0${specifier}`;
 
 /** One importer left with a specifier that resolved to a removed path at base and no longer resolves at head. */
@@ -53,7 +63,10 @@ export function isAncestorInit(importer: string, specifier: string, removed: str
     const leaf = posix.join(pkg === '.' ? '' : pkg, ...parts);
     return leaf !== dir && (dir === '.' || leaf.startsWith(`${dir}/`));
   }
-  // Absolute: the source root is unknown, so match the module path as a suffix of the directory.
+  // Absolute: the source root is unknown, so match the module path as a suffix of the directory. The named module
+  // itself is checked first: `a/a/__init__.py` for `import a.a` is the leaf, though its directory also ends in `a`.
+  const full = parts.join('/');
+  if (dir === full || dir.endsWith(`/${full}`)) return false;
   for (let k = 1; k < parts.length; k++) {
     const prefix = parts.slice(0, k).join('/');
     if (dir === prefix || dir.endsWith(`/${prefix}`)) return true;
@@ -124,11 +137,7 @@ export function dependentsFromImportGraph(
   baseGraph?: RaImportGraph,
 ): DependentsLayer {
   const changedPaths = new Set(changes.files.map((f) => f.path));
-  const removed = new Set<string>();
-  for (const f of changes.files) {
-    if (f.status === 'deleted') removed.add(f.path);
-    if (f.oldPath) removed.add(f.oldPath);
-  }
+  const removed = new Set(removedPaths(changes));
   const headFiles = new Set([...graph.files, ...repoGraph.files, ...graph.edges.map((e) => e.to), ...repoGraph.edges.map((e) => e.to)]);
 
   const importersOf = new Map<string, Set<string>>();
@@ -169,14 +178,13 @@ export function dependentsFromImportGraph(
   const byReason: Record<string, number> = {};
   const samples = new Set<string>();
   for (const u of repoGraph.unresolved) {
-    if (useBase) {
-      if (brokenPairs.has(pairKey(u.from, u.specifier))) continue;
-    } else {
-      const target = u.specifier.startsWith('.') ? resolveRelative(u.from, u.specifier, headFiles, removed) : undefined;
-      if (target && removed.has(target)) {
-        if (u.from !== target) importersOf.get(target)?.add(u.from);
-        continue;
-      }
+    // Imports reported as broken are not counted; nor, as before GU-31, is a relative specifier that points at a
+    // removed path (only the relative scan names its importer, so `coverage` keeps one meaning in both modes).
+    if (useBase && brokenPairs.has(pairKey(u.from, u.specifier))) continue;
+    const target = u.specifier.startsWith('.') ? resolveRelative(u.from, u.specifier, headFiles, removed) : undefined;
+    if (target && removed.has(target)) {
+      if (!useBase && u.from !== target) importersOf.get(target)?.add(u.from);
+      continue;
     }
     unresolvedCount++;
     const reason = u.reasonCode ?? 'unknown';

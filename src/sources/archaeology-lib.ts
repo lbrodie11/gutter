@@ -188,9 +188,9 @@ export interface LibraryAnalysis {
    * when nothing was removed, or when the base session failed (dependents then use the relative fallback).
    */
   baseGraph?: RaImportGraph;
-  /** GU-31: wall time of the base graph (session open + `importGraph`), 0 when none was built or it came from the cache. */
+  /** GU-31: wall time of the base graph (session open + `importGraph`, concurrent with the head work), 0 when none was built or it came from the cache. */
   baseGraphMs: number;
-  /** History loads in this analysis: 1 for the head session, plus 1 when the base graph opened its own session. */
+  /** History loads in this analysis: 1 for the head session, plus 1 when a base session opened. */
   sessions: number;
 }
 
@@ -211,19 +211,36 @@ const baseGraphKey = (cwd: string, baseTree: string, settings: Record<string, un
  */
 export async function baseImportGraph(
   lib: LoadedRaLibrary,
-  opts: { cwd: string; baseTree: string; removed: readonly string[]; settings?: Record<string, unknown>; cache?: BaseGraphCache },
+  opts: {
+    cwd: string;
+    baseTree: string;
+    removed: readonly string[];
+    settings?: Record<string, unknown>;
+    cache?: BaseGraphCache;
+    /** Called once a base session actually opened (one more history load). */
+    onOpen?: () => void;
+  },
 ): Promise<RaImportGraph | undefined> {
   const build = async (files: string[] | undefined): Promise<RaImportGraph | undefined> => {
+    const cache = opts.settings?.cache;
     const repo = await lib.openRepository({
       cwd: opts.cwd,
       head: opts.baseTree,
       // One commit and no history cache: the base session reads the tree only and never writes under .git.
-      settings: { ...(opts.settings ?? {}), maxCommits: 1, cache: { ...((opts.settings?.cache as Record<string, unknown> | undefined) ?? {}), enabled: false } },
+      settings: { ...(opts.settings ?? {}), maxCommits: 1, cache: { ...(cache && typeof cache === 'object' ? (cache as Record<string, unknown>) : {}), enabled: false } },
       useConfigFile: false,
     });
+    opts.onOpen?.();
     try {
       if (typeof repo.importGraph !== 'function') return undefined;
-      return await repo.importGraph(files ? { files } : undefined);
+      if (!files) return await repo.importGraph();
+      try {
+        return await repo.importGraph({ files });
+      } catch {
+        // A removed path RA does not list at the base tree (a submodule, say) rejects the scoped call; the
+        // session's index is built either way, so the unscoped graph costs no extra parsing.
+        return await repo.importGraph();
+      }
     } finally {
       await repo.close();
     }
@@ -232,7 +249,11 @@ export async function baseImportGraph(
   const key = baseGraphKey(opts.cwd, opts.baseTree, opts.settings);
   let hit = opts.cache.get(key);
   if (!hit) {
-    hit = build(undefined).catch(() => undefined);
+    // A failure is not cached: the next PR on this base tree tries again.
+    hit = build(undefined).catch(() => {
+      opts.cache!.delete(key);
+      return undefined;
+    });
     opts.cache.set(key, hit);
     // Bounded: real PRs rarely share a base, so only the most recent trees are worth their memory.
     while (opts.cache.size > BASE_GRAPH_CACHE_MAX) opts.cache.delete(opts.cache.keys().next().value!);
@@ -288,6 +309,30 @@ export async function analyzeWithLibrary(
     repo = await open(false);
   }
   const out: LibraryAnalysis = { sessions: 1, baseGraphMs: 0 };
+  // GU-31: only a PR that removes a path needs to know who imported it at base. The base session is independent
+  // of everything below, so it starts now and runs alongside diff, backtest and the head graphs.
+  const removed = opts.removedFiles ?? [];
+  const basePending =
+    removed.length > 0 && opts.baseTree && typeof repo.importGraph === 'function'
+      ? (async () => {
+          const t0 = performance.now();
+          const cached = opts.baseGraphCache?.has(baseGraphKey(opts.cwd, opts.baseTree!, opts.settings)) ?? false;
+          let graph: RaImportGraph | undefined;
+          try {
+            graph = await baseImportGraph(lib, {
+              cwd: opts.cwd,
+              baseTree: opts.baseTree!,
+              removed,
+              ...(opts.settings ? { settings: opts.settings } : {}),
+              ...(opts.baseGraphCache ? { cache: opts.baseGraphCache } : {}),
+              onOpen: () => out.sessions++,
+            });
+          } catch {
+            graph = undefined;
+          }
+          return { graph, ms: cached ? 0 : performance.now() - t0 };
+        })()
+      : undefined;
   try {
     if (!opts.noHistory && !opts.skipDiff) {
       // `base` as the CLI's `diff --base` and the pre-GU-05 replay passed it, so results stay identical.
@@ -310,29 +355,16 @@ export async function analyzeWithLibrary(
         out.repoGraph = undefined;
       }
     }
-    // GU-31: only a PR that removes a path needs to know who imported it at base.
-    const removed = opts.removedFiles ?? [];
-    if (out.graph && removed.length > 0 && opts.baseTree) {
-      const t0 = performance.now();
-      const cached = opts.baseGraphCache?.has(baseGraphKey(opts.cwd, opts.baseTree, opts.settings)) ?? false;
-      try {
-        out.baseGraph = await baseImportGraph(lib, {
-          cwd: opts.cwd,
-          baseTree: opts.baseTree,
-          removed,
-          ...(opts.settings ? { settings: opts.settings } : {}),
-          ...(opts.baseGraphCache ? { cache: opts.baseGraphCache } : {}),
-        });
-      } catch {
-        out.baseGraph = undefined;
-      }
-      if (!cached) {
-        out.baseGraphMs = performance.now() - t0;
-        out.sessions++;
-      }
+    if (basePending) {
+      const b = await basePending;
+      // Without a head graph there is nothing to compare against: dependents use the relative fallback.
+      if (out.graph) out.baseGraph = b.graph;
+      out.baseGraphMs = b.ms;
     }
     return out;
   } finally {
+    // Never leave the base session running past this analysis, even when the head work threw.
+    await basePending?.catch(() => undefined);
     await repo.close();
   }
 }

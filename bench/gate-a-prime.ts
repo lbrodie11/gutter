@@ -31,12 +31,12 @@ import { posix } from 'node:path';
 import { parseArgs } from 'node:util';
 import ts from 'typescript';
 import { replayBriefWithMeta } from '../src/brief.ts';
-import type { BaseGraphCache } from '../src/sources/archaeology-lib.ts';
 import type { GutterBrief } from '../src/contract.ts';
 import { renderComic } from '../src/render/comic.ts';
 import { renderMarkdown } from '../src/render/markdown.ts';
 import { summaryLine } from '../src/output.ts';
 import { coverageFields } from '../src/bench/runner.ts';
+import { removedPaths } from '../src/evidence/import-graph.ts';
 import { importSpecifiers } from './seeded.ts';
 
 export const BANNED = /forgot|likely forgotten|you may have missed|untested|not covered/i;
@@ -311,11 +311,13 @@ export interface ReplayRecord {
   removes: boolean;
   /** Whole replay, ms (replayBriefWithMeta wall time). */
   ms: number;
-  /** Of which the base import graph, ms (0 when the PR removes nothing). */
+  /** The base import graph's own wall time, ms (0 when the PR removes nothing); it runs alongside the head work. */
   baseGraphMs: number;
+  /** PRs that remove a file: the same replay again with the base graph switched off, run second (so warm caches favor it). */
+  msWithoutBaseGraph?: number;
 }
 
-export function replayRecord(pr: string, b: GutterBrief, ms: number, baseGraphMs: number): ReplayRecord {
+export function replayRecord(pr: string, b: GutterBrief, ms: number, baseGraphMs: number, msWithoutBaseGraph?: number): ReplayRecord {
   return {
     pr,
     salience: b.salience.level,
@@ -323,9 +325,10 @@ export function replayRecord(pr: string, b: GutterBrief, ms: number, baseGraphMs
     // The same coverage fields `gutter bench` records (GU-30 §2), so both runs are measured alike.
     ...(coverageFields(b) as Required<ReturnType<typeof coverageFields>>),
     ...(b.dependents.method ? { method: b.dependents.method } : {}),
-    removes: b.changes.files.some((f) => f.status === 'deleted' || Boolean(f.oldPath)),
+    removes: removedPaths(b.changes).length > 0,
     ms: Math.round(ms),
     baseGraphMs: Math.round(baseGraphMs),
+    ...(msWithoutBaseGraph !== undefined ? { msWithoutBaseGraph: Math.round(msWithoutBaseGraph) } : {}),
   };
 }
 
@@ -345,13 +348,22 @@ async function main(): Promise<void> {
   let rawHits = 0;
   const ownWordHits: { pr: string; text: string }[] = [];
   const replays: ReplayRecord[] = [];
-  const baseGraphCache: BaseGraphCache = new Map();
+  // No base-graph cache here: real PRs rarely share a base tree, and the replay times must be the product path's
+  // (a scoped `importGraph({ files })`), since Rerun 1 reports the base graph's cost from them.
   let full = 0;
   for (const pr of bench.prs) {
     const t0 = performance.now();
-    const res = await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true, baseGraphCache });
+    const res = await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true });
+    const ms = performance.now() - t0;
     const b = res.brief;
-    replays.push(replayRecord(pr.id, b, performance.now() - t0, res.meta.stageTimingsMs.baseGraph ?? 0));
+    // GU-31 cost: a PR that removes a file is replayed once more without the base graph (timing only).
+    let without: number | undefined;
+    if (removedPaths(b.changes).length > 0) {
+      const t1 = performance.now();
+      await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true, noBaseGraph: true });
+      without = performance.now() - t1;
+    }
+    replays.push(replayRecord(pr.id, b, ms, res.meta.stageTimingsMs.baseGraph ?? 0, without));
     if (pr.policies.production.salience === 'full') full++;
     if (b.salience.level !== pr.policies.production.salience) salienceMismatches++;
     if (b.checklist.map((c) => c.kind).join() !== pr.policies.production.questions.map((q) => q.kind).join()) checklistMismatches++;
