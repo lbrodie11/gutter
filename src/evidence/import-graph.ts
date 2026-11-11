@@ -209,15 +209,27 @@ export function dependentsFromImportGraph(
     // A file the PR adds or changes has no (comparable) base edge. When its import is unresolved at head and points at
     // a removed path (relative: by path; otherwise: some base importer resolved the same specifier to that path), it
     // is a broken import too, as the relative scan has always reported it (GU-31 review).
-    const removedBySpecifier = new Map<string, string>();
+    // Non-relative specifiers name the same module from anywhere (Go import paths, Python dotted names, packages),
+    // except tsconfig `paths` aliases, whose meaning depends on the importer's config: those count only for a file in
+    // the same top-level directory as a base importer. A specifier that reached two removed targets is ambiguous.
+    const topDir = (p: string) => (p.includes('/') ? p.slice(0, p.indexOf('/')) : '');
+    const removedBySpecifier = new Map<string, { target: string | null; scopes: Set<string> | null }>();
     for (const e of baseGraph!.edges) {
-      if (removed.has(e.to) && !e.specifier.startsWith('.') && !removedBySpecifier.has(e.specifier)) {
-        removedBySpecifier.set(e.specifier, e.via === 'go-package' ? (goEntry.get(posix.dirname(e.to)) ?? e.to) : e.to);
-      }
+      if (!removed.has(e.to) || e.specifier.startsWith('.') || !BROKEN_IMPORT_KINDS.has(e.kind)) continue;
+      const target = e.via === 'go-package' ? (goEntry.get(posix.dirname(e.to)) ?? e.to) : e.to;
+      const hit = removedBySpecifier.get(e.specifier) ?? { target, scopes: e.via === 'paths' ? new Set<string>() : null };
+      if (hit.target !== target && !(e.via === 'go-package' && posix.dirname(hit.target ?? '') === posix.dirname(target))) hit.target = null;
+      if (e.via === 'paths') (hit.scopes ??= new Set()).add(topDir(e.from));
+      removedBySpecifier.set(e.specifier, hit);
     }
+    const byAlias = (from: string, specifier: string): string | undefined => {
+      const hit = removedBySpecifier.get(specifier);
+      if (!hit?.target) return undefined;
+      return hit.scopes && !hit.scopes.has(topDir(from)) ? undefined : hit.target;
+    };
     for (const u of repoGraph.unresolved) {
       if (!changedPaths.has(u.from) || removed.has(u.from) || brokenPairs.has(pairKey(u.from, u.specifier))) continue;
-      const target = u.specifier.startsWith('.') ? resolveRelative(u.from, u.specifier, headFiles, removed) : removedBySpecifier.get(u.specifier);
+      const target = u.specifier.startsWith('.') ? resolveRelative(u.from, u.specifier, headFiles, removed) : byAlias(u.from, u.specifier);
       if (!target || !removed.has(target) || target === u.from) continue;
       importersOf.get(target)?.add(u.from);
       brokenPairs.add(pairKey(u.from, u.specifier));

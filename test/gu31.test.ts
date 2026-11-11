@@ -406,6 +406,34 @@ test('a new file importing a removed path through an alias is named too (same sp
   assert.deepEqual(broken(res.brief), { 'src/alias.ts': ['src/new.ts', 'src/user.ts'] });
 });
 
+test('a new Go file importing a removed package, and a new Python file importing a removed module, are named', async () => {
+  const go = await replay(GO_BASE, (r) => {
+    r.rm('pkg/one/one.go');
+    r.write({ 'cmd/tool/main.go': 'package main\n\nimport "example.com/m/pkg/one"\n\nfunc main() { one.One() }\n' });
+  });
+  assert.deepEqual(broken(go.brief), { 'pkg/one/one.go': ['cmd/main.go', 'cmd/tool/main.go'] });
+  const py = await replay(PY_BASE, (r) => {
+    r.rm('app/util.py');
+    r.write({ 'use2.py': 'from app.util import Y\n' });
+  });
+  assert.deepEqual(broken(py.brief), { 'app/util.py': ['use.py', 'use2.py'] });
+});
+
+test('a `paths` alias is attributed only within the base importer\'s top-level directory', async () => {
+  const cfg = JSON.stringify({ compilerOptions: { baseUrl: '.', paths: { '@/*': ['src/*'] } } });
+  const res = await replay(
+    {
+      'a/tsconfig.json': cfg, 'a/src/x.ts': 'export const x = 1;\n', 'a/src/u.ts': "import { x } from '@/x';\nexport const u = x;\n",
+      'b/tsconfig.json': cfg, 'b/src/y.ts': 'export const y = 1;\n',
+    },
+    (r) => {
+      r.rm('a/src/x.ts');
+      r.write({ 'b/src/new.ts': "import { x } from '@/x';\nexport const n = x;\n" });
+    },
+  );
+  assert.deepEqual(broken(res.brief), { 'a/src/x.ts': ['a/src/u.ts'] }, "b's @/x is not a's removed file");
+});
+
 test('bench-only noBaseGraph: the replay skips the base graph and uses the relative scan', async () => {
   const { r, base, head } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
   const res = await replayBriefWithMeta({ cwd: r.dir, base, head, now: NOW, noCalibration: true, noBaseGraph: true });
