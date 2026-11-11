@@ -24,7 +24,7 @@ A criterion with no items on a repository is reported as *not exercised*, never 
 
 **Corpus (GU-30, 2026-11-10): Gate A′ FAIL** on the preregistered rule ([`benchmark/README.md`](benchmark/README.md)). (a) met: the median repository's full share is 0.00. (c) met: no banned words. (b) not met: seeded `broken-import` recall is 0.63 (needs 0.90) at precision 0.98, because Gutter reports no broken import for removed Go packages, Python modules or TS/JS alias imports. `untested-change` and test-history facts were 100% correct. M0 stays open until a follow-up fixes the language coverage and a fresh preregistered run passes.
 
-**Corpus, Rerun 1 (GU-31, 2026-11-11): Gate A′ PASS** on the same rule, preregistered afresh with a new seed ([`CORPUS.md` §6](benchmark/CORPUS.md), [`benchmark/README.md`](benchmark/README.md)). 20 of 20 repositories completed. (a) median full share 0.00; (b) seeded `broken-import` recall 0.98 (TS/JS 1.00, Go 1.00, Python 0.87) at precision 0.99, false-positive rate 1/600, and `untested-change` and test-history facts 100% correct; (c) no banned words. **M0's exit test is met.** Known gaps carried forward: Python `from . import mod` (a Gutter rule, fixed after Rerun 1 and to be measured by the next preregistered run), imports Repo Archaeology does not resolve, `coverage: partial` on every PR at the median repository, and the base graph's cost on PRs that remove files.
+**Corpus, Rerun 1 (GU-31, 2026-11-11): Gate A′ PASS** on the same rule, preregistered afresh with a new seed ([`CORPUS.md` §6](benchmark/CORPUS.md), [`benchmark/README.md`](benchmark/README.md)). 20 of 20 repositories completed. (a) median full share 0.00; (b) seeded `broken-import` recall 0.98 (TS/JS 1.00, Go 1.00, Python 0.87) at precision 0.99, false-positive rate 1/600, and `untested-change` and test-history facts 100% correct; (c) no banned words. **M0's exit test is met.** Known gaps carried forward: Python `from . import mod` (a Gutter rule, fixed after Rerun 1 and to be measured by the next preregistered run), imports Repo Archaeology does not resolve, `coverage: partial` on every PR at the median repository, and imports Repo Archaeology resolves to an `__init__.py` attribute rather than a submodule. The base graph's cost is within budget since RA-20 ([`benchmark/RA-0.12.md`](benchmark/RA-0.12.md)).
 
 *Former exit test (Gate A, retired by GU-29): warnings that become questions are right ≥ 70% of the time on the median repo, and fewer than 1 in 3 PRs get a `full` page.*
 
@@ -71,7 +71,7 @@ A criterion with no items on a repository is reported as *not exercised*, never 
 - [x] Library API (`openRepository` in `repo-archaeology` ≥ 0.4.0) to drop the `npx` hop during replay.
 - [x] Agent attribution from `Co-authored-by:` trailers, and optional down-weighting of agent-authored sweeping commits (`origin` in `repo-archaeology` ≥ 0.4.0).
 - Expose the Wilson interval upper bound alongside `score`.
-- A cheap base-tree import graph (reuse the head session's analysis for unchanged files) and the role of each Python edge target (RA-20, proposed by GU-31).
+- [x] A cheap base-tree import graph (reuse the head session's analysis for unchanged files) and the role of each Python edge target (RA-20, released in `repo-archaeology` 0.12.0; adopted by GU-31).
 
 **FRAME/12**
 - A tokens-only CSS export, so Gutter can import tokens instead of copying them.

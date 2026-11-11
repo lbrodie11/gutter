@@ -53,7 +53,7 @@ Gutter combines `git diff` structure, test-file conventions, and [Repo Archaeolo
 
 ## Example: a Hono change, briefed
 
-> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,861` commits, repo-archaeology 0.10.0). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts and supporting commit receipts are genuine.
+> **About this example:** Below is an illustrative branch on [honojs/hono](https://github.com/honojs/hono) (based on commit [`eb754bd`](https://github.com/honojs/hono/commit/eb754bd5ef22c63f1634a4c374a86be086f85710)) analyzed against Hono's real commit history (`1,861` commits, repo-archaeology 0.12.0). The proposed `cacheControl` edit is a local simulation, not an existing Hono pull request; all co-change counts and supporting commit receipts are genuine.
 >
 > **Reproduce locally:**
 > ```bash
@@ -81,7 +81,7 @@ None of these is a verdict. The test row is a historical fact; whether this chan
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.5.0 + repo-archaeology 0.10.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.5.0 + repo-archaeology 0.12.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
@@ -94,7 +94,7 @@ GitHub pull request comments cannot render custom CSS, so Gutter posts **one com
 >
 > *(Plus collapsed `<details>` sections: **Usually changes with** (history, not a prediction), **What it touches**, **Tests**, and **What changed**.)*
 >
-> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.5.0 + repo-archaeology 0.10.0</sub>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.5.0 + repo-archaeology 0.12.0</sub>
 
 ### 3 · The full six-panel page (`gutter.html` artifact)
 
@@ -134,7 +134,7 @@ Pairs backed mostly by bot commits (`dependabot`, `renovate`, etc.) are marked a
 Before trusting historical co-change or static questions on a repository, `gutter bench` replays the newest $N$ merged pull requests strictly **as of each PR** using the same question-generation code (`assembleBrief`) as production Gutter, scores what happened next on the first-parent branch, compares against matched baselines, and writes [`bench.json`](schema/bench.schema.json), `bench.md`, and a FRAME/12 `bench.html` page from one schema-validated results model.
 
 ```bash
-# Replay the newest 200 eligible PRs on the current branch (offline; requires the repo-archaeology library >= 0.4.0, 0.10.0 recommended)
+# Replay the newest 200 eligible PRs on the current branch (offline; requires the repo-archaeology library >= 0.4.0, 0.12.0 recommended)
 node dist/cli.js bench --prs 200 --window-days 7 --out .gutter/bench
 ```
 
@@ -183,7 +183,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 | `history` | `true` | Run Repo Archaeology: co-change history and the import graph in one library session. The Action installs it into an isolated, cached prefix under `RUNNER_TEMP` (never into your repository) and falls back to `npx` with a notice if that install fails. `false` runs offline with a relative-import scanner |
 | `calibrate` | `true` | Backtest how reliable co-change history is on this repo, shown under the page (~0.3s on 1,900 commits) |
 | `max-forgotten` | `3` | Maximum "usually changes with" pairs to display (`0` hides them; the input keeps its v1 name) |
-| `archaeology-version` | `^0.10.0` | npm version range of `repo-archaeology` to install (also the cache key) |
+| `archaeology-version` | `^0.12.0` | npm version range of `repo-archaeology` to install (also the cache key) |
 | `upload-page` | `true` | Upload `gutter.html` and `gutter.json` as the `gutter-brief` workflow artifact |
 
 Action outputs: `status` (`analyzed` / `skipped` / `error`), `salience` (`quiet` / `brief` / `full`), `question-count` (checklist items), `forgotten-count` ("usually changes with" pairs shown; the output keeps its v1 name), `json-path`, `html-path`.
@@ -248,7 +248,7 @@ repo-archaeology session ───┼─▶ evidence engine ─▶ gutter.json �
 ```
 
 - **Privacy & data handling:** Analysis runs entirely on your local machine or your GitHub Actions runner. Gutter never transmits source code, diffs, or git history to any Gutter-operated service. When run in GitHub Actions, the Markdown comment (`post: auto|always`) and optional `gutter-brief` artifact (`upload-page: true`) are stored by GitHub in your repository's pull request and workflow run.
-- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty); [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) is an optional peer (`>=0.4.0`). Gutter prefers it as a library: one `openRepository` session per brief loads history once and serves `diff`, `backtest` and the import graph (`--ra-lib` / `GUTTER_RA_LIB`, or the installed package). Without the library it falls back to a binary (`--ra-bin` / `GUTTER_RA_BIN`), then to `npx --yes repo-archaeology@^0.10.0` (noted on the page), then to "history unavailable", with a relative-import scanner for dependents. Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
+- **Dependencies:** `gutter-brief` has **zero direct runtime npm dependencies** (`package.json` `dependencies` is empty); [`repo-archaeology`](https://www.npmjs.com/package/repo-archaeology) is an optional peer (`>=0.4.0`). Gutter prefers it as a library: one `openRepository` session per brief loads history once and serves `diff`, `backtest` and the import graph (`--ra-lib` / `GUTTER_RA_LIB`, or the installed package). Without the library it falls back to a binary (`--ra-bin` / `GUTTER_RA_BIN`), then to `npx --yes repo-archaeology@^0.12.0` (noted on the page), then to "history unavailable", with a relative-import scanner for dependents. Pass `--no-history` (or `history: 'false'` in the Action) for a completely offline static run.
 - **Security:** Designed for `pull_request`, **never `pull_request_target`**. All PR-derived text is escaped per output format; links are built only from `http(s)` base URLs and hex SHAs; git is invoked strictly with argument vectors. See [SECURITY.md](SECURITY.md) for the full threat model.
 
 ## Development

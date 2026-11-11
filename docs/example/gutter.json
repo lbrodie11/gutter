@@ -355,7 +355,7 @@
     }
   },
   "provenance": {
-    "generatedAt": "2026-11-11T07:10:54.399Z",
+    "generatedAt": "2026-11-11T17:10:45.258Z",
     "engines": [
       {
         "name": "gutter",
@@ -363,7 +363,7 @@
       },
       {
         "name": "repo-archaeology",
-        "version": "0.10.0",
+        "version": "0.12.0",
         "mode": "library",
         "features": [
           "importGraph",

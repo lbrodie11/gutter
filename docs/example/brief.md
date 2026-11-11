@@ -45,4 +45,4 @@
 
 </details>
 
-<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(8\.4× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.5.0 + repo-archaeology 0.10.0</sub>
+<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(8\.4× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.5.0 + repo-archaeology 0.12.0</sub>
