@@ -108,6 +108,7 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
   const changedPaths = new Set(changes.files.map((f) => f.path));
   const headAnalyzed = new Set(headGraph.files);
   const headTargets = new Map<string, Set<string>>();
+  const headEdges = new Map<string, Edge[]>();
   for (const e of headGraph.edges) {
     // Defensive: a file resolving to itself replaces nothing (Repo Archaeology 0.10 emits no self-edges).
     if (e.from === e.to) continue;
@@ -115,6 +116,9 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
     let set = headTargets.get(k);
     if (!set) headTargets.set(k, (set = new Set()));
     set.add(e.to);
+    let list = headEdges.get(k);
+    if (!list) headEdges.set(k, (list = []));
+    list.push(e);
   }
   const headUnresolved = new Set(headGraph.unresolved.map((u) => pairKey(u.from, u.specifier)));
   // Files the head analysis said anything about: an importer with no head edge and no unresolved import, whose
@@ -139,7 +143,7 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
     const k = pairKey(e.from, e.specifier);
     const changed = changedPaths.has(e.from);
     if (changed && !headUnresolved.has(k)) continue;
-    if (!lost(e, headTargets.get(k), baseTargets.get(k)!)) continue;
+    if (!lost(e, headTargets.get(k), baseTargets.get(k)!, headEdges.get(k) ?? [])) continue;
     const id = `${e.to}\0${k}`;
     if (seen.has(id)) continue;
     seen.add(id);
@@ -148,9 +152,19 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
   return out;
 }
 
-function lost(e: Edge, head: ReadonlySet<string> | undefined, base: ReadonlySet<string>): boolean {
+function lost(e: Edge, head: ReadonlySet<string> | undefined, base: ReadonlySet<string>, headEdges: readonly Edge[] = []): boolean {
   if (!head || head.size === 0) return true;
   if (e.via !== 'python-module') return false;
+  // Repo Archaeology >= 0.12 says what each Python target is to the import (RA-20): no guessing from paths.
+  if (e.role !== undefined) {
+    // An initializer on the way: the named module still resolves (a namespace package), so nothing is lost.
+    if (e.role === 'init') return false;
+    // The named module itself: lost unless the specifier still reaches a module (`a/b.py` became `a/b/__init__.py`).
+    if (e.role === 'module') return !headEdges.some((h) => h.role === 'module');
+    // A submodule taken by name (`from pkg import mod`): lost unless that name is still a submodule.
+    if (e.role === 'name') return !headEdges.some((h) => h.role === 'name' && h.name === e.name);
+    return false; // an unknown role: treat as "still resolves" (no false alarm)
+  }
   // A new head target replaces the removed file, except an `__init__.py` on the specifier's own module path standing in
   // for a removed submodule: `from . import mod` falls back to the importer's own package `__init__.py` once `mod.py`
   // is gone (GU-31 review). When the removed file was the named module itself (`a/b.py` for `from a.b import x`), its
@@ -238,7 +252,7 @@ export function dependentsFromImportGraph(
       if (!removed.has(e.to) || !BROKEN_IMPORT_KINDS.has(e.kind)) continue;
       // Python edges carry no imported name: only a specifier that names the removed module itself (`from pkg.mod
       // import x`, `from .mod import x`) says which file a new importer meant; `from pkg import mod` does not.
-      if (e.via === 'python-module' && modulePathRole(e.from, e.specifier, e.to) !== 'leaf') continue;
+      if (e.via === 'python-module' && (e.role !== undefined ? e.role !== 'module' : modulePathRole(e.from, e.specifier, e.to) !== 'leaf')) continue;
       const target = e.via === 'go-package' ? (goEntry.get(posix.dirname(e.to)) ?? e.to) : e.to;
       const goUnit = (a: string, b: string) => e.via === 'go-package' && posix.dirname(a) === posix.dirname(b);
       if (e.specifier.startsWith('.')) note(`${posix.dirname(e.from)}\0${e.specifier}`, target, '', false, goUnit);

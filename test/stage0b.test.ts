@@ -150,7 +150,7 @@ test('bench: attachTrackRecords copies track records onto forgotten-companion re
   assert.equal(out[2]!.trackRecord, undefined, 'family-drift targets are not pairs');
 });
 
-test('consumer: the installed repo-archaeology 0.10 library returns a track record that the V4 gate reads, and gutter.json omits it', async () => {
+test('consumer: the installed (pinned) repo-archaeology library returns a track record that the V4 gate reads, and gutter.json omits it', async () => {
   const repo = new TempRepo();
   try {
     // One commit per day, so every 48 h track-record window can complete.
@@ -185,7 +185,8 @@ test('consumer: the installed repo-archaeology 0.10 library returns a track reco
     // GU-29: companion questions and the V4 keys live under `legacyPredictions`.
     const legacy = { legacyPredictions: true };
     const res = await replayBriefWithMeta({ cwd: repo.dir, base, head, title: 'feat: a only', noCalibration: true, config: legacy });
-    assert.match(res.meta.raVersion ?? '', /^0\.10\./, 'bench runs on the pinned repo-archaeology 0.10.x');
+    // DECISIONS #16: the bench pins its analyzer; GU-31 moved the pin to 0.12.0 (per-PR delta in docs/benchmark/RA-0.12.md).
+    assert.match(res.meta.raVersion ?? '', /^0\.12\./, 'bench runs on the pinned repo-archaeology 0.12.x');
     const suggestion = res.meta.raDiff?.suggestions.find((s) => s.to === 'src/b.ts');
     assert.ok(suggestion, 'b is suggested');
     const tr = normalizeTrackRecord(suggestion.trackRecord);

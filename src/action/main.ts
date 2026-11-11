@@ -69,7 +69,7 @@ async function run(): Promise<void> {
     ...(pr.body ? { intent: pr.body } : {}),
     ...(repository ? { repoUrl: `${server}/${repository}` } : {}),
     prNumber: pr.number,
-    runner: { spec: input('archaeology-version', '^0.10.0') },
+    runner: { spec: input('archaeology-version', '^0.12.0') },
     noHistory: input('history', 'true') === 'false',
     noCalibration: input('calibrate', 'true') === 'false',
     maxForgotten: Number.isFinite(maxForgottenRaw) ? Math.max(0, Math.trunc(maxForgottenRaw)) : 3,

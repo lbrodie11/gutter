@@ -126,3 +126,19 @@ test('report consistency (Rerun 1): results-rerun1.json is what the aggregator c
   const run = JSON.parse(readFileSync('docs/benchmark/data/rerun1-run.json', 'utf8'));
   assert.deepEqual(aggregate({ corpus: corpusDoc, inputs: loadInputs('docs/benchmark/data', corpusDoc, 'rerun1'), run, stage: 'rerun1' }), res);
 });
+
+test('replay-delta: per-PR differences by field, unmatched PRs, and the removing-PR runtime on both sides', async () => {
+  // @ts-expect-error: plain .mjs module without type declarations
+  const { replayDelta } = await import('../bench/replay-delta.mjs');
+  const r = (pr: string, over: Record<string, unknown> = {}) => ({ pr, salience: 'quiet', kinds: [], coverage: 'full', removes: false, ms: 10, baseGraphMs: 0, ...over });
+  const before = [r('#1'), r('#2', { kinds: ['wide-surface'], salience: 'brief' }), r('#3', { removes: true, ms: 30, baseGraphMs: 10, msWithoutBaseGraph: 20 })];
+  const after = [r('#1'), r('#2', { kinds: ['broken-import', 'wide-surface'], salience: 'brief' }), r('#3', { removes: true, ms: 22, baseGraphMs: 2, msWithoutBaseGraph: 20 }), r('#4')];
+  const d = replayDelta(before, after);
+  assert.equal(d.prs, 4);
+  assert.deepEqual(d.unmatched, ['#4']);
+  assert.equal(d.changed, 1);
+  assert.deepEqual(d.byField, { salience: 0, kinds: 1, coverage: 0, method: 0 });
+  assert.deepEqual(d.details[0], { pr: '#2', fields: ['kinds'], before: { kinds: ['wide-surface'] }, after: { kinds: ['broken-import', 'wide-surface'] } });
+  assert.equal(d.runtime.before.total.p95Ms, 30);
+  assert.equal(d.runtime.after.total.p95Ms, 22);
+});

@@ -6,6 +6,8 @@ import type { RaBacktest, RaDiff } from './archaeology.ts';
 
 /** First release with `openRepository` (RA-03) and the import resolver behind `importGraph` (RA-09). */
 export const MIN_RA_LIB_VERSION = '0.4.0';
+/** First release with `importGraph({ at })` and Python/Go edge roles (RA-20). */
+export const RA_AT_TREE_VERSION = '0.12.0';
 
 export class RaLibUnavailableError extends Error {
   readonly exitCode = 2;
@@ -35,7 +37,8 @@ export interface RaRepositorySession {
     followUpWindowHours?: number;
   }): Promise<RaBacktest>;
   /** RA-09 (>= 0.4.0): internal import graph; `files` limits `from` to them plus their reverse importers. */
-  importGraph?(opts?: { files?: string[] }): Promise<RaImportGraph>;
+  /** `at` (RA-20, >= 0.12.0): the graph of another commit's tree from this session, reusing unchanged files' extractions. */
+  importGraph?(opts?: { files?: string[]; at?: string }): Promise<RaImportGraph>;
   close(): Promise<void>;
 }
 
@@ -45,7 +48,11 @@ export interface RaImportGraph {
   tool: { name: string; version: string };
   meta: { imports?: { unresolvedByReason?: Record<string, number> } & Record<string, unknown>; warnings?: string[] } & Record<string, unknown>;
   files: string[];
-  edges: { from: string; to: string; specifier: string; kind: string; via?: string; heuristic?: boolean }[];
+  /**
+   * `role` / `name` (RA-20, >= 0.12.0) on Python and Go edges: `module` (the module the specifier names), `init` (an
+   * `__init__.py` run on the way), `name` (a submodule taken by `from pkg import name`, with `name`). May grow.
+   */
+  edges: { from: string; to: string; specifier: string; kind: string; via?: string; heuristic?: boolean; role?: string; name?: string }[];
   unresolved: { from: string; specifier: string; reason: string; reasonCode?: string }[];
   languages: string[];
 }
@@ -312,8 +319,11 @@ export async function analyzeWithLibrary(
   // GU-31: only a PR that removes a path needs to know who imported it at base. The base session is independent
   // of everything below, so it starts now and runs alongside diff, backtest and the head graphs.
   const removed = opts.removedFiles ?? [];
+  // Repo Archaeology >= 0.12 reads the base tree from this session (`importGraph({ at })`, after the head graph, whose
+  // extractions it reuses for unchanged files); older releases need the second session, started now.
+  const useAt = isVersionAtLeast(lib.version, RA_AT_TREE_VERSION);
   const basePending =
-    removed.length > 0 && opts.baseTree && typeof repo.importGraph === 'function'
+    !useAt && removed.length > 0 && opts.baseTree && typeof repo.importGraph === 'function'
       ? (async () => {
           const t0 = performance.now();
           const cached = opts.baseGraphCache?.has(baseGraphKey(opts.cwd, opts.baseTree!, opts.settings)) ?? false;
@@ -354,6 +364,20 @@ export async function analyzeWithLibrary(
         out.graph = undefined;
         out.repoGraph = undefined;
       }
+    }
+    if (useAt && out.graph && removed.length > 0 && opts.baseTree) {
+      const t0 = performance.now();
+      try {
+        try {
+          out.baseGraph = await repo.importGraph!({ files: [...removed], at: opts.baseTree });
+        } catch {
+          // A removed path RA does not list at the base tree (a submodule, say): the unscoped base graph instead.
+          out.baseGraph = await repo.importGraph!({ at: opts.baseTree });
+        }
+      } catch {
+        out.baseGraph = undefined;
+      }
+      out.baseGraphMs = performance.now() - t0;
     }
     if (basePending) {
       const b = await basePending;

@@ -351,7 +351,7 @@ test('resolveRaCommand resolves both Windows npx-cli.js candidates with win32 pa
     },
   );
   assert.equal(fromNpmExec.file, 'C:\\Program Files\\nodejs\\node.exe');
-  assert.deepEqual(fromNpmExec.pre, ['C:\\npm\\bin\\npx-cli.js', '--yes', 'repo-archaeology@^0.10.0']);
+  assert.deepEqual(fromNpmExec.pre, ['C:\\npm\\bin\\npx-cli.js', '--yes', 'repo-archaeology@^0.12.0']);
 
   // 2. Windows candidate #2: bundled npm next to node.exe (`C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js`) wins when npm_execpath is unset.
   const fromNodeDir = resolveRaCommand(
@@ -367,7 +367,7 @@ test('resolveRaCommand resolves both Windows npx-cli.js candidates with win32 pa
   assert.deepEqual(fromNodeDir.pre, [
     'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npx-cli.js',
     '--yes',
-    'repo-archaeology@^0.10.0',
+    'repo-archaeology@^0.12.0',
   ]);
 
   // 3. Windows when neither candidate exists throws a clear error mentioning GUTTER_RA_BIN.
@@ -387,5 +387,5 @@ test('resolveRaCommand resolves both Windows npx-cli.js candidates with win32 pa
 
   // 4. POSIX fallback uses npx directly.
   const posix = resolveRaCommand({}, { platform: 'linux', env: {} });
-  assert.deepEqual(posix, { file: 'npx', pre: ['--yes', 'repo-archaeology@^0.10.0'] });
+  assert.deepEqual(posix, { file: 'npx', pre: ['--yes', 'repo-archaeology@^0.12.0'] });
 });

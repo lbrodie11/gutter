@@ -263,18 +263,18 @@ test('coverage: imports reported as broken are not counted as unresolved', async
 
 // ---- Base graph is built only when needed ---------------------------------------------------
 
-function spyLibrary(): { file: string; log: () => string[] } {
+function spyLibrary(version = '0.10.0'): { file: string; log: () => string[] } {
   const dir = mkdtempSync(join(tmpdir(), 'gutter-ra-spy31-'));
   dirs.push(dir);
   const real = resolve('node_modules/repo-archaeology/dist/api/index.js');
   const file = join(dir, 'spy.mjs');
   writeFileSync(file, `import * as real from ${JSON.stringify(new URL(`file://${real}`).href)};
-export const version = '0.10.0';
+export const version = ${JSON.stringify(version)};
 export async function openRepository(opts) {
   const log = (globalThis.__gutterRaSpy31 ??= []);
   log.push('open:' + (opts.settings && opts.settings.maxCommits === 1 ? 'base' : 'head') + ':' + String(opts.useConfigFile));
   const repo = await real.openRepository(opts);
-  const wrap = (name) => async (...args) => { log.push(name + (name === 'importGraph' ? ':' + JSON.stringify(args[0]?.files ?? null) : '')); return repo[name](...args); };
+  const wrap = (name) => async (...args) => { log.push(name + (name === 'importGraph' ? ':' + JSON.stringify(args[0]?.files ?? null) + (args[0]?.at ? '@' + args[0].at : '') : '')); return repo[name](...args); };
   return { root: repo.root, headSha: repo.headSha, diff: wrap('diff'), backtest: wrap('backtest'), importGraph: wrap('importGraph'), close: wrap('close') };
 }
 `);
@@ -305,28 +305,67 @@ test('a deletion: the base graph is a second, history-light session at the merge
   assert.deepEqual(broken(b), { 'src/alias.ts': ['src/user.ts'] });
 });
 
-test('bench cache: two PRs on the same base tree share one base graph', async () => {
+test('bench cache (pre-RA-20 libraries): two PRs on the same base tree share one base graph', async () => {
   const { r, base } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
   const head1 = r.git('rev-parse', 'HEAD').trim();
   r.git('checkout', '-q', base);
   r.branch('other');
   r.rm('src/types.ts').commit('rm types');
   const head2 = r.git('rev-parse', 'HEAD').trim();
+  const real = await loadRaLibrary();
+  const legacy: LoadedRaLibrary = { version: '0.11.0', openRepository: (o) => real.openRepository(o) };
   const cache = new Map();
-  const a = await replayBriefWithMeta({ cwd: r.dir, base, head: head1, now: NOW, noCalibration: true, baseGraphCache: cache });
-  const b = await replayBriefWithMeta({ cwd: r.dir, base, head: head2, now: NOW, noCalibration: true, baseGraphCache: cache });
+  const opts = (head: string, removed: string) => ({ cwd: r.dir, head, base, changedFiles: [removed], headFiles: new Set(['src/user.ts']), noHistory: true, removedFiles: [removed], baseTree: base, baseGraphCache: cache });
+  const a = await analyzeWithLibrary(legacy, opts(head1, 'src/alias.ts'));
+  const b = await analyzeWithLibrary(legacy, opts(head2, 'src/types.ts'));
   assert.equal(cache.size, 1);
-  assert.ok((a.meta.stageTimingsMs.baseGraph ?? 0) > 0);
-  assert.equal(b.meta.stageTimingsMs.baseGraph, 0);
-  assert.deepEqual(broken(a.brief), { 'src/alias.ts': ['src/user.ts'] });
-  assert.deepEqual(broken(b.brief), { 'src/types.ts': ['src/user.ts'] });
+  assert.ok(a.baseGraphMs > 0);
+  assert.equal(b.baseGraphMs, 0);
+  assert.equal(a.sessions, 2);
+  assert.equal(b.sessions, 1, 'the cached base graph opened no session');
+  assert.ok(a.baseGraph && b.baseGraph);
+});
+
+test('RA >= 0.12: the base graph comes from the head session (`importGraph({ files, at })`), with no second session', async () => {
+  const { r, base } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
+  const spy = spyLibrary('0.12.0');
+  let sessions = 0;
+  const b = await buildBriefAsync({ cwd: r.dir, base, now: NOW, noCalibration: true, raLib: spy.file, onSession: (n) => (sessions = n) });
+  assert.equal(sessions, 1);
+  const log = spy.log();
+  assert.deepEqual(log.filter((x) => x.startsWith('open:')), ['open:head:undefined']);
+  assert.ok(log.some((x) => x.startsWith('importGraph:["src/alias.ts"]@')), 'scoped at the merge base');
+  assert.deepEqual(broken(b), { 'src/alias.ts': ['src/user.ts'] });
+  assert.equal(b.dependents.method, 'base-graph');
+});
+
+test('RA >= 0.12: an `at` call that rejects the scope retries unscoped; one that fails entirely falls back to relative-scan', async () => {
+  const { r, base, head } = pr({ 'src/a.ts': 'export const a = 1;\n', 'src/b.ts': "import { a } from './a';\nexport const b = a;\n" }, (x) => x.rm('src/a.ts'));
+  const real = await loadRaLibrary();
+  const withAt = (fail: 'scope' | 'all'): LoadedRaLibrary => ({
+    version: real.version,
+    openRepository: async (o) => {
+      const repo = await real.openRepository(o);
+      return { ...repo, root: repo.root, headSha: repo.headSha, diff: (x) => repo.diff(x), backtest: (x) => repo.backtest(x), close: () => repo.close(),
+        importGraph: async (x?: { files?: string[]; at?: string }) => {
+          if (x?.at && (fail === 'all' || x.files)) throw new Error('UsageError: not in at tree');
+          return repo.importGraph!(x);
+        } };
+    },
+  });
+  const opts = { cwd: r.dir, head, base, changedFiles: ['src/a.ts'], headFiles: new Set(['src/b.ts']), noHistory: true, removedFiles: ['src/a.ts'], baseTree: base };
+  const scoped = await analyzeWithLibrary(withAt('scope'), opts);
+  assert.ok(scoped.baseGraph, 'unscoped at-tree graph');
+  assert.equal(scoped.sessions, 1);
+  const failed = await analyzeWithLibrary(withAt('all'), opts);
+  assert.equal(failed.baseGraph, undefined);
 });
 
 test('a failing base session falls back to the relative scan of the head graph (method relative-scan)', async () => {
   const { r, base, head } = pr({ 'src/a.ts': 'export const a = 1;\n', 'src/b.ts': "import { a } from './a';\nexport const b = a;\n" }, (x) => x.rm('src/a.ts'));
   const real = await loadRaLibrary();
   const flaky: LoadedRaLibrary = {
-    version: real.version,
+    version: '0.11.0', // pre-RA-20: the second-session path
     openRepository: async (o) => {
       if ((o.settings as { maxCommits?: number } | undefined)?.maxCommits === 1) throw new Error('base session unavailable');
       return real.openRepository(o);
@@ -345,7 +384,7 @@ test('a removed path RA cannot scope at the base tree falls back to the unscoped
   const { r, base, head } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
   const real = await loadRaLibrary();
   const strict: LoadedRaLibrary = {
-    version: real.version,
+    version: '0.11.0', // pre-RA-20: the second-session path
     openRepository: async (o) => {
       const repo = await real.openRepository(o);
       const base = (o.settings as { maxCommits?: number } | undefined)?.maxCommits === 1;
@@ -366,7 +405,7 @@ test('bench cache: a failed base graph is not cached (the next PR on that base t
   const real = await loadRaLibrary();
   let fail = true;
   const flaky: LoadedRaLibrary = {
-    version: real.version,
+    version: '0.11.0', // pre-RA-20: the second-session path
     openRepository: async (o) => {
       if ((o.settings as { maxCommits?: number } | undefined)?.maxCommits === 1 && fail) {
         fail = false;
