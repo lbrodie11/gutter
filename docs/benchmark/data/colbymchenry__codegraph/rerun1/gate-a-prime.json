@@ -1,0 +1,3420 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gate-a-prime",
+  "repo": "colbymchenry/codegraph",
+  "headSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+  "tools": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3"
+  },
+  "prsEvaluated": 200,
+  "replayParity": {
+    "salienceMismatches": 0,
+    "checklistKindMismatches": 0
+  },
+  "a": {
+    "full": 0,
+    "evaluated": 200,
+    "share": 0,
+    "budget": 0.3333333333333333,
+    "met": true
+  },
+  "b": {
+    "brokenImport": {
+      "checked": 0,
+      "confirmed": 0,
+      "rate": null,
+      "failures": [],
+      "needs": 0.95,
+      "met": null
+    },
+    "untestedChange": {
+      "checked": 0,
+      "confirmed": 0,
+      "rate": null,
+      "failures": [],
+      "needs": 1,
+      "met": null
+    },
+    "testHistory": {
+      "checked": 30,
+      "confirmed": 30,
+      "rate": 1,
+      "failures": [],
+      "needs": 1,
+      "met": true
+    }
+  },
+  "c": {
+    "pagesChecked": 200,
+    "ownWordingHits": [],
+    "rawHits": 0,
+    "met": true
+  },
+  "replays": [
+    {
+      "pr": "#3214",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4475,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3195",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 5435,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3194",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4076,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3193",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3849,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3192",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4093,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3183",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3792,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3182",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4134,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3191",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2669,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3190",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3097,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3189",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 3583,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3188",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2909,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3187",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2749,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3186",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3028,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3185",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2893,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3184",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3296,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3181",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3966,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3180",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 9216,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3179",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 15764,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3178",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3900,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3177",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3337,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3171",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2177,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3170",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2685,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3176",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4034,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3175",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2899,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3174",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4607,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3173",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3417,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3172",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 6434,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3169",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3648,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3168",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3036,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3166",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2212,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3165",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2022,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3164",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2069,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3163",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2022,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3162",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2770,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3161",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 6786,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3167",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 10779,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3157",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 10588,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3155",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 9343,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3153",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2953,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3152",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 9408,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3151",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 7070,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3150",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 15644,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3149",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3256,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3148",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2589,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3147",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 5026,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3146",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4274,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3145",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3101,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3144",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 2745,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3143",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3582,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3142",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2331,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3141",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2190,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3129",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2487,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3128",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3440,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3127",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2924,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3123",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3187,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3119",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2396,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3118",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2306,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3115",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2097,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3113",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4003,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3112",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3298,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3109",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2431,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3104",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2083,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3099",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2389,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3096",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3547,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3095",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3358,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3092",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4015,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3090",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 4885,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3081",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1965,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3080",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1931,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3079",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2133,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3066",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1833,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3048",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1787,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3077",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1805,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3065",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1828,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3071",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2127,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3070",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2041,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3067",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1977,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3069",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1935,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3064",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1784,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3068",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2005,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3060",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1892,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3058",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2353,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3056",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1483,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3055",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "java",
+        "rust"
+      ],
+      "removes": false,
+      "ms": 2356,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3025",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1478,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3053",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1561,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3052",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1603,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3050",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1527,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3051",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "java",
+        "kotlin",
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1836,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3047",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1927,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3044",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1535,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3049",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1498,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3046",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1559,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3045",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1587,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3043",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1600,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3031",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2142,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3030",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1558,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3029",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1493,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3009",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1497,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3032",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1626,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3028",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1556,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3026",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1513,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3024",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1590,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3023",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1611,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3018",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1696,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3020",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2807,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3017",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "sql"
+      ],
+      "removes": false,
+      "ms": 3091,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3014",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1858,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#3012",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2394,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2969",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1698,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2943",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1536,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2961",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1789,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2956",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1557,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2939",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1474,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2938",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1503,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2941",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1542,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2937",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1630,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2936",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1497,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2932",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1478,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2933",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1508,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2928",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1468,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2931",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1523,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2929",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1675,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2864",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1507,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2858",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1602,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2846",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1509,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2845",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1540,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2844",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1508,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2840",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1560,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2843",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1532,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2842",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1492,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2841",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1805,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2838",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1628,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2837",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1592,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2835",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1477,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2834",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1489,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2832",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2566,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2831",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1676,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2827",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1519,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2828",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1509,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2826",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1512,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2824",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1501,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2825",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1493,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2823",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1813,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2822",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1534,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2821",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1580,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2820",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1502,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2819",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1591,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2817",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1829,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2816",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1441,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2818",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1634,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2814",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1515,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2813",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1570,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2812",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1485,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2811",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2041,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2810",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2366,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2809",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1951,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2808",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2297,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2806",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3083,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2804",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2119,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2803",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2041,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2802",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 2553,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2801",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1552,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2799",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1787,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2798",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1406,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2797",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2203,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2796",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1569,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2795",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1733,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2794",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1750,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2793",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1810,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2792",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2640,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2790",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1730,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2789",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1646,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2787",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1638,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2788",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1746,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2785",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1702,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2784",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2473,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2783",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2837,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2782",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2332,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2781",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2323,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2778",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3193,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2777",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2038,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2776",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 2831,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2774",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1642,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2773",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1710,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2771",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3915,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2769",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1977,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2772",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1755,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2768",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2213,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2765",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1498,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2764",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1388,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2763",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1377,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2762",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1390,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2760",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1398,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2759",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "rust"
+      ],
+      "removes": false,
+      "ms": 1951,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2757",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1702,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2755",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2112,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2752",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2743,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2751",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2191,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#2750",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 3654,
+      "baseGraphMs": 0
+    }
+  ]
+}

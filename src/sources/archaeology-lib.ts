@@ -6,6 +6,8 @@ import type { RaBacktest, RaDiff } from './archaeology.ts';
 
 /** First release with `openRepository` (RA-03) and the import resolver behind `importGraph` (RA-09). */
 export const MIN_RA_LIB_VERSION = '0.4.0';
+/** First release with `importGraph({ at })` and Python/Go edge roles (RA-20). */
+export const RA_AT_TREE_VERSION = '0.12.0';
 
 export class RaLibUnavailableError extends Error {
   readonly exitCode = 2;
@@ -35,7 +37,8 @@ export interface RaRepositorySession {
     followUpWindowHours?: number;
   }): Promise<RaBacktest>;
   /** RA-09 (>= 0.4.0): internal import graph; `files` limits `from` to them plus their reverse importers. */
-  importGraph?(opts?: { files?: string[] }): Promise<RaImportGraph>;
+  /** `at` (RA-20, >= 0.12.0): the graph of another commit's tree from this session, reusing unchanged files' extractions. */
+  importGraph?(opts?: { files?: string[]; at?: string }): Promise<RaImportGraph>;
   close(): Promise<void>;
 }
 
@@ -45,7 +48,11 @@ export interface RaImportGraph {
   tool: { name: string; version: string };
   meta: { imports?: { unresolvedByReason?: Record<string, number> } & Record<string, unknown>; warnings?: string[] } & Record<string, unknown>;
   files: string[];
-  edges: { from: string; to: string; specifier: string; kind: string; via?: string; heuristic?: boolean }[];
+  /**
+   * `role` / `name` (RA-20, >= 0.12.0) on Python and Go edges: `module` (the module the specifier names), `init` (an
+   * `__init__.py` run on the way), `name` (a submodule taken by `from pkg import name`, with `name`). May grow.
+   */
+  edges: { from: string; to: string; specifier: string; kind: string; via?: string; heuristic?: boolean; role?: string; name?: string }[];
   unresolved: { from: string; specifier: string; reason: string; reasonCode?: string }[];
   languages: string[];
 }
@@ -182,8 +189,83 @@ export interface LibraryAnalysis {
   graph?: RaImportGraph;
   /** `importGraph()` unfiltered, read from the same session's index: repo-wide `unresolved` (coverage, dangling imports). */
   repoGraph?: RaImportGraph;
-  /** History loads in this analysis (always 1: one `openRepository` per brief). */
+  /**
+   * GU-31: the import graph at the PR's base tree, only when the PR removes files (deleted or renamed away):
+   * `importGraph({ files: removed })` from a second, history-light session opened at `baseTree`. Undefined
+   * when nothing was removed, or when the base session failed (dependents then use the relative fallback).
+   */
+  baseGraph?: RaImportGraph;
+  /** GU-31: wall time of the base graph (session open + `importGraph`, concurrent with the head work), 0 when none was built or it came from the cache. */
+  baseGraphMs: number;
+  /** History loads in this analysis: 1 for the head session, plus 1 when a base session opened. */
   sessions: number;
+}
+
+/** GU-31, bench only: base graphs per base tree within one run (seeded mutations share their host). */
+export type BaseGraphCache = Map<string, Promise<RaImportGraph | undefined>>;
+/** Base graphs a bench run keeps at once (insertion order; the oldest is dropped). */
+export const BASE_GRAPH_CACHE_MAX = 8;
+const baseGraphKey = (cwd: string, baseTree: string, settings: Record<string, unknown> | undefined) =>
+  `${cwd}\0${baseTree}\0${JSON.stringify(settings ?? {})}`;
+
+/**
+ * GU-31: the import graph at `baseTree` for the importers of `removed`. A second `openRepository` session at
+ * the base tree with the head session's explicit settings, `useConfigFile: false` (the PR's config file never
+ * applies), `maxCommits: 1` and the history cache off: the import graph reads the tree, not history, so loading
+ * one commit is the cheapest session the API allows. Repo Archaeology indexes the whole tree either way; `files` only scopes
+ * the result to the removed files and their reverse importers. With `cache`, the unscoped graph is kept per
+ * base tree and settings, so several PRs on one base share it.
+ */
+export async function baseImportGraph(
+  lib: LoadedRaLibrary,
+  opts: {
+    cwd: string;
+    baseTree: string;
+    removed: readonly string[];
+    settings?: Record<string, unknown>;
+    cache?: BaseGraphCache;
+    /** Called once a base session actually opened (one more history load). */
+    onOpen?: () => void;
+  },
+): Promise<RaImportGraph | undefined> {
+  const build = async (files: string[] | undefined): Promise<RaImportGraph | undefined> => {
+    const cache = opts.settings?.cache;
+    const repo = await lib.openRepository({
+      cwd: opts.cwd,
+      head: opts.baseTree,
+      // One commit and no history cache: the base session reads the tree only and never writes under .git.
+      settings: { ...(opts.settings ?? {}), maxCommits: 1, cache: { ...(cache && typeof cache === 'object' ? (cache as Record<string, unknown>) : {}), enabled: false } },
+      useConfigFile: false,
+    });
+    opts.onOpen?.();
+    try {
+      if (typeof repo.importGraph !== 'function') return undefined;
+      if (!files) return await repo.importGraph();
+      try {
+        return await repo.importGraph({ files });
+      } catch {
+        // A removed path RA does not list at the base tree (a submodule, say) rejects the scoped call; the
+        // session's index is built either way, so the unscoped graph costs no extra parsing.
+        return await repo.importGraph();
+      }
+    } finally {
+      await repo.close();
+    }
+  };
+  if (!opts.cache) return build([...opts.removed]);
+  const key = baseGraphKey(opts.cwd, opts.baseTree, opts.settings);
+  let hit = opts.cache.get(key);
+  if (!hit) {
+    // A failure is not cached: the next PR on this base tree tries again.
+    hit = build(undefined).catch(() => {
+      opts.cache!.delete(key);
+      return undefined;
+    });
+    opts.cache.set(key, hit);
+    // Bounded: real PRs rarely share a base, so only the most recent trees are worth their memory.
+    while (opts.cache.size > BASE_GRAPH_CACHE_MAX) opts.cache.delete(opts.cache.keys().next().value!);
+  }
+  return hit;
 }
 
 /**
@@ -208,6 +290,12 @@ export async function analyzeWithLibrary(
     /** Skip `diff` when the caller already has one (CLI `--ra-diff`); the graph still comes from this session. */
     skipDiff?: boolean;
     skipBacktest?: boolean;
+    /** GU-31: paths present at `baseTree` and missing at head (deleted, renamed away). Non-empty builds the base graph. */
+    removedFiles?: readonly string[];
+    /** GU-31: the tree the PR's diff starts from (`git merge-base base head`). Required for the base graph. */
+    baseTree?: string;
+    /** GU-31, bench only: reuse base graphs across PRs on the same base tree. */
+    baseGraphCache?: BaseGraphCache;
   },
 ): Promise<LibraryAnalysis> {
   const open = (useConfigFile: boolean | undefined) =>
@@ -227,7 +315,34 @@ export async function analyzeWithLibrary(
     if (opts.useConfigFile === false) throw err;
     repo = await open(false);
   }
-  const out: LibraryAnalysis = { sessions: 1 };
+  const out: LibraryAnalysis = { sessions: 1, baseGraphMs: 0 };
+  // GU-31: only a PR that removes a path needs to know who imported it at base. The base session is independent
+  // of everything below, so it starts now and runs alongside diff, backtest and the head graphs.
+  const removed = opts.removedFiles ?? [];
+  // Repo Archaeology >= 0.12 reads the base tree from this session (`importGraph({ at })`, after the head graph, whose
+  // extractions it reuses for unchanged files); older releases need the second session, started now.
+  const useAt = isVersionAtLeast(lib.version, RA_AT_TREE_VERSION);
+  const basePending =
+    !useAt && removed.length > 0 && opts.baseTree && typeof repo.importGraph === 'function'
+      ? (async () => {
+          const t0 = performance.now();
+          const cached = opts.baseGraphCache?.has(baseGraphKey(opts.cwd, opts.baseTree!, opts.settings)) ?? false;
+          let graph: RaImportGraph | undefined;
+          try {
+            graph = await baseImportGraph(lib, {
+              cwd: opts.cwd,
+              baseTree: opts.baseTree!,
+              removed,
+              ...(opts.settings ? { settings: opts.settings } : {}),
+              ...(opts.baseGraphCache ? { cache: opts.baseGraphCache } : {}),
+              onOpen: () => out.sessions++,
+            });
+          } catch {
+            graph = undefined;
+          }
+          return { graph, ms: cached ? 0 : performance.now() - t0 };
+        })()
+      : undefined;
   try {
     if (!opts.noHistory && !opts.skipDiff) {
       // `base` as the CLI's `diff --base` and the pre-GU-05 replay passed it, so results stay identical.
@@ -250,8 +365,30 @@ export async function analyzeWithLibrary(
         out.repoGraph = undefined;
       }
     }
+    if (useAt && out.graph && removed.length > 0 && opts.baseTree) {
+      const t0 = performance.now();
+      try {
+        try {
+          out.baseGraph = await repo.importGraph!({ files: [...removed], at: opts.baseTree });
+        } catch {
+          // A removed path RA does not list at the base tree (a submodule, say): the unscoped base graph instead.
+          out.baseGraph = await repo.importGraph!({ at: opts.baseTree });
+        }
+      } catch {
+        out.baseGraph = undefined;
+      }
+      out.baseGraphMs = performance.now() - t0;
+    }
+    if (basePending) {
+      const b = await basePending;
+      // Without a head graph there is nothing to compare against: dependents use the relative fallback.
+      if (out.graph) out.baseGraph = b.graph;
+      out.baseGraphMs = b.ms;
+    }
     return out;
   } finally {
+    // Never leave the base session running past this analysis, even when the head work threw.
+    await basePending?.catch(() => undefined);
     await repo.close();
   }
 }

@@ -1,0 +1,38 @@
+{
+  "repo": "faastjs/faast.js",
+  "pinnedSha": "0038379bf4669c7abcc93d2b821f62313c0f6210",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 156
+    },
+    "gate": {
+      "status": "done",
+      "ms": 86188
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 29024
+    }
+  },
+  "timedMs": 115212,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 115369,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

@@ -24,6 +24,7 @@ import { join, posix } from 'node:path';
 import { parseArgs } from 'node:util';
 import ts from 'typescript';
 import { replayBriefWithMeta } from '../src/brief.ts';
+import type { BaseGraphCache } from '../src/sources/archaeology-lib.ts';
 import type { GutterBrief } from '../src/contract.ts';
 import { GitTreeReader } from '../src/source/reader.ts';
 
@@ -83,11 +84,45 @@ export function gitTree(cwd: string, sha: string): Tree & { close(): void } {
     files,
     has: (p) => set.has(p),
     read: (p) => {
-      if (!cache.has(p)) cache.set(p, set.has(p) ? r.readText(p, 2 * 1024 * 1024) : undefined);
+      if (!cache.has(p)) cache.set(p, set.has(p) ? (r.readText(p, 2 * 1024 * 1024) ?? readRaw(cwd, sha, p, 2 * 1024 * 1024)) : undefined);
       return cache.get(p);
     },
     close: () => r.close(),
   };
+}
+
+/**
+ * Import specifiers of a TS/JS source by walking TypeScript's AST (GU-31 erratum 2): `import`/`export … from`
+ * (including `export * as ns from`), `import x = require()`, `import()` and `require()` calls anywhere in the
+ * file, and `import('x')` types. `ts.preProcessFile` alone, the GU-30 oracle, drops `export * as ns from` and
+ * misses calls deep in a file; its results are kept in the union (triple-slash references are not imports).
+ */
+export function importSpecifiers(text: string, fileName = 'x.ts'): string[] {
+  const out = new Set(ts.preProcessFile(text, true, true).importedFiles.map((f) => f.fileName));
+  const kind = /\.[cm]?tsx$/.test(fileName) ? ts.ScriptKind.TSX : /\.jsx$/.test(fileName) ? ts.ScriptKind.JSX : /\.[cm]?js$/.test(fileName) ? ts.ScriptKind.JS : ts.ScriptKind.TS;
+  const sf = ts.createSourceFile(`/repo/${fileName}`, text, ts.ScriptTarget.Latest, false, kind);
+  const lit = (n: ts.Node | undefined) => (n && ts.isStringLiteralLike(n) ? n.text : undefined);
+  const visit = (n: ts.Node): void => {
+    let s: string | undefined;
+    if (ts.isImportDeclaration(n) || ts.isExportDeclaration(n)) s = lit(n.moduleSpecifier);
+    else if (ts.isImportEqualsDeclaration(n) && ts.isExternalModuleReference(n.moduleReference)) s = lit(n.moduleReference.expression);
+    else if (ts.isCallExpression(n) && n.arguments.length >= 1 && (n.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(n.expression) && n.expression.text === 'require'))) s = lit(n.arguments[0]);
+    else if (ts.isImportTypeNode(n) && ts.isLiteralTypeNode(n.argument)) s = lit(n.argument.literal);
+    if (s) out.add(s);
+    ts.forEachChild(n, visit);
+  };
+  visit(sf);
+  return [...out];
+}
+
+/** A blob read as text even when it contains NUL bytes (GU-31 erratum 2: `GitTreeReader` skips those as binary). */
+function readRaw(cwd: string, sha: string, path: string, maxBytes: number): string | undefined {
+  try {
+    const buf = execFileSync('git', ['cat-file', 'blob', `${sha}:${path}`], { cwd, maxBuffer: maxBytes + 1, stdio: ['ignore', 'pipe', 'ignore'] });
+    return buf.length > maxBytes ? undefined : buf.toString('utf8');
+  } catch {
+    return undefined;
+  }
 }
 
 export function memTree(map: Record<string, string>): Tree {
@@ -239,8 +274,8 @@ export class TsOracle {
   }
 
   /** Import specifiers of a file: static, dynamic, `require`, `export … from`, type-only included. */
-  static specifiers(text: string): string[] {
-    return ts.preProcessFile(text, true, true).importedFiles.map((f) => f.fileName);
+  static specifiers(text: string, fileName?: string): string[] {
+    return importSpecifiers(text, fileName);
   }
 
   edges(files: readonly string[]): Edge[] {
@@ -248,7 +283,7 @@ export class TsOracle {
     for (const importer of files) {
       const text = this.tree.read(importer);
       if (text === undefined) continue;
-      for (const specifier of new Set(TsOracle.specifiers(text))) {
+      for (const specifier of new Set(TsOracle.specifiers(text, importer))) {
         const target = this.resolve(importer, specifier);
         if (target && target !== importer) out.push({ importer, specifier, target });
       }
@@ -445,7 +480,7 @@ function removedTargets(lang: Lang, base: Tree, changes: ReadonlyMap<string, str
 /** Internal specifiers of one file with their resolution in `oracle`'s tree (undefined: does not resolve). */
 function specsOf(lang: Lang, oracle: Oracle, importer: string, text: string): { specifier: string; target: string | undefined }[] {
   if (lang === 'typescript') {
-    return [...new Set(TsOracle.specifiers(text))].filter((s) => s.startsWith('.') || oracle.resolve(importer, s) !== undefined).map((s) => ({ specifier: s, target: oracle.resolve(importer, s) }));
+    return [...new Set(TsOracle.specifiers(text, importer))].filter((s) => s.startsWith('.') || oracle.resolve(importer, s) !== undefined).map((s) => ({ specifier: s, target: oracle.resolve(importer, s) }));
   }
   if (lang === 'go') {
     const go = oracle as GoOracle;
@@ -734,11 +769,15 @@ export interface SeededRecord {
   missReason?: 'unchecked' | 'partial' | 'missed';
   coverage: 'full' | 'partial';
   analyzers: string[];
+  /** GU-31, additive: how removed paths were checked (`base-graph` or `relative-scan`). */
+  method?: string;
   ms: number;
+  /** GU-31, additive: of which the base import graph (0 when it came from the run's cache). */
+  baseGraphMs?: number;
   error?: string;
 }
 
-export function score(lang: Lang, m: Mutation, brief: GutterBrief): Pick<SeededRecord, 'reported' | 'detected' | 'missReason' | 'coverage' | 'analyzers'> {
+export function score(lang: Lang, m: Mutation, brief: GutterBrief): Pick<SeededRecord, 'reported' | 'detected' | 'missReason' | 'coverage' | 'analyzers' | 'method'> {
   const brokenBy = new Map<string, Set<string>>();
   for (const e of m.broken) {
     const key = e.target;
@@ -757,7 +796,7 @@ export function score(lang: Lang, m: Mutation, brief: GutterBrief): Pick<SeededR
   const detected = m.positive && reported.some((r) => m.removed.includes(r.file));
   const unchecked = m.removed.some((p) => brief.dependents.unchecked.includes(p));
   const missReason = m.positive && !detected ? (unchecked ? 'unchecked' : brief.dependents.coverage === 'partial' ? 'partial' : 'missed') : undefined;
-  return { reported, detected, ...(missReason ? { missReason } : {}), coverage: brief.dependents.coverage, analyzers: brief.dependents.analyzers };
+  return { reported, detected, ...(missReason ? { missReason } : {}), coverage: brief.dependents.coverage, analyzers: brief.dependents.analyzers, ...(brief.dependents.method ? { method: brief.dependents.method } : {}) };
 }
 
 // ---- Run --------------------------------------------------------------------------------------
@@ -770,6 +809,8 @@ export async function runSeeded(opts: { cwd: string; lang: Lang; repoName: strin
   mkdirSync(opts.out, { recursive: true });
   const records: SeededRecord[] = [];
   const meta: Record<string, unknown>[] = [];
+  // GU-31: every mutation on a host shares that host's base import graph.
+  const baseGraphCache: BaseGraphCache = new Map();
   const perHost = (n: number, i: number) => Math.floor(n / hosts.length) + (i < n % hosts.length ? 1 : 0);
   for (const [i, host] of hosts.entries()) {
     const tree = gitTree(opts.cwd, host);
@@ -788,8 +829,8 @@ export async function runSeeded(opts: { cwd: string; lang: Lang; repoName: strin
         oracleBroken: m.broken.map(({ importer, specifier, target }) => ({ importer, specifier, target })),
       };
       try {
-        const res = await replayBriefWithMeta({ cwd: opts.cwd, base: host, head: commit, noCalibration: true, title: `seeded ${m.kind}` });
-        records.push({ ...base, commit, ...score(opts.lang, m, res.brief), ms: Math.round(performance.now() - t0) });
+        const res = await replayBriefWithMeta({ cwd: opts.cwd, base: host, head: commit, noCalibration: true, title: `seeded ${m.kind}`, baseGraphCache });
+        records.push({ ...base, commit, ...score(opts.lang, m, res.brief), ms: Math.round(performance.now() - t0), baseGraphMs: Math.round(res.meta.stageTimingsMs.baseGraph ?? 0) });
       } catch (err) {
         records.push({ ...base, reported: [], detected: false, ...(m.positive ? { missReason: 'missed' as const } : {}), coverage: 'partial', analyzers: [], ms: Math.round(performance.now() - t0), error: (err as Error).message.split('\n')[0] });
       }

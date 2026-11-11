@@ -1,0 +1,130 @@
+{
+  "seed": 20261111,
+  "repoSeed": 2790403374,
+  "hosts": [
+    "117fb577fde50d4b787748d24877743367c25aa5",
+    "4af867f1a713b1be1ffbdab935a2a4480b814546",
+    "18196f514d40cfcd6211831caa2107434a23fcd2"
+  ],
+  "meta": [
+    {
+      "host": "117fb577fde50d4b787748d24877743367c25aa5",
+      "eligiblePositive": 276,
+      "eligibleNegative": {
+        "rename-updated": 77,
+        "delete-unimported": 15,
+        "move-reexport": 201,
+        "test-only": 349
+      },
+      "negativesTaken": {
+        "rename-updated": 3,
+        "delete-unimported": 3,
+        "move-reexport": 2,
+        "test-only": 2
+      },
+      "rejected": {
+        "rename-updated: not applicable": 5
+      },
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "4af867f1a713b1be1ffbdab935a2a4480b814546",
+      "eligiblePositive": 273,
+      "eligibleNegative": {
+        "rename-updated": 77,
+        "delete-unimported": 15,
+        "move-reexport": 199,
+        "test-only": 346
+      },
+      "negativesTaken": {
+        "delete-unimported": 3,
+        "move-reexport": 3,
+        "test-only": 2,
+        "rename-updated": 2
+      },
+      "rejected": {
+        "rename-updated: not applicable": 1
+      },
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "18196f514d40cfcd6211831caa2107434a23fcd2",
+      "eligiblePositive": 279,
+      "eligibleNegative": {
+        "rename-updated": 77,
+        "delete-unimported": 15,
+        "move-reexport": 204,
+        "test-only": 354
+      },
+      "negativesTaken": {
+        "move-reexport": 3,
+        "test-only": 3,
+        "rename-updated": 2,
+        "delete-unimported": 2
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    }
+  ],
+  "positives": 30,
+  "negatives": 30,
+  "reportedItems": 26,
+  "confirmedItems": 25,
+  "precision": 0.9615384615384616,
+  "detected": 26,
+  "recall": 0.8666666666666667,
+  "falsePositives": 0,
+  "falsePositiveRate": 0,
+  "skippedUncheckedOrPartial": 4,
+  "skippedShare": 0.13333333333333333,
+  "errors": 0,
+  "byKind": {
+    "delete": {
+      "n": 15,
+      "detected": 12,
+      "withReport": 12
+    },
+    "rename": {
+      "n": 15,
+      "detected": 14,
+      "withReport": 14
+    },
+    "rename-updated": {
+      "n": 7,
+      "detected": 0,
+      "withReport": 0
+    },
+    "delete-unimported": {
+      "n": 8,
+      "detected": 0,
+      "withReport": 0
+    },
+    "move-reexport": {
+      "n": 8,
+      "detected": 0,
+      "withReport": 0
+    },
+    "test-only": {
+      "n": 7,
+      "detected": 0,
+      "withReport": 0
+    }
+  },
+  "missReasons": {
+    "unchecked": 0,
+    "partial": 4,
+    "missed": 0
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "seed": 20261111,
+  "repoSeed": 1280732830,
+  "hosts": [
+    "d0a5870524257d284aa004686fa6dc7039318f67",
+    "cd39785813df6177fae7fe0c11302815f0d1c522",
+    "74eaed2823ed5d841125cc911cc877cd7193c14a"
+  ],
+  "meta": [
+    {
+      "host": "d0a5870524257d284aa004686fa6dc7039318f67",
+      "eligiblePositive": 530,
+      "eligibleNegative": {
+        "rename-updated": 201,
+        "delete-unimported": 15,
+        "move-reexport": 530,
+        "test-only": 53
+      },
+      "negativesTaken": {
+        "rename-updated": 3,
+        "delete-unimported": 3,
+        "move-reexport": 2,
+        "test-only": 2
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "cd39785813df6177fae7fe0c11302815f0d1c522",
+      "eligiblePositive": 528,
+      "eligibleNegative": {
+        "rename-updated": 214,
+        "delete-unimported": 15,
+        "move-reexport": 528,
+        "test-only": 30
+      },
+      "negativesTaken": {
+        "delete-unimported": 3,
+        "move-reexport": 3,
+        "test-only": 2,
+        "rename-updated": 2
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "74eaed2823ed5d841125cc911cc877cd7193c14a",
+      "eligiblePositive": 523,
+      "eligibleNegative": {
+        "rename-updated": 199,
+        "delete-unimported": 13,
+        "move-reexport": 523,
+        "test-only": 0
+      },
+      "negativesTaken": {
+        "move-reexport": 4,
+        "rename-updated": 3,
+        "delete-unimported": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    }
+  ],
+  "positives": 30,
+  "negatives": 30,
+  "reportedItems": 30,
+  "confirmedItems": 30,
+  "precision": 1,
+  "detected": 30,
+  "recall": 1,
+  "falsePositives": 0,
+  "falsePositiveRate": 0,
+  "skippedUncheckedOrPartial": 0,
+  "skippedShare": 0,
+  "errors": 0,
+  "byKind": {
+    "delete": {
+      "n": 15,
+      "detected": 15,
+      "withReport": 15
+    },
+    "rename": {
+      "n": 15,
+      "detected": 15,
+      "withReport": 15
+    },
+    "rename-updated": {
+      "n": 8,
+      "detected": 0,
+      "withReport": 0
+    },
+    "delete-unimported": {
+      "n": 9,
+      "detected": 0,
+      "withReport": 0
+    },
+    "move-reexport": {
+      "n": 9,
+      "detected": 0,
+      "withReport": 0
+    },
+    "test-only": {
+      "n": 4,
+      "detected": 0,
+      "withReport": 0
+    }
+  },
+  "missReasons": {
+    "unchecked": 0,
+    "partial": 0,
+    "missed": 0
+  }
+}

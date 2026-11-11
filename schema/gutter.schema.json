@@ -90,7 +90,8 @@
           }
         },
         "unresolvedAliases": { "type": "integer", "minimum": 0, "description": "Deprecated legacy v1 count normalized into unresolved.count." },
-        "scannedFiles": { "type": "integer" }
+        "scannedFiles": { "type": "integer" },
+        "method": { "enum": ["base-graph", "relative-scan"], "description": "GU-31, optional: how importers of removed (deleted or renamed-away) paths were found. base-graph: Repo Archaeology's import graphs at base and head (TS/JS, Go, Python); relative-scan: relative TS/JS specifiers only (fallback). Absent when the library ran and nothing was removed. Consumers must tolerate unknown enum values." }
       }
     },
     "forgotten": {

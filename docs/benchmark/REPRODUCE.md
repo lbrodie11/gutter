@@ -9,7 +9,10 @@ The rules are preregistered in [`CORPUS.md`](CORPUS.md); the corpus is [`bench/c
 ```bash
 git clone https://github.com/lbrodie11/gutter.git
 cd gutter
-npm ci        # installs the pinned repo-archaeology (0.10.0) and TypeScript used by the oracles
+npm ci        # installs the pinned repo-archaeology and the TypeScript the oracles use
+# GU-30 and Rerun 1 ran on repo-archaeology 0.10.0 (the pin until GU-31 moved it to 0.12.0; the per-PR delta of that
+# upgrade is in RA-0.12.md). To reproduce them exactly:
+npm i --no-save repo-archaeology@0.10.0
 ```
 
 Clones go to `$GUTTER_BENCH_CACHE` (default `~/.cache/gutter-bench`), blobless, checked out at each repository's pinned SHA.
@@ -42,6 +45,17 @@ node bench/aggregate.mjs --write     # regenerates docs/benchmark/README.md and 
 ```
 
 The published run took several hours on the machine named in `README.md` ("Environment"). The largest repositories dominate; a repository that exceeds its 45 minutes is listed as `failed: timeout`, never dropped.
+
+### Rerun 1 (GU-31, `CORPUS.md` §6)
+
+Rerun 1 keeps each repository's GU-30 `bench.json` (`corpus/bench/`) and reruns only the gate replay (Gate A′ (a) and (c), and the real-PR facts, measured with the current code) and the seeded check with the new seed:
+
+```bash
+node bench/run-corpus.mjs --rerun rerun1 --seed 20261111 --jobs 2
+node bench/aggregate.mjs --write     # also writes results-rerun1.json; README.md shows both runs
+```
+
+It writes `docs/benchmark/data/<owner>__<repo>/rerun1/` and `docs/benchmark/data/rerun1-run.json`. `test/gu31-bench.test.ts` checks that `results-rerun1.json` is what the aggregator computes from that data.
 
 ## 4. What should match
 

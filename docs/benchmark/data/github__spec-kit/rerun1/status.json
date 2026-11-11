@@ -1,0 +1,38 @@
+{
+  "repo": "github/spec-kit",
+  "pinnedSha": "a227e38315cd38172b04f2fb8f06ce8b69b38331",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 50
+    },
+    "gate": {
+      "status": "done",
+      "ms": 422212
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 76182
+    }
+  },
+  "timedMs": 498394,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 498447,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

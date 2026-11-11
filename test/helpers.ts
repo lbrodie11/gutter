@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import type { RaBacktest, RaDiff } from '../src/sources/archaeology.ts';
@@ -81,3 +81,46 @@ export function raBacktestFixture(precision: number, hitRate = Math.min(1, preci
     ],
   };
 }
+
+/**
+ * A dependency-free conformance check: every `required` key in the published
+ * schema is present in a real brief, at every nested object level we can reach.
+ * Keeps schema/gutter.schema.json and src/contract.ts from drifting apart.
+ */
+export type Schema = {
+  type?: string | string[];
+  required?: string[];
+  properties?: Record<string, Schema>;
+  items?: Schema;
+  enum?: unknown[];
+  maxItems?: number;
+  $ref?: string;
+};
+export const root = JSON.parse(readFileSync(new URL('../schema/gutter.schema.json', import.meta.url), 'utf8')) as Schema & { $defs: Record<string, Schema> };
+const deref = (s: Schema): Schema => (s.$ref ? root.$defs[s.$ref.replace('#/$defs/', '')]! : s);
+
+export function check(schema: Schema, value: unknown, path: string, problems: string[]): void {
+  const s = deref(schema);
+  if (s.enum && !s.enum.includes(value)) {
+    problems.push(`${path} value ${JSON.stringify(value)} not in enum ${JSON.stringify(s.enum)}`);
+  }
+  if (Array.isArray(value)) {
+    if (s.maxItems !== undefined && value.length > s.maxItems) {
+      problems.push(`${path} length ${value.length} exceeds maxItems ${s.maxItems}`);
+    }
+    if (s.items) value.forEach((v, i) => check(s.items!, v, `${path}[${i}]`, problems));
+    return;
+  }
+  if (value === null || typeof value !== 'object') return;
+  for (const key of s.required ?? []) if (!(key in value)) problems.push(`${path}.${key} missing`);
+  for (const [key, sub] of Object.entries(s.properties ?? {})) {
+    if (key in value) check(sub, (value as Record<string, unknown>)[key], `${path}.${key}`, problems);
+  }
+}
+
+/** Problems of `value` against schema/gutter.schema.json (required keys, enums, maxItems). */
+export const schemaProblems = (value: unknown): string[] => {
+  const problems: string[] = [];
+  check(root, value, '$', problems);
+  return problems;
+};

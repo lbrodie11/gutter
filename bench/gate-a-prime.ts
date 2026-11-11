@@ -35,6 +35,9 @@ import type { GutterBrief } from '../src/contract.ts';
 import { renderComic } from '../src/render/comic.ts';
 import { renderMarkdown } from '../src/render/markdown.ts';
 import { summaryLine } from '../src/output.ts';
+import { coverageFields } from '../src/bench/runner.ts';
+import { removedPaths } from '../src/evidence/import-graph.ts';
+import { importSpecifiers } from './seeded.ts';
 
 export const BANNED = /forgot|likely forgotten|you may have missed|untested|not covered/i;
 export const FULL_SHARE_BUDGET = 1 / 3;
@@ -120,13 +123,13 @@ const TS_JS = /\.([cm]?[jt]sx?)$/;
 
 /** Resolve every import specifier of `importer` (read at `from`) in `tree`; returns specifier -> resolved rel path. */
 export function resolveSpecifiers(importerText: string, importer: string, tree: TreeHost, opts: ts.CompilerOptions): Map<string, string | undefined> {
-  const info = ts.preProcessFile(importerText, true, true);
+  // GU-31 erratum 2: the AST walk, so `export * as ns from` and deep `import()` calls are seen.
   const out = new Map<string, string | undefined>();
   const host = tree.moduleHost();
-  for (const ref of info.importedFiles) {
-    const r = ts.resolveModuleName(ref.fileName, `/repo/${importer}`, opts, host);
+  for (const spec of importSpecifiers(importerText, importer)) {
+    const r = ts.resolveModuleName(spec, `/repo/${importer}`, opts, host);
     const resolved = r.resolvedModule?.resolvedFileName;
-    out.set(ref.fileName, resolved ? TreeHost.rel(resolved) : undefined);
+    out.set(spec, resolved ? TreeHost.rel(resolved) : undefined);
   }
   return out;
 }
@@ -294,6 +297,41 @@ export function bannedHits(brief: GutterBrief, opts: { raw?: boolean } = {}): st
   });
 }
 
+/** GU-31: one replayed PR, as the current code briefs it. */
+export interface ReplayRecord {
+  pr: string;
+  salience: string;
+  kinds: string[];
+  coverage: 'full' | 'partial';
+  unresolvedByReason: Record<string, number>;
+  /** Languages of changed files no analyzer covers (`dependents.unchecked`). */
+  uncheckedLanguages: string[];
+  method?: string;
+  /** The PR deletes or renames a file (so the base graph is built). */
+  removes: boolean;
+  /** Whole replay, ms (replayBriefWithMeta wall time). */
+  ms: number;
+  /** The base import graph's own wall time, ms (0 when the PR removes nothing); it runs alongside the head work. */
+  baseGraphMs: number;
+  /** PRs that remove a file: the same replay again with the base graph switched off, run second (so warm caches favor it). */
+  msWithoutBaseGraph?: number;
+}
+
+export function replayRecord(pr: string, b: GutterBrief, ms: number, baseGraphMs: number, msWithoutBaseGraph?: number): ReplayRecord {
+  return {
+    pr,
+    salience: b.salience.level,
+    kinds: b.checklist.map((c) => c.kind),
+    // The same coverage fields `gutter bench` records (GU-30 §2), so both runs are measured alike.
+    ...(coverageFields(b) as Required<ReturnType<typeof coverageFields>>),
+    ...(b.dependents.method ? { method: b.dependents.method } : {}),
+    removes: removedPaths(b.changes).length > 0,
+    ms: Math.round(ms),
+    baseGraphMs: Math.round(baseGraphMs),
+    ...(msWithoutBaseGraph !== undefined ? { msWithoutBaseGraph: Math.round(msWithoutBaseGraph) } : {}),
+  };
+}
+
 interface BenchPr { id: string; base: string; head: string; subject: string; prNumber: number | null; policies: { production: { salience: string; questions: { kind: string }[] } } }
 
 async function main(): Promise<void> {
@@ -309,10 +347,23 @@ async function main(): Promise<void> {
   let checklistMismatches = 0;
   let rawHits = 0;
   const ownWordHits: { pr: string; text: string }[] = [];
+  const replays: ReplayRecord[] = [];
+  // No base-graph cache here: real PRs rarely share a base tree, and the replay times must be the product path's
+  // (a scoped `importGraph({ files })`), since Rerun 1 reports the base graph's cost from them.
   let full = 0;
   for (const pr of bench.prs) {
+    const t0 = performance.now();
     const res = await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true });
+    const ms = performance.now() - t0;
     const b = res.brief;
+    // GU-31 cost: a PR that removes a file is replayed once more without the base graph (timing only).
+    let without: number | undefined;
+    if (removedPaths(b.changes).length > 0) {
+      const t1 = performance.now();
+      await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true, noBaseGraph: true });
+      without = performance.now() - t1;
+    }
+    replays.push(replayRecord(pr.id, b, ms, res.meta.stageTimingsMs.baseGraph ?? 0, without));
     if (pr.policies.production.salience === 'full') full++;
     if (b.salience.level !== pr.policies.production.salience) salienceMismatches++;
     if (b.checklist.map((c) => c.kind).join() !== pr.policies.production.questions.map((q) => q.kind).join()) checklistMismatches++;
@@ -346,6 +397,9 @@ async function main(): Promise<void> {
       testHistory: { ...history, needs: 1, met: history.rate === null ? null : history.rate === 1 },
     },
     c: { pagesChecked: n, ownWordingHits: ownWordHits, rawHits: rawHits, met: ownWordHits.length === 0 },
+    // GU-31, additive: what each replay (current code) said, so loudness, coverage and runtime can be measured
+    // on the replays themselves rather than on bench.json (written by the Gutter that ran the bench).
+    replays,
   };
   const json = JSON.stringify(result, null, 2) + '\n';
   if (values.out) writeFileSync(values.out, json);

@@ -1,0 +1,2959 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gate-a-prime",
+  "repo": "vbenjs/vue-vben-admin",
+  "headSha": "71dc5ac59dcd832e45df861a283746a3cd143125",
+  "tools": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3"
+  },
+  "prsEvaluated": 200,
+  "replayParity": {
+    "salienceMismatches": 0,
+    "checklistKindMismatches": 0
+  },
+  "a": {
+    "full": 0,
+    "evaluated": 200,
+    "share": 0,
+    "budget": 0.3333333333333333,
+    "met": true
+  },
+  "b": {
+    "brokenImport": {
+      "checked": 0,
+      "confirmed": 0,
+      "rate": null,
+      "failures": [],
+      "needs": 0.95,
+      "met": null
+    },
+    "untestedChange": {
+      "checked": 5,
+      "confirmed": 5,
+      "rate": 1,
+      "failures": [],
+      "needs": 1,
+      "met": true
+    },
+    "testHistory": {
+      "checked": 1,
+      "confirmed": 1,
+      "rate": 1,
+      "failures": [],
+      "needs": 1,
+      "met": true
+    }
+  },
+  "c": {
+    "pagesChecked": 200,
+    "ownWordingHits": [],
+    "rawHits": 0,
+    "met": true
+  },
+  "replays": [
+    {
+      "pr": "#8493",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 114,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 991,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8492",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 114,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 971,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8491",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 114,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 750,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8481",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 114,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1306,
+      "baseGraphMs": 872,
+      "msWithoutBaseGraph": 835
+    },
+    {
+      "pr": "#8490",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 702,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8488",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 849,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8487",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 690,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8466",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 919,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8486",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 727,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8485",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 751,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8483",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 698,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8476",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 749,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8475",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 695,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8474",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 112,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 729,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8473",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 685,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8460",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 678,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8464",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 667,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8463",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 690,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8462",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 673,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8459",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 705,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8456",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 111,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 669,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8457",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 110,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 665,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8332",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 109,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 708,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8442",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 109,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 715,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8436",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 109,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 664,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8434",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 702,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8432",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 698,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8429",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 650,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8425",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 646,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8420",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 671,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8417",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 691,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8412",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 691,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8411",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 662,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8410",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 664,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8407",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 108,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 663,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@42c4e29",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 652,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8393",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 676,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8379",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 683,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8377",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 680,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8376",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 692,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8374",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 760,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8373",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1088,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8372",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 702,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8371",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 707,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8370",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 715,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8346",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 686,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8347",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 754,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8344",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 658,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8343",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 663,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8336",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 732,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8342",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 706,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8341",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 663,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8340",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 725,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8339",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1252,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8335",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1262,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8334",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 752,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8331",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 742,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8330",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 672,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8329",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 682,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8326",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 677,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8325",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 680,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8327",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 767,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8322",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 690,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8323",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 676,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8321",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 107,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 681,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8320",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 930,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8319",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 745,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8316",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1004,
+      "baseGraphMs": 596,
+      "msWithoutBaseGraph": 659
+    },
+    {
+      "pr": "#8317",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 683,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8286",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 784,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8285",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 676,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8315",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 106,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 699,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8314",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 651,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8313",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 714,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8311",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 656,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8310",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 665,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8309",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 674,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8308",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 752,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8307",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 105,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 788,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8306",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 104,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 670,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8305",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 777,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8304",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 680,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8303",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 692,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8290",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 706,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@8653142",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 717,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@6e448fd",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 663,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@92c9e42",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 689,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8291",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 671,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8281",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 643,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8279",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 696,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8266",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 103,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 719,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@4e0208c",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 102,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 675,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@3b9cc44",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 102,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 686,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8240",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 101,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 698,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8178",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 101,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 645,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8227",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 101,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 636,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@82d790a",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 101,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 645,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@9c3ba53",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 624,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@cb707c8",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 698,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8215",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 657,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8217",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 699,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8216",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 724,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8211",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 703,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8207",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 646,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8205",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 676,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8204",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 996,
+      "baseGraphMs": 630,
+      "msWithoutBaseGraph": 729
+    },
+    {
+      "pr": "merge@98344df",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 99,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 637,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8195",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 96,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 648,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8192",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 96,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 627,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@eaf585d",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 96,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 654,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@8d5a419",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 96,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 638,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@294e9f2",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 95,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 632,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@ebc0f23",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 95,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 629,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@81f69d7",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 93,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 624,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@5c1d31f",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 93,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 654,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@d06451c",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 93,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 631,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@822cec0",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 654,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@71c30d3",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 615,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@1d23cd7",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 624,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@398b445",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 674,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8129",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 628,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8121",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 634,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8119",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 730,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8118",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 601,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8114",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 668,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8110",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 615,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@1490a93",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 625,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@e50296e",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 613,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8108",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 625,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8080",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 616,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8102",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 615,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8100",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 661,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8098",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 637,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8094",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 685,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8085",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 591,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8084",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 689,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8082",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 650,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8069",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 627,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8067",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 923,
+      "baseGraphMs": 520,
+      "msWithoutBaseGraph": 670
+    },
+    {
+      "pr": "merge@741cbb3",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 611,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@edd110a",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 911,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8060",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 729,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8056",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 656,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@68877a7",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 668,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@f753a3b",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 693,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8042",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 628,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@4b1fada",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 624,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#8013",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 623,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@6544340",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 594,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7999",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 608,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@7fd4b1d",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 671,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7972",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 919,
+      "baseGraphMs": 539,
+      "msWithoutBaseGraph": 667
+    },
+    {
+      "pr": "#7968",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92,
+        "unknown-package": 1
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 593,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7963",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 653,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7965",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 618,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7964",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 614,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7951",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 613,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7947",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 92
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 671,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7949",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 661,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7948",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 626,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7942",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 796,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7941",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 722,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7938",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 665,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7936",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 660,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@00990d9",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 657,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@76cfcda",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 57,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1014,
+      "baseGraphMs": 610,
+      "msWithoutBaseGraph": 736
+    },
+    {
+      "pr": "#7922",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 713,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7923",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 698,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@84e77f6",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 634,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@c8c4255",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 624,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@b04c10a",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 90
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 639,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7917",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 637,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7915",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 632,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7912",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 647,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7910",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 606,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7909",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 645,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7908",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 657,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7904",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 625,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7902",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 603,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7897",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 668,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7894",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 799,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7871",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1220,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@86445a3",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 89
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 958,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7837",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 620,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7869",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 631,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7867",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 628,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7858",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 594,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@36d7dc2",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 633,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7830",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 609,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7829",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 641,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7818",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 616,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@f265283",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 709,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7803",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 616,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7804",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 637,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7801",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 772,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7799",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 907,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7763",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 625,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7756",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 633,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7755",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 612,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#7747",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "alias-unmatched": 55,
+        "target-missing": 88
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 637,
+      "baseGraphMs": 0
+    }
+  ]
+}

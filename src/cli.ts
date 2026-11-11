@@ -40,7 +40,7 @@ brief options
   --ra-lib <path>         repo-archaeology library (package dir or entry file; or set GUTTER_RA_LIB).
                           Preferred: one session for history and the import graph. Default: the installed package
   --ra-bin <path>         repo-archaeology binary or dist/cli.js (or set GUTTER_RA_BIN); used when no library loads
-  --ra-version <spec>     npm version spec for the npx last resort (default ^0.10.0)
+  --ra-version <spec>     npm version spec for the npx last resort (default ^0.12.0)
   --no-history            skip co-change history entirely
   --no-calibration        skip the per-repo accuracy backtest
   --max-forgotten <n>     "usually changes with" pairs to show (default 3)

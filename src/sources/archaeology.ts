@@ -170,7 +170,7 @@ export interface RaRunner {
 }
 
 /** npx last resort (GU-05). `^0.4.0` would cap at 0.4.x, which lacks `interval`, `origin` and track records. */
-export const DEFAULT_RA_SPEC = '^0.10.0';
+export const DEFAULT_RA_SPEC = '^0.12.0';
 
 export interface RaCommandContext {
   env?: NodeJS.ProcessEnv;

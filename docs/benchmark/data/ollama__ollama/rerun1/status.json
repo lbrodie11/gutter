@@ -1,0 +1,38 @@
+{
+  "repo": "ollama/ollama",
+  "pinnedSha": "e9fde36d75fea66579d84099956ce1430792737a",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 622
+    },
+    "gate": {
+      "status": "done",
+      "ms": 211073
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 133882
+    }
+  },
+  "timedMs": 344955,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 345579,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}
