@@ -252,7 +252,7 @@ export function buildDependents(
   let scanned = 0;
   let unresolvedCount = 0;
   const unresolvedSamples = new Set<string>();
-  const scope = importersOf.size > 0 ? scopeTargets(changes, reader) : [];
+  let scope: ReturnType<typeof scopeTargets> | undefined;
   let relevantCount = 0;
   const relevantSamples = new Set<string>();
   const reached = new Set<string>();
@@ -278,7 +278,7 @@ export function buildDependents(
           // The scanner resolves neither aliases nor workspace packages: an alias is judged like Repo
           // Archaeology's `alias-unmatched`, a workspace package like `unknown-package` (its package.json name).
           const reasonCode = isAliasSpecifier(spec, aliasPrefixes) ? 'alias-unmatched' : 'unknown-package';
-          const hits = relevantTargets({ from: file, specifier: spec, reasonCode }, scope);
+          const hits = relevantTargets({ from: file, specifier: spec, reasonCode }, (scope ??= scopeTargets(changes, reader)));
           if (hits.length) {
             relevantCount++;
             relevantSamples.add(sample);

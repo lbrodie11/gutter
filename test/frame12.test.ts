@@ -42,4 +42,6 @@ test('lintPage: marker yellow only as a background (outline, border, color and s
     assert.ok(lint(bad, 'bad.html').some((v) => v.rule === 'marker-misuse'), `@frame12/lint agrees: ${css}`);
   }
   assert.deepEqual(lintPage(page.replace('</head>', '<style>.y{background:var(--f-marker);color:var(--f-marker-ink)}</style></head>')), []);
+  // A selector with a pseudo-class is not a property.
+  assert.deepEqual(lintPage(page.replace('</head>', '<style>\na:hover{background:var(--f-marker);color:var(--f-marker-ink)}</style></head>')), []);
 });

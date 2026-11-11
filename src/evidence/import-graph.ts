@@ -198,8 +198,9 @@ export function dependentsFromImportGraph(
   baseGraph?: RaImportGraph,
   /** Files tracked at head (for the nearest tsconfig of a `paths` alias); optional. */
   trackedFiles?: Iterable<string>,
-  /** GU-32: the PR's changed and removed paths with their package context (`scopeTargets`). */
-  targets: readonly ScopeTarget[] = scopeTargets(changes),
+  /** GU-32: the PR's changed and removed paths with their package context (`scopeTargets`), or a function that
+   * builds them; it is called only when the repository has an unresolved import to judge. */
+  targets: readonly ScopeTarget[] | (() => readonly ScopeTarget[]) = () => scopeTargets(changes),
 ): DependentsLayer {
   const changedPaths = new Set(changes.files.map((f) => f.path));
   const removed = new Set(removedPaths(changes));
@@ -295,6 +296,8 @@ export function dependentsFromImportGraph(
   const samples = new Set<string>();
   const relevant = { count: 0, byReason: {} as Record<string, number>, samples: new Set<string>() };
   const reached = new Set<string>();
+  let scope: readonly ScopeTarget[] | undefined;
+  const scoped = () => (scope ??= typeof targets === 'function' ? targets() : targets);
   for (const u of repoGraph.unresolved) {
     // Imports reported as broken are not counted; nor, as before GU-31, is a relative specifier that points at a
     // removed path (only the relative scan names its importer, so `coverage` keeps one meaning in both modes).
@@ -309,7 +312,7 @@ export function dependentsFromImportGraph(
     byReason[reason] = (byReason[reason] ?? 0) + 1;
     const sample = clip(`${u.from} → ${u.specifier}`);
     samples.add(sample);
-    const hits = relevantTargets(u, targets);
+    const hits = relevantTargets(u, scoped());
     if (hits.length) {
       relevant.count++;
       relevant.byReason[reason] = (relevant.byReason[reason] ?? 0) + 1;

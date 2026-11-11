@@ -2,6 +2,7 @@ import { posix } from 'node:path';
 import type { ChangeStructure } from '../contract.ts';
 import type { SourceReader } from '../source/reader.ts';
 import { MAX_FILE_BYTES } from '../source/reader.ts';
+import { extractPackageName } from './imports.ts';
 
 /**
  * GU-32, DECISIONS #21: which unresolved imports could reach this PR's files.
@@ -14,7 +15,8 @@ import { MAX_FILE_BYTES } from '../source/reader.ts';
  *
  * TS/JS (and anything that is neither Go nor Python), against targets that are not Go or Python files:
  *  - relative (`./x`, `../x`): the path, normalized from the importer's directory, names the target (with or
- *    without an extension) or the target's directory. Exact: nothing else is relevant.
+ *    without an extension) or the target's directory; or it names a directory with its own `package.json` and the
+ *    target is an entry-like file in that package (`index`, `main`, `mod`), since `main`/`exports` may point there.
  *  - `unknown-package` (a bare name Repo Archaeology found in no workspace and no dependency list): relevant when
  *    a `package.json` at or above the target is named that package. When no name is known for the target, or
  *    the target was removed (its `package.json` may be gone too), also when the unscoped name is one of the
@@ -27,7 +29,7 @@ import { MAX_FILE_BYTES } from '../source/reader.ts';
  *    for every target in the importer's package, where resolution is unknowable.
  * Go (`.go` importers, `.go` targets): the import path's last segment (a `/vN` suffix dropped) matches the last
  *  segment of the target package's import path (its directory's name; at a module root, the module path's).
- *  At a module root whose `go.mod` Gutter could not read, every import is relevant.
+ *  At a module root whose module path Gutter could not read, every import is relevant.
  * Python (`.py`/`.pyi` importers and targets): a relative specifier resolves from the importer's package, and
  *  is relevant when that module and the target's are on one path (one a prefix of the other). An absolute
  *  specifier is relevant when it is on one path with the target's module under any source root (any suffix of
@@ -42,7 +44,7 @@ export interface ScopeTarget {
   packageNames?: string[];
   /** Directory of the nearest `package.json` at or above the target ('' for the root, also when none exists). */
   packageDir?: string;
-  /** Nearest `go.mod` at or above the target: its directory and module path. */
+  /** Nearest `go.mod` at or above the target: its directory and module path ('' when it has no module line). */
   goModule?: { dir: string; path: string };
 }
 
@@ -88,13 +90,14 @@ const dirName = (p: string) => {
   return d === '.' ? '' : d;
 };
 /** Drops a bundler query (`./x.svg?raw`) and trailing slashes. */
+/** Stems a package entry (`main`, `exports['.']`) usually has. */
+const ENTRY_STEMS: ReadonlySet<string> = new Set(['index', 'main', 'mod']);
 const cleanSpecifier = (s: string) => s.replace(/\?.*$/, '').replace(/\/+$/, '');
 
 /** `@scope/name` or `name` and the rest, for a bare package specifier; undefined for aliases and paths. */
 export function barePackage(spec: string): { name: string; sub: string } | undefined {
-  const m = /^((?:@[A-Za-z0-9._-]+\/)?[A-Za-z0-9._-]+)(?:\/(.*))?$/.exec(spec);
-  if (!m || spec.startsWith('.') || /^[@~#$]\//.test(spec)) return undefined;
-  return { name: m[1]!, sub: m[2] ?? '' };
+  const name = extractPackageName(spec);
+  return name === undefined ? undefined : { name, sub: spec.slice(name.length + 1) };
 }
 
 /** The specifier's last path segment names the target, or the target's directory. */
@@ -121,6 +124,8 @@ function tsReaches(u: UnresolvedImport, t: ScopeTarget): boolean {
     const base = posix.normalize(posix.join(dirName(u.from), spec));
     const norm = base === '.' ? '' : base;
     if (dirName(t.path) === norm) return true;
+    // A directory with its own package.json resolves through `main`/`exports` to an entry file anywhere in it.
+    if (t.packageDir === norm && (norm === '' || t.path.startsWith(`${norm}/`)) && ENTRY_STEMS.has(stemOf(t.path))) return true;
     const leaf = posix.basename(norm);
     return dirName(t.path) === dirName(norm) && [leaf, stripOneExt(leaf)].some((k) => k === posix.basename(t.path) || k === stemOf(t.path) || k === stripOneExt(posix.basename(t.path)));
   }
@@ -155,7 +160,8 @@ const lastGoSegment = (importPath: string): string => {
 function goReaches(spec: string, t: ScopeTarget): boolean {
   const dir = dirName(t.path);
   const mod = t.goModule;
-  if (mod && (dir === mod.dir)) return lastGoSegment(spec) === lastGoSegment(mod.path);
+  // At a module root the import path is the module path; a go.mod with no module line makes it unknowable.
+  if (mod && dir === mod.dir) return !mod.path || lastGoSegment(spec) === lastGoSegment(mod.path);
   if (dir === '' && !mod) return true;
   return lastGoSegment(spec) === posix.basename(dir);
 }
@@ -247,8 +253,9 @@ export function scopeTargets(changes: ChangeStructure, reader?: SourceReader): S
         if (name) names.push(name);
       }
       if (/\.go$/.test(t.path) && !goModule) {
+        // The nearest go.mod owns the file, even one with no (readable) module line: its path is then ''.
         const mod = goModulePath(dir);
-        if (mod) goModule = { dir, path: mod };
+        if (mod !== undefined) goModule = { dir, path: mod };
       }
       if (dir === '') break;
     }

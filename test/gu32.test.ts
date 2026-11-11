@@ -7,7 +7,7 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { assembleBrief, buildBriefAsync, replayBriefWithMeta } from '../src/brief.ts';
 import type { ChangeStructure, GutterBrief } from '../src/contract.ts';
-import { relevantTargets, scopeTargets, type ScopeTarget, type UnresolvedImport } from '../src/evidence/coverage-scope.ts';
+import { barePackage, relevantTargets, scopeTargets, type ScopeTarget, type UnresolvedImport } from '../src/evidence/coverage-scope.ts';
 import { dependentsFromImportGraph, entryReached } from '../src/evidence/import-graph.ts';
 import { GitTreeReader } from '../src/source/reader.ts';
 import type { RaImportGraph } from '../src/sources/archaeology-lib.ts';
@@ -53,6 +53,16 @@ const TS_ROWS: Row[] = [
     what: 'relative directory import (`../..`) reaches files directly in that directory',
     u: { from: 'spec/integ/x.spec.js', specifier: '../..', reasonCode: 'target-missing' },
     cases: [[changed('index.js'), true], [removed('index.js'), true], [changed('src/index.ts'), false]],
+  },
+  {
+    what: 'relative import of a directory with its own package.json: the package\'s entry-like files (main/exports)',
+    u: { from: 'spec/integ/bridge.spec.js', specifier: '../..', reasonCode: 'target-missing' },
+    cases: [
+      [changed('src/index.ts', { packageNames: ['bridge'], packageDir: '' }), true],
+      [removed('src/main.ts', { packageDir: '' }), true],
+      [changed('src/utils/promise.ts', { packageNames: ['bridge'], packageDir: '' }), false],
+      [changed('packages/x/src/index.ts', { packageNames: ['x', 'bridge'], packageDir: 'packages/x' }), false],
+    ],
   },
   {
     what: 'alias-unmatched: the last segment names the stem',
@@ -179,6 +189,8 @@ const GO_ROWS: Row[] = [
       [changed('gin.go', { goModule: { dir: '', path: 'github.com/other/repo' } }), false],
       // A module root whose go.mod Gutter could not read: unknowable, so relevant.
       [changed('gin.go'), true],
+      // A nested go.mod with no module line owns its directory; its path is unknowable, so relevant.
+      [changed('svc/main.go', { goModule: { dir: 'svc', path: '' } }), true],
     ],
   },
   {
@@ -258,6 +270,38 @@ test('relevantTargets returns every target an import could reach, in order', () 
   assert.deepEqual(relevantTargets(u, [changed('src/utils/a.ts'), changed('src/other.ts'), removed('src/utils.ts')]), ['src/utils/a.ts', 'src/utils.ts']);
 });
 
+test('barePackage: bare names and their subpath; aliases, paths and protocols are not packages', () => {
+  assert.deepEqual(barePackage('@ws/lib/util/x'), { name: '@ws/lib', sub: 'util/x' });
+  assert.deepEqual(barePackage('react'), { name: 'react', sub: '' });
+  for (const spec of ['@/x', '~/x', '#internal/x', '$lib/x', './x', '../x', '/abs']) assert.equal(barePackage(spec), undefined, spec);
+});
+
+test('dependentsFromImportGraph: package context is read only when there is an unresolved import to judge', () => {
+  let calls = 0;
+  const targets = () => {
+    calls++;
+    return [changed('src/a.ts')];
+  };
+  const clean = graph({ files: ['src/a.ts'], unresolved: [] });
+  assert.equal(dependentsFromImportGraph(struct(['src/a.ts']), clean, clean, undefined, undefined, targets).coverage, 'full');
+  assert.equal(calls, 0);
+  const dirty = graph({ files: ['src/a.ts', 'src/b.ts'], unresolved: [{ from: 'src/b.ts', specifier: '@/a', reason: 'unmatched', reasonCode: 'alias-unmatched' }, { from: 'src/b.ts', specifier: '@/z', reason: 'unmatched', reasonCode: 'alias-unmatched' }] });
+  assert.equal(dependentsFromImportGraph(struct(['src/a.ts']), dirty, dirty, undefined, undefined, targets).coverage, 'partial');
+  assert.equal(calls, 1, 'once, however many unresolved imports');
+});
+
+test('scopeTargets: a go.mod with no module line still owns its directory (module path unknown)', () => {
+  const r = new TempRepo().write({ 'go.mod': 'module github.com/o/r\n', 'svc/go.mod': '// no module line\n', 'svc/main.go': 'package main\n' }).commit('init');
+  repos.push(r);
+  const reader = new GitTreeReader(r.dir, r.git('rev-parse', 'HEAD').trim());
+  try {
+    const [t] = scopeTargets({ files: [{ path: 'svc/main.go', status: 'modified', additions: 1, deletions: 0, binary: false, module: '', isTest: false, language: 'go' }], modules: [], totals: { files: 1, additions: 1, deletions: 0, modules: 0 } }, reader);
+    assert.deepEqual(t!.goModule, { dir: 'svc', path: '' });
+  } finally {
+    reader.close();
+  }
+});
+
 test('entryReached: a Go entry stands for its package directory', () => {
   assert.equal(entryReached('pkg/one/a.go', new Set(['pkg/one/b.go'])), true);
   assert.equal(entryReached('pkg/one/a.go', new Set(['pkg/two/b.go'])), false);
@@ -326,7 +370,7 @@ test('dependentsFromImportGraph: repo-wide counts stay; relevant decides coverag
       { from: 'src/c.ts', specifier: '@/a', reason: 'unmatched', reasonCode: 'alias-unmatched' },
     ],
   });
-  const unrelated = dependentsFromImportGraph(struct(['src/b.ts']), g, g, undefined, [changed('src/b.ts', ROOT_PKG)]);
+  const unrelated = dependentsFromImportGraph(struct(['src/b.ts']), g, g, undefined, undefined, [changed('src/b.ts', ROOT_PKG)]);
   assert.equal(unrelated.coverage, 'full');
   assert.deepEqual(unrelated.unresolved, {
     count: 3,
@@ -335,7 +379,7 @@ test('dependentsFromImportGraph: repo-wide counts stay; relevant decides coverag
     relevant: { count: 0, samples: [], byReason: {} },
   });
 
-  const reaching = dependentsFromImportGraph(struct(['src/a.ts']), g, g, undefined, [changed('src/a.ts', ROOT_PKG)]);
+  const reaching = dependentsFromImportGraph(struct(['src/a.ts']), g, g, undefined, undefined, [changed('src/a.ts', ROOT_PKG)]);
   assert.equal(reaching.coverage, 'partial');
   assert.equal(reaching.unresolved.count, 3, 'repo-wide count unchanged');
   assert.deepEqual(reaching.unresolved.relevant, { count: 1, samples: ['src/c.ts → @/a'], byReason: { 'alias-unmatched': 1 } });
@@ -528,4 +572,15 @@ test('renderers: "partial" appears only under the new meaning\'s partial, or in 
     assert.ok(renderComic(b).includes('<span class="stamp">partial</span>'));
   }
   assert.match(renderMarkdown(legacy!), /7 imports in this repository could not be resolved to a file|7 imports use aliases or packages Gutter can't resolve yet/);
+});
+
+test('coverage never creates or suppresses an item: salience and checklist ignore coverage and unresolved', () => {
+  for (const s of scenarios()) {
+    const mk = (coverage: 'full' | 'partial', relevant: number) =>
+      assembleBrief({ ...s, dependents: { ...s.dependents, coverage, unresolved: { count: 9, samples: [], byReason: { 'alias-unmatched': 9 }, relevant: { count: relevant, samples: [], byReason: {} } }, entries: s.dependents.entries.map((e) => ({ ...e, coverage })) } });
+    const full = mk('full', 0);
+    const partial = mk('partial', 3);
+    assert.equal(partial.salience.level, full.salience.level, s.name);
+    assert.deepEqual(partial.checklist, full.checklist, s.name);
+  }
 });

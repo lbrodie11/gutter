@@ -429,7 +429,7 @@ export async function buildBriefAsync(opts: BriefOptions & { raLib?: string | fa
           ...(opts.onProgress ? { onProgress: opts.onProgress } : {}),
         });
         opts.onSession?.(a.sessions);
-        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph, a.baseGraph, headFiles, scopeTargets(p.changes, p.reader)) : buildDependents(p.root, p.changes, p.reader);
+        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph, a.baseGraph, headFiles, () => scopeTargets(p.changes, p.reader)) : buildDependents(p.root, p.changes, p.reader);
         const raDiff = opts.raDiff ?? a.raDiff;
         const shallow = Boolean(raDiff?.meta?.shallow);
         const h: HistoryResult = {
@@ -602,7 +602,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
         sessionOpenMs = performance.now() - tSessionStart;
         baseGraphMs = a.baseGraphMs;
         if (a.graph) {
-          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph, a.baseGraph, trackedAtHead, scopeTargets(changes, reader));
+          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph, a.baseGraph, trackedAtHead, () => scopeTargets(changes, reader));
           raFeatures.push('importGraph');
         }
         if (!raDiff) {

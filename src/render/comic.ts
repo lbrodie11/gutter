@@ -373,7 +373,7 @@ export function lintPage(page: string): string[] {
   for (const m of styles.matchAll(/\{[^}]*background:\s*var\(--f-marker\)[^}]*\}/g)) {
     if (!/color:\s*var\(--f-marker-ink\)/.test(m[0])) problems.push('marker-misuse: marker background without --f-marker-ink text');
   }
-  for (const m of allStyles.matchAll(/(?:^|[;{\s])([a-z-]+)\s*:\s*[^;}"]*var\(--f-marker\)/gi)) {
+  for (const m of allStyles.matchAll(/(?:^|[;{\s])([a-z-]+)\s*:\s*[^;{}"]*var\(--f-marker\)/gi)) {
     const prop = m[1]!.toLowerCase();
     if (prop !== 'background' && prop !== 'background-color') problems.push(`marker-misuse: --f-marker on ${prop}; it may only be a background`);
   }
