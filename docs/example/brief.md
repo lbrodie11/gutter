@@ -19,14 +19,14 @@
 
 </details>
 
-<details><summary><b>What it touches</b> · 2 changed files with importers outside this PR (partial)</summary>
+<details><summary><b>What it touches</b> · 2 changed files with importers outside this PR</summary>
 
 - [`src/middleware/serve-static/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/middleware/serve-static/index.ts) ← [`adapters/bun/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/bun/src/serve-static.ts), [`adapters/cloudflare-workers/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/cloudflare-workers/src/serve-static.ts), [`adapters/deno/src/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/adapters/deno/src/serve-static.ts), [`src/adapter/cloudflare-workers/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/cloudflare-workers/serve-static.ts) +2 more
 - [`src/adapter/bun/serve-static.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/serve-static.ts) ← [`src/adapter/bun/index.ts`](https://github.com/honojs/hono/blob/eb754bd5ef22c63f1634a4c374a86be086f85710/src/adapter/bun/index.ts)
 
-</details>
+<sub>5 unresolved imports elsewhere in this repository can't reach this PR's files.</sub>
 
-<sub>5 imports in this repository could not be resolved to a file, so some importers may be missing.</sub>
+</details>
 
 <details><summary><b>Tests</b> · 0 updated · 1 unchanged · 1 with no test found</summary>
 
@@ -45,4 +45,4 @@
 
 </details>
 
-<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(8\.4× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.5.0 + repo-archaeology 0.12.0</sub>
+<sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time \(8\.4× better than guessing busy files\), and 57% of all flagged files did\. · No AI wrote this: every line comes from git history and the code · gutter 0.6.0 + repo-archaeology 0.12.0</sub>
