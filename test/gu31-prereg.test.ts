@@ -67,9 +67,10 @@ test('preregistration: §6 came in a commit before every Rerun 1 data commit, an
   assert.equal(shallow, false, 'CI must check out full history (fetch-depth: 0) for this test');
   const prereg = git(['log', '--reverse', '--format=%H', '-S', HEADING, '--', 'docs/benchmark/CORPUS.md']).split('\n')[0];
   assert.ok(prereg, 'preregistration commit found');
-  const atPrereg = section(git(['show', `${prereg}:docs/benchmark/CORPUS.md`]), HEADING);
+  // Trailing whitespace aside (`git()` trims; §6 may be the file's last section): byte-for-byte the same text.
+  const atPrereg = section(git(['show', `${prereg}:docs/benchmark/CORPUS.md`]), HEADING).trimEnd();
   assert.ok(atPrereg.includes('### 6.5 Verdict rule'), '§6 complete in the preregistration commit');
-  assert.equal(section(readFileSync('docs/benchmark/CORPUS.md', 'utf8'), HEADING), atPrereg, '§6 unchanged since preregistration');
+  assert.equal(section(readFileSync('docs/benchmark/CORPUS.md', 'utf8'), HEADING).trimEnd(), atPrereg, '§6 unchanged since preregistration');
   // The corpus is GU-30's, unchanged.
   assert.deepEqual(JSON.parse(git(['show', `${prereg}:bench/corpus.json`])), JSON.parse(readFileSync('bench/corpus.json', 'utf8')));
   for (const path of RERUN_PATHS) {
