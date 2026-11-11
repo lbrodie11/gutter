@@ -428,7 +428,7 @@ export async function buildBriefAsync(opts: BriefOptions & { raLib?: string | fa
           ...(opts.onProgress ? { onProgress: opts.onProgress } : {}),
         });
         opts.onSession?.(a.sessions);
-        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph, a.baseGraph) : buildDependents(p.root, p.changes, p.reader);
+        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph, a.baseGraph, headFiles) : buildDependents(p.root, p.changes, p.reader);
         const raDiff = opts.raDiff ?? a.raDiff;
         const shallow = Boolean(raDiff?.meta?.shallow);
         const h: HistoryResult = {
@@ -584,12 +584,13 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
         raVersion = raLib.version;
         const tSessionStart = performance.now();
         // ONE session at this PR's head: diff, backtest and the import graph (nothing later is read).
+        const trackedAtHead = new Set(reader.listFiles());
         const a = await analyzeWithLibrary(raLib, {
           cwd: root,
           head: headSha,
           base: opts.base,
           changedFiles: changes.files.map((f) => f.path),
-          headFiles: new Set(reader.listFiles()),
+          headFiles: trackedAtHead,
           settings: opts.raSettings ?? {},
           useConfigFile: raConfigValid,
           skipDiff: Boolean(raDiff),
@@ -600,7 +601,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
         sessionOpenMs = performance.now() - tSessionStart;
         baseGraphMs = a.baseGraphMs;
         if (a.graph) {
-          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph, a.baseGraph);
+          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph, a.baseGraph, trackedAtHead);
           raFeatures.push('importGraph');
         }
         if (!raDiff) {

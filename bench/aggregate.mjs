@@ -439,6 +439,10 @@ export function renderRerun(res, rr) {
       continue;
     }
     const m = rt.removes;
+    if (!m.prs) {
+      L.push(`| \`${r.repo}\` | 0 | — | — | — | — | ${ms(rt.plain.p50Ms)} / ${ms(rt.plain.p95Ms)} |`);
+      continue;
+    }
     L.push(`| \`${r.repo}\` | ${m.prs} | ${ms(m.total.p50Ms)} / ${ms(m.total.p95Ms)} | ${ms(m.withoutBaseGraph.p50Ms)} / ${ms(m.withoutBaseGraph.p95Ms)} | ${m.p95Growth === null ? 'n/a' : `${Math.round(m.p95Growth * 100)}%`} | ${ms(m.baseGraph.p50Ms)} / ${ms(m.baseGraph.p95Ms)} (${m.baseGraph.built}) | ${ms(rt.plain.p50Ms)} / ${ms(rt.plain.p95Ms)} |`);
   }
   L.push('', '### Rerun 1: where Gutter did badly (seeded)', '');

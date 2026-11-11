@@ -87,8 +87,8 @@ Per-PR replay wall time (ms, nearest-rank percentiles), on the product path (no 
 | Repository | PRs removing files | Replay p50 / p95, with | Replay p50 / p95, without | p95 growth | Base graph p50 / p95 (built) | Other PRs: replay p50 / p95 |
 |---|---:|---|---|---:|---|---|
 | `honojs/hono` | 10 | 930 / 1801 | 597 / 696 | 159% | 666 / 1121 (10) | 611 / 1000 |
-| `remarkablemark/html-react-parser` | 0 | n/a / n/a | n/a / n/a | n/a | n/a / n/a (0) | 340 / 548 |
-| `faastjs/faast.js` | 0 | n/a / n/a | n/a / n/a | n/a | n/a / n/a (0) | 347 / 533 |
+| `remarkablemark/html-react-parser` | 0 | — | — | — | — | 340 / 548 |
+| `faastjs/faast.js` | 0 | — | — | — | — | 347 / 533 |
 | `binance/binance-connector-js` | 37 | 2132 / 3883 | 1199 / 2121 | 83% | 1833 / 3465 (37) | 1168 / 1460 |
 | `allianz/ng-aquila` | 19 | 1763 / 3201 | 1130 / 1663 | 92% | 1277 / 2565 (19) | 1130 / 1420 |
 | `matrix-org/matrix-appservice-bridge` | 29 | 425 / 676 | 315 / 413 | 64% | 195 / 311 (29) | 334 / 482 |
@@ -104,7 +104,7 @@ Per-PR replay wall time (ms, nearest-rank percentiles), on the product path (no 
 | `TheAlgorithms/Python` | 3 | 6169 / 7312 | 4325 / 8001 | -9% | 4342 / 5643 (3) | 1304 / 3732 |
 | `yt-dlp/yt-dlp` | 6 | 3617 / 6031 | 2166 / 3947 | 53% | 3011 / 5179 (6) | 1615 / 5170 |
 | `github/spec-kit` | 14 | 2340 / 4262 | 1235 / 1882 | 126% | 1944 / 3550 (14) | 1479 / 3549 |
-| `colbymchenry/codegraph` | 0 | n/a / n/a | n/a / n/a | n/a | n/a / n/a (0) | 1977 / 5435 |
+| `colbymchenry/codegraph` | 0 | — | — | — | — | 1977 / 5435 |
 | `team-telnyx/telnyx-node` | 21 | 1247 / 1956 | 906 / 1241 | 58% | 934 / 1596 (21) | 696 / 1327 |
 
 ### Rerun 1: where Gutter did badly (seeded)

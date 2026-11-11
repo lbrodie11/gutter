@@ -169,6 +169,8 @@ export function dependentsFromImportGraph(
   graph: RaImportGraph,
   repoGraph: RaImportGraph = graph,
   baseGraph?: RaImportGraph,
+  /** Files tracked at head (for the nearest tsconfig of a `paths` alias); optional. */
+  trackedFiles?: Iterable<string>,
 ): DependentsLayer {
   const changedPaths = new Set(changes.files.map((f) => f.path));
   const removed = new Set(removedPaths(changes));
@@ -210,26 +212,49 @@ export function dependentsFromImportGraph(
     // a removed path (relative: by path; otherwise: some base importer resolved the same specifier to that path), it
     // is a broken import too, as the relative scan has always reported it (GU-31 review).
     // Non-relative specifiers name the same module from anywhere (Go import paths, Python dotted names, packages),
-    // except tsconfig `paths` aliases, whose meaning depends on the importer's config: those count only for a file in
-    // the same top-level directory as a base importer. A specifier that reached two removed targets is ambiguous.
-    const topDir = (p: string) => (p.includes('/') ? p.slice(0, p.indexOf('/')) : '');
-    const removedBySpecifier = new Map<string, { target: string | null; scopes: Set<string> | null }>();
+    // except tsconfig `paths` aliases, whose meaning depends on the importer's config: those count only for a file
+    // under the same nearest tsconfig/jsconfig as a base importer. Relative specifiers mean the same thing within one
+    // directory (Python's `from . import mod` included), or are resolved by path for TS/JS. A specifier that reached
+    // two removed targets is ambiguous and skipped.
+    const configDirs = new Set<string>();
+    for (const f of trackedFiles ?? []) if (/(?:^|\/)(?:tsconfig|jsconfig)(?:\.[^/]+)?\.json$/.test(f)) configDirs.add(posix.dirname(f));
+    const scopeOf = (file: string): string => {
+      if (!trackedFiles) return file.includes('/') ? file.slice(0, file.indexOf('/')) : '';
+      for (let dir = posix.dirname(file); ; dir = posix.dirname(dir)) {
+        if (configDirs.has(dir)) return dir;
+        if (dir === '.' || dir === '/') return '.';
+      }
+    };
+    type Hit = { target: string | null; scopes: Set<string>; scoped: boolean };
+    const bySpecifier = new Map<string, Hit>();
+    const note = (key: string, target: string, scope: string, scoped: boolean, sameUnit: (a: string, b: string) => boolean) => {
+      const hit = bySpecifier.get(key) ?? { target, scopes: new Set<string>(), scoped: false };
+      if (hit.target !== null && hit.target !== target && !sameUnit(hit.target, target)) hit.target = null;
+      hit.scopes.add(scope);
+      hit.scoped ||= scoped;
+      bySpecifier.set(key, hit);
+    };
     for (const e of baseGraph!.edges) {
-      if (!removed.has(e.to) || e.specifier.startsWith('.') || !BROKEN_IMPORT_KINDS.has(e.kind)) continue;
+      if (!removed.has(e.to) || !BROKEN_IMPORT_KINDS.has(e.kind)) continue;
+      // Python edges carry no imported name: only a specifier that names the removed module itself (`from pkg.mod
+      // import x`, `from .mod import x`) says which file a new importer meant; `from pkg import mod` does not.
+      if (e.via === 'python-module' && modulePathRole(e.from, e.specifier, e.to) !== 'leaf') continue;
       const target = e.via === 'go-package' ? (goEntry.get(posix.dirname(e.to)) ?? e.to) : e.to;
-      const hit = removedBySpecifier.get(e.specifier) ?? { target, scopes: e.via === 'paths' ? new Set<string>() : null };
-      if (hit.target !== target && !(e.via === 'go-package' && posix.dirname(hit.target ?? '') === posix.dirname(target))) hit.target = null;
-      if (e.via === 'paths') (hit.scopes ??= new Set()).add(topDir(e.from));
-      removedBySpecifier.set(e.specifier, hit);
+      const goUnit = (a: string, b: string) => e.via === 'go-package' && posix.dirname(a) === posix.dirname(b);
+      if (e.specifier.startsWith('.')) note(`${posix.dirname(e.from)}\0${e.specifier}`, target, '', false, goUnit);
+      else note(e.specifier, target, scopeOf(e.from), e.via === 'paths', goUnit);
     }
-    const byAlias = (from: string, specifier: string): string | undefined => {
-      const hit = removedBySpecifier.get(specifier);
+    const lookup = (from: string, specifier: string): string | undefined => {
+      if (specifier.startsWith('.')) {
+        return resolveRelative(from, specifier, headFiles, removed) ?? bySpecifier.get(`${posix.dirname(from)}\0${specifier}`)?.target ?? undefined;
+      }
+      const hit = bySpecifier.get(specifier);
       if (!hit?.target) return undefined;
-      return hit.scopes && !hit.scopes.has(topDir(from)) ? undefined : hit.target;
+      return hit.scoped && !hit.scopes.has(scopeOf(from)) ? undefined : hit.target;
     };
     for (const u of repoGraph.unresolved) {
       if (!changedPaths.has(u.from) || removed.has(u.from) || brokenPairs.has(pairKey(u.from, u.specifier))) continue;
-      const target = u.specifier.startsWith('.') ? resolveRelative(u.from, u.specifier, headFiles, removed) : byAlias(u.from, u.specifier);
+      const target = lookup(u.from, u.specifier);
       if (!target || !removed.has(target) || target === u.from) continue;
       importersOf.get(target)?.add(u.from);
       brokenPairs.add(pairKey(u.from, u.specifier));

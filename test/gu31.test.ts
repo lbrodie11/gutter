@@ -434,6 +434,46 @@ test('a `paths` alias is attributed only within the base importer\'s top-level d
   assert.deepEqual(broken(res.brief), { 'a/src/x.ts': ['a/src/u.ts'] }, "b's @/x is not a's removed file");
 });
 
+test('alias scope is the nearest tsconfig, so apps/a and apps/b are told apart', async () => {
+  const cfg = JSON.stringify({ compilerOptions: { baseUrl: '.', paths: { '@/*': ['src/*'] } } });
+  const res = await replay(
+    {
+      'apps/a/tsconfig.json': cfg, 'apps/a/src/x.ts': 'export const x = 1;\n', 'apps/a/src/u.ts': "import { x } from '@/x';\nexport const u = x;\n",
+      'apps/b/tsconfig.json': cfg, 'apps/b/src/y.ts': 'export const y = 1;\n',
+    },
+    (r) => {
+      r.rm('apps/a/src/x.ts');
+      r.write({ 'apps/b/src/new.ts': "import { x } from '@/x';\nexport const n = x;\n", 'apps/a/src/also.ts': "import { x } from '@/x';\nexport const al = x;\n" });
+    },
+  );
+  assert.deepEqual(broken(res.brief), { 'apps/a/src/x.ts': ['apps/a/src/also.ts', 'apps/a/src/u.ts'] });
+});
+
+test("limit: a new Python file's `from . import mod` of a removed module is not named (RA edges carry no imported name)", async () => {
+  // At head the name falls back to the package `__init__.py`, so nothing is unresolved, and an edge for `from . import x`
+  // looks the same whatever `x` is: naming the new file could be wrong. Base importers are judged by their own base
+  // edges, which pin the file. RA-20's `role: "name"` would close this.
+  const res = await replay(
+    { 'ciphers/__init__.py': '', 'ciphers/tc.py': 'K = 1\n', 'ciphers/user.py': 'from . import tc\n' },
+    (r) => {
+      r.rm('ciphers/tc.py');
+      r.write({ 'ciphers/added.py': 'from . import tc\n' });
+    },
+  );
+  assert.deepEqual(broken(res.brief), { 'ciphers/tc.py': ['ciphers/user.py'] });
+});
+
+test("a new Python file's unresolved bare `from pkg import x` is not attributed to a removed submodule; `from pkg.mod import x` is", async () => {
+  const res = await replay(
+    { 'pyproject.toml': '[project]\nname = "app"\n', 'app/__init__.py': '', 'app/util.py': 'Y = 2\n', 'use.py': 'from app.util import Y\nfrom app import util\n' },
+    (r) => {
+      r.rm('app/util.py');
+      r.write({ 'named.py': 'from app.util import Y\n', 'bare.py': 'from app import nothing_here\n' });
+    },
+  );
+  assert.deepEqual(broken(res.brief), { 'app/util.py': ['named.py', 'use.py'] });
+});
+
 test('bench-only noBaseGraph: the replay skips the base graph and uses the relative scan', async () => {
   const { r, base, head } = pr(TS_BASE, (x) => x.rm('src/alias.ts'));
   const res = await replayBriefWithMeta({ cwd: r.dir, base, head, now: NOW, noCalibration: true, noBaseGraph: true });
