@@ -254,7 +254,7 @@ body{margin:0;background:var(--f-desk);color:var(--f-ink);font-family:var(--font
 .defs{position:absolute}
 .dot{fill:var(--f-tone)}
 a{color:inherit;text-decoration-thickness:1px;text-underline-offset:2px}
-a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marker);outline-offset:2px}
+a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-rule);outline-offset:2px}
 .desk{padding:var(--f-gutter-change) 16px}
 .sheet{max-width:1120px;margin:0 auto;background:var(--f-sheet);padding:var(--f-gutter-scene);box-shadow:var(--f-shadow-sheet)}
 .masthead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--f-gutter-pair);border-bottom:calc(var(--f-stroke) * 2) solid var(--f-rule);padding-bottom:var(--f-gutter-pair);margin-bottom:var(--f-gutter-scene)}
@@ -352,7 +352,8 @@ function isLegalGutterValue(raw: string): boolean {
  *  1. color-literal  — no hex/rgb/hsl color literals outside the token block
  *  2. gradient       — no CSS gradients (use SVG screentone patterns)
  *  3. font-literal   — font-family must reference var(--font-f-*)
- *  4. marker-misuse  — --f-marker background must pair with --f-marker-ink text
+ *  4. marker-misuse  — --f-marker only as a background, paired with --f-marker-ink text (never on outline,
+ *                      border, color, shadows or SVG stroke/fill), as @frame12/lint's rule of the same name
  *  5. illegal-gutter — gap/row-gap/column-gap/grid-gap must use 0, 12px/pair, 20px/scene, or 32px/change
  *  6. cut-order      — data-cut attributes and .num captions must be C-01…C-0N in document order
  */
@@ -371,6 +372,10 @@ export function lintPage(page: string): string[] {
   }
   for (const m of styles.matchAll(/\{[^}]*background:\s*var\(--f-marker\)[^}]*\}/g)) {
     if (!/color:\s*var\(--f-marker-ink\)/.test(m[0])) problems.push('marker-misuse: marker background without --f-marker-ink text');
+  }
+  for (const m of allStyles.matchAll(/(?:^|[;{\s])([a-z-]+)\s*:\s*[^;}"]*var\(--f-marker\)/gi)) {
+    const prop = m[1]!.toLowerCase();
+    if (prop !== 'background' && prop !== 'background-color') problems.push(`marker-misuse: --f-marker on ${prop}; it may only be a background`);
   }
   for (const m of allStyles.matchAll(/\b(?:gap|row-gap|column-gap|grid-gap)\s*:\s*([^;}"'\n]+)/gi)) {
     const val = m[1]!.trim();

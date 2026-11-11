@@ -111,7 +111,7 @@ Alongside the Markdown comment, Gutter writes a self-contained, offline HTML pag
 | **C-05 · Tests** | Which related test files changed, which didn't, and how often did they change together before? | Co-located, `__tests__/`, and mirrored `test/` / `tests/` naming conventions, plus co-change pairs between a file and its test |
 | **C-06 · Check these** | Where should I focus first? | Up to 4 deterministic facts (broken imports, unchanged test files, wide import surfaces), each required to cite evidence IDs from panels C-03 to C-05. It is the hero panel when it has items; otherwise C-03 is |
 
-Every generated HTML page is verified against 6 [FRAME/12](https://github.com/lbrodie11/frame12) design-grammar rules in `lintPage()` (`color-literal`, `gradient`, `font-literal`, `marker-misuse`, `illegal-gutter` restricting CSS `gap`/`row-gap`/`column-gap`/`grid-gap` to `0`/`12px`/`20px`/`32px` or `--f-gutter-*` tokens, and `cut-order` enforcing sequential `C-01`…`C-0N` panel labels).
+Every generated HTML page uses the tokens of [`@frame12/tokens`](https://www.npmjs.com/package/@frame12/tokens) (vendored by `scripts/sync-frame12-tokens.ts`, since Gutter has no runtime dependencies), passes [`@frame12/lint`](https://www.npmjs.com/package/@frame12/lint)'s `lintHtml()` in the tests, and is verified at runtime against 6 [FRAME/12](https://github.com/lbrodie11/frame12) design-grammar rules in `lintPage()` (`color-literal`, `gradient`, `font-literal`, `marker-misuse`, `illegal-gutter` restricting CSS `gap`/`row-gap`/`column-gap`/`grid-gap` to `0`/`12px`/`20px`/`32px` or `--f-gutter-*` tokens, and `cut-order` enforcing sequential `C-01`…`C-0N` panel labels).
 
 ---
 

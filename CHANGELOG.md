@@ -8,6 +8,7 @@
   - Renderers: "partial" names how many imports could reach the PR's files and one sample, and marks each reached entry; the repository-wide count is a quiet line ("N unresolved imports elsewhere in this repository can't reach this PR's files"), never "partial". New goldens in `test/fixtures/gu32/`.
   - Bench records and Gate A′ replay records gain optional `relevantUnresolvedByReason` (`schema/bench.schema.json`). From now on, seeded scoring labels a miss `partial` under the new meaning (Rerun 1 used the old one); only labels can move.
   - New `bench/gu32-coverage.ts`, `bench/gu32-run.mjs` and `bench/gu32-report.mjs` (a measurement, not a gate; not preregistered).
+- FRAME/12 packages as devDependencies (no runtime dependency): the page's token block is now generated from `@frame12/tokens` 0.2.0 (`scripts/sync-frame12-tokens.ts`; adds the metric-matched font fallbacks), and the tests lint every generated page (brief, bench report, labeling page, the committed example) with `@frame12/lint` 0.3.0's `lintHtml()`. It found marker yellow on the focus outline of all three page types; focus rings now use `--f-rule`, and `lintPage()` flags marker yellow on anything but a background. `@frame12/static` and `@frame12/terminal` are not adopted: both would be runtime dependencies (`terminal` also needs ink and React).
 
 ## 0.5.0 · 2026-11-11
 

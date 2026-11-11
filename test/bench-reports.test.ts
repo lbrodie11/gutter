@@ -8,6 +8,7 @@ import { runBench, writeBenchOutputs } from '../src/bench/runner.ts';
 import { renderBenchHtml } from '../src/bench/report-html.ts';
 import { renderBenchMarkdown } from '../src/bench/report-md.ts';
 import { validateBenchResults } from '../src/bench/validate.ts';
+import { lintHtml } from '@frame12/lint';
 import { lintPage } from '../src/render/comic.ts';
 import { TempRepo } from './helpers.ts';
 
@@ -237,6 +238,7 @@ test('security: malicious paths, subjects, HTML, control/bidi chars, emails, tok
     // Verify linear-gradient() in visible report text does not trigger the CSS grammar lint, whereas CSS gradient() in <style> does
     assert.ok(htmlText.includes('linear-gradient()'), 'visible PR title text containing linear-gradient() is preserved');
     assert.deepEqual(lintPage(htmlText), []);
+    assert.deepEqual(lintHtml(htmlText, { file: 'bench.html', tokenStyleIds: ['f12-tokens'] }), [], '@frame12/lint');
     const badCssHtml = htmlText.replace('<style>', '<style>.bad{background:linear-gradient(#000,#fff)}');
     assert.ok(lintPage(badCssHtml).some((p) => p.startsWith('gradient:')));
 

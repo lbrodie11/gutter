@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { renderCompareLabelHtml, sampleCompare } from '../src/bench/label.ts';
 import type { BenchPrRecord } from '../src/bench/model.ts';
+import { lintHtml } from '@frame12/lint';
 import { lintPage } from '../src/render/comic.ts';
 import { benchModel, labelFixturePrs, target } from './bench-fixtures.ts';
 
@@ -70,6 +71,7 @@ test('label page: identical cards per source, outcome and source only in the enc
   const page = renderCompareLabelHtml(sample);
 
   assert.deepEqual(lintPage(page), []);
+  assert.deepEqual(lintHtml(page, { file: 'label.html', tokenStyleIds: ['f12-tokens'] }), [], '@frame12/lint');
   assert.ok(!page.includes('<script>alert(1)'), 'PR title is escaped');
   assert.ok(!page.includes('<img src=x'), 'changed path is escaped');
   assert.ok(!page.includes('<svg onload'), 'target path is escaped');
