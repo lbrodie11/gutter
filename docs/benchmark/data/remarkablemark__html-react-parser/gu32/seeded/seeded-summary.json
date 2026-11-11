@@ -1,0 +1,142 @@
+{
+  "seed": 20261111,
+  "repoSeed": 349788457,
+  "hosts": [
+    "6acc7d89ba3f402c6ff75376c498844c591ad1e8",
+    "a9ceabcb00a02a05c0c2940af71b87f99dec3b7f",
+    "0d0e6f184273a790171b8afc9ab93703a5e01984"
+  ],
+  "meta": [
+    {
+      "host": "6acc7d89ba3f402c6ff75376c498844c591ad1e8",
+      "eligiblePositive": 10,
+      "eligibleNegative": {
+        "rename-updated": 8,
+        "delete-unimported": 19,
+        "move-reexport": 10,
+        "test-only": 17
+      },
+      "negativesTaken": {
+        "rename-updated": 3,
+        "delete-unimported": 3,
+        "move-reexport": 2,
+        "test-only": 2
+      },
+      "rejected": {
+        "rename: oracle found no broken importer": 4,
+        "rename-updated: not applicable": 2
+      },
+      "shortfalls": {
+        "positives": 4
+      },
+      "generated": {
+        "positives": 6,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "a9ceabcb00a02a05c0c2940af71b87f99dec3b7f",
+      "eligiblePositive": 10,
+      "eligibleNegative": {
+        "rename-updated": 8,
+        "delete-unimported": 19,
+        "move-reexport": 10,
+        "test-only": 17
+      },
+      "negativesTaken": {
+        "delete-unimported": 3,
+        "move-reexport": 3,
+        "test-only": 2,
+        "rename-updated": 2
+      },
+      "rejected": {
+        "delete: oracle found no broken importer": 2,
+        "rename: oracle found no broken importer": 2
+      },
+      "shortfalls": {
+        "positives": 4
+      },
+      "generated": {
+        "positives": 6,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "0d0e6f184273a790171b8afc9ab93703a5e01984",
+      "eligiblePositive": 10,
+      "eligibleNegative": {
+        "rename-updated": 8,
+        "delete-unimported": 19,
+        "move-reexport": 10,
+        "test-only": 17
+      },
+      "negativesTaken": {
+        "move-reexport": 3,
+        "test-only": 3,
+        "rename-updated": 2,
+        "delete-unimported": 2
+      },
+      "rejected": {
+        "delete: oracle found no broken importer": 3,
+        "rename: oracle found no broken importer": 1,
+        "rename-updated: not applicable": 1
+      },
+      "shortfalls": {
+        "positives": 4
+      },
+      "generated": {
+        "positives": 6,
+        "negatives": 10
+      }
+    }
+  ],
+  "positives": 18,
+  "negatives": 30,
+  "reportedItems": 18,
+  "confirmedItems": 18,
+  "precision": 1,
+  "detected": 18,
+  "recall": 1,
+  "falsePositives": 0,
+  "falsePositiveRate": 0,
+  "skippedUncheckedOrPartial": 0,
+  "skippedShare": 0,
+  "errors": 0,
+  "byKind": {
+    "delete": {
+      "n": 9,
+      "detected": 9,
+      "withReport": 9
+    },
+    "rename": {
+      "n": 9,
+      "detected": 9,
+      "withReport": 9
+    },
+    "rename-updated": {
+      "n": 7,
+      "detected": 0,
+      "withReport": 0
+    },
+    "delete-unimported": {
+      "n": 8,
+      "detected": 0,
+      "withReport": 0
+    },
+    "move-reexport": {
+      "n": 8,
+      "detected": 0,
+      "withReport": 0
+    },
+    "test-only": {
+      "n": 7,
+      "detected": 0,
+      "withReport": 0
+    }
+  },
+  "missReasons": {
+    "unchecked": 0,
+    "partial": 0,
+    "missed": 0
+  }
+}

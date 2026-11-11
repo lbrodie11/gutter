@@ -1,0 +1,3762 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-coverage",
+  "repo": "colbymchenry/codegraph",
+  "headSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+  "tools": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0"
+  },
+  "summary": {
+    "prs": 200,
+    "partialBefore": 200,
+    "partialAfter": 0,
+    "shareBefore": 1,
+    "shareAfter": 0,
+    "unresolvedByReason": {
+      "unsupported-config": 400,
+      "target-missing": 3072,
+      "unknown-package": 200
+    },
+    "relevantByReason": {},
+    "unresolvedTotal": 3672,
+    "relevantTotal": 0,
+    "entriesPartial": 0,
+    "entries": 493
+  },
+  "gu31": {
+    "compared": 200,
+    "missing": [],
+    "salienceMismatches": [],
+    "checklistKindMismatches": [],
+    "beforeMismatches": []
+  },
+  "replays": [
+    {
+      "pr": "#3214",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 12
+    },
+    {
+      "pr": "#3195",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 9
+    },
+    {
+      "pr": "#3194",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3193",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3192",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3183",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3182",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3191",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3190",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3189",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3188",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3187",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3186",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3185",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3184",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3181",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 7
+    },
+    {
+      "pr": "#3180",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3179",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3178",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3177",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3171",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3170",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3176",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3175",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3174",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3173",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3172",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3169",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3168",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3166",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3165",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3164",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3163",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3162",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3161",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3167",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 20,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 17,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3157",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3155",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3153",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3152",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3151",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3150",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3149",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3148",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3147",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3146",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3145",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3144",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#3143",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 9
+    },
+    {
+      "pr": "#3142",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 8
+    },
+    {
+      "pr": "#3141",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3129",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3128",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3127",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3123",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3119",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#3118",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3115",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3113",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 18
+    },
+    {
+      "pr": "#3112",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3109",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3104",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3099",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3096",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3095",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3092",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3090",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3081",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3080",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3079",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3066",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3048",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3077",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3065",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3071",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3070",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#3067",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3069",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3064",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3068",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3060",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3058",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3056",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3055",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3025",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3053",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3052",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3050",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3051",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3047",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3044",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3049",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3046",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3045",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3043",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3031",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3030",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3029",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3009",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3032",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3028",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3026",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#3024",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3023",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3018",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#3020",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#3017",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#3014",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#3012",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#2969",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2943",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2961",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2956",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2939",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2938",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2941",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2937",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2936",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2932",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2933",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2928",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2931",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2929",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2864",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2858",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2846",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2845",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2844",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2840",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2843",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2842",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2841",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2838",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2837",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2835",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2834",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2832",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2831",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2827",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2828",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2826",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2824",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#2825",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#2823",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2822",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2821",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2820",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2819",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2817",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2816",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2818",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2814",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2813",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2812",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2811",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2810",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2809",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2808",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2806",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2804",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#2803",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2802",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2801",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2799",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#2798",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2797",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 7
+    },
+    {
+      "pr": "#2796",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 7
+    },
+    {
+      "pr": "#2795",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2794",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#2793",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2792",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2790",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2789",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2787",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2788",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2785",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2784",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2783",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2782",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2781",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2778",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2777",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2776",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2774",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2773",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2771",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2769",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 14
+    },
+    {
+      "pr": "#2772",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2768",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#2765",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2764",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2763",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2762",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2760",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2759",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#2757",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2755",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2752",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2751",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2750",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 18,
+      "unresolvedByReason": {
+        "unsupported-config": 2,
+        "target-missing": 15,
+        "unknown-package": 1
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    }
+  ]
+}

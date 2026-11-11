@@ -1,0 +1,3846 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-coverage",
+  "repo": "allianz/ng-aquila",
+  "headSha": "5b23a36e0b47a1dd90a6ffe36e50e7b2cbf7a9a4",
+  "tools": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0"
+  },
+  "summary": {
+    "prs": 200,
+    "partialBefore": 200,
+    "partialAfter": 148,
+    "shareBefore": 1,
+    "shareAfter": 0.74,
+    "unresolvedByReason": {
+      "unknown-package": 1599,
+      "not-exported": 16600,
+      "target-missing": 616
+    },
+    "relevantByReason": {
+      "not-exported": 496,
+      "unknown-package": 34
+    },
+    "unresolvedTotal": 18815,
+    "relevantTotal": 530,
+    "entriesPartial": 205,
+    "entries": 714
+  },
+  "gu31": {
+    "compared": 200,
+    "missing": [],
+    "salienceMismatches": [],
+    "checklistKindMismatches": [],
+    "beforeMismatches": []
+  },
+  "replays": [
+    {
+      "pr": "#2112",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 9,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#2111",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 9,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2119",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2121",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2113",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2115",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#2106",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2107",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 4,
+      "relevantByReason": {
+        "not-exported": 4
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2104",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 93,
+      "unresolvedByReason": {
+        "unknown-package": 7,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 0,
+      "entries": 20
+    },
+    {
+      "pr": "#2116",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 93,
+      "unresolvedByReason": {
+        "unknown-package": 7,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2109",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 93,
+      "unresolvedByReason": {
+        "unknown-package": 7,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "unknown-package": 2
+      },
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2105",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2089",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 6,
+      "entries": 19
+    },
+    {
+      "pr": "#2110",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 5,
+      "relevantByReason": {
+        "not-exported": 5
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2108",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2088",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 5,
+      "entries": 11
+    },
+    {
+      "pr": "#2102",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2096",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2041",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 4,
+      "entries": 18
+    },
+    {
+      "pr": "#2103",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 3,
+      "entries": 17
+    },
+    {
+      "pr": "#2100",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2101",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2099",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2094",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2098",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 78,
+      "relevantByReason": {
+        "not-exported": 78
+      },
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2090",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2076",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#2097",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2093",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#2091",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#2095",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 5
+    },
+    {
+      "pr": "#2092",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2062",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 21
+    },
+    {
+      "pr": "#2077",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 5
+    },
+    {
+      "pr": "#2048",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 22
+    },
+    {
+      "pr": "#2078",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2075",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#2071",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 5,
+      "entries": 6
+    },
+    {
+      "pr": "#2084",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2081",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 2
+    },
+    {
+      "pr": "#2059",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 3
+    },
+    {
+      "pr": "#2083",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2070",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#2087",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2086",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2085",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2072",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2082",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 7,
+      "relevantByReason": {
+        "not-exported": 7
+      },
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2074",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2069",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2066",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 2,
+      "entries": 3
+    },
+    {
+      "pr": "#2073",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 5
+    },
+    {
+      "pr": "#2043",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 4,
+      "entries": 8
+    },
+    {
+      "pr": "#2064",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#2067",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2063",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2055",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 3,
+      "entries": 6
+    },
+    {
+      "pr": "#2024",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 4,
+      "relevantByReason": {
+        "not-exported": 4
+      },
+      "entriesPartial": 3,
+      "entries": 10
+    },
+    {
+      "pr": "#2060",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#2051",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 9
+    },
+    {
+      "pr": "#2058",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#2057",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 3
+    },
+    {
+      "pr": "#2061",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2050",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2053",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#2027",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2052",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2046",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 3
+    },
+    {
+      "pr": "#2044",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2026",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2030",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2029",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 6,
+      "relevantByReason": {
+        "not-exported": 6
+      },
+      "entriesPartial": 5,
+      "entries": 9
+    },
+    {
+      "pr": "#2049",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 4
+    },
+    {
+      "pr": "#2047",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2038",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2037",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2036",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#2033",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2042",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 3,
+      "entries": 3
+    },
+    {
+      "pr": "#2035",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2034",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2031",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2032",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#2025",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 2,
+      "entries": 8
+    },
+    {
+      "pr": "#2040",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#2020",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 10
+    },
+    {
+      "pr": "#2028",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2023",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#2022",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2021",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 4,
+      "relevantByReason": {
+        "not-exported": 4
+      },
+      "entriesPartial": 2,
+      "entries": 37
+    },
+    {
+      "pr": "#2039",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 26,
+      "relevantByReason": {
+        "not-exported": 26
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2005",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 7,
+      "entries": 19
+    },
+    {
+      "pr": "#2019",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2016",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 0,
+      "entries": 17
+    },
+    {
+      "pr": "#2017",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 3
+    },
+    {
+      "pr": "#2007",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 12
+    },
+    {
+      "pr": "#2013",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#2010",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#2009",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2015",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 5,
+      "relevantByReason": {
+        "not-exported": 5
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2006",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#2004",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 5
+    },
+    {
+      "pr": "#2014",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1981",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 4,
+      "entries": 7
+    },
+    {
+      "pr": "#2011",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 3,
+      "entries": 3
+    },
+    {
+      "pr": "#2008",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#2012",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 3,
+      "entries": 3
+    },
+    {
+      "pr": "#1998",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2003",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2002",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1993",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#1990",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#1992",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#2000",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "unknown-package": 2
+      },
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#1980",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 17,
+      "relevantByReason": {
+        "not-exported": 17
+      },
+      "entriesPartial": 11,
+      "entries": 30
+    },
+    {
+      "pr": "#1997",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1994",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#1995",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 8
+    },
+    {
+      "pr": "#1999",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1996",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1975",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1991",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#1985",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1984",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 14
+    },
+    {
+      "pr": "#1987",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1988",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1989",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1983",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1986",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1952",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 5,
+      "entries": 8
+    },
+    {
+      "pr": "#1973",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#1969",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 2
+    },
+    {
+      "pr": "#1965",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 85,
+      "relevantByReason": {
+        "not-exported": 83,
+        "unknown-package": 2
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#1979",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 2
+    },
+    {
+      "pr": "#1971",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#1978",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 2
+    },
+    {
+      "pr": "#1974",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#1930",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 20,
+      "relevantByReason": {
+        "not-exported": 20
+      },
+      "entriesPartial": 3,
+      "entries": 3
+    },
+    {
+      "pr": "#1968",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 5,
+      "relevantByReason": {
+        "not-exported": 5
+      },
+      "entriesPartial": 1,
+      "entries": 5
+    },
+    {
+      "pr": "#1966",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 2,
+      "entries": 2
+    },
+    {
+      "pr": "#1970",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1967",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 11
+    },
+    {
+      "pr": "#91@aa1b600",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1972",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1961",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1964",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#1957",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 8,
+      "relevantByReason": {
+        "not-exported": 6,
+        "unknown-package": 2
+      },
+      "entriesPartial": 2,
+      "entries": 6
+    },
+    {
+      "pr": "#1963",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1962",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1950",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 2,
+      "entries": 5
+    },
+    {
+      "pr": "#1958",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1940",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 5,
+      "relevantByReason": {
+        "not-exported": 5
+      },
+      "entriesPartial": 2,
+      "entries": 3
+    },
+    {
+      "pr": "#1960",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 3
+      },
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1954",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1938",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 4,
+      "relevantByReason": {
+        "not-exported": 2,
+        "unknown-package": 2
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#1959",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 13,
+      "relevantByReason": {
+        "not-exported": 13
+      },
+      "entriesPartial": 8,
+      "entries": 8
+    },
+    {
+      "pr": "#1951",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1936",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 21,
+      "relevantByReason": {
+        "not-exported": 21
+      },
+      "entriesPartial": 3,
+      "entries": 12
+    },
+    {
+      "pr": "#1953",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1947",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 2
+    },
+    {
+      "pr": "#1943",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1942",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#1956",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1949",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1948",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#1944",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1941",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1946",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1945",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1929",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 11
+    },
+    {
+      "pr": "#1939",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1907",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 2,
+      "entries": 22
+    },
+    {
+      "pr": "#1933",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 4,
+      "relevantByReason": {
+        "not-exported": 4
+      },
+      "entriesPartial": 3,
+      "entries": 6
+    },
+    {
+      "pr": "#1932",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1937",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#1935",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1934",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1928",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "not-exported": 83,
+        "target-missing": 3
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#1904",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 1,
+      "entries": 5
+    },
+    {
+      "pr": "#1931",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1926",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1927",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 1
+    },
+    {
+      "pr": "#1925",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1924",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1920",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 4,
+      "relevantByReason": {
+        "not-exported": 2,
+        "unknown-package": 2
+      },
+      "entriesPartial": 0,
+      "entries": 11
+    },
+    {
+      "pr": "#1912",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 5,
+      "relevantByReason": {
+        "not-exported": 3,
+        "unknown-package": 2
+      },
+      "entriesPartial": 2,
+      "entries": 4
+    },
+    {
+      "pr": "#1921",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#1919",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 1,
+      "entries": 4
+    },
+    {
+      "pr": "#1918",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#1913",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1917",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1923",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1906",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 3,
+      "relevantByReason": {
+        "not-exported": 1,
+        "unknown-package": 2
+      },
+      "entriesPartial": 1,
+      "entries": 2
+    },
+    {
+      "pr": "#1916",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 95,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 4,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#1915",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 3,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#1910",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 3,
+        "not-exported": 83
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1905",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 3,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1901",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 3,
+        "not-exported": 83
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#1899",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 3,
+        "not-exported": 83
+      },
+      "relevant": 1,
+      "relevantByReason": {
+        "not-exported": 1
+      },
+      "entriesPartial": 1,
+      "entries": 3
+    },
+    {
+      "pr": "#1908",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "partial",
+      "unresolved": 94,
+      "unresolvedByReason": {
+        "unknown-package": 8,
+        "target-missing": 3,
+        "not-exported": 83
+      },
+      "relevant": 2,
+      "relevantByReason": {
+        "not-exported": 2
+      },
+      "entriesPartial": 0,
+      "entries": 3
+    }
+  ]
+}

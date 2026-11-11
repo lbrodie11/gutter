@@ -1,0 +1,718 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-results",
+  "repos": [
+    {
+      "repo": "honojs/hono",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 1594,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "target-missing": 344,
+        "unknown-package": 1250
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 282,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "remarkablemark/html-react-parser",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 2098,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "target-missing": 2000,
+        "unknown-package": 98
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 48,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "faastjs/faast.js",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 1600,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 1000,
+        "target-missing": 600
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "binance/binance-connector-js",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 19,
+      "shareBefore": 1,
+      "shareAfter": 0.095,
+      "unresolvedTotal": 82418,
+      "relevantTotal": 5173,
+      "unresolvedByReason": {
+        "unknown-package": 28235,
+        "target-missing": 54183
+      },
+      "relevantByReason": {
+        "target-missing": 5173
+      },
+      "entriesPartial": 28,
+      "entries": 958,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "allianz/ng-aquila",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 148,
+      "shareBefore": 1,
+      "shareAfter": 0.74,
+      "unresolvedTotal": 18815,
+      "relevantTotal": 530,
+      "unresolvedByReason": {
+        "unknown-package": 1599,
+        "not-exported": 16600,
+        "target-missing": 616
+      },
+      "relevantByReason": {
+        "not-exported": 496,
+        "unknown-package": 34
+      },
+      "entriesPartial": 205,
+      "entries": 714,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "matrix-org/matrix-appservice-bridge",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 91,
+      "shareBefore": 1,
+      "shareAfter": 0.455,
+      "unresolvedTotal": 4499,
+      "relevantTotal": 1213,
+      "unresolvedByReason": {
+        "target-missing": 4358,
+        "unknown-package": 141
+      },
+      "relevantByReason": {
+        "target-missing": 1213
+      },
+      "entriesPartial": 0,
+      "entries": 377,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "ChatGPTNextWeb/NextChat",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 720,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 720
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 573,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "DayuanJiang/next-ai-draw-io",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 79,
+      "partialAfter": 0,
+      "shareBefore": 0.395,
+      "shareAfter": 0,
+      "unresolvedTotal": 79,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 79
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 923,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "slymnoyann/hey.xyz",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 4,
+      "partialAfter": 0,
+      "shareBefore": 0.02,
+      "shareAfter": 0,
+      "unresolvedTotal": 4,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 833,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "lerna/lerna",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 8,
+      "shareBefore": 1,
+      "shareAfter": 0.04,
+      "unresolvedTotal": 4093,
+      "relevantTotal": 43,
+      "unresolvedByReason": {
+        "unsupported-config": 3200,
+        "unknown-package": 883,
+        "target-missing": 10
+      },
+      "relevantByReason": {
+        "unsupported-config": 15,
+        "unknown-package": 28
+      },
+      "entriesPartial": 0,
+      "entries": 383,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "vbenjs/vue-vben-admin",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 89,
+      "shareBefore": 1,
+      "shareAfter": 0.445,
+      "unresolvedTotal": 23403,
+      "relevantTotal": 1058,
+      "unresolvedByReason": {
+        "target-missing": 19841,
+        "unknown-package": 153,
+        "alias-unmatched": 3409
+      },
+      "relevantByReason": {
+        "target-missing": 1058
+      },
+      "entriesPartial": 311,
+      "entries": 982,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "hypit-ai/hypit",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 81,
+      "partialAfter": 0,
+      "shareBefore": 0.405,
+      "shareAfter": 0,
+      "unresolvedTotal": 165,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 165
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1518,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "ollama/ollama",
+      "language": "go",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 800,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 800
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 757,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "fatedier/frp",
+      "language": "go",
+      "prs": 200,
+      "partialBefore": 0,
+      "partialAfter": 0,
+      "shareBefore": 0,
+      "shareAfter": 0,
+      "unresolvedTotal": 0,
+      "relevantTotal": 0,
+      "unresolvedByReason": {},
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 783,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "gin-gonic/gin",
+      "language": "go",
+      "prs": 200,
+      "partialBefore": 0,
+      "partialAfter": 0,
+      "shareBefore": 0,
+      "shareAfter": 0,
+      "unresolvedTotal": 0,
+      "relevantTotal": 0,
+      "unresolvedByReason": {},
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 139,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 51,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "TheAlgorithms/Python",
+      "language": "python",
+      "prs": 200,
+      "partialBefore": 0,
+      "partialAfter": 0,
+      "shareBefore": 0,
+      "shareAfter": 0,
+      "unresolvedTotal": 0,
+      "relevantTotal": 0,
+      "unresolvedByReason": {},
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 49,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "yt-dlp/yt-dlp",
+      "language": "python",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 4,
+      "shareBefore": 1,
+      "shareAfter": 0.02,
+      "unresolvedTotal": 400,
+      "relevantTotal": 4,
+      "unresolvedByReason": {
+        "target-missing": 400
+      },
+      "relevantByReason": {
+        "target-missing": 4
+      },
+      "entriesPartial": 4,
+      "entries": 306,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "github/spec-kit",
+      "language": "python",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 1000,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 1000
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 308,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {
+          "partial→missed": 4
+        },
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "colbymchenry/codegraph",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 3672,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unsupported-config": 400,
+        "target-missing": 3072,
+        "unknown-package": 200
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 493,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    },
+    {
+      "repo": "team-telnyx/telnyx-node",
+      "language": "typescript",
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 200,
+      "shareBefore": 1,
+      "shareAfter": 1,
+      "unresolvedTotal": 11058,
+      "relevantTotal": 2561,
+      "unresolvedByReason": {
+        "unknown-package": 103,
+        "target-missing": 4373,
+        "invalid-target": 6400,
+        "unsupported-config": 182
+      },
+      "relevantByReason": {
+        "target-missing": 2359,
+        "unknown-package": 20,
+        "unsupported-config": 182
+      },
+      "entriesPartial": 2785,
+      "entries": 2785,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0
+      }
+    }
+  ],
+  "summary": {
+    "repos": 20,
+    "missing": 0,
+    "prs": 4000,
+    "medianShareBefore": 1,
+    "medianShareAfter": 0,
+    "reposAllPartialBefore": 14,
+    "reposAllPartialAfter": 1,
+    "unresolvedTotal": 156418,
+    "relevantTotal": 10582,
+    "unresolvedByReason": {
+      "target-missing": 89797,
+      "unknown-package": 36430,
+      "not-exported": 16600,
+      "unsupported-config": 3782,
+      "alias-unmatched": 3409,
+      "invalid-target": 6400
+    },
+    "relevantByReason": {
+      "target-missing": 9807,
+      "not-exported": 496,
+      "unknown-package": 82,
+      "unsupported-config": 197
+    },
+    "gu31": {
+      "compared": 4000,
+      "missing": 0,
+      "salienceMismatches": 0,
+      "checklistKindMismatches": 0,
+      "beforeMismatches": 0
+    },
+    "seeded": {
+      "compared": 1179,
+      "missing": 0,
+      "reposWithSummaryMismatches": [],
+      "scoreMismatches": 0,
+      "missReasonMoves": {
+        "partial→missed": 4
+      },
+      "otherMissReasonChanges": 0
+    }
+  }
+}

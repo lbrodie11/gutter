@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-seeded-compare",
+  "repo": "github/spec-kit",
+  "seed": 20261111,
+  "summaryMismatches": [],
+  "records": {
+    "compared": 60,
+    "missing": [],
+    "scoreMismatches": [],
+    "missReasonMoves": {
+      "partial→missed": 4
+    },
+    "otherMissReasonChanges": [],
+    "coverageMoves": {
+      "partial→full": 60
+    }
+  }
+}

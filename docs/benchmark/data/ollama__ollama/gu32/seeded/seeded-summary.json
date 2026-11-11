@@ -1,0 +1,123 @@
+{
+  "seed": 20261111,
+  "repoSeed": 72329093,
+  "hosts": [
+    "9dbf1391339a6032546f6fd72028d0201f6cedfb",
+    "4d22e65d493f281adce5e4de7f2cd1efa847cd13",
+    "e77773acc1761844f6a395ff8fc66392d7494e83"
+  ],
+  "meta": [
+    {
+      "host": "9dbf1391339a6032546f6fd72028d0201f6cedfb",
+      "eligiblePositive": 92,
+      "eligibleNegative": {
+        "rename-updated": 92,
+        "delete-unimported": 397,
+        "move-reexport": 0,
+        "test-only": 349
+      },
+      "negativesTaken": {
+        "rename-updated": 4,
+        "delete-unimported": 3,
+        "test-only": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "4d22e65d493f281adce5e4de7f2cd1efa847cd13",
+      "eligiblePositive": 100,
+      "eligibleNegative": {
+        "rename-updated": 100,
+        "delete-unimported": 525,
+        "move-reexport": 0,
+        "test-only": 462
+      },
+      "negativesTaken": {
+        "delete-unimported": 4,
+        "test-only": 3,
+        "rename-updated": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    },
+    {
+      "host": "e77773acc1761844f6a395ff8fc66392d7494e83",
+      "eligiblePositive": 91,
+      "eligibleNegative": {
+        "rename-updated": 91,
+        "delete-unimported": 459,
+        "move-reexport": 0,
+        "test-only": 404
+      },
+      "negativesTaken": {
+        "test-only": 4,
+        "rename-updated": 3,
+        "delete-unimported": 3
+      },
+      "rejected": {},
+      "shortfalls": {},
+      "generated": {
+        "positives": 10,
+        "negatives": 10
+      }
+    }
+  ],
+  "positives": 30,
+  "negatives": 30,
+  "reportedItems": 31,
+  "confirmedItems": 30,
+  "precision": 0.967741935483871,
+  "detected": 30,
+  "recall": 1,
+  "falsePositives": 1,
+  "falsePositiveRate": 0.03333333333333333,
+  "skippedUncheckedOrPartial": 0,
+  "skippedShare": 0,
+  "errors": 0,
+  "byKind": {
+    "delete": {
+      "n": 15,
+      "detected": 15,
+      "withReport": 15
+    },
+    "rename": {
+      "n": 15,
+      "detected": 15,
+      "withReport": 15
+    },
+    "rename-updated": {
+      "n": 10,
+      "detected": 0,
+      "withReport": 1
+    },
+    "delete-unimported": {
+      "n": 10,
+      "detected": 0,
+      "withReport": 0
+    },
+    "move-reexport": {
+      "n": 0,
+      "detected": 0,
+      "withReport": 0
+    },
+    "test-only": {
+      "n": 10,
+      "detected": 0,
+      "withReport": 0
+    }
+  },
+  "missReasons": {
+    "unchecked": 0,
+    "partial": 0,
+    "missed": 0
+  }
+}
