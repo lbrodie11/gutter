@@ -49,6 +49,8 @@ function comparable(b: GutterBrief): unknown {
   delete d.coverage;
   delete d.unresolved;
   delete d.scannedFiles;
+  // GU-31: how removed paths are checked (the scanner always says relative-scan; asserted in the parity test).
+  delete d.method;
   return c;
 }
 
@@ -62,6 +64,8 @@ test('parity: library and subprocess briefs agree apart from provenance and depe
   // Documented differences: the analyzer that produced dependents, and the features it adds.
   assert.deepEqual(lib.dependents.analyzers, ['ra-import-graph', 'relative']);
   assert.deepEqual(sub.dependents.analyzers, ['ts-js-relative-imports']);
+  assert.equal(lib.dependents.method, undefined, 'library, nothing removed: no base graph, no method');
+  assert.equal(sub.dependents.method, 'relative-scan');
   assert.ok(lib.provenance.engines[1]!.features!.includes('importGraph'));
   assert.ok(!sub.provenance.engines[1]!.features!.includes('importGraph'));
   for (const f of ['interval', 'origin', 'originShare']) assert.ok(lib.provenance.engines[1]!.features!.includes(f), f);
