@@ -133,7 +133,9 @@ test('"not exercised" is never shown as met', () => {
 test('report consistency: the committed README is rendered from the committed results.json', () => {
   if (!existsSync('docs/benchmark/results.json')) return;
   const res = JSON.parse(readFileSync('docs/benchmark/results.json', 'utf8'));
-  assert.equal(readFileSync('docs/benchmark/README.md', 'utf8').replace(/\r\n/g, '\n'), renderReadme(res) + '\n');
+  // GU-31: once Rerun 1 exists, the page shows it next to GU-30 (test/gu31-bench.test.ts checks its raw data).
+  const rerun = existsSync('docs/benchmark/results-rerun1.json') ? JSON.parse(readFileSync('docs/benchmark/results-rerun1.json', 'utf8')) : undefined;
+  assert.equal(readFileSync('docs/benchmark/README.md', 'utf8').replace(/\r\n/g, '\n'), renderReadme(res, rerun) + '\n');
   // And results.json is what the aggregator computes from the committed raw data.
   const corpus = JSON.parse(readFileSync('bench/corpus.json', 'utf8'));
   const run = JSON.parse(readFileSync('docs/benchmark/data/corpus-run.json', 'utf8'));

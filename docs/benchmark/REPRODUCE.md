@@ -43,6 +43,17 @@ node bench/aggregate.mjs --write     # regenerates docs/benchmark/README.md and 
 
 The published run took several hours on the machine named in `README.md` ("Environment"). The largest repositories dominate; a repository that exceeds its 45 minutes is listed as `failed: timeout`, never dropped.
 
+### Rerun 1 (GU-31, `CORPUS.md` §6)
+
+Rerun 1 keeps each repository's GU-30 `bench.json` (`corpus/bench/`) and reruns only the gate replay (Gate A′ (a) and (c), and the real-PR facts, measured with the current code) and the seeded check with the new seed:
+
+```bash
+node bench/run-corpus.mjs --rerun rerun1 --seed 20261111 --jobs 2
+node bench/aggregate.mjs --write     # also writes results-rerun1.json; README.md shows both runs
+```
+
+It writes `docs/benchmark/data/<owner>__<repo>/rerun1/` and `docs/benchmark/data/rerun1-run.json`. `test/gu31-bench.test.ts` checks that `results-rerun1.json` is what the aggregator computes from that data.
+
 ## 4. What should match
 
 - **Exactly:** the corpus and pins; the seeded mutations and their commit ids (fixed seed, fixed author, committer and date); every oracle verdict; `gutter bench`'s PR selection, salience and checklist on the same pins and Repo Archaeology version. `test/gu30-aggregate.test.ts` checks that `README.md` is rendered from `results.json` and that `results.json` is what the aggregator computes from the committed raw data.

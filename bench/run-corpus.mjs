@@ -3,6 +3,11 @@
 // with --experimental-strip-types. Nothing from the analyzed repositories is installed, built or run.
 //
 //   node bench/run-corpus.mjs [--jobs 2] [--timeout-min 45] [--only owner__repo,...] [--fresh]
+//   node bench/run-corpus.mjs --rerun rerun1 --seed <n> [--jobs 2] ...   (GU-31, CORPUS.md §6)
+//
+// A rerun (`--rerun <name>`) keeps each repository's GU-30 bench.json (corpus/bench/) and runs only the
+// gate replay (Gate A′ (a) and (c) re-measured with the current code) and the seeded step with `--seed`,
+// writing to <out>/<owner>__<repo>/<name>/.
 //
 // Per repository (CORPUS.md §2): blobless clone checked out at the pin; gutter bench (200 PRs, 7 days,
 // default config); bench/gate-a-prime.ts; bench/seeded.ts; two repo-archaeology backtests (reported only).
@@ -23,6 +28,10 @@ export const TIMED_STEPS = ['bench', 'gate', 'seeded'];
 const BACKTEST_TIMEOUT_MS = 15 * 60 * 1000;
 /** Prerequisites: the seeded run needs bench.json's PR heads; everything needs the clone. */
 export const NEEDS = { bench: ['clone'], gate: ['bench'], seeded: ['bench'], backtest: ['clone'], backtestOrigin: ['clone'] };
+/** GU-31 rerun: the GU-30 bench.json stays; only the replayed gate and a new seeded run. */
+export const RERUN_STEPS = ['clone', 'gate', 'seeded'];
+export const RERUN_TIMED_STEPS = ['gate', 'seeded'];
+const RERUN_NEEDS = { gate: ['clone'], seeded: ['clone'] };
 
 const writeJson = (p, v) => {
   mkdirSync(dirname(p), { recursive: true });
@@ -94,13 +103,15 @@ export function realSteps({ node = process.execPath } = {}) {
       rmSync(join(data, 'bench', 'bench.partial.jsonl'), { force: true });
       return { ok: true, ...benchCount(join(data, 'bench', 'bench.json')) };
     },
-    async gate({ dir, data, timeoutMs }) {
-      const r = await ts('bench/gate-a-prime.ts', [dir, join(data, 'bench', 'bench.json'), '--out', join(data, 'gate-a-prime.json')], { timeoutMs });
+    async gate({ dir, data, timeoutMs, benchJson = join(data, 'bench', 'bench.json') }) {
+      if (!existsSync(benchJson)) return { ok: false, reason: `bench.json not found: ${benchJson}` };
+      const r = await ts('bench/gate-a-prime.ts', [dir, benchJson, '--out', join(data, 'gate-a-prime.json')], { timeoutMs });
       if (r.timedOut) return { ok: false, timedOut: true };
       return r.code === 0 ? { ok: true } : { ok: false, reason: `gate-a-prime exited ${r.code}: ${r.stderrTail}` };
     },
-    async seeded({ repo, dir, data, timeoutMs }) {
-      const r = await ts('bench/seeded.ts', ['--cwd', dir, '--language', repo.language, '--bench', join(data, 'bench', 'bench.json'), '--out', join(data, 'seeded'), '--name', repoName(repo.url)], { timeoutMs });
+    async seeded({ repo, dir, data, timeoutMs, benchJson = join(data, 'bench', 'bench.json'), seed }) {
+      if (!existsSync(benchJson)) return { ok: false, reason: `bench.json not found: ${benchJson}` };
+      const r = await ts('bench/seeded.ts', ['--cwd', dir, '--language', repo.language, '--bench', benchJson, '--out', join(data, 'seeded'), '--name', repoName(repo.url), ...(seed !== undefined ? ['--seed', String(seed)] : [])], { timeoutMs });
       if (r.timedOut) return { ok: false, timedOut: true };
       return r.code === 0 ? { ok: true } : { ok: false, reason: `seeded exited ${r.code}: ${r.stderrTail}` };
     },
@@ -143,9 +154,14 @@ export function environment() {
  * Run (or resume) the corpus. `steps` maps step names to async functions (tests inject fakes).
  * Returns the run manifest written to <out>/corpus-run.json.
  */
-export async function runCorpus({ corpus, out, cache, jobs = 2, timeoutMs = 45 * 60 * 1000, steps = realSteps(), only, fresh = false, now = () => new Date(), log = () => {} }) {
+export async function runCorpus({ corpus, out, cache, jobs = 2, timeoutMs = 45 * 60 * 1000, steps = realSteps(), only, fresh = false, now = () => new Date(), log = () => {}, rerun, seed }) {
   const problems = validateCorpus(corpus);
   if (problems.length) throw new Error(`invalid corpus: ${problems.join('; ')}`);
+  if (rerun !== undefined && (!/^rerun\d+$/.test(rerun) || !Number.isInteger(seed))) throw new Error('a rerun needs --rerun rerun<N> and --seed <n>');
+  const stage = rerun ?? 'corpus';
+  const stepNames = rerun ? RERUN_STEPS : STEPS;
+  const timedSteps = rerun ? RERUN_TIMED_STEPS : TIMED_STEPS;
+  const needs = rerun ? RERUN_NEEDS : NEEDS;
   const repos = corpus.repos.filter((r) => !only || only.includes(repoSlug(r.url)));
   const env = environment();
   const rows = new Array(repos.length);
@@ -153,20 +169,22 @@ export async function runCorpus({ corpus, out, cache, jobs = 2, timeoutMs = 45 *
 
   async function runRepo(repo) {
     const slug = repoSlug(repo.url);
-    const data = join(out, slug, 'corpus');
+    const data = join(out, slug, stage);
     const statusPath = join(data, 'status.json');
     if (fresh) rmSync(data, { recursive: true, force: true });
-    const status = readJson(statusPath) ?? { repo: repoName(repo.url), pinnedSha: repo.pinnedSha, steps: {}, timedMs: 0 };
+    const status = readJson(statusPath) ?? { repo: repoName(repo.url), pinnedSha: repo.pinnedSha, steps: {}, timedMs: 0, ...(rerun ? { stage, seed } : {}) };
+    if (rerun && status.seed !== seed) throw new Error(`${slug}: ${stage}/status.json is for seed ${status.seed}, this run uses ${seed}; rerun with --fresh`);
+    const extra = rerun ? { benchJson: join(out, slug, 'corpus', 'bench', 'bench.json'), seed } : {};
     if (status.pinnedSha !== repo.pinnedSha) throw new Error(`${slug}: status.json is for ${status.pinnedSha}, corpus pins ${repo.pinnedSha}; rerun with --fresh`);
     const dir = join(cache, slug);
     const save = () => writeJson(statusPath, status);
     const wallStart = Date.now();
-    for (const name of STEPS) {
+    for (const name of stepNames) {
       const prev = status.steps[name];
       if (prev?.status === 'done') continue;
-      const timed = TIMED_STEPS.includes(name);
+      const timed = timedSteps.includes(name);
       // A step whose prerequisite did not finish is skipped (and retried on the next resume).
-      const blocker = (NEEDS[name] ?? []).find((s) => status.steps[s]?.status !== 'done');
+      const blocker = (needs[name] ?? []).find((s) => status.steps[s]?.status !== 'done');
       if (blocker) {
         status.steps[name] = { status: 'skipped', reason: `${blocker} did not finish` };
         save();
@@ -183,7 +201,7 @@ export async function runCorpus({ corpus, out, cache, jobs = 2, timeoutMs = 45 *
       save();
       let r;
       try {
-        r = await steps[name]({ repo, dir, data, timeoutMs: remaining });
+        r = await steps[name]({ repo, dir, data, timeoutMs: remaining, ...extra });
       } catch (err) {
         r = { ok: false, reason: `${name} threw: ${err.message.split('\n')[0]}` };
       }
@@ -198,11 +216,11 @@ export async function runCorpus({ corpus, out, cache, jobs = 2, timeoutMs = 45 *
       log(`${slug}: ${name} ${status.steps[name].status}${status.steps[name].reason ? ` (${status.steps[name].reason})` : ''}`);
     }
     status.wallMs = (status.wallMs ?? 0) + (Date.now() - wallStart);
-    status.completed = TIMED_STEPS.every((s) => status.steps[s]?.status === 'done');
+    status.completed = timedSteps.every((s) => status.steps[s]?.status === 'done');
     status.failure = status.completed
       ? undefined
       : (() => {
-          const bad = STEPS.map((s) => [s, status.steps[s]]).find(([, v]) => v && (v.status === 'timeout' || v.status === 'failed'));
+          const bad = stepNames.map((s) => [s, status.steps[s]]).find(([, v]) => v && (v.status === 'timeout' || v.status === 'failed'));
           return bad ? `${bad[1].status === 'timeout' ? 'failed: timeout' : 'failed'} (${bad[0]}): ${bad[1].reason}` : 'incomplete';
         })();
     status.environment = env;
@@ -217,8 +235,8 @@ export async function runCorpus({ corpus, out, cache, jobs = 2, timeoutMs = 45 *
     }
   }
   await Promise.all(Array.from({ length: Math.max(1, Math.min(jobs, repos.length)) }, worker));
-  const manifest = { schemaVersion: 1, kind: 'gutter-corpus-run', finishedAt: now().toISOString(), timeoutMin: timeoutMs / 60000, jobs, environment: env, repos: rows };
-  writeJson(join(out, 'corpus-run.json'), manifest);
+  const manifest = { schemaVersion: 1, kind: 'gutter-corpus-run', ...(rerun ? { stage, seed } : {}), finishedAt: now().toISOString(), timeoutMin: timeoutMs / 60000, jobs, environment: env, repos: rows };
+  writeJson(join(out, rerun ? `${stage}-run.json` : 'corpus-run.json'), manifest);
   return manifest;
 }
 
@@ -229,6 +247,8 @@ async function main() {
       'timeout-min': { type: 'string', default: '45' },
       only: { type: 'string' },
       fresh: { type: 'boolean', default: false },
+      rerun: { type: 'string' },
+      seed: { type: 'string' },
       out: { type: 'string', default: join(ROOT, 'docs', 'benchmark', 'data') },
       corpus: { type: 'string', default: join(ROOT, 'bench', 'corpus.json') },
     },
@@ -242,6 +262,7 @@ async function main() {
     timeoutMs: Number(values['timeout-min']) * 60 * 1000,
     only: values.only?.split(','),
     fresh: values.fresh,
+    ...(values.rerun ? { rerun: values.rerun, seed: Number(values.seed) } : {}),
     log: (s) => process.stderr.write(`${s}\n`),
   });
   const done = manifest.repos.filter((r) => r.completed).length;

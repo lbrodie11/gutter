@@ -196,6 +196,8 @@ export interface LibraryAnalysis {
 
 /** GU-31, bench only: base graphs per base tree within one run (seeded mutations share their host). */
 export type BaseGraphCache = Map<string, Promise<RaImportGraph | undefined>>;
+/** Base graphs a bench run keeps at once (insertion order; the oldest is dropped). */
+export const BASE_GRAPH_CACHE_MAX = 8;
 const baseGraphKey = (cwd: string, baseTree: string, settings: Record<string, unknown> | undefined) =>
   `${cwd}\0${baseTree}\0${JSON.stringify(settings ?? {})}`;
 
@@ -232,6 +234,8 @@ export async function baseImportGraph(
   if (!hit) {
     hit = build(undefined).catch(() => undefined);
     opts.cache.set(key, hit);
+    // Bounded: real PRs rarely share a base, so only the most recent trees are worth their memory.
+    while (opts.cache.size > BASE_GRAPH_CACHE_MAX) opts.cache.delete(opts.cache.keys().next().value!);
   }
   return hit;
 }

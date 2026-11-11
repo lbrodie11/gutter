@@ -4,6 +4,11 @@
 //
 //   node bench/aggregate.mjs [--data docs/benchmark/data] [--write]
 //
+// GU-31: with `<data>/rerun1-run.json` present, Rerun 1 (CORPUS.md §6) is aggregated too, by the same rule,
+// from <owner>__<repo>/rerun1/ (gate replays and the new seeded run) into results-rerun1.json, and README.md
+// shows GU-30 and Rerun 1 side by side. In a rerun, loudness, coverage and runtime come from the gate's
+// replays (the current code), not from GU-30's bench.json.
+//
 // Zero dependencies; deterministic: README.md is rendered from results.json alone, so every number on the
 // page comes from that file (test/gu30-aggregate.test.ts regenerates and compares).
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -67,6 +72,58 @@ function runtime(bench) {
   return st.sessionOpen ? { replayP50Ms: Math.round(sum('p50Ms')), replayP95Ms: Math.round(sum('p95Ms')), sessionP50Ms: Math.round(st.sessionOpen.p50Ms), sessionP95Ms: Math.round(st.sessionOpen.p95Ms) } : null;
 }
 
+/** GU-31: loudness, coverage and runtime from gate-a-prime's per-PR replays (the code under test). */
+function fromReplays(replays) {
+  const n = replays.length;
+  const level = (l) => replays.filter((r) => r.salience === l).length;
+  const items = replays.reduce((acc, r) => acc + r.kinds.length, 0);
+  const byKind = Object.fromEntries(KINDS.map((k) => [k, prop(replays.filter((r) => r.kinds.includes(k)).length, n)]));
+  const unresolvedByReason = {};
+  const uncheckedLanguages = {};
+  for (const r of replays) {
+    for (const [k, v] of Object.entries(r.unresolvedByReason ?? {})) unresolvedByReason[k] = (unresolvedByReason[k] ?? 0) + v;
+    for (const l of r.uncheckedLanguages ?? []) uncheckedLanguages[l] = (uncheckedLanguages[l] ?? 0) + 1;
+  }
+  return {
+    loudness: { evaluated: n, quiet: prop(level('quiet'), n), brief: prop(level('brief'), n), full: prop(level('full'), n), itemsPerPr: n ? items / n : null, items, byKind },
+    coverage: { partial: prop(replays.filter((r) => r.coverage === 'partial').length, n), unresolvedByReason, uncheckedLanguages },
+    runtime: replayRuntime(replays),
+  };
+}
+
+/** Nearest-rank percentile; null when empty. */
+export function percentile(xs, q) {
+  const a = xs.filter((x) => typeof x === 'number').sort((x, y) => x - y);
+  if (!a.length) return null;
+  return a[Math.min(a.length - 1, Math.max(0, Math.ceil(q * a.length) - 1))];
+}
+
+/**
+ * GU-31 performance (CORPUS.md §6): per-PR replay wall time, split by whether the PR removes a file. For PRs that
+ * do, `withoutBaseGraph` subtracts the base graph's own time, so the growth it causes is p95(total) / p95(without).
+ */
+export function replayRuntime(replays) {
+  const pick = (rs, f) => rs.map(f);
+  const q = (xs) => ({ p50Ms: percentile(xs, 0.5), p95Ms: percentile(xs, 0.95) });
+  const removes = replays.filter((r) => r.removes);
+  const plain = replays.filter((r) => !r.removes);
+  const built = removes.filter((r) => r.baseGraphMs > 0);
+  const total = q(pick(removes, (r) => r.ms));
+  const without = q(pick(removes, (r) => r.ms - r.baseGraphMs));
+  return {
+    replayP50Ms: percentile(pick(replays, (r) => r.ms), 0.5),
+    replayP95Ms: percentile(pick(replays, (r) => r.ms), 0.95),
+    plain: { prs: plain.length, ...q(pick(plain, (r) => r.ms)), baseGraphsBuilt: plain.filter((r) => r.baseGraphMs > 0).length },
+    removes: {
+      prs: removes.length,
+      total,
+      withoutBaseGraph: without,
+      baseGraph: { built: built.length, ...q(pick(built, (r) => r.baseGraphMs)) },
+      p95Growth: total.p95Ms !== null && without.p95Ms ? total.p95Ms / without.p95Ms - 1 : null,
+    },
+  };
+}
+
 function truth(gate) {
   if (!gate) return null;
   const f = (x) => ({ checked: x.checked, confirmed: x.confirmed, rate: x.checked ? x.confirmed / x.checked : null });
@@ -126,6 +183,8 @@ function backtests(bt, btOrigin) {
 /** One repository's row from its loaded files (any of them may be missing). */
 export function repoRow({ repo, status, bench, gate, seededSummary, seededRecords, backtest, backtestOrigin }) {
   const completed = Boolean(status?.completed);
+  // GU-31 rerun: no bench step; loudness, coverage and runtime come from the gate's replays.
+  const replayed = !bench && Array.isArray(gate?.replays) ? fromReplays(gate.replays) : null;
   return {
     repo: repoName(repo.url),
     slug: repoSlug(repo.url),
@@ -138,9 +197,9 @@ export function repoRow({ repo, status, bench, gate, seededSummary, seededRecord
     failure: completed ? null : (status?.failure ?? 'not run'),
     note: status?.steps?.bench?.note ?? null,
     wallMin: status?.wallMs ? Math.round(status.wallMs / 6000) / 10 : null,
-    loudness: bench ? loudness(bench) : null,
-    coverage: bench ? coverage(bench) : null,
-    runtime: runtime(bench),
+    loudness: replayed ? replayed.loudness : bench ? loudness(bench) : null,
+    coverage: replayed ? replayed.coverage : bench ? coverage(bench) : null,
+    runtime: replayed ? replayed.runtime : runtime(bench),
     truth: truth(gate),
     seeded: seeded(seededSummary, seededRecords, repo.language),
     backtests: backtests(backtest, backtestOrigin),
@@ -226,7 +285,7 @@ const worst = (rows, value, dir, n = 5) =>
     .slice(0, n)
     .map((r) => r.repo);
 
-export function aggregate({ corpus, inputs, run }) {
+export function aggregate({ corpus, inputs, run, stage }) {
   const rows = corpus.repos.map((repo) => repoRow({ repo, ...(inputs[repoSlug(repo.url)] ?? {}) }));
   const v = verdict(rows);
   const done = rows.filter((r) => r.completed);
@@ -246,6 +305,7 @@ export function aggregate({ corpus, inputs, run }) {
   return {
     schemaVersion: 1,
     kind: 'gutter-corpus-results',
+    ...(stage && stage !== 'corpus' ? { stage, seed: run?.seed ?? null } : {}),
     environment: run?.environment ?? null,
     timeoutMin: run?.timeoutMin ?? null,
     verdict: v,
@@ -304,12 +364,110 @@ function reasonFor(criterion, r) {
   }
 }
 
-export function renderReadme(res) {
+/** Pooled seeded false-positive rate of one language group (from the repository rows). */
+const groupFp = (res, g) => {
+  const rs = res.repos.filter((r) => r.completed && r.group === g);
+  return prop(rs.reduce((a, r) => a + (r.seeded?.falsePositives ?? 0), 0), rs.reduce((a, r) => a + (r.seeded?.negatives ?? 0), 0));
+};
+
+/** GU-31: Rerun 1's verdict and GU-30 next to it (CORPUS.md §6). Every number comes from the two results files. */
+export function renderRerun(res, rr) {
+  const v = rr.verdict;
+  const g = res.verdict;
+  const L = [];
+  L.push(`## Rerun 1 verdict (mechanical, CORPUS.md §6, the §5 rule): **${v.result}**`, '');
+  L.push(`Preregistered in [\`CORPUS.md\` §6](CORPUS.md) before any Rerun 1 data: the same 20 repositories and pins, the same oracle (with erratum 2), the same quotas and the same §5 rule, seed \`${rr.seed}\`. The seeded check reran on every repository; Gate A′ (a) and (c), and the real-PR facts of (b), were re-measured by replaying GU-30's 200 PRs per repository with the GU-31 code. Raw data: \`docs/benchmark/data/<owner>__<repo>/rerun1/\`; results: [\`results-rerun1.json\`](results-rerun1.json).`, '');
+  if (v.missing.length) L.push(...v.missing.map((m) => `- Missing: ${m}.`), '');
+  L.push(`- Completed repositories: ${v.completed} of ${v.total}.`);
+  L.push(`- (a) Median repository's full share: ${f2(v.a.medianFullShare)} (needs ≤ 0.33): ${met(v.a.met)}.`);
+  L.push(`- (b) Basis: ${v.b.basis} (real-PR \`broken-import\` items: ${v.b.realItems}, of which ${v.b.realConfirmed} confirmed). Seeded pooled precision ${pi(v.b.pooled.precision)} (needs ≥ 0.95), recall ${pi(v.b.pooled.recall)} (needs ≥ 0.90), false-positive rate ${pi(v.b.pooled.falsePositiveRate)}; repositories below 0.85 precision: ${v.b.reposBelowPrecision.length ? v.b.reposBelowPrecision.map((x) => `\`${x}\``).join(', ') : 'none'}. \`untested-change\` facts: ${v.b.untestedChange.met === null ? 'not exercised' : v.b.untestedChange.met ? `100% in all ${v.b.untestedChange.exercised} repositories that had any` : `wrong in ${v.b.untestedChange.wrong.join(', ')}`}; test-history facts: ${v.b.testHistory.met === null ? 'not exercised' : v.b.testHistory.met ? `100% in all ${v.b.testHistory.exercised} repositories that had any` : `wrong in ${v.b.testHistory.wrong.join(', ')}`}. (b): ${met(v.b.met)}.`);
+  L.push(`- (c) Banned-word hits in Gutter's own text: ${v.c.hits}: ${met(v.c.met)}.`);
+  L.push(`- (b) per language group: ${GROUPS.map((x) => `${x} ${v.b.groups[x].positives} seeded positives (${v.b.groups[x].computable ? 'computable' : 'not computable'})`).join('; ')}.`, '');
+  if (v.result === 'FAIL') {
+    L.push('**Top failure classes** (by count):', '');
+    L.push('| # | Failure class | Count |', '|---:|---|---:|');
+    v.failureClasses.slice(0, 3).forEach((x, i) => L.push(`| ${i + 1} | ${x.class} | ${x.count} |`));
+    L.push('');
+  }
+  L.push('### GU-30 and Rerun 1 side by side', '');
+  L.push('| Measure | GU-30 (seed 20261110) | Rerun 1 (seed ' + rr.seed + ') |', '|---|---|---|');
+  L.push(`| Verdict | ${g.result} | ${v.result} |`);
+  L.push(`| Completed repositories | ${g.completed}/${g.total} | ${v.completed}/${v.total} |`);
+  L.push(`| (a) Median full share | ${f2(g.a.medianFullShare)} | ${f2(v.a.medianFullShare)} |`);
+  L.push(`| (b) Seeded pooled precision | ${pi(g.b.pooled.precision)} | ${pi(v.b.pooled.precision)} |`);
+  L.push(`| (b) Seeded pooled recall | ${pi(g.b.pooled.recall)} | ${pi(v.b.pooled.recall)} |`);
+  L.push(`| (b) Seeded false-positive rate | ${pi(g.b.pooled.falsePositiveRate)} | ${pi(v.b.pooled.falsePositiveRate)} |`);
+  L.push(`| (b) Real-PR \`broken-import\` items (confirmed) | ${g.b.realItems} (${g.b.realConfirmed}) | ${v.b.realItems} (${v.b.realConfirmed}) |`);
+  L.push(`| (c) Banned-word hits | ${g.c.hits} | ${v.c.hits} |`);
+  L.push(`| Median PRs with \`coverage: partial\` | ${f2(res.median.partialShare)} | ${f2(rr.median.partialShare)} |`);
+  L.push(`| Median seeded recall | ${f2(res.median.seededRecall)} | ${f2(rr.median.seededRecall)} |`, '');
+  L.push('**By language group** (seeded; completed repositories):', '');
+  L.push('| Group | Recall, GU-30 | Recall, Rerun 1 | Precision, GU-30 | Precision, Rerun 1 | FP rate, GU-30 | FP rate, Rerun 1 |', '|---|---|---|---|---|---|---|');
+  for (const x of GROUPS) {
+    L.push(`| ${x} | ${pi(res.byGroup[x].seededRecall)} | ${pi(rr.byGroup[x].seededRecall)} | ${pi(res.byGroup[x].seededPrecision)} | ${pi(rr.byGroup[x].seededPrecision)} | ${pi(groupFp(res, x))} | ${pi(groupFp(rr, x))} |`);
+  }
+  L.push('', '**By failure class** (CORPUS.md §5 definitions; every class in either run):', '');
+  L.push('| Failure class | GU-30 | Rerun 1 |', '|---|---:|---:|');
+  const count = (vv, k) => vv.failureClasses.find((x) => x.class === k)?.count ?? 0;
+  const classes = [...new Set([...g.failureClasses, ...v.failureClasses].map((x) => x.class))]
+    .sort((a, b) => count(v, b) - count(v, a) || count(g, b) - count(g, a) || a.localeCompare(b));
+  for (const k of classes) L.push(`| ${k} | ${count(g, k)} | ${count(v, k)} |`);
+  if (!classes.length) L.push('| (none) | 0 | 0 |');
+  L.push('', '**Per repository** (seeded):', '');
+  L.push('| Repository | Group | Recall, GU-30 | Recall, Rerun 1 | Precision, GU-30 | Precision, Rerun 1 | FP, GU-30 | FP, Rerun 1 | Full share, Rerun 1 | Rerun 1 shortfalls |', '|---|---|---|---|---|---|---|---|---|---|');
+  for (const r of rr.repos) {
+    const o = res.repos.find((x) => x.repo === r.repo);
+    const sd = (x) => (x?.seeded ? x.seeded : null);
+    const rec = (x) => (sd(x) ? `${sd(x).detected}/${sd(x).positives} (${f2(sd(x).recall)})` : '—');
+    const pre = (x) => (sd(x) ? `${sd(x).confirmed}/${sd(x).reported} (${f2(sd(x).precision)})` : '—');
+    const fp = (x) => (sd(x) ? `${sd(x).falsePositives}/${sd(x).negatives}` : '—');
+    L.push(`| \`${r.repo}\` | ${r.group} | ${rec(o)} | ${rec(r)} | ${pre(o)} | ${pre(r)} | ${fp(o)} | ${fp(r)} | ${p(r.loudness?.full)} | ${r.completed ? obj(r.seeded?.shortfalls) : r.failure} |`);
+  }
+  L.push('', '### Cost of the base import graph (Rerun 1 replays of the real PRs)', '');
+  L.push('Per-PR replay wall time (ms, nearest-rank percentiles). A PR that deletes or renames a file builds the base graph; "without" subtracts the base graph\'s own time from the same replays. Within a bench run the base graph is cached per base tree (DECISIONS #20), so a PR whose base tree was already analyzed adds no base-graph time.', '');
+  L.push('| Repository | PRs removing files | Replay p50 / p95, with | Replay p50 / p95, without | p95 growth | Base graph p50 / p95 (built) | Other PRs: replay p50 / p95 |', '|---|---:|---|---|---:|---|---|');
+  const ms = (x) => (x === null || x === undefined ? 'n/a' : `${x}`);
+  for (const r of rr.repos) {
+    const rt = r.runtime;
+    if (!rt?.removes) {
+      L.push(`| \`${r.repo}\` | — | — | — | — | — | — |`);
+      continue;
+    }
+    const m = rt.removes;
+    L.push(`| \`${r.repo}\` | ${m.prs} | ${ms(m.total.p50Ms)} / ${ms(m.total.p95Ms)} | ${ms(m.withoutBaseGraph.p50Ms)} / ${ms(m.withoutBaseGraph.p95Ms)} | ${m.p95Growth === null ? 'n/a' : `${Math.round(m.p95Growth * 100)}%`} | ${ms(m.baseGraph.p50Ms)} / ${ms(m.baseGraph.p95Ms)} (${m.baseGraph.built}) | ${ms(rt.plain.p50Ms)} / ${ms(rt.plain.p95Ms)} |`);
+  }
+  L.push('', '### Rerun 1: where Gutter did badly (seeded)', '');
+  const titles = { seededRecall: 'Lowest seeded recall', seededPrecision: 'Lowest seeded precision (repositories with ≥ 1 reported item)', falsePositiveRate: 'Highest seeded false-positive rate', fullShare: 'Highest full share (replayed)' };
+  for (const [k, title] of Object.entries(titles)) {
+    L.push(`**${title}**`, '');
+    const names = rr.worst[k];
+    if (!names.length) L.push('- No completed repository has a value.');
+    for (const name of names) L.push(`- \`${name}\`: ${reasonFor(k, rr.repos.find((r) => r.repo === name))}.`);
+    L.push('');
+  }
+  const failed = rr.repos.filter((r) => !r.completed);
+  L.push('**Repositories that did not complete (Rerun 1)**', '');
+  L.push(...(failed.length ? failed.map((r) => `- \`${r.repo}\`: ${r.failure}.`) : ['- None.']), '');
+  if (rr.environment) {
+    const e = rr.environment;
+    L.push(`Rerun 1 environment: gutter ${e.gutter}, repo-archaeology ${e.repoArchaeology}, TypeScript ${e.typescript}, Node ${e.node}, git ${e.git}; ${e.machine.cpu}, ${e.machine.cores} cores, ${e.machine.memoryGb} GB, ${e.machine.platform} ${e.machine.arch}. Per-repository timeout ${rr.timeoutMin} min.`, '');
+  }
+  L.push('---', '', 'The sections below are GU-30\'s run (CORPUS.md §1–§5), unchanged.', '');
+  return L;
+}
+
+export function renderReadme(res, rerun) {
   const v = res.verdict;
   const L = [];
   L.push('# Gutter benchmark: Gate A′ on a 20-repository corpus', '');
-  L.push('<!-- generated by bench/aggregate.mjs from docs/benchmark/results.json; do not edit by hand -->', '');
-  L.push(`Preregistered in [\`CORPUS.md\`](CORPUS.md) (§1–§5 fixed before any run). Gate A′ is M0's exit test ([\`ROADMAP.md\`](../ROADMAP.md)): is Gutter quiet, true and non-predictive on the median repository? How to rerun: [\`REPRODUCE.md\`](REPRODUCE.md). Raw data: \`docs/benchmark/data/<owner>__<repo>/corpus/\`.`, '');
+  if (rerun) {
+    L.push('<!-- generated by bench/aggregate.mjs from docs/benchmark/results.json and results-rerun1.json; do not edit by hand -->', '');
+    L.push(`Preregistered in [\`CORPUS.md\`](CORPUS.md) (GU-30: §1–§5; Rerun 1: §6; each fixed before its run). Gate A′ is M0's exit test ([\`ROADMAP.md\`](../ROADMAP.md)): is Gutter quiet, true and non-predictive on the median repository? How to rerun: [\`REPRODUCE.md\`](REPRODUCE.md). Raw data: \`docs/benchmark/data/<owner>__<repo>/corpus/\` (GU-30) and \`…/rerun1/\` (Rerun 1).`, '');
+    L.push(...renderRerun(res, rerun));
+  } else {
+    L.push('<!-- generated by bench/aggregate.mjs from docs/benchmark/results.json; do not edit by hand -->', '');
+    L.push(`Preregistered in [\`CORPUS.md\`](CORPUS.md) (§1–§5 fixed before any run). Gate A′ is M0's exit test ([\`ROADMAP.md\`](../ROADMAP.md)): is Gutter quiet, true and non-predictive on the median repository? How to rerun: [\`REPRODUCE.md\`](REPRODUCE.md). Raw data: \`docs/benchmark/data/<owner>__<repo>/corpus/\`.`, '');
+  }
   L.push(`## Verdict (mechanical, CORPUS.md §5): **${v.result}**`, '');
   if (v.missing.length) L.push(...v.missing.map((m) => `- Missing: ${m}.`), '');
   L.push(`- Completed repositories: ${v.completed} of ${v.total}.`);
@@ -399,14 +557,15 @@ export function renderReadme(res) {
 const readJson = (path) => (existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : undefined);
 const readJsonl = (path) => (existsSync(path) ? readFileSync(path, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : undefined);
 
-export function loadInputs(dataDir, corpus) {
+export function loadInputs(dataDir, corpus, stage = 'corpus') {
   const inputs = {};
   for (const repo of corpus.repos) {
     const slug = repoSlug(repo.url);
-    const d = join(dataDir, slug, 'corpus');
+    const d = join(dataDir, slug, stage);
     inputs[slug] = {
       status: readJson(join(d, 'status.json')),
-      bench: readJson(join(d, 'bench', 'bench.json')),
+      // A rerun has no bench step of its own (CORPUS.md §6): its loudness comes from the gate's replays.
+      bench: stage === 'corpus' ? readJson(join(d, 'bench', 'bench.json')) : undefined,
       gate: readJson(join(d, 'gate-a-prime.json')),
       seededSummary: readJson(join(d, 'seeded', 'seeded-summary.json')),
       seededRecords: readJsonl(join(d, 'seeded', 'seeded.jsonl')),
@@ -423,12 +582,16 @@ function main() {
   const problems = validateCorpus(corpus);
   if (problems.length) throw new Error(problems.join('; '));
   const res = aggregate({ corpus, inputs: loadInputs(values.data, corpus), run: readJson(join(values.data, 'corpus-run.json')) });
-  const readme = renderReadme(res);
+  const rerunRun = readJson(join(values.data, 'rerun1-run.json'));
+  const rerun = rerunRun ? aggregate({ corpus, inputs: loadInputs(values.data, corpus, 'rerun1'), run: rerunRun, stage: 'rerun1' }) : undefined;
+  const readme = renderReadme(res, rerun);
   if (values.write) {
     writeFileSync(join(ROOT, 'docs', 'benchmark', 'results.json'), JSON.stringify(res, null, 2) + '\n');
+    if (rerun) writeFileSync(join(ROOT, 'docs', 'benchmark', 'results-rerun1.json'), JSON.stringify(rerun, null, 2) + '\n');
     writeFileSync(join(ROOT, 'docs', 'benchmark', 'README.md'), readme + '\n');
   } else process.stdout.write(readme + '\n');
-  process.stderr.write(`gate A′: ${res.verdict.result} (${res.verdict.completed}/${res.verdict.total} completed)\n`);
+  process.stderr.write(`gate A′ (GU-30): ${res.verdict.result} (${res.verdict.completed}/${res.verdict.total} completed)\n`);
+  if (rerun) process.stderr.write(`gate A′ (Rerun 1): ${rerun.verdict.result} (${rerun.verdict.completed}/${rerun.verdict.total} completed)\n`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main();

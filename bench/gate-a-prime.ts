@@ -31,10 +31,12 @@ import { posix } from 'node:path';
 import { parseArgs } from 'node:util';
 import ts from 'typescript';
 import { replayBriefWithMeta } from '../src/brief.ts';
+import type { BaseGraphCache } from '../src/sources/archaeology-lib.ts';
 import type { GutterBrief } from '../src/contract.ts';
 import { renderComic } from '../src/render/comic.ts';
 import { renderMarkdown } from '../src/render/markdown.ts';
 import { summaryLine } from '../src/output.ts';
+import { coverageFields } from '../src/bench/runner.ts';
 import { importSpecifiers } from './seeded.ts';
 
 export const BANNED = /forgot|likely forgotten|you may have missed|untested|not covered/i;
@@ -295,6 +297,38 @@ export function bannedHits(brief: GutterBrief, opts: { raw?: boolean } = {}): st
   });
 }
 
+/** GU-31: one replayed PR, as the current code briefs it. */
+export interface ReplayRecord {
+  pr: string;
+  salience: string;
+  kinds: string[];
+  coverage: 'full' | 'partial';
+  unresolvedByReason: Record<string, number>;
+  /** Languages of changed files no analyzer covers (`dependents.unchecked`). */
+  uncheckedLanguages: string[];
+  method?: string;
+  /** The PR deletes or renames a file (so the base graph is built). */
+  removes: boolean;
+  /** Whole replay, ms (replayBriefWithMeta wall time). */
+  ms: number;
+  /** Of which the base import graph, ms (0 when the PR removes nothing). */
+  baseGraphMs: number;
+}
+
+export function replayRecord(pr: string, b: GutterBrief, ms: number, baseGraphMs: number): ReplayRecord {
+  return {
+    pr,
+    salience: b.salience.level,
+    kinds: b.checklist.map((c) => c.kind),
+    // The same coverage fields `gutter bench` records (GU-30 §2), so both runs are measured alike.
+    ...(coverageFields(b) as Required<ReturnType<typeof coverageFields>>),
+    ...(b.dependents.method ? { method: b.dependents.method } : {}),
+    removes: b.changes.files.some((f) => f.status === 'deleted' || Boolean(f.oldPath)),
+    ms: Math.round(ms),
+    baseGraphMs: Math.round(baseGraphMs),
+  };
+}
+
 interface BenchPr { id: string; base: string; head: string; subject: string; prNumber: number | null; policies: { production: { salience: string; questions: { kind: string }[] } } }
 
 async function main(): Promise<void> {
@@ -310,10 +344,14 @@ async function main(): Promise<void> {
   let checklistMismatches = 0;
   let rawHits = 0;
   const ownWordHits: { pr: string; text: string }[] = [];
+  const replays: ReplayRecord[] = [];
+  const baseGraphCache: BaseGraphCache = new Map();
   let full = 0;
   for (const pr of bench.prs) {
-    const res = await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true });
+    const t0 = performance.now();
+    const res = await replayBriefWithMeta({ cwd: repo, base: pr.base, head: pr.head, title: pr.subject, ...(pr.prNumber ? { prNumber: pr.prNumber } : {}), noCalibration: true, baseGraphCache });
     const b = res.brief;
+    replays.push(replayRecord(pr.id, b, performance.now() - t0, res.meta.stageTimingsMs.baseGraph ?? 0));
     if (pr.policies.production.salience === 'full') full++;
     if (b.salience.level !== pr.policies.production.salience) salienceMismatches++;
     if (b.checklist.map((c) => c.kind).join() !== pr.policies.production.questions.map((q) => q.kind).join()) checklistMismatches++;
@@ -347,6 +385,9 @@ async function main(): Promise<void> {
       testHistory: { ...history, needs: 1, met: history.rate === null ? null : history.rate === 1 },
     },
     c: { pagesChecked: n, ownWordingHits: ownWordHits, rawHits: rawHits, met: ownWordHits.length === 0 },
+    // GU-31, additive: what each replay (current code) said, so loudness, coverage and runtime can be measured
+    // on the replays themselves rather than on bench.json (written by the Gutter that ran the bench).
+    replays,
   };
   const json = JSON.stringify(result, null, 2) + '\n';
   if (values.out) writeFileSync(values.out, json);
