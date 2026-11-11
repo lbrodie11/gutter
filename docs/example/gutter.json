@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "tool": {
     "name": "gutter",
-    "version": "0.5.0"
+    "version": "0.6.0"
   },
   "change": {
     "base": "main",
@@ -90,7 +90,8 @@
           "src/adapter/cloudflare-workers/serve-static.ts",
           "src/adapter/deno/serve-static.ts",
           "src/middleware/serve-static/index.test.ts"
-        ]
+        ],
+        "coverage": "full"
       },
       {
         "id": "deps:src/adapter/bun/serve-static.ts",
@@ -99,11 +100,12 @@
         "changedImporters": [],
         "untouchedImporters": [
           "src/adapter/bun/index.ts"
-        ]
+        ],
+        "coverage": "full"
       }
     ],
     "unchecked": [],
-    "coverage": "partial",
+    "coverage": "full",
     "unresolved": {
       "count": 5,
       "samples": [
@@ -116,6 +118,11 @@
       "byReason": {
         "target-missing": 1,
         "unknown-package": 4
+      },
+      "relevant": {
+        "count": 0,
+        "samples": [],
+        "byReason": {}
       }
     },
     "scannedFiles": 453
@@ -355,11 +362,11 @@
     }
   },
   "provenance": {
-    "generatedAt": "2026-11-11T17:10:45.258Z",
+    "generatedAt": "2026-11-11T20:47:56.396Z",
     "engines": [
       {
         "name": "gutter",
-        "version": "0.5.0"
+        "version": "0.6.0"
       },
       {
         "name": "repo-archaeology",

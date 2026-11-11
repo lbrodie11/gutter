@@ -12,17 +12,21 @@ import { cssText } from '@frame12/tokens';
 import { assembleBrief } from '../src/brief.ts';
 import { lintPage, renderComic } from '../src/render/comic.ts';
 import { FRAME12_TOKENS, FRAME12_TOKENS_VERSION, TOKENS_ID } from '../src/render/frame12-tokens.ts';
-import { frame12TokensModule } from '../scripts/sync-frame12-tokens.ts';
+import { frame12TokensModule, offlineTokenCss } from '../scripts/sync-frame12-tokens.ts';
 import { scenarios } from './fixtures/gu29/scenarios.ts';
 
 const require = createRequire(import.meta.url);
 const lint = (html: string, file: string) => lintHtml(html, { file, tokenStyleIds: [TOKENS_ID] });
 
-test('the vendored tokens are @frame12/tokens, byte for byte (scripts/sync-frame12-tokens.ts regenerates them)', () => {
+test('the vendored tokens are @frame12/tokens minus its @font-face metric fallbacks (scripts/sync-frame12-tokens.ts)', () => {
   const version = (require('@frame12/tokens/package.json') as { version: string }).version;
-  assert.equal(FRAME12_TOKENS, cssText);
+  assert.equal(FRAME12_TOKENS, offlineTokenCss(cssText));
   assert.equal(FRAME12_TOKENS_VERSION, version);
-  assert.equal(readFileSync('src/render/frame12-tokens.ts', 'utf8'), frame12TokensModule(cssText, version));
+  assert.equal(readFileSync('src/render/frame12-tokens.ts', 'utf8'), frame12TokensModule(offlineTokenCss(cssText), version));
+  // Offline pages never load the web fonts, so the metric fallbacks that mimic them are left out; nothing else is.
+  assert.doesNotMatch(FRAME12_TOKENS, /@font-face|f12DisplayFallback\s*;|size-adjust/);
+  assert.match(cssText, /@font-face/, 'the package still ships them');
+  for (const m of cssText.matchAll(/(--f[a-z0-9-]*):\s*([^;]+);/g)) assert.ok(FRAME12_TOKENS.includes(`${m[1]}: ${m[2]};`), `${m[1]} kept`);
 });
 
 test('every comic page (each fixture scenario) and the committed example pass @frame12/lint', () => {

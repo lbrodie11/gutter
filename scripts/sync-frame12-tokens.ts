@@ -14,10 +14,24 @@ import { cssText } from '@frame12/tokens';
 const require = createRequire(import.meta.url);
 const OUT = new URL('../src/render/frame12-tokens.ts', import.meta.url);
 
+/**
+ * The package's stylesheet for Gutter's offline pages: without its `@font-face` metric fallbacks. Those rules
+ * (`f12DisplayFallback`, …) scale local fonts to match the FRAME/12 web fonts' metrics, which only helps while the
+ * web fonts load. Gutter's pages never load them, so the fallbacks would always render: the display face as regular
+ * Arial at 131% instead of "Arial Black", monospace at 83%. Without the rules, those family names match nothing and
+ * each stack falls through to its system fonts, as before the package. Colors, gutters, stroke and stacks are kept.
+ */
+export function offlineTokenCss(css: string): string {
+  return css
+    .replace(/\/\* Cross-platform metric-matched fallbacks[\s\S]*?\*\/\n/, '')
+    .replace(/@font-face\s*\{[^}]*\}\s*/g, '');
+}
+
 export function frame12TokensModule(css: string, version: string): string {
   return `/**
  * FRAME/12 tokens, generated from \`@frame12/tokens\` ${version} (MIT, © Laqwan Brodie) by
- * \`scripts/sync-frame12-tokens.ts\`. Do not edit by hand: bump the devDependency and rerun the script.
+ * \`scripts/sync-frame12-tokens.ts\`, without its \`@font-face\` metric fallbacks (\`offlineTokenCss\`: Gutter's
+ * offline pages never load the web fonts they match). Do not edit by hand: bump the devDependency and rerun.
  * https://github.com/lbrodie11/frame12
  *
  * Vendored because Gutter has zero runtime dependencies. This block is the ONLY place a color literal or font
@@ -33,7 +47,7 @@ export const FRAME12_TOKENS = ${JSON.stringify(css)};
 
 if (process.argv[1]?.endsWith('sync-frame12-tokens.ts')) {
   const version = (require('@frame12/tokens/package.json') as { version: string }).version;
-  const want = frame12TokensModule(cssText, version);
+  const want = frame12TokensModule(offlineTokenCss(cssText), version);
   const have = readFileSync(OUT, 'utf8');
   if (process.argv.includes('--check')) {
     if (have !== want) {
