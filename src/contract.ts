@@ -111,6 +111,13 @@ export interface DependentsLayer {
   /** @deprecated Legacy v1 field normalized into `unresolved.count`. */
   unresolvedAliases?: number;
   scannedFiles: number;
+  /**
+   * GU-31, additive: how importers of removed (deleted or renamed-away) paths were found, so how every
+   * `broken-import` item was produced. `base-graph`: Repo Archaeology's import graphs at base and head, in every
+   * language it resolves; `relative-scan`: relative TS/JS specifiers only (the fallback scanner, or the library
+   * without a base graph). Absent when the library ran and the PR removed nothing. Tolerate unknown values.
+   */
+  method?: 'base-graph' | 'relative-scan';
 }
 
 export interface CommitRef {

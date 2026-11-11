@@ -302,5 +302,6 @@ export function buildDependents(
       samples,
     },
     scannedFiles: scanned,
+    method: 'relative-scan',
   };
 }

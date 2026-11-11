@@ -12,7 +12,7 @@ import type { SourceReader } from './source/reader.ts';
 import { GitTreeReader, WorkingTreeReader } from './source/reader.ts';
 import type { RaBacktest, RaDiff, RaRunner } from './sources/archaeology.ts';
 import { detectRaFeatures, runBacktest, runDiff, toCalibration, toForgotten, trackRecordsByTarget } from './sources/archaeology.ts';
-import type { LoadedRaLibrary, RaProgress } from './sources/archaeology-lib.ts';
+import type { BaseGraphCache, LoadedRaLibrary, RaProgress } from './sources/archaeology-lib.ts';
 import { analyzeWithLibrary, loadRaLibrary } from './sources/archaeology-lib.ts';
 import { GUTTER_VERSION } from './version.ts';
 
@@ -66,6 +66,8 @@ export interface ReplayBriefOptions {
   maxForgotten?: number;
   config?: GutterConfig;
   now?: Date;
+  /** GU-31, bench only: reuse the base import graph across PRs on the same base tree. */
+  baseGraphCache?: BaseGraphCache;
 }
 
 export interface ReplayMeta {
@@ -79,6 +81,8 @@ export interface ReplayMeta {
     sessionOpen: number;
     staticAnalysis: number;
     brief: number;
+    /** GU-31: the base import graph, included in `sessionOpen`; 0 when the PR removes nothing. */
+    baseGraph?: number;
   };
 }
 
@@ -357,6 +361,18 @@ function assemblePrepared(opts: BriefOptions, p: PreparedBrief, dependents: Depe
 }
 
 /**
+ * GU-31: what the base import graph needs, only for a PR that removes paths (deleted or renamed away): those
+ * paths and the tree the diff starts from (`base...head` diffs against the merge base). A PR that removes
+ * nothing gets neither, so no base session is opened.
+ */
+function removedForBaseGraph(root: string, baseSha: string, headSha: string, changes: ChangeStructure): { removedFiles?: string[]; baseTree?: string } {
+  const removed = changes.files.flatMap((f) => [...(f.status === 'deleted' ? [f.path] : []), ...(f.oldPath ? [f.oldPath] : [])]);
+  if (!removed.length) return {};
+  const baseTree = git(root, ['merge-base', baseSha, headSha], { allowFail: true }).trim() || baseSha;
+  return { removedFiles: [...new Set(removed)].sort(), baseTree };
+}
+
+/**
  * Synchronous brief without the Repo Archaeology library: the interim relative-import scanner for
  * dependents, and co-change history through a subprocess (`--ra-bin` / `GUTTER_RA_BIN`) or `npx`.
  * The CLI and the Action use `buildBriefAsync`, which tries the library first.
@@ -404,12 +420,13 @@ export async function buildBriefAsync(opts: BriefOptions & { raLib?: string | fa
           headFiles,
           noCalibration: Boolean(p.mergedConfig.noCalibration) || Boolean(opts.raBacktest),
           skipDiff: Boolean(opts.raDiff),
+          ...removedForBaseGraph(p.root, p.baseSha, p.headSha, p.changes),
           // Config boundary: with `configRef`, only the base tree's settings apply, never the PR's file.
           ...(p.raConfig ? { settings: { ...p.raConfig.settings }, useConfigFile: false } : {}),
           ...(opts.onProgress ? { onProgress: opts.onProgress } : {}),
         });
         opts.onSession?.(a.sessions);
-        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph) : buildDependents(p.root, p.changes, p.reader);
+        const dependents = a.graph ? dependentsFromImportGraph(p.changes, a.graph, a.repoGraph, a.baseGraph) : buildDependents(p.root, p.changes, p.reader);
         const raDiff = opts.raDiff ?? a.raDiff;
         const shallow = Boolean(raDiff?.meta?.shallow);
         const h: HistoryResult = {
@@ -540,6 +557,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
     let historyStatus: 'available' | 'unavailable' = shallow ? 'unavailable' : 'available';
     let raVersion: string | undefined;
     let sessionOpenMs = 0;
+    let baseGraphMs = 0;
     const raFeatures: string[] = [];
 
     const noHistory = Boolean(mergedConfig.noHistory);
@@ -574,10 +592,13 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
           useConfigFile: raConfigValid,
           skipDiff: Boolean(raDiff),
           noCalibration: noCalibration || opts.raBacktest !== undefined,
+          ...removedForBaseGraph(root, baseSha, headSha, changes),
+          ...(opts.baseGraphCache ? { baseGraphCache: opts.baseGraphCache } : {}),
         });
         sessionOpenMs = performance.now() - tSessionStart;
+        baseGraphMs = a.baseGraphMs;
         if (a.graph) {
-          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph);
+          dependents = dependentsFromImportGraph(changes, a.graph, a.repoGraph, a.baseGraph);
           raFeatures.push('importGraph');
         }
         if (!raDiff) {
@@ -666,6 +687,7 @@ export async function replayBriefWithMeta(opts: ReplayBriefOptions): Promise<Rep
           sessionOpen: sessionOpenMs,
           staticAnalysis: staticAnalysisMs,
           brief: briefMs,
+          baseGraph: baseGraphMs,
         },
       },
     };
