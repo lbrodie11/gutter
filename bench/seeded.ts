@@ -83,11 +83,45 @@ export function gitTree(cwd: string, sha: string): Tree & { close(): void } {
     files,
     has: (p) => set.has(p),
     read: (p) => {
-      if (!cache.has(p)) cache.set(p, set.has(p) ? r.readText(p, 2 * 1024 * 1024) : undefined);
+      if (!cache.has(p)) cache.set(p, set.has(p) ? (r.readText(p, 2 * 1024 * 1024) ?? readRaw(cwd, sha, p, 2 * 1024 * 1024)) : undefined);
       return cache.get(p);
     },
     close: () => r.close(),
   };
+}
+
+/**
+ * Import specifiers of a TS/JS source by walking TypeScript's AST (GU-31 erratum 2): `import`/`export … from`
+ * (including `export * as ns from`), `import x = require()`, `import()` and `require()` calls anywhere in the
+ * file, and `import('x')` types. `ts.preProcessFile` alone, the GU-30 oracle, drops `export * as ns from` and
+ * misses calls deep in a file; its results are kept in the union (triple-slash references are not imports).
+ */
+export function importSpecifiers(text: string, fileName = 'x.ts'): string[] {
+  const out = new Set(ts.preProcessFile(text, true, true).importedFiles.map((f) => f.fileName));
+  const kind = /\.[cm]?tsx$/.test(fileName) ? ts.ScriptKind.TSX : /\.jsx$/.test(fileName) ? ts.ScriptKind.JSX : /\.[cm]?js$/.test(fileName) ? ts.ScriptKind.JS : ts.ScriptKind.TS;
+  const sf = ts.createSourceFile(`/repo/${fileName}`, text, ts.ScriptTarget.Latest, false, kind);
+  const lit = (n: ts.Node | undefined) => (n && ts.isStringLiteralLike(n) ? n.text : undefined);
+  const visit = (n: ts.Node): void => {
+    let s: string | undefined;
+    if (ts.isImportDeclaration(n) || ts.isExportDeclaration(n)) s = lit(n.moduleSpecifier);
+    else if (ts.isImportEqualsDeclaration(n) && ts.isExternalModuleReference(n.moduleReference)) s = lit(n.moduleReference.expression);
+    else if (ts.isCallExpression(n) && n.arguments.length >= 1 && (n.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(n.expression) && n.expression.text === 'require'))) s = lit(n.arguments[0]);
+    else if (ts.isImportTypeNode(n) && ts.isLiteralTypeNode(n.argument)) s = lit(n.argument.literal);
+    if (s) out.add(s);
+    ts.forEachChild(n, visit);
+  };
+  visit(sf);
+  return [...out];
+}
+
+/** A blob read as text even when it contains NUL bytes (GU-31 erratum 2: `GitTreeReader` skips those as binary). */
+function readRaw(cwd: string, sha: string, path: string, maxBytes: number): string | undefined {
+  try {
+    const buf = execFileSync('git', ['cat-file', 'blob', `${sha}:${path}`], { cwd, maxBuffer: maxBytes + 1, stdio: ['ignore', 'pipe', 'ignore'] });
+    return buf.length > maxBytes ? undefined : buf.toString('utf8');
+  } catch {
+    return undefined;
+  }
 }
 
 export function memTree(map: Record<string, string>): Tree {
@@ -239,8 +273,8 @@ export class TsOracle {
   }
 
   /** Import specifiers of a file: static, dynamic, `require`, `export … from`, type-only included. */
-  static specifiers(text: string): string[] {
-    return ts.preProcessFile(text, true, true).importedFiles.map((f) => f.fileName);
+  static specifiers(text: string, fileName?: string): string[] {
+    return importSpecifiers(text, fileName);
   }
 
   edges(files: readonly string[]): Edge[] {
@@ -248,7 +282,7 @@ export class TsOracle {
     for (const importer of files) {
       const text = this.tree.read(importer);
       if (text === undefined) continue;
-      for (const specifier of new Set(TsOracle.specifiers(text))) {
+      for (const specifier of new Set(TsOracle.specifiers(text, importer))) {
         const target = this.resolve(importer, specifier);
         if (target && target !== importer) out.push({ importer, specifier, target });
       }
@@ -445,7 +479,7 @@ function removedTargets(lang: Lang, base: Tree, changes: ReadonlyMap<string, str
 /** Internal specifiers of one file with their resolution in `oracle`'s tree (undefined: does not resolve). */
 function specsOf(lang: Lang, oracle: Oracle, importer: string, text: string): { specifier: string; target: string | undefined }[] {
   if (lang === 'typescript') {
-    return [...new Set(TsOracle.specifiers(text))].filter((s) => s.startsWith('.') || oracle.resolve(importer, s) !== undefined).map((s) => ({ specifier: s, target: oracle.resolve(importer, s) }));
+    return [...new Set(TsOracle.specifiers(text, importer))].filter((s) => s.startsWith('.') || oracle.resolve(importer, s) !== undefined).map((s) => ({ specifier: s, target: oracle.resolve(importer, s) }));
   }
   if (lang === 'go') {
     const go = oracle as GoOracle;

@@ -35,6 +35,7 @@ import type { GutterBrief } from '../src/contract.ts';
 import { renderComic } from '../src/render/comic.ts';
 import { renderMarkdown } from '../src/render/markdown.ts';
 import { summaryLine } from '../src/output.ts';
+import { importSpecifiers } from './seeded.ts';
 
 export const BANNED = /forgot|likely forgotten|you may have missed|untested|not covered/i;
 export const FULL_SHARE_BUDGET = 1 / 3;
@@ -120,13 +121,13 @@ const TS_JS = /\.([cm]?[jt]sx?)$/;
 
 /** Resolve every import specifier of `importer` (read at `from`) in `tree`; returns specifier -> resolved rel path. */
 export function resolveSpecifiers(importerText: string, importer: string, tree: TreeHost, opts: ts.CompilerOptions): Map<string, string | undefined> {
-  const info = ts.preProcessFile(importerText, true, true);
+  // GU-31 erratum 2: the AST walk, so `export * as ns from` and deep `import()` calls are seen.
   const out = new Map<string, string | undefined>();
   const host = tree.moduleHost();
-  for (const ref of info.importedFiles) {
-    const r = ts.resolveModuleName(ref.fileName, `/repo/${importer}`, opts, host);
+  for (const spec of importSpecifiers(importerText, importer)) {
+    const r = ts.resolveModuleName(spec, `/repo/${importer}`, opts, host);
     const resolved = r.resolvedModule?.resolvedFileName;
-    out.set(ref.fileName, resolved ? TreeHost.rel(resolved) : undefined);
+    out.set(spec, resolved ? TreeHost.rel(resolved) : undefined);
   }
   return out;
 }
