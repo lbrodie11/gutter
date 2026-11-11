@@ -7,13 +7,25 @@
   "records": {
     "compared": 60,
     "missing": [],
-    "scoreMismatches": [],
+    "scoreMismatches": [
+      "117fb57-rename-7",
+      "18196f5-rename-1"
+    ],
     "missReasonMoves": {
       "partial→missed": 4
     },
     "otherMissReasonChanges": [],
     "coverageMoves": {
       "partial→full": 60
+    }
+  },
+  "baseline": {
+    "commit": "ffeb2b095b7e70a6906699a50deeae220b60cc85",
+    "summaryMismatches": [],
+    "records": {
+      "compared": 60,
+      "missing": [],
+      "scoreMismatches": []
     }
   }
 }

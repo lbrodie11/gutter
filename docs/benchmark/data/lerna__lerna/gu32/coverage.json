@@ -3,6 +3,10 @@
   "kind": "gutter-gu32-coverage",
   "repo": "lerna/lerna",
   "headSha": "d6226111673016062ba099b2876334069407ef41",
+  "measured": {
+    "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+    "repoArchaeology": "0.12.0"
+  },
   "tools": {
     "gutter": "0.4.0",
     "repoArchaeology": "0.10.0"

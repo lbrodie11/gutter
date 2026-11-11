@@ -4,7 +4,7 @@
 
 A measurement, not a gate: no verdict depends on it, so nothing here was preregistered. The rule is in [DECISIONS #21](../DECISIONS.md#21-coverage-partial-means-an-import-that-could-reach-this-prs-files-is-unresolved-gu-32); how to rerun it is at the end.
 
-Every real PR of GU-30's corpus (the same `corpus/bench/bench.json`, the same pins, Repo Archaeology 0.10.0) was replayed once on the product path with the GU-32 code. *Before* is the pre-GU-32 meaning, which the same brief still carries (`unresolved.count > 0`: any import in the repository is unresolved); *after* is `dependents.coverage` (an import that could reach the PR's changed or removed files is unresolved). Unresolved counts are summed over PRs: each PR's head counts its repository's unresolved imports.
+Every real PR of GU-30's corpus (the same `corpus/bench/bench.json`, the same pins) was replayed once on the product path with the GU-32 code (Gutter `f670be0` with Repo Archaeology 0.12.0). *Before* is the pre-GU-32 meaning, which the same brief still carries (`unresolved.count > 0`: any import in the repository is unresolved); *after* is `dependents.coverage` (an import that could reach the PR's changed or removed files is unresolved). Unresolved counts are summed over PRs: each PR's head counts its repository's unresolved imports.
 
 ## Summary
 
@@ -12,16 +12,18 @@ Every real PR of GU-30's corpus (the same `corpus/bench/bench.json`, the same pi
 |---|---|---|
 | Median share of PRs `partial` (20 repositories) | 1.00 | 0.00 |
 | Repositories where every PR is `partial` | 14 | 1 |
-| Unresolved imports counted (summed over 4000 PRs) | 156418 (repository-wide) | 10582 (could reach the PR's files) |
+| Unresolved imports counted (summed over 4000 PRs) | 156418 (repository-wide) | 10742 (could reach the PR's files) |
 
 By reason, repository-wide: target-missing 89797, unknown-package 36430, not-exported 16600, invalid-target 6400, unsupported-config 3782, alias-unmatched 3409.
 
-By reason, could reach the PR's files: target-missing 9807, not-exported 496, unsupported-config 197, unknown-package 82.
+By reason, could reach the PR's files: target-missing 9967, not-exported 496, unsupported-config 197, unknown-package 82.
 
-## Nothing else moved
+## Salience, checklist and seeded results
 
 - **Salience and checklist** (coverage never creates or suppresses an item): compared with GU-31's replays of the same 4000 PRs (Rerun 1, `rerun1/gate-a-prime.json`), **0** salience and **0** checklist-kind mismatches. "Before" equals GU-31's `coverage` on 4000 of 4000 PRs.
-- **Seeded mutations** (Rerun 1's, same seed `20261111`, regenerated and rescored): 1179 records compared; **0** differ in what was reported, confirmed or detected; repositories whose detection, precision or false positives changed: **none**. `missReason` labels moved: partial → missed 4.
+- **Seeded mutations** (Rerun 1's, same seed `20261111`, regenerated and rescored): 1179 records compared; **5** differ in what was reported, confirmed or detected; repositories whose detection, precision or false positives changed: **TheAlgorithms/Python**. `missReason` labels moved: missed → none 3, partial → missed 4 (3 other than `partial` → `missed`).
+  - `TheAlgorithms/Python` differs from Rerun 1, so its mutations were rescored with the code GU-32 is based on (`ffeb2b0`, without GU-32): **0** of 60 records and **no** summary numbers differ from GU-32. The difference with Rerun 1 is the base code's, not GU-32's.
+  - `github/spec-kit` differs from Rerun 1, so its mutations were rescored with the code GU-32 is based on (`ffeb2b0`, without GU-32): **0** of 60 records and **no** summary numbers differ from GU-32. The difference with Rerun 1 is the base code's, not GU-32's.
 
 ## Per repository
 
@@ -32,7 +34,7 @@ By reason, could reach the PR's files: target-missing 9807, not-exported 496, un
 | `faastjs/faast.js` | typescript | 200 | 1.00 (200) | 0.00 (0) | 1600: unknown-package 1000, target-missing 600 | 0: — | 0 of 0 | 0 · 0 | 0 · none |
 | `binance/binance-connector-js` | typescript | 200 | 1.00 (200) | 0.10 (19) | 82418: target-missing 54183, unknown-package 28235 | 5173: target-missing 5173 | 28 of 958 | 0 · 0 | 0 · none |
 | `allianz/ng-aquila` | typescript | 200 | 1.00 (200) | 0.74 (148) | 18815: not-exported 16600, unknown-package 1599, target-missing 616 | 530: not-exported 496, unknown-package 34 | 205 of 714 | 0 · 0 | 0 · none |
-| `matrix-org/matrix-appservice-bridge` | typescript | 200 | 1.00 (200) | 0.46 (91) | 4499: target-missing 4358, unknown-package 141 | 1213: target-missing 1213 | 0 of 377 | 0 · 0 | 0 · none |
+| `matrix-org/matrix-appservice-bridge` | typescript | 200 | 1.00 (200) | 0.52 (104) | 4499: target-missing 4358, unknown-package 141 | 1373: target-missing 1373 | 20 of 377 | 0 · 0 | 0 · none |
 | `ChatGPTNextWeb/NextChat` | typescript | 200 | 1.00 (200) | 0.00 (0) | 720: unknown-package 720 | 0: — | 0 of 573 | 0 · 0 | 0 · none |
 | `DayuanJiang/next-ai-draw-io` | typescript | 200 | 0.40 (79) | 0.00 (0) | 79: unknown-package 79 | 0: — | 0 of 923 | 0 · 0 | 0 · none |
 | `slymnoyann/hey.xyz` | typescript | 200 | 0.02 (4) | 0.00 (0) | 4: unknown-package 4 | 0: — | 0 of 833 | 0 · 0 | 0 · none |
@@ -42,9 +44,9 @@ By reason, could reach the PR's files: target-missing 9807, not-exported 496, un
 | `ollama/ollama` | go | 200 | 1.00 (200) | 0.00 (0) | 800: unknown-package 800 | 0: — | 0 of 757 | 0 · 0 | 0 · none |
 | `fatedier/frp` | go | 200 | 0.00 (0) | 0.00 (0) | 0: — | 0: — | 0 of 783 | 0 · 0 | 0 · none |
 | `gin-gonic/gin` | go | 200 | 0.00 (0) | 0.00 (0) | 0: — | 0: — | 0 of 139 | 0 · 0 | 0 · none |
-| `TheAlgorithms/Python` | python | 200 | 0.00 (0) | 0.00 (0) | 0: — | 0: — | 0 of 49 | 0 · 0 | 0 · none |
+| `TheAlgorithms/Python` | python | 200 | 0.00 (0) | 0.00 (0) | 0: — | 0: — | 0 of 49 | 0 · 0 | 3 · missed→none 3 |
 | `yt-dlp/yt-dlp` | python | 200 | 1.00 (200) | 0.02 (4) | 400: target-missing 400 | 4: target-missing 4 | 4 of 306 | 0 · 0 | 0 · none |
-| `github/spec-kit` | python | 200 | 1.00 (200) | 0.00 (0) | 1000: unknown-package 1000 | 0: — | 0 of 308 | 0 · 0 | 0 · partial→missed 4 |
+| `github/spec-kit` | python | 200 | 1.00 (200) | 0.00 (0) | 1000: unknown-package 1000 | 0: — | 0 of 308 | 0 · 0 | 2 · partial→missed 4 |
 | `colbymchenry/codegraph` | typescript | 200 | 1.00 (200) | 0.00 (0) | 3672: target-missing 3072, unsupported-config 400, unknown-package 200 | 0: — | 0 of 493 | 0 · 0 | 0 · none |
 | `team-telnyx/telnyx-node` | typescript | 200 | 1.00 (200) | 1.00 (200) | 11058: invalid-target 6400, target-missing 4373, unsupported-config 182, unknown-package 103 | 2561: target-missing 2359, unsupported-config 182, unknown-package 20 | 2785 of 2785 | 0 · 0 | 0 · none |
 

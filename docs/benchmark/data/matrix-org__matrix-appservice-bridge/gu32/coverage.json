@@ -3,6 +3,10 @@
   "kind": "gutter-gu32-coverage",
   "repo": "matrix-org/matrix-appservice-bridge",
   "headSha": "6392ab0550e23fffa9f014411148c667ba2e77da",
+  "measured": {
+    "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+    "repoArchaeology": "0.12.0"
+  },
   "tools": {
     "gutter": "0.4.0",
     "repoArchaeology": "0.10.0"
@@ -10,19 +14,19 @@
   "summary": {
     "prs": 200,
     "partialBefore": 200,
-    "partialAfter": 91,
+    "partialAfter": 104,
     "shareBefore": 1,
-    "shareAfter": 0.455,
+    "shareAfter": 0.52,
     "unresolvedByReason": {
       "target-missing": 4358,
       "unknown-package": 141
     },
     "relevantByReason": {
-      "target-missing": 1213
+      "target-missing": 1373
     },
     "unresolvedTotal": 4499,
-    "relevantTotal": 1213,
-    "entriesPartial": 0,
+    "relevantTotal": 1373,
+    "entriesPartial": 20,
     "entries": 377
   },
   "gu31": {
@@ -102,7 +106,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 8
     },
     {
@@ -300,15 +304,17 @@
         "wide-surface"
       ],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 23,
       "unresolvedByReason": {
         "target-missing": 22,
         "unknown-package": 1
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 13,
+      "relevantByReason": {
+        "target-missing": 13
+      },
+      "entriesPartial": 1,
       "entries": 3
     },
     {
@@ -792,7 +798,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 3
     },
     {
@@ -894,7 +900,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 19
     },
     {
@@ -1308,7 +1314,7 @@
       "relevantByReason": {
         "target-missing": 14
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 12
     },
     {
@@ -1462,7 +1468,7 @@
       "relevantByReason": {
         "target-missing": 16
       },
-      "entriesPartial": 0,
+      "entriesPartial": 2,
       "entries": 9
     },
     {
@@ -1590,7 +1596,7 @@
       "relevantByReason": {
         "target-missing": 16
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 7
     },
     {
@@ -1624,7 +1630,7 @@
       "relevantByReason": {
         "target-missing": 15
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 5
     },
     {
@@ -1710,7 +1716,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 3
     },
     {
@@ -1754,15 +1760,17 @@
         "wide-surface"
       ],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 25,
       "unresolvedByReason": {
         "target-missing": 24,
         "unknown-package": 1
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 15,
+      "relevantByReason": {
+        "target-missing": 15
+      },
+      "entriesPartial": 1,
       "entries": 7
     },
     {
@@ -1790,15 +1798,17 @@
         "wide-surface"
       ],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 23,
       "unresolvedByReason": {
         "target-missing": 22,
         "unknown-package": 1
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 13,
+      "relevantByReason": {
+        "target-missing": 13
+      },
+      "entriesPartial": 1,
       "entries": 3
     },
     {
@@ -2030,15 +2040,17 @@
         "wide-surface"
       ],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 23,
       "unresolvedByReason": {
         "target-missing": 22,
         "unknown-package": 1
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 13,
+      "relevantByReason": {
+        "target-missing": 13
+      },
+      "entriesPartial": 1,
       "entries": 1
     },
     {
@@ -2096,15 +2108,17 @@
         "wide-surface"
       ],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 23,
       "unresolvedByReason": {
         "target-missing": 22,
         "unknown-package": 1
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 13,
+      "relevantByReason": {
+        "target-missing": 13
+      },
+      "entriesPartial": 1,
       "entries": 3
     },
     {
@@ -2643,7 +2657,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 2
     },
     {
@@ -2799,7 +2813,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 7
     },
     {
@@ -2914,7 +2928,7 @@
       "relevantByReason": {
         "target-missing": 13
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 9
     },
     {
@@ -2995,7 +3009,7 @@
       "relevantByReason": {
         "target-missing": 12
       },
-      "entriesPartial": 0,
+      "entriesPartial": 1,
       "entries": 16
     },
     {
@@ -3003,14 +3017,16 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 12,
+      "relevantByReason": {
+        "target-missing": 12
+      },
+      "entriesPartial": 1,
       "entries": 4
     },
     {
@@ -3050,13 +3066,15 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
+      "relevant": 12,
+      "relevantByReason": {
+        "target-missing": 12
+      },
       "entriesPartial": 0,
       "entries": 3
     },
@@ -3082,14 +3100,16 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
-      "entriesPartial": 0,
+      "relevant": 12,
+      "relevantByReason": {
+        "target-missing": 12
+      },
+      "entriesPartial": 1,
       "entries": 4
     },
     {
@@ -3129,13 +3149,15 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
+      "relevant": 12,
+      "relevantByReason": {
+        "target-missing": 12
+      },
       "entriesPartial": 0,
       "entries": 3
     },
@@ -3144,13 +3166,15 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
+      "relevant": 12,
+      "relevantByReason": {
+        "target-missing": 12
+      },
       "entriesPartial": 0,
       "entries": 12
     },
@@ -3174,13 +3198,15 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
+      "relevant": 11,
+      "relevantByReason": {
+        "target-missing": 11
+      },
       "entriesPartial": 0,
       "entries": 3
     },
@@ -3270,13 +3296,15 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
+      "relevant": 11,
+      "relevantByReason": {
+        "target-missing": 11
+      },
       "entriesPartial": 0,
       "entries": 1
     },
@@ -3300,13 +3328,15 @@
       "salience": "brief",
       "kinds": [],
       "before": "partial",
-      "after": "full",
+      "after": "partial",
       "unresolved": 18,
       "unresolvedByReason": {
         "target-missing": 18
       },
-      "relevant": 0,
-      "relevantByReason": {},
+      "relevant": 11,
+      "relevantByReason": {
+        "target-missing": 11
+      },
       "entriesPartial": 0,
       "entries": 3
     },

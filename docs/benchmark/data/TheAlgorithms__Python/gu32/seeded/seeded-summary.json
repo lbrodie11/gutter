@@ -76,11 +76,11 @@
   ],
   "positives": 30,
   "negatives": 30,
-  "reportedItems": 22,
-  "confirmedItems": 22,
+  "reportedItems": 25,
+  "confirmedItems": 25,
   "precision": 1,
-  "detected": 22,
-  "recall": 0.7333333333333333,
+  "detected": 25,
+  "recall": 0.8333333333333334,
   "falsePositives": 0,
   "falsePositiveRate": 0,
   "skippedUncheckedOrPartial": 0,
@@ -89,13 +89,13 @@
   "byKind": {
     "delete": {
       "n": 15,
-      "detected": 10,
-      "withReport": 10
+      "detected": 12,
+      "withReport": 12
     },
     "rename": {
       "n": 15,
-      "detected": 12,
-      "withReport": 12
+      "detected": 13,
+      "withReport": 13
     },
     "rename-updated": {
       "n": 7,
@@ -121,6 +121,6 @@
   "missReasons": {
     "unchecked": 0,
     "partial": 0,
-    "missed": 8
+    "missed": 5
   }
 }
