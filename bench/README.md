@@ -21,8 +21,9 @@ git clone --filter=blob:none --no-checkout https://github.com/honojs/hono.git ~/
 git -C ~/.cache/gutter-bench/honojs__hono checkout eb754bd5ef22c63f1634a4c374a86be086f85710
 
 # 2. The four runs, on the pre-GU-29 behavior (--legacy-predictions; see "GU-29" below).
-#    repo-archaeology comes from devDependencies (pinned 0.10.0 since GU-28; Stage 0 itself ran on 0.4.0,
-#    and STAGE0.md 0b.R1 shows the upgrade changed no headline number).
+#    repo-archaeology comes from devDependencies (pinned 0.10.0 from GU-28, 0.12.0 since GU-31; Stage 0 itself ran on
+#    0.4.0, and STAGE0.md 0b.R1 shows that upgrade changed no headline number). To reproduce a run exactly, install the
+#    version it recorded: npm i --no-save repo-archaeology@0.10.0
 npm ci
 H=~/.cache/gutter-bench/honojs__hono; OUT=/tmp/gutter-stage0
 node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --out $OUT/default
@@ -71,7 +72,7 @@ Tests STAGE0.md section 5's option 2 with Repo Archaeology 0.10.0's per-pair `tr
 | [`stage0b-funnel.ts`](stage0b-funnel.ts) | Post-hoc: relationship × track record for each default companion question |
 
 ```bash
-# Same hono checkout as Stage 0; npm ci installs repo-archaeology 0.10.0 (pinned)
+# Same hono checkout as Stage 0; Stage 0b ran on repo-archaeology 0.10.0: npm ci && npm i --no-save repo-archaeology@0.10.0
 H=~/.cache/gutter-bench/honojs__hono; OUT=/tmp/gutter-stage0b
 node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --out $OUT/default
 node --experimental-strip-types src/cli.ts bench --cwd $H --prs 200 --window-days 7 --legacy-predictions --config bench/variants/stage0b-v4-proven-pairs.json --out $OUT/v4-proven-pairs

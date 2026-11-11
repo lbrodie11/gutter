@@ -9,7 +9,10 @@ The rules are preregistered in [`CORPUS.md`](CORPUS.md); the corpus is [`bench/c
 ```bash
 git clone https://github.com/lbrodie11/gutter.git
 cd gutter
-npm ci        # installs the pinned repo-archaeology (0.10.0) and TypeScript used by the oracles
+npm ci        # installs the pinned repo-archaeology and the TypeScript the oracles use
+# GU-30 and Rerun 1 ran on repo-archaeology 0.10.0 (the pin until GU-31 moved it to 0.12.0; the per-PR delta of that
+# upgrade is in RA-0.12.md). To reproduce them exactly:
+npm i --no-save repo-archaeology@0.10.0
 ```
 
 Clones go to `$GUTTER_BENCH_CACHE` (default `~/.cache/gutter-bench`), blobless, checked out at each repository's pinned SHA.
