@@ -1,0 +1,3972 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-corpus-results",
+  "stage": "rerun1",
+  "seed": 20261111,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  },
+  "timeoutMin": 45,
+  "verdict": {
+    "result": "PASS",
+    "missing": [],
+    "completed": 20,
+    "total": 20,
+    "a": {
+      "medianFullShare": 0,
+      "met": true
+    },
+    "b": {
+      "basis": "seeded mutations",
+      "realItems": 0,
+      "realConfirmed": 0,
+      "pooled": {
+        "precision": {
+          "numerator": 564,
+          "denominator": 568,
+          "rate": 0.9929577464788732,
+          "interval": {
+            "low": 0.9820343129732472,
+            "high": 0.9972580964209323
+          }
+        },
+        "recall": {
+          "numerator": 567,
+          "denominator": 579,
+          "rate": 0.9792746113989638,
+          "interval": {
+            "low": 0.9641263159391953,
+            "high": 0.9881051899028431
+          }
+        },
+        "falsePositiveRate": {
+          "numerator": 1,
+          "denominator": 600,
+          "rate": 0.0016666666666666668,
+          "interval": {
+            "low": 0.000294268200849565,
+            "high": 0.00937956047613881
+          }
+        }
+      },
+      "reposBelowPrecision": [],
+      "untestedChange": {
+        "exercised": 10,
+        "notExercised": 10,
+        "wrong": [],
+        "met": true
+      },
+      "testHistory": {
+        "exercised": 16,
+        "notExercised": 4,
+        "wrong": [],
+        "met": true
+      },
+      "met": true,
+      "groups": {
+        "TS/JS": {
+          "positives": 408,
+          "computable": true
+        },
+        "Go": {
+          "positives": 81,
+          "computable": true
+        },
+        "Python": {
+          "positives": 90,
+          "computable": true
+        }
+      }
+    },
+    "c": {
+      "hits": 0,
+      "met": true
+    },
+    "failureClasses": [
+      {
+        "class": "missed positive: Python, delete, missed",
+        "count": 5
+      },
+      {
+        "class": "missed positive: Python, delete, partial",
+        "count": 3
+      },
+      {
+        "class": "missed positive: Python, rename, missed",
+        "count": 3
+      },
+      {
+        "class": "unconfirmed item: TS/JS",
+        "count": 2
+      },
+      {
+        "class": "false positive: Go, rename-updated",
+        "count": 1
+      },
+      {
+        "class": "missed positive: Python, rename, partial",
+        "count": 1
+      },
+      {
+        "class": "unconfirmed item: Go",
+        "count": 1
+      },
+      {
+        "class": "unconfirmed item: Python",
+        "count": 1
+      }
+    ]
+  },
+  "median": {
+    "fullShare": 0,
+    "briefShare": 0.44,
+    "quietShare": 0.56,
+    "itemsPerPr": 0.27,
+    "wideSurfaceShare": 0.2,
+    "partialShare": 1,
+    "seededRecall": 1,
+    "replayP50Ms": null,
+    "replayP95Ms": null,
+    "wallP50Ms": 737.5,
+    "wallP95Ms": 1466.5
+  },
+  "byGroup": {
+    "TS/JS": {
+      "repos": 14,
+      "partial": {
+        "numerator": 2364,
+        "denominator": 2800,
+        "rate": 0.8442857142857143,
+        "interval": {
+          "low": 0.830384873129892,
+          "high": 0.8572431644450015
+        }
+      },
+      "unresolvedByReason": {
+        "target-missing": 89397,
+        "unknown-package": 34630,
+        "not-exported": 16600,
+        "unsupported-config": 3782,
+        "alias-unmatched": 3409,
+        "invalid-target": 6400
+      },
+      "seededRecall": {
+        "numerator": 408,
+        "denominator": 408,
+        "rate": 1,
+        "interval": {
+          "low": 0.9906724815134103,
+          "high": 1
+        }
+      },
+      "seededPrecision": {
+        "numerator": 406,
+        "denominator": 408,
+        "rate": 0.9950980392156863,
+        "interval": {
+          "low": 0.9823053315863782,
+          "high": 0.9986546746180771
+        }
+      }
+    },
+    "Go": {
+      "repos": 3,
+      "partial": {
+        "numerator": 200,
+        "denominator": 600,
+        "rate": 0.3333333333333333,
+        "interval": {
+          "low": 0.2967793171946139,
+          "high": 0.3720079164766197
+        }
+      },
+      "unresolvedByReason": {
+        "unknown-package": 800
+      },
+      "seededRecall": {
+        "numerator": 81,
+        "denominator": 81,
+        "rate": 1,
+        "interval": {
+          "low": 0.9547219145675847,
+          "high": 1
+        }
+      },
+      "seededPrecision": {
+        "numerator": 81,
+        "denominator": 82,
+        "rate": 0.9878048780487805,
+        "interval": {
+          "low": 0.934106603115861,
+          "high": 0.9978440079181878
+        }
+      }
+    },
+    "Python": {
+      "repos": 3,
+      "partial": {
+        "numerator": 400,
+        "denominator": 600,
+        "rate": 0.6666666666666666,
+        "interval": {
+          "low": 0.6279920835233803,
+          "high": 0.7032206828053861
+        }
+      },
+      "unresolvedByReason": {
+        "target-missing": 400,
+        "unknown-package": 1000
+      },
+      "seededRecall": {
+        "numerator": 78,
+        "denominator": 90,
+        "rate": 0.8666666666666667,
+        "interval": {
+          "low": 0.7812606949930235,
+          "high": 0.9220531795931369
+        }
+      },
+      "seededPrecision": {
+        "numerator": 77,
+        "denominator": 78,
+        "rate": 0.9871794871794872,
+        "interval": {
+          "low": 0.9308914299829779,
+          "high": 0.9977332682461664
+        }
+      }
+    }
+  },
+  "worst": {
+    "fullShare": [
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat",
+      "colbymchenry/codegraph",
+      "DayuanJiang/next-ai-draw-io"
+    ],
+    "wideSurfaceShare": [
+      "colbymchenry/codegraph",
+      "ollama/ollama",
+      "fatedier/frp",
+      "team-telnyx/telnyx-node",
+      "ChatGPTNextWeb/NextChat"
+    ],
+    "seededRecall": [
+      "TheAlgorithms/Python",
+      "github/spec-kit",
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat"
+    ],
+    "seededPrecision": [
+      "github/spec-kit",
+      "faastjs/faast.js",
+      "hypit-ai/hypit",
+      "ollama/ollama",
+      "allianz/ng-aquila"
+    ],
+    "falsePositiveRate": [
+      "ollama/ollama",
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat",
+      "colbymchenry/codegraph"
+    ],
+    "partialShare": [
+      "allianz/ng-aquila",
+      "binance/binance-connector-js",
+      "ChatGPTNextWeb/NextChat",
+      "colbymchenry/codegraph",
+      "faastjs/faast.js"
+    ],
+    "replayP95Ms": []
+  },
+  "repos": [
+    {
+      "repo": "honojs/hono",
+      "slug": "honojs__hono",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "continuity",
+      "expected": "good",
+      "pinnedSha": "eb754bd5ef22c63f1634a4c374a86be086f85710",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 3.5,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 119,
+          "denominator": 200,
+          "rate": 0.595,
+          "interval": {
+            "low": 0.5257971008133869,
+            "high": 0.6606222871749323
+          }
+        },
+        "brief": {
+          "numerator": 81,
+          "denominator": 200,
+          "rate": 0.405,
+          "interval": {
+            "low": 0.3393777128250676,
+            "high": 0.47420289918661307
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.345,
+        "items": 69,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 59,
+            "denominator": 200,
+            "rate": 0.295,
+            "interval": {
+              "low": 0.2361394385684915,
+              "high": 0.36158714524618774
+            }
+          },
+          "untested-change": {
+            "numerator": 10,
+            "denominator": 200,
+            "rate": 0.05,
+            "interval": {
+              "low": 0.027382645600763932,
+              "high": 0.08957814813877599
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 344,
+          "unknown-package": 1250
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 621,
+        "wallP95Ms": 1039,
+        "plain": {
+          "prs": 190,
+          "p50Ms": 611,
+          "p95Ms": 1000,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 10,
+          "total": {
+            "p50Ms": 930,
+            "p95Ms": 1801
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 597,
+            "p95Ms": 696
+          },
+          "baseGraph": {
+            "built": 10,
+            "p50Ms": 666,
+            "p95Ms": 1121
+          },
+          "p95Growth": 1.5876436781609193
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 10,
+          "confirmed": 10,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 43,
+          "confirmed": 43,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "remarkablemark/html-react-parser",
+      "slug": "remarkablemark__html-react-parser",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "46e79e4cf4ef6cd7a5c280ed9c8885ac4fad6632",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 1.9,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 193,
+          "denominator": 200,
+          "rate": 0.965,
+          "interval": {
+            "low": 0.9295293884777093,
+            "high": 0.9829444579914328
+          }
+        },
+        "brief": {
+          "numerator": 7,
+          "denominator": 200,
+          "rate": 0.035,
+          "interval": {
+            "low": 0.017055542008567195,
+            "high": 0.07047061152229074
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.01,
+        "items": 2,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 2,
+            "denominator": 200,
+            "rate": 0.01,
+            "interval": {
+              "low": 0.0027466581335444384,
+              "high": 0.0357217617161768
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 2000,
+          "unknown-package": 98
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 340,
+        "wallP95Ms": 548,
+        "plain": {
+          "prs": 200,
+          "p50Ms": 340,
+          "p95Ms": 548,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 0,
+          "total": {
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "withoutBaseGraph": {
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "baseGraph": {
+            "built": 0,
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "p95Growth": null
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 2,
+          "confirmed": 2,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 18,
+        "negatives": 30,
+        "reported": 18,
+        "confirmed": 18,
+        "precision": 1,
+        "detected": 18,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {
+          "positives": 12
+        },
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "faastjs/faast.js",
+      "slug": "faastjs__faast.js",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "0038379bf4669c7abcc93d2b821f62313c0f6210",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 1.9,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "brief": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0,
+        "items": 0,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 1000,
+          "target-missing": 600
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 347,
+        "wallP95Ms": 533,
+        "plain": {
+          "prs": 200,
+          "p50Ms": 347,
+          "p95Ms": 533,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 0,
+          "total": {
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "withoutBaseGraph": {
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "baseGraph": {
+            "built": 0,
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "p95Growth": null
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 29,
+        "precision": 0.9666666666666667,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "unconfirmed item: TS/JS": 1
+        }
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "binance/binance-connector-js",
+      "slug": "binance__binance-connector-js",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "62a2ec1a164f8e2238b81f5163b5d08f073d56f5",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 8,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 85,
+          "denominator": 200,
+          "rate": 0.425,
+          "interval": {
+            "low": 0.3585361254351385,
+            "high": 0.49429067352145145
+          }
+        },
+        "brief": {
+          "numerator": 115,
+          "denominator": 200,
+          "rate": 0.575,
+          "interval": {
+            "low": 0.5057093264785485,
+            "high": 0.6414638745648615
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.215,
+        "items": 43,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 43,
+            "denominator": 200,
+            "rate": 0.215,
+            "interval": {
+              "low": 0.1637187625450758,
+              "high": 0.27702307348996613
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 28235,
+          "target-missing": 54183
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 1186,
+        "wallP95Ms": 2217,
+        "plain": {
+          "prs": 163,
+          "p50Ms": 1168,
+          "p95Ms": 1460,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 37,
+          "total": {
+            "p50Ms": 2132,
+            "p95Ms": 3883
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 1199,
+            "p95Ms": 2121
+          },
+          "baseGraph": {
+            "built": 37,
+            "p50Ms": 1833,
+            "p95Ms": 3465
+          },
+          "p95Growth": 0.8307402168788307
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 4,
+          "confirmed": 4,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "allianz/ng-aquila",
+      "slug": "allianz__ng-aquila",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "5b23a36e0b47a1dd90a6ffe36e50e7b2cbf7a9a4",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 7,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 73,
+          "denominator": 200,
+          "rate": 0.365,
+          "interval": {
+            "low": 0.301405264649268,
+            "high": 0.433682973472594
+          }
+        },
+        "brief": {
+          "numerator": 127,
+          "denominator": 200,
+          "rate": 0.635,
+          "interval": {
+            "low": 0.566317026527406,
+            "high": 0.698594735350732
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.27,
+        "items": 54,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 34,
+            "denominator": 200,
+            "rate": 0.17,
+            "interval": {
+              "low": 0.1242790791258697,
+              "high": 0.22815883628312622
+            }
+          },
+          "untested-change": {
+            "numerator": 20,
+            "denominator": 200,
+            "rate": 0.1,
+            "interval": {
+              "low": 0.0656704486690959,
+              "high": 0.1494058124327174
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 1599,
+          "not-exported": 16600,
+          "target-missing": 616
+        },
+        "uncheckedLanguages": {
+          "css": 105
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 1136,
+        "wallP95Ms": 1797,
+        "plain": {
+          "prs": 181,
+          "p50Ms": 1130,
+          "p95Ms": 1420,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 19,
+          "total": {
+            "p50Ms": 1763,
+            "p95Ms": 3201
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 1130,
+            "p95Ms": 1663
+          },
+          "baseGraph": {
+            "built": 19,
+            "p50Ms": 1277,
+            "p95Ms": 2565
+          },
+          "p95Growth": 0.9248346361996391
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 20,
+          "confirmed": 20,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 24,
+          "confirmed": 24,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "matrix-org/matrix-appservice-bridge",
+      "slug": "matrix-org__matrix-appservice-bridge",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-library",
+      "expected": "good",
+      "pinnedSha": "6392ab0550e23fffa9f014411148c667ba2e77da",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 111,
+          "denominator": 200,
+          "rate": 0.555,
+          "interval": {
+            "low": 0.48573302412803426,
+            "high": 0.6221939899704665
+          }
+        },
+        "brief": {
+          "numerator": 89,
+          "denominator": 200,
+          "rate": 0.445,
+          "interval": {
+            "low": 0.37780601002953357,
+            "high": 0.5142669758719659
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.095,
+        "items": 19,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 19,
+            "denominator": 200,
+            "rate": 0.095,
+            "interval": {
+              "low": 0.06166310271738653,
+              "high": 0.1436016116481994
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 4358,
+          "unknown-package": 141
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 343,
+        "wallP95Ms": 549,
+        "plain": {
+          "prs": 171,
+          "p50Ms": 334,
+          "p95Ms": 482,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 29,
+          "total": {
+            "p50Ms": 425,
+            "p95Ms": 676
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 315,
+            "p95Ms": 413
+          },
+          "baseGraph": {
+            "built": 29,
+            "p50Ms": 195,
+            "p95Ms": 311
+          },
+          "p95Growth": 0.6368038740920097
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "ChatGPTNextWeb/NextChat",
+      "slug": "ChatGPTNextWeb__NextChat",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-app-paths",
+      "expected": "good",
+      "pinnedSha": "1d3dc331512929a4b1d3e82354e72acce33b5c7a",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 2,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 113,
+          "denominator": 200,
+          "rate": 0.565,
+          "interval": {
+            "low": 0.495707362597946,
+            "high": 0.6318427449730092
+          }
+        },
+        "brief": {
+          "numerator": 87,
+          "denominator": 200,
+          "rate": 0.435,
+          "interval": {
+            "low": 0.36815725502699076,
+            "high": 0.5042926374020539
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.38,
+        "items": 76,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 76,
+            "denominator": 200,
+            "rate": 0.38,
+            "interval": {
+              "low": 0.3155900584867362,
+              "high": 0.4489328198438078
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 720
+        },
+        "uncheckedLanguages": {
+          "css": 8,
+          "rust": 2
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 375,
+        "wallP95Ms": 473,
+        "plain": {
+          "prs": 198,
+          "p50Ms": 374,
+          "p95Ms": 472,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 2,
+          "total": {
+            "p50Ms": 501,
+            "p95Ms": 704
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 404,
+            "p95Ms": 613
+          },
+          "baseGraph": {
+            "built": 2,
+            "p50Ms": 258,
+            "p95Ms": 391
+          },
+          "p95Growth": 0.14845024469820545
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "DayuanJiang/next-ai-draw-io",
+      "slug": "DayuanJiang__next-ai-draw-io",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-app-paths",
+      "expected": "good",
+      "pinnedSha": "c9dc5f5cc62e7e5a327a62b39027d80033e1548c",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 2.5,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 102,
+          "denominator": 200,
+          "rate": 0.51,
+          "interval": {
+            "low": 0.4411858767845865,
+            "high": 0.5784372166878683
+          }
+        },
+        "brief": {
+          "numerator": 98,
+          "denominator": 200,
+          "rate": 0.49,
+          "interval": {
+            "low": 0.4215627833121318,
+            "high": 0.5588141232154136
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.27,
+        "items": 54,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 51,
+            "denominator": 200,
+            "rate": 0.255,
+            "interval": {
+              "low": 0.19960495172031348,
+              "high": 0.3196292582045472
+            }
+          },
+          "untested-change": {
+            "numerator": 3,
+            "denominator": 200,
+            "rate": 0.015,
+            "interval": {
+              "low": 0.005114237793258312,
+              "high": 0.04316572879269027
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 79,
+          "denominator": 200,
+          "rate": 0.395,
+          "interval": {
+            "low": 0.32984101013207967,
+            "high": 0.46411650840714636
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 79
+        },
+        "uncheckedLanguages": {
+          "css": 7
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 433,
+        "wallP95Ms": 771,
+        "plain": {
+          "prs": 192,
+          "p50Ms": 426,
+          "p95Ms": 678,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 8,
+          "total": {
+            "p50Ms": 842,
+            "p95Ms": 1030
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 591,
+            "p95Ms": 715
+          },
+          "baseGraph": {
+            "built": 8,
+            "p50Ms": 564,
+            "p95Ms": 740
+          },
+          "p95Growth": 0.44055944055944063
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 3,
+          "confirmed": 3,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 2,
+          "confirmed": 2,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "slymnoyann/hey.xyz",
+      "slug": "slymnoyann__hey.xyz",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-app-paths",
+      "expected": "good",
+      "pinnedSha": "44dee0c1223b9202699915fd3e92e670fd8e34e6",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 3.1,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 134,
+          "denominator": 200,
+          "rate": 0.67,
+          "interval": {
+            "low": 0.6021668477377689,
+            "high": 0.7314257412939605
+          }
+        },
+        "brief": {
+          "numerator": 66,
+          "denominator": 200,
+          "rate": 0.33,
+          "interval": {
+            "low": 0.26857425870603957,
+            "high": 0.39783315226223115
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.155,
+        "items": 31,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 31,
+            "denominator": 200,
+            "rate": 0.155,
+            "interval": {
+              "low": 0.11139636927689313,
+              "high": 0.2116069059234208
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 4,
+          "denominator": 200,
+          "rate": 0.02,
+          "interval": {
+            "low": 0.007804426416349469,
+            "high": 0.05028708690582644
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 4
+        },
+        "uncheckedLanguages": {
+          "css": 9,
+          "sql": 2
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 517,
+        "wallP95Ms": 754,
+        "plain": {
+          "prs": 184,
+          "p50Ms": 514,
+          "p95Ms": 677,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 16,
+          "total": {
+            "p50Ms": 727,
+            "p95Ms": 2143
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 497,
+            "p95Ms": 891
+          },
+          "baseGraph": {
+            "built": 16,
+            "p50Ms": 420,
+            "p95Ms": 1569
+          },
+          "p95Growth": 1.4051627384960717
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "lerna/lerna",
+      "slug": "lerna__lerna",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-monorepo",
+      "expected": "good",
+      "pinnedSha": "d6226111673016062ba099b2876334069407ef41",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 4.1,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 150,
+          "denominator": 200,
+          "rate": 0.75,
+          "interval": {
+            "low": 0.6856590168795417,
+            "high": 0.804918319931825
+          }
+        },
+        "brief": {
+          "numerator": 50,
+          "denominator": 200,
+          "rate": 0.25,
+          "interval": {
+            "low": 0.195081680068175,
+            "high": 0.31434098312045833
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.135,
+        "items": 27,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 18,
+            "denominator": 200,
+            "rate": 0.09,
+            "interval": {
+              "low": 0.057687448862193166,
+              "high": 0.1377657187671654
+            }
+          },
+          "untested-change": {
+            "numerator": 9,
+            "denominator": 200,
+            "rate": 0.045,
+            "interval": {
+              "low": 0.023852543001492994,
+              "high": 0.08329670400181959
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unsupported-config": 3200,
+          "unknown-package": 883,
+          "target-missing": 10
+        },
+        "uncheckedLanguages": {
+          "css": 1
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 750,
+        "wallP95Ms": 1126,
+        "plain": {
+          "prs": 193,
+          "p50Ms": 748,
+          "p95Ms": 1103,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 7,
+          "total": {
+            "p50Ms": 1078,
+            "p95Ms": 1339
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 712,
+            "p95Ms": 924
+          },
+          "baseGraph": {
+            "built": 7,
+            "p50Ms": 692,
+            "p95Ms": 902
+          },
+          "p95Growth": 0.44913419913419905
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 9,
+          "confirmed": 9,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 15,
+          "confirmed": 15,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "vbenjs/vue-vben-admin",
+      "slug": "vbenjs__vue-vben-admin",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-monorepo",
+      "expected": "good",
+      "pinnedSha": "71dc5ac59dcd832e45df861a283746a3cd143125",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 3.4,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 122,
+          "denominator": 200,
+          "rate": 0.61,
+          "interval": {
+            "low": 0.5409374595716976,
+            "high": 0.6749165686253038
+          }
+        },
+        "brief": {
+          "numerator": 78,
+          "denominator": 200,
+          "rate": 0.39,
+          "interval": {
+            "low": 0.3250834313746962,
+            "high": 0.4590625404283025
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.145,
+        "items": 29,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 24,
+            "denominator": 200,
+            "rate": 0.12,
+            "interval": {
+              "low": 0.08197992706375512,
+              "high": 0.17234252098296746
+            }
+          },
+          "untested-change": {
+            "numerator": 5,
+            "denominator": 200,
+            "rate": 0.025,
+            "interval": {
+              "low": 0.010724719651761264,
+              "high": 0.05717834040664198
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 19841,
+          "unknown-package": 153,
+          "alias-unmatched": 3409
+        },
+        "uncheckedLanguages": {
+          "css": 10
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 671,
+        "wallP95Ms": 958,
+        "plain": {
+          "prs": 194,
+          "p50Ms": 670,
+          "p95Ms": 911,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 6,
+          "total": {
+            "p50Ms": 996,
+            "p95Ms": 1306
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 670,
+            "p95Ms": 835
+          },
+          "baseGraph": {
+            "built": 6,
+            "p50Ms": 596,
+            "p95Ms": 872
+          },
+          "p95Growth": 0.5640718562874252
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 5,
+          "confirmed": 5,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 1,
+          "confirmed": 1,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "hypit-ai/hypit",
+      "slug": "hypit-ai__hypit",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "ts-monorepo",
+      "expected": "good",
+      "pinnedSha": "0762c6be56c0af43fff3cdbdb285e21414dd249b",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 10.5,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 69,
+          "denominator": 200,
+          "rate": 0.345,
+          "interval": {
+            "low": 0.2825979437674894,
+            "high": 0.4132441074094632
+          }
+        },
+        "brief": {
+          "numerator": 131,
+          "denominator": 200,
+          "rate": 0.655,
+          "interval": {
+            "low": 0.5867558925905368,
+            "high": 0.7174020562325105
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.375,
+        "items": 75,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 37,
+            "denominator": 200,
+            "rate": 0.185,
+            "interval": {
+              "low": 0.13730192800616042,
+              "high": 0.2445706276115175
+            }
+          },
+          "untested-change": {
+            "numerator": 38,
+            "denominator": 200,
+            "rate": 0.19,
+            "interval": {
+              "low": 0.14167171527790673,
+              "high": 0.25001238707599854
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 81,
+          "denominator": 200,
+          "rate": 0.405,
+          "interval": {
+            "low": 0.3393777128250676,
+            "high": 0.47420289918661307
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 165
+        },
+        "uncheckedLanguages": {
+          "css": 8
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 1369,
+        "wallP95Ms": 3332,
+        "plain": {
+          "prs": 181,
+          "p50Ms": 1265,
+          "p95Ms": 2881,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 19,
+          "total": {
+            "p50Ms": 2194,
+            "p95Ms": 9034
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 1458,
+            "p95Ms": 4019
+          },
+          "baseGraph": {
+            "built": 19,
+            "p50Ms": 1807,
+            "p95Ms": 8124
+          },
+          "p95Growth": 1.2478228415028614
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 38,
+          "confirmed": 38,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 29,
+          "confirmed": 29,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 29,
+        "precision": 0.9666666666666667,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "unconfirmed item: TS/JS": 1
+        }
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "ollama/ollama",
+      "slug": "ollama__ollama",
+      "language": "go",
+      "group": "Go",
+      "category": "go",
+      "expected": "good",
+      "pinnedSha": "e9fde36d75fea66579d84099956ce1430792737a",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 5.8,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 53,
+          "denominator": 200,
+          "rate": 0.265,
+          "interval": {
+            "low": 0.20868154147109114,
+            "high": 0.3301757619262242
+          }
+        },
+        "brief": {
+          "numerator": 147,
+          "denominator": 200,
+          "rate": 0.735,
+          "interval": {
+            "low": 0.6698242380737758,
+            "high": 0.7913184585289089
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.84,
+        "items": 168,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 106,
+            "denominator": 200,
+            "rate": 0.53,
+            "interval": {
+              "low": 0.4609168291500183,
+              "high": 0.5979524512673458
+            }
+          },
+          "untested-change": {
+            "numerator": 62,
+            "denominator": 200,
+            "rate": 0.31,
+            "interval": {
+              "low": 0.2499894483607809,
+              "high": 0.3771717756625804
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 800
+        },
+        "uncheckedLanguages": {
+          "css": 2
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 725,
+        "wallP95Ms": 1627,
+        "plain": {
+          "prs": 183,
+          "p50Ms": 682,
+          "p95Ms": 1612,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 17,
+          "total": {
+            "p50Ms": 1077,
+            "p95Ms": 1789
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 666,
+            "p95Ms": 1621
+          },
+          "baseGraph": {
+            "built": 17,
+            "p50Ms": 601,
+            "p95Ms": 1107
+          },
+          "p95Growth": 0.10363972856261561
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 62,
+          "confirmed": 62,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 51,
+          "confirmed": 51,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 31,
+        "confirmed": 30,
+        "precision": 0.967741935483871,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 1,
+        "falsePositiveRate": 0.03333333333333333,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "false positive: Go, rename-updated": 1,
+          "unconfirmed item: Go": 1
+        }
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "fatedier/frp",
+      "slug": "fatedier__frp",
+      "language": "go",
+      "group": "Go",
+      "category": "go",
+      "expected": "good",
+      "pinnedSha": "331abd5aa144e3f105abba29a22af701acf1a298",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 6.6,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 73,
+          "denominator": 200,
+          "rate": 0.365,
+          "interval": {
+            "low": 0.301405264649268,
+            "high": 0.433682973472594
+          }
+        },
+        "brief": {
+          "numerator": 127,
+          "denominator": 200,
+          "rate": 0.635,
+          "interval": {
+            "low": 0.566317026527406,
+            "high": 0.698594735350732
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.585,
+        "items": 117,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 92,
+            "denominator": 200,
+            "rate": 0.46,
+            "interval": {
+              "low": 0.3923305179997147,
+              "high": 0.5291771081104667
+            }
+          },
+          "untested-change": {
+            "numerator": 25,
+            "denominator": 200,
+            "rate": 0.125,
+            "interval": {
+              "low": 0.08611974475712646,
+              "high": 0.17801425002582344
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "unresolvedByReason": {},
+        "uncheckedLanguages": {
+          "css": 9
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 996,
+        "wallP95Ms": 2641,
+        "plain": {
+          "prs": 182,
+          "p50Ms": 963,
+          "p95Ms": 2449,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 18,
+          "total": {
+            "p50Ms": 1735,
+            "p95Ms": 7821
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 1060,
+            "p95Ms": 3576
+          },
+          "baseGraph": {
+            "built": 18,
+            "p50Ms": 635,
+            "p95Ms": 6693
+          },
+          "p95Growth": 1.1870805369127515
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 25,
+          "confirmed": 25,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 2,
+          "confirmed": 2,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "gin-gonic/gin",
+      "slug": "gin-gonic__gin",
+      "language": "go",
+      "group": "Go",
+      "category": "go",
+      "expected": "good",
+      "pinnedSha": "0f09c3a9b4626d9fe9979cf4d0521d6ae32ab646",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 4.3,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 159,
+          "denominator": 200,
+          "rate": 0.795,
+          "interval": {
+            "low": 0.7337430194757748,
+            "high": 0.845138237961638
+          }
+        },
+        "brief": {
+          "numerator": 41,
+          "denominator": 200,
+          "rate": 0.205,
+          "interval": {
+            "low": 0.15486176203836208,
+            "high": 0.26625698052422514
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.105,
+        "items": 21,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 15,
+            "denominator": 200,
+            "rate": 0.075,
+            "interval": {
+              "low": 0.045974917184382014,
+              "high": 0.12004361023629458
+            }
+          },
+          "untested-change": {
+            "numerator": 6,
+            "denominator": 200,
+            "rate": 0.03,
+            "interval": {
+              "low": 0.013820314340111344,
+              "high": 0.06389429245451923
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "unresolvedByReason": {},
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 765,
+        "wallP95Ms": 1508,
+        "plain": {
+          "prs": 197,
+          "p50Ms": 765,
+          "p95Ms": 1508,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 3,
+          "total": {
+            "p50Ms": 950,
+            "p95Ms": 1611
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 675,
+            "p95Ms": 1311
+          },
+          "baseGraph": {
+            "built": 3,
+            "p50Ms": 273,
+            "p95Ms": 810
+          },
+          "p95Growth": 0.22883295194508002
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 6,
+          "confirmed": 6,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 24,
+          "confirmed": 24,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 21,
+        "negatives": 30,
+        "reported": 21,
+        "confirmed": 21,
+        "precision": 1,
+        "detected": 21,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {
+          "positives": 9
+        },
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "TheAlgorithms/Python",
+      "slug": "TheAlgorithms__Python",
+      "language": "python",
+      "group": "Python",
+      "category": "python",
+      "expected": "good",
+      "pinnedSha": "574d100b7181956e9c8384552fd078165e4cc326",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 9.3,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 193,
+          "denominator": 200,
+          "rate": 0.965,
+          "interval": {
+            "low": 0.9295293884777093,
+            "high": 0.9829444579914328
+          }
+        },
+        "brief": {
+          "numerator": 7,
+          "denominator": 200,
+          "rate": 0.035,
+          "interval": {
+            "low": 0.017055542008567195,
+            "high": 0.07047061152229074
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0,
+        "items": 0,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "unresolvedByReason": {},
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 1304,
+        "wallP95Ms": 3811,
+        "plain": {
+          "prs": 197,
+          "p50Ms": 1304,
+          "p95Ms": 3732,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 3,
+          "total": {
+            "p50Ms": 6169,
+            "p95Ms": 7312
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 4325,
+            "p95Ms": 8001
+          },
+          "baseGraph": {
+            "built": 3,
+            "p50Ms": 4342,
+            "p95Ms": 5643
+          },
+          "p95Growth": -0.08611423572053489
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 1,
+          "confirmed": 1,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 22,
+        "confirmed": 22,
+        "precision": 1,
+        "detected": 22,
+        "recall": 0.7333333333333333,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 8
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "missed positive: Python, delete, missed": 5,
+          "missed positive: Python, rename, missed": 3
+        }
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "yt-dlp/yt-dlp",
+      "slug": "yt-dlp__yt-dlp",
+      "language": "python",
+      "group": "Python",
+      "category": "python",
+      "expected": "good",
+      "pinnedSha": "b77c9304e1c4220cca450c583491904daf8455af",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 10.1,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 115,
+          "denominator": 200,
+          "rate": 0.575,
+          "interval": {
+            "low": 0.5057093264785485,
+            "high": 0.6414638745648615
+          }
+        },
+        "brief": {
+          "numerator": 85,
+          "denominator": 200,
+          "rate": 0.425,
+          "interval": {
+            "low": 0.3585361254351385,
+            "high": 0.49429067352145145
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.315,
+        "items": 63,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 63,
+            "denominator": 200,
+            "rate": 0.315,
+            "interval": {
+              "low": 0.2546232099022851,
+              "high": 0.38234956085730354
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "target-missing": 400
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 1626,
+        "wallP95Ms": 5170,
+        "plain": {
+          "prs": 194,
+          "p50Ms": 1615,
+          "p95Ms": 5170,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 6,
+          "total": {
+            "p50Ms": 3617,
+            "p95Ms": 6031
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 2166,
+            "p95Ms": 3947
+          },
+          "baseGraph": {
+            "built": 6,
+            "p50Ms": 3011,
+            "p95Ms": 5179
+          },
+          "p95Growth": 0.5279959462883201
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 13,
+          "confirmed": 13,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "github/spec-kit",
+      "slug": "github__spec-kit",
+      "language": "python",
+      "group": "Python",
+      "category": "python",
+      "expected": "good",
+      "pinnedSha": "a227e38315cd38172b04f2fb8f06ce8b69b38331",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 8.3,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 107,
+          "denominator": 200,
+          "rate": 0.535,
+          "interval": {
+            "low": 0.4658664687236315,
+            "high": 0.6028143584299599
+          }
+        },
+        "brief": {
+          "numerator": 93,
+          "denominator": 200,
+          "rate": 0.465,
+          "interval": {
+            "low": 0.3971856415700402,
+            "high": 0.5341335312763684
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.28,
+        "items": 56,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 56,
+            "denominator": 200,
+            "rate": 0.28,
+            "interval": {
+              "low": 0.2223688977394903,
+              "high": 0.3459230458665071
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 1000
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 1559,
+        "wallP95Ms": 4142,
+        "plain": {
+          "prs": 186,
+          "p50Ms": 1479,
+          "p95Ms": 3549,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 14,
+          "total": {
+            "p50Ms": 2340,
+            "p95Ms": 4262
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 1235,
+            "p95Ms": 1882
+          },
+          "baseGraph": {
+            "built": 14,
+            "p50Ms": 1944,
+            "p95Ms": 3550
+          },
+          "p95Growth": 1.2646121147715195
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 31,
+          "confirmed": 31,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 26,
+        "confirmed": 25,
+        "precision": 0.9615384615384616,
+        "detected": 26,
+        "recall": 0.8666666666666667,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 4,
+        "skippedShare": 0.13333333333333333,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 4,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {
+          "unconfirmed item: Python": 1,
+          "missed positive: Python, delete, partial": 3,
+          "missed positive: Python, rename, partial": 1
+        }
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "colbymchenry/codegraph",
+      "slug": "colbymchenry__codegraph",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "young",
+      "expected": "hard",
+      "pinnedSha": "f72c9d2efb14454ff4f9fd7b8460abd82f19a287",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 13.4,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 24,
+          "denominator": 200,
+          "rate": 0.12,
+          "interval": {
+            "low": 0.08197992706375512,
+            "high": 0.17234252098296746
+          }
+        },
+        "brief": {
+          "numerator": 176,
+          "denominator": 200,
+          "rate": 0.88,
+          "interval": {
+            "low": 0.8276574790170325,
+            "high": 0.9180200729362449
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.815,
+        "items": 163,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 163,
+            "denominator": 200,
+            "rate": 0.815,
+            "interval": {
+              "low": 0.7554293723884824,
+              "high": 0.8626980719938395
+            }
+          },
+          "untested-change": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unsupported-config": 400,
+          "target-missing": 3072,
+          "unknown-package": 200
+        },
+        "uncheckedLanguages": {
+          "rust": 16,
+          "java": 2,
+          "kotlin": 1,
+          "sql": 1
+        }
+      },
+      "runtime": {
+        "wallP50Ms": 1977,
+        "wallP95Ms": 5435,
+        "plain": {
+          "prs": 200,
+          "p50Ms": 1977,
+          "p95Ms": 5435,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 0,
+          "total": {
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "withoutBaseGraph": {
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "baseGraph": {
+            "built": 0,
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "p95Growth": null
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "testHistory": {
+          "checked": 30,
+          "confirmed": 30,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    },
+    {
+      "repo": "team-telnyx/telnyx-node",
+      "slug": "team-telnyx__telnyx-node",
+      "language": "typescript",
+      "group": "TS/JS",
+      "category": "generated",
+      "expected": "hard",
+      "pinnedSha": "db3dd007839c35b3adb454606c23f216f98deb7c",
+      "completed": true,
+      "failure": null,
+      "note": null,
+      "wallMin": 5.5,
+      "loudness": {
+        "evaluated": 200,
+        "quiet": {
+          "numerator": 46,
+          "denominator": 200,
+          "rate": 0.23,
+          "interval": {
+            "low": 0.17709343259068808,
+            "high": 0.2930830436530359
+          }
+        },
+        "brief": {
+          "numerator": 154,
+          "denominator": 200,
+          "rate": 0.77,
+          "interval": {
+            "low": 0.7069169563469642,
+            "high": 0.8229065674093119
+          }
+        },
+        "full": {
+          "numerator": 0,
+          "denominator": 200,
+          "rate": 0,
+          "interval": {
+            "low": 1.7020320458977177e-18,
+            "high": 0.018845326377266575
+          }
+        },
+        "itemsPerPr": 0.45,
+        "items": 90,
+        "byKind": {
+          "wide-surface": {
+            "numerator": 83,
+            "denominator": 200,
+            "rate": 0.415,
+            "interval": {
+              "low": 0.3489428544975757,
+              "high": 0.4842608509865596
+            }
+          },
+          "untested-change": {
+            "numerator": 7,
+            "denominator": 200,
+            "rate": 0.035,
+            "interval": {
+              "low": 0.017055542008567195,
+              "high": 0.07047061152229074
+            }
+          },
+          "broken-import": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "forgotten-companion": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          },
+          "family-drift": {
+            "numerator": 0,
+            "denominator": 200,
+            "rate": 0,
+            "interval": {
+              "low": 1.7020320458977177e-18,
+              "high": 0.018845326377266575
+            }
+          }
+        }
+      },
+      "coverage": {
+        "partial": {
+          "numerator": 200,
+          "denominator": 200,
+          "rate": 1,
+          "interval": {
+            "low": 0.9811546736227333,
+            "high": 1
+          }
+        },
+        "unresolvedByReason": {
+          "unknown-package": 103,
+          "target-missing": 4373,
+          "invalid-target": 6400,
+          "unsupported-config": 182
+        },
+        "uncheckedLanguages": {}
+      },
+      "runtime": {
+        "wallP50Ms": 709,
+        "wallP95Ms": 1425,
+        "plain": {
+          "prs": 179,
+          "p50Ms": 696,
+          "p95Ms": 1327,
+          "baseGraphsBuilt": 0
+        },
+        "removes": {
+          "prs": 21,
+          "total": {
+            "p50Ms": 1247,
+            "p95Ms": 1956
+          },
+          "withoutBaseGraph": {
+            "p50Ms": 906,
+            "p95Ms": 1241
+          },
+          "baseGraph": {
+            "built": 21,
+            "p50Ms": 934,
+            "p95Ms": 1596
+          },
+          "p95Growth": 0.5761482675261886
+        }
+      },
+      "truth": {
+        "brokenImport": {
+          "checked": 0,
+          "confirmed": 0,
+          "rate": null
+        },
+        "untestedChange": {
+          "checked": 7,
+          "confirmed": 7,
+          "rate": 1
+        },
+        "testHistory": {
+          "checked": 17,
+          "confirmed": 17,
+          "rate": 1
+        },
+        "wordingHits": 0,
+        "replayParity": {
+          "salienceMismatches": 0,
+          "checklistKindMismatches": 0
+        }
+      },
+      "seeded": {
+        "positives": 30,
+        "negatives": 30,
+        "reported": 30,
+        "confirmed": 30,
+        "precision": 1,
+        "detected": 30,
+        "recall": 1,
+        "falsePositives": 0,
+        "falsePositiveRate": 0,
+        "skipped": 0,
+        "skippedShare": 0,
+        "missReasons": {
+          "unchecked": 0,
+          "partial": 0,
+          "missed": 0
+        },
+        "errors": 0,
+        "shortfalls": {},
+        "classes": {}
+      },
+      "backtests": {
+        "plain": null,
+        "originWeighted": null
+      }
+    }
+  ]
+}
