@@ -11,7 +11,9 @@
  * `--gu31`, every replay is compared with GU-31's replay of the same PR (Rerun 1): salience and checklist kinds
  * must match (coverage never creates or suppresses an item), and "before" must equal GU-31's `coverage`.
  */
+import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { posix } from 'node:path';
 import { parseArgs } from 'node:util';
 import { replayBriefWithMeta } from '../src/brief.ts';
@@ -96,6 +98,15 @@ export function summarizeCoverage(replays: readonly CoverageReplay[]) {
   };
 }
 
+/** Gutter's commit (with `+dirty` for uncommitted changes) and the Repo Archaeology version that replayed the PRs. */
+export function measuredWith(): { gutterCommit: string; repoArchaeology: string } {
+  const root = new URL('..', import.meta.url).pathname;
+  const git = (...args: string[]) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim();
+  const dirty = git('status', '--porcelain', '--', 'src', 'bench', 'package.json').length > 0;
+  const ra = (createRequire(import.meta.url)('repo-archaeology/package.json') as { version: string }).version;
+  return { gutterCommit: `${git('rev-parse', 'HEAD')}${dirty ? '+dirty' : ''}`, repoArchaeology: ra };
+}
+
 interface BenchPr { id: string; base: string; head: string; subject: string; prNumber: number | null }
 
 async function main(): Promise<void> {
@@ -114,6 +125,8 @@ async function main(): Promise<void> {
     kind: 'gutter-gu32-coverage',
     repo: bench.repo.name,
     headSha: bench.repo.headSha,
+    /** The code that replayed the PRs (bench.json's `tools` are those of the GU-30 run that selected them). */
+    measured: measuredWith(),
     tools: bench.tools,
     summary: summarizeCoverage(replays),
     ...(gu31 ? { gu31: compareWithGu31(replays, gu31) } : {}),
