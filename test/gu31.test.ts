@@ -494,6 +494,21 @@ test('brokenFromBaseGraph: unknown edge kinds are ignored; unknown `via` uses th
   assert.deepEqual(brokenFromBaseGraph(chg([{ path: 'a.x', status: 'deleted' }]), new Set(['a.x']), base, head).map((c) => c.importer), ['v.x']);
 });
 
+test('brokenFromBaseGraph: an importer the head analysis said nothing about is skipped when it kept other imports', () => {
+  const removedSet = new Set(['a.ts']);
+  const base = graph([
+    { from: 'x.ts', to: 'a.ts', specifier: './a', kind: 'static', via: 'relative' },
+    { from: 'x.ts', to: 'b.ts', specifier: './b', kind: 'static', via: 'relative' },
+    { from: 'y.py', to: 'a.ts', specifier: 'a', kind: 'static', via: 'python-module' },
+  ], ['x.ts', 'y.py', 'a.ts', 'b.ts']);
+  // Head lists both files but has no edge and no unresolved entry for either (source unavailable, a budget).
+  const head = graph([], ['x.ts', 'y.py', 'b.ts']);
+  const got = brokenFromBaseGraph(chg([{ path: 'a.ts', status: 'deleted' }]), removedSet, base, head).map((c) => c.importer);
+  assert.deepEqual(got, ['y.py'], 'x.ts still imports b.ts, so silence at head means it was not analyzed; y.py imported only a.ts');
+  const headSpoke = graph([{ from: 'x.ts', to: 'b.ts', specifier: './b', kind: 'static', via: 'relative' }], ['x.ts', 'y.py', 'b.ts']);
+  assert.deepEqual(brokenFromBaseGraph(chg([{ path: 'a.ts', status: 'deleted' }]), removedSet, base, headSpoke).map((c) => c.importer).sort(), ['x.ts', 'y.py']);
+});
+
 // ---- Contract ------------------------------------------------------------------------------
 
 test('contract: old gutter.json fixtures validate; dependents.method is optional and validates', async () => {

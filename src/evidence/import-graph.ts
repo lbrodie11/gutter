@@ -98,12 +98,17 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
     set.add(e.to);
   }
   const headUnresolved = new Set(headGraph.unresolved.map((u) => pairKey(u.from, u.specifier)));
+  // Files the head analysis said anything about: an importer with no head edge and no unresolved import, whose
+  // other base imports still exist, was not really analyzed at head (source unavailable, a budget) and is skipped.
+  const headSpoke = new Set([...headTargets.keys(), ...headUnresolved].map((k) => k.slice(0, k.indexOf('\0'))));
+  const keepsOtherImports = new Set<string>();
   const baseTargets = new Map<string, Set<string>>();
   for (const e of baseGraph.edges) {
     const k = pairKey(e.from, e.specifier);
     let set = baseTargets.get(k);
     if (!set) baseTargets.set(k, (set = new Set()));
     set.add(e.to);
+    if (!removed.has(e.to) && e.from !== e.to) keepsOtherImports.add(e.from);
   }
 
   const out: BrokenCandidate[] = [];
@@ -111,6 +116,7 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
   for (const e of baseGraph.edges) {
     if (!removed.has(e.to) || e.from === e.to || !BROKEN_IMPORT_KINDS.has(e.kind)) continue;
     if (removed.has(e.from) || !headAnalyzed.has(e.from)) continue;
+    if (!headSpoke.has(e.from) && keepsOtherImports.has(e.from)) continue;
     const k = pairKey(e.from, e.specifier);
     const changed = changedPaths.has(e.from);
     if (changed && !headUnresolved.has(k)) continue;

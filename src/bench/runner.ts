@@ -4,7 +4,6 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeF
 import { basename, join } from 'node:path';
 import type { GutterConfig } from '../config.ts';
 import { replayBriefWithMeta } from '../brief.ts';
-import type { BaseGraphCache } from '../sources/archaeology-lib.ts';
 import { browseUrlFromRemote, git, repoRoot } from '../git.ts';
 import { GitTreeReader } from '../source/reader.ts';
 import { trackRecordsByTarget, type CompanionTrackRecord, type RaBacktest } from '../sources/archaeology.ts';
@@ -365,8 +364,6 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
     const checkpoints: CalibrationCheckpointState[] = [];
     let newlyWrittenCount = 0;
 
-    // GU-31: PRs on the same base tree share one base import graph (bounded; see BASE_GRAPH_CACHE_MAX).
-    const baseGraphCache: BaseGraphCache = new Map();
     for (let idx = 0; idx < chronologicalUnits.length; idx++) {
       const unit = chronologicalUnits[idx]!;
       const resumed = resumedMap.get(unit.id);
@@ -429,7 +426,6 @@ export async function runBench(opts: RunBenchOptions): Promise<BenchResultsModel
         raBacktest: chosenCheckpoint ? chosenCheckpoint.backtest : undefined,
         config: settings.configOverrides,
         now: opts.now,
-        baseGraphCache,
       });
 
       const calibrationCheckpointBaseSha = chosenCheckpoint ? chosenCheckpoint.baseSha : unit.base;

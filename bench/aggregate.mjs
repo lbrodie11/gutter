@@ -111,9 +111,10 @@ export function replayRuntime(replays) {
   const built = removes.filter((r) => r.baseGraphMs > 0);
   const total = q(pick(removes, (r) => r.ms));
   const without = q(pick(removes.filter((r) => typeof r.msWithoutBaseGraph === 'number'), (r) => r.msWithoutBaseGraph));
+  // Named apart from GU-30's replayP50Ms/replayP95Ms (sums of bench stage percentiles): these are per-PR wall times.
   return {
-    replayP50Ms: percentile(pick(replays, (r) => r.ms), 0.5),
-    replayP95Ms: percentile(pick(replays, (r) => r.ms), 0.95),
+    wallP50Ms: percentile(pick(replays, (r) => r.ms), 0.5),
+    wallP95Ms: percentile(pick(replays, (r) => r.ms), 0.95),
     plain: { prs: plain.length, ...q(pick(plain, (r) => r.ms)), baseGraphsBuilt: plain.filter((r) => r.baseGraphMs > 0).length },
     removes: {
       prs: removes.length,
@@ -320,6 +321,7 @@ export function aggregate({ corpus, inputs, run, stage }) {
       seededRecall: median(done.map((r) => r.seeded?.recall)),
       replayP50Ms: median(done.map((r) => r.runtime?.replayP50Ms)),
       replayP95Ms: median(done.map((r) => r.runtime?.replayP95Ms)),
+      ...(stage && stage !== 'corpus' ? { wallP50Ms: median(done.map((r) => r.runtime?.wallP50Ms)), wallP95Ms: median(done.map((r) => r.runtime?.wallP95Ms)) } : {}),
     },
     byGroup,
     worst: {
