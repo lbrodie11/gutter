@@ -153,12 +153,13 @@ function scorableTargetFilesOf(questions: readonly QuestionOutcomeRecord[]): str
   return [...out];
 }
 
-/** GU-30: the production brief's dependents coverage, for the bench record (additive). */
-export function coverageFields(brief: GutterBrief): Pick<BenchPrRecord, 'coverage' | 'unresolvedByReason' | 'uncheckedLanguages'> {
+/** GU-30: the production brief's dependents coverage, for the bench record (additive; GU-32 adds the relevant counts). */
+export function coverageFields(brief: GutterBrief): Pick<BenchPrRecord, 'coverage' | 'unresolvedByReason' | 'relevantUnresolvedByReason' | 'uncheckedLanguages'> {
   const lang = new Map(brief.changes.files.map((f) => [f.path, f.language ?? 'unknown']));
   return {
     coverage: brief.dependents.coverage,
     unresolvedByReason: { ...(brief.dependents.unresolved.byReason ?? {}) },
+    relevantUnresolvedByReason: { ...(brief.dependents.unresolved.relevant?.byReason ?? {}) },
     uncheckedLanguages: [...new Set(brief.dependents.unchecked.map((p) => lang.get(p) ?? 'unknown'))].sort(),
   };
 }

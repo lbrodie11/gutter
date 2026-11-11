@@ -304,6 +304,8 @@ export interface ReplayRecord {
   kinds: string[];
   coverage: 'full' | 'partial';
   unresolvedByReason: Record<string, number>;
+  /** GU-32: the unresolved imports that could reach this PR's files, by reason (they decide `coverage`). */
+  relevantUnresolvedByReason: Record<string, number>;
   /** Languages of changed files no analyzer covers (`dependents.unchecked`). */
   uncheckedLanguages: string[];
   method?: string;

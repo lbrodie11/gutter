@@ -147,6 +147,12 @@ export interface BenchPrRecord {
   coverage?: 'full' | 'partial';
   /** GU-30, additive: `dependents.unresolved.byReason` (empty when the fallback scanner produced the layer). */
   unresolvedByReason?: Record<string, number>;
+  /**
+   * GU-32, additive: `dependents.unresolved.relevant.byReason`, the unresolved imports that could reach this PR's
+   * files (empty when none could, or when the fallback scanner produced the layer). `coverage` above follows
+   * these since GU-32; before, it followed `unresolvedByReason`.
+   */
+  relevantUnresolvedByReason?: Record<string, number>;
   /** GU-30, additive: sorted languages of changed files listed in `dependents.unchecked`. */
   uncheckedLanguages?: string[];
   history: 'available' | 'unavailable';
