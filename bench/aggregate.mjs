@@ -109,8 +109,10 @@ export function replayRuntime(replays) {
   const removes = replays.filter((r) => r.removes);
   const plain = replays.filter((r) => !r.removes);
   const built = removes.filter((r) => r.baseGraphMs > 0);
-  const total = q(pick(removes, (r) => r.ms));
-  const without = q(pick(removes.filter((r) => typeof r.msWithoutBaseGraph === 'number'), (r) => r.msWithoutBaseGraph));
+  // With and without over the same PRs: only those replayed both ways.
+  const paired = removes.filter((r) => typeof r.msWithoutBaseGraph === 'number');
+  const total = q(pick(paired, (r) => r.ms));
+  const without = q(pick(paired, (r) => r.msWithoutBaseGraph));
   // Named apart from GU-30's replayP50Ms/replayP95Ms (sums of bench stage percentiles): these are per-PR wall times.
   return {
     wallP50Ms: percentile(pick(replays, (r) => r.ms), 0.5),

@@ -48,12 +48,22 @@ export interface BrokenCandidate {
 }
 
 /**
- * True when `removed` is an `__init__.py` of a package strictly above the module `specifier` names (`a/__init__.py`
- * for `import a.b`): Python still imports `a.b` without it (a namespace package), so losing it alone breaks nothing.
+ * Where an `__init__.py` sits on the module path a Python `specifier` names: `'leaf'` for the named package's own
+ * initializer (`a/b/__init__.py` for `import a.b`, or the importer's package for `from . import x`), `'ancestor'`
+ * for one strictly above it (`a/__init__.py` for `import a.b`), undefined otherwise (not an `__init__.py`, or a
+ * package below the named module, such as `a/b/c/__init__.py`).
  */
-export function isAncestorInit(importer: string, specifier: string, removed: string): boolean {
-  if (posix.basename(removed) !== '__init__.py') return false;
-  const dir = posix.dirname(removed);
+export function initOnModulePath(importer: string, specifier: string, file: string): 'leaf' | 'ancestor' | undefined {
+  return posix.basename(file) === '__init__.py' ? modulePathRole(importer, specifier, file) : undefined;
+}
+
+/**
+ * The same for any Python file: its module path (`a/b` for `a/b.py` or `a/b/__init__.py`) is the one `specifier`
+ * names (`'leaf'`), strictly above it (`'ancestor'`), or neither (a submodule below it, or unrelated).
+ */
+export function modulePathRole(importer: string, specifier: string, file: string): 'leaf' | 'ancestor' | undefined {
+  if (!file.endsWith('.py')) return undefined;
+  const dir = posix.basename(file) === '__init__.py' ? posix.dirname(file) : file.slice(0, -'.py'.length);
   const dots = /^\.*/.exec(specifier)![0].length;
   const parts = specifier.slice(dots).split('.').filter(Boolean);
   if (dots > 0) {
@@ -61,17 +71,26 @@ export function isAncestorInit(importer: string, specifier: string, removed: str
     let pkg = posix.dirname(importer);
     for (let i = 1; i < dots; i++) pkg = posix.dirname(pkg);
     const leaf = posix.join(pkg === '.' ? '' : pkg, ...parts);
-    return leaf !== dir && (dir === '.' || leaf.startsWith(`${dir}/`));
+    if (leaf === dir) return 'leaf';
+    return dir === '.' || leaf.startsWith(`${dir}/`) ? 'ancestor' : undefined;
   }
   // Absolute: the source root is unknown, so match the module path as a suffix of the directory. The named module
   // itself is checked first: `a/a/__init__.py` for `import a.a` is the leaf, though its directory also ends in `a`.
   const full = parts.join('/');
-  if (dir === full || dir.endsWith(`/${full}`)) return false;
+  if (dir === full || dir.endsWith(`/${full}`)) return 'leaf';
   for (let k = 1; k < parts.length; k++) {
     const prefix = parts.slice(0, k).join('/');
-    if (dir === prefix || dir.endsWith(`/${prefix}`)) return true;
+    if (dir === prefix || dir.endsWith(`/${prefix}`)) return 'ancestor';
   }
-  return false;
+  return undefined;
+}
+
+/**
+ * True when `removed` is an `__init__.py` of a package strictly above the module `specifier` names (`a/__init__.py`
+ * for `import a.b`): Python still imports `a.b` without it (a namespace package), so losing it alone breaks nothing.
+ */
+export function isAncestorInit(importer: string, specifier: string, removed: string): boolean {
+  return initOnModulePath(importer, specifier, removed) === 'ancestor';
 }
 
 /**
@@ -132,7 +151,16 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
 function lost(e: Edge, head: ReadonlySet<string> | undefined, base: ReadonlySet<string>): boolean {
   if (!head || head.size === 0) return true;
   if (e.via !== 'python-module') return false;
-  if ([...head].some((t) => !base.has(t))) return false;
+  // A new head target replaces the removed file, except an `__init__.py` on the specifier's own module path standing in
+  // for a removed submodule: `from . import mod` falls back to the importer's own package `__init__.py` once `mod.py`
+  // is gone (GU-31 review). When the removed file was the named module itself (`a/b.py` for `from a.b import x`), its
+  // package form (`a/b/__init__.py`) does replace it.
+  const removedIsLeaf = modulePathRole(e.from, e.specifier, e.to) === 'leaf';
+  const replaces = (t: string) => {
+    const role = initOnModulePath(e.from, e.specifier, t);
+    return role === undefined || (role === 'leaf' && removedIsLeaf);
+  };
+  if ([...head].some((t) => !base.has(t) && replaces(t))) return false;
   return !isAncestorInit(e.from, e.specifier, e.to);
 }
 
@@ -177,6 +205,22 @@ export function dependentsFromImportGraph(
       importersOf.get(file)?.add(c.importer);
       brokenPairs.add(pairKey(c.importer, c.specifier));
       vias.add(c.via ?? 'unknown');
+    }
+    // A file the PR adds or changes has no (comparable) base edge. When its import is unresolved at head and points at
+    // a removed path (relative: by path; otherwise: some base importer resolved the same specifier to that path), it
+    // is a broken import too, as the relative scan has always reported it (GU-31 review).
+    const removedBySpecifier = new Map<string, string>();
+    for (const e of baseGraph!.edges) {
+      if (removed.has(e.to) && !e.specifier.startsWith('.') && !removedBySpecifier.has(e.specifier)) {
+        removedBySpecifier.set(e.specifier, e.via === 'go-package' ? (goEntry.get(posix.dirname(e.to)) ?? e.to) : e.to);
+      }
+    }
+    for (const u of repoGraph.unresolved) {
+      if (!changedPaths.has(u.from) || removed.has(u.from) || brokenPairs.has(pairKey(u.from, u.specifier))) continue;
+      const target = u.specifier.startsWith('.') ? resolveRelative(u.from, u.specifier, headFiles, removed) : removedBySpecifier.get(u.specifier);
+      if (!target || !removed.has(target) || target === u.from) continue;
+      importersOf.get(target)?.add(u.from);
+      brokenPairs.add(pairKey(u.from, u.specifier));
     }
   }
 

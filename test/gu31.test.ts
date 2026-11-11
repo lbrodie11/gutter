@@ -9,7 +9,7 @@ import { join, resolve } from 'node:path';
 import ts from 'typescript';
 import { buildBriefAsync, replayBriefWithMeta } from '../src/brief.ts';
 import type { ChangeStructure, GutterBrief } from '../src/contract.ts';
-import { brokenFromBaseGraph, dependentsFromImportGraph, isAncestorInit } from '../src/evidence/import-graph.ts';
+import { brokenFromBaseGraph, dependentsFromImportGraph, initOnModulePath, isAncestorInit } from '../src/evidence/import-graph.ts';
 import { buildDependents } from '../src/evidence/imports.ts';
 import { GitTreeReader } from '../src/source/reader.ts';
 import { analyzeWithLibrary, loadRaLibrary, type LoadedRaLibrary, type RaImportGraph } from '../src/sources/archaeology-lib.ts';
@@ -179,6 +179,27 @@ test('isAncestorInit: only an __init__.py strictly above the named module', () =
   assert.equal(isAncestorInit('use.py', 'a.a', 'a/a/__init__.py'), false);
   assert.equal(isAncestorInit('use.py', 'core.api.core', 'src/core/api/core/__init__.py'), false);
   assert.equal(isAncestorInit('use.py', 'a.a.b', 'a/a/__init__.py'), true);
+});
+
+test('initOnModulePath: leaf, ancestor, or neither (a package below the named module)', () => {
+  assert.equal(initOnModulePath('ciphers/x.py', '.', 'ciphers/__init__.py'), 'leaf');
+  assert.equal(initOnModulePath('use.py', 'pkg', 'src/pkg/__init__.py'), 'leaf');
+  assert.equal(initOnModulePath('use.py', 'pkg.sub', 'pkg/__init__.py'), 'ancestor');
+  assert.equal(initOnModulePath('use.py', 'pkg', 'pkg/mod/__init__.py'), undefined);
+  assert.equal(initOnModulePath('ciphers/x.py', '.', 'ciphers/mod/__init__.py'), undefined);
+  assert.equal(initOnModulePath('use.py', 'pkg', 'pkg/mod.py'), undefined);
+});
+
+test('Python: `from . import mod` breaks when mod.py is deleted, though the name falls back to the package __init__', async () => {
+  // Rerun 1's three TheAlgorithms/Python misses (`ciphers/`), fixed after it; not measured by Rerun 1.
+  const files = { 'ciphers/__init__.py': '', 'ciphers/tc.py': 'K = 1\n', 'ciphers/user.py': 'from . import tc\n\nprint(tc.K)\n' };
+  const res = await replay(files, (r) => r.rm('ciphers/tc.py'));
+  assert.deepEqual(broken(res.brief), { 'ciphers/tc.py': ['ciphers/user.py'] });
+  const moved = await replay(files, (r) => {
+    r.rm('ciphers/tc.py');
+    r.write({ 'ciphers/tc/__init__.py': 'K = 1\n' });
+  });
+  assert.deepEqual(broken(moved.brief), {}, 'a module moved into a package of the same name still resolves');
 });
 
 test('Python: `import a.a` breaks when a/a/__init__.py is deleted (a repeated segment is still the leaf)', async () => {
@@ -362,7 +383,7 @@ test('bench cache: a failed base graph is not cached (the next PR on that base t
   assert.equal(cache.size, 1);
 });
 
-test('coverage keeps its meaning: a new file importing the removed path relatively is not counted as unresolved', async () => {
+test('a new file importing the removed path is a (changed) importer, and coverage keeps its meaning', async () => {
   const res = await replay(
     { 'src/a.ts': 'export const a = 1;\n', 'src/b.ts': "import { a } from './a';\nexport const b = a;\n" },
     (r) => {
@@ -371,8 +392,18 @@ test('coverage keeps its meaning: a new file importing the removed path relative
     },
   );
   assert.equal(res.brief.dependents.method, 'base-graph');
-  assert.deepEqual(broken(res.brief), { 'src/a.ts': ['src/b.ts'] });
+  assert.deepEqual(broken(res.brief), { 'src/a.ts': ['src/b.ts', 'src/c.ts'] });
+  const d = res.brief.dependents.entries.find((e) => e.file === 'src/a.ts')!;
+  assert.deepEqual([d.untouchedImporters, d.changedImporters], [['src/b.ts'], ['src/c.ts']]);
   assert.equal(res.brief.dependents.coverage, 'full');
+});
+
+test('a new file importing a removed path through an alias is named too (same specifier as a base importer)', async () => {
+  const res = await replay(TS_BASE, (r) => {
+    r.rm('src/alias.ts');
+    r.write({ 'src/new.ts': "import { alias } from '@/alias';\nexport const n = alias;\n" });
+  });
+  assert.deepEqual(broken(res.brief), { 'src/alias.ts': ['src/new.ts', 'src/user.ts'] });
 });
 
 test('bench-only noBaseGraph: the replay skips the base graph and uses the relative scan', async () => {
@@ -457,14 +488,16 @@ test('GU-30 case (codegraph delete-5): an importer with a NUL byte IS an importe
   assert.deepEqual(broken(res.brief), { 'ui/screens-model.ts': ['ui/steps-model.ts'] });
 });
 
-test('GU-30 case (telnyx rename-5): the moved copy importing its own old path is not a base importer, so no longer reported', async () => {
-  // Classification: ambiguous. The moved file really is broken, but the oracle's ground truth covers base importers
-  // only; under base-graph the item names exactly the base importers (the oracle's set).
+test('GU-30 case (telnyx rename-5): the moved copy importing its own old path is reported as a changed importer', async () => {
+  // Classification: ambiguous. The moved file really is broken (it still imports './comments'), but the oracle's ground
+  // truth covers importers that existed at the host only. Gutter names it, as a file the PR changed.
   const res = await replay(
     { 'src/comments.ts': "import * as API from './comments';\nexport type C = API.X;\nexport interface X { a: 1 }\n", 'src/index.ts': "export * from './comments';\n" },
     (r) => r.mv('src/comments.ts', 'src/comments_seeded_moved.ts'),
   );
-  assert.deepEqual(broken(res.brief), { 'src/comments.ts': ['src/index.ts'] });
+  assert.deepEqual(broken(res.brief), { 'src/comments.ts': ['src/comments_seeded_moved.ts', 'src/index.ts'] });
+  const d = res.brief.dependents.entries.find((e) => e.file === 'src/comments.ts')!;
+  assert.deepEqual(d.changedImporters, ['src/comments_seeded_moved.ts']);
 });
 
 // ---- Unit: brokenFromBaseGraph on synthetic graphs ------------------------------------------
