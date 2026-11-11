@@ -57,6 +57,17 @@ node bench/aggregate.mjs --write     # also writes results-rerun1.json; README.m
 
 It writes `docs/benchmark/data/<owner>__<repo>/rerun1/` and `docs/benchmark/data/rerun1-run.json`. `test/gu31-bench.test.ts` checks that `results-rerun1.json` is what the aggregator computes from that data.
 
+### GU-32 coverage measurement
+
+Not a gate and not preregistered (no verdict depends on it): every real PR of each repository's GU-30 `bench.json` is replayed once with the current code, and Rerun 1's seeded mutations are regenerated with the same seed and rescored, then both are compared with Rerun 1 (`rerun1/`):
+
+```bash
+node bench/gu32-run.mjs --jobs 2      # writes docs/benchmark/data/<owner>__<repo>/gu32/; resumable
+node bench/gu32-report.mjs --write    # writes COVERAGE.md and results-gu32.json
+```
+
+`test/gu32-bench.test.ts` checks that both are what the report computes from that data.
+
 ## 4. What should match
 
 - **Exactly:** the corpus and pins; the seeded mutations and their commit ids (fixed seed, fixed author, committer and date); every oracle verdict; `gutter bench`'s PR selection, salience and checklist on the same pins and Repo Archaeology version. `test/gu30-aggregate.test.ts` checks that `README.md` is rendered from `results.json` and that `results.json` is what the aggregator computes from the committed raw data.

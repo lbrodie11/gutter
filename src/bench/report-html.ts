@@ -385,7 +385,7 @@ body{margin:0;background:var(--f-desk);color:var(--f-ink);font-family:var(--font
 .defs{position:absolute}
 .dot{fill:var(--f-tone)}
 a{color:inherit;text-decoration-thickness:1px;text-underline-offset:2px}
-a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-marker);outline-offset:2px}
+a:focus-visible,.panel:focus-visible{outline:var(--f-stroke) solid var(--f-rule);outline-offset:2px}
 .desk{padding:var(--f-gutter-change) 16px}
 .sheet{max-width:1120px;margin:0 auto;background:var(--f-sheet);padding:var(--f-gutter-scene);box-shadow:var(--f-shadow-sheet)}
 .masthead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--f-gutter-pair);border-bottom:calc(var(--f-stroke) * 2) solid var(--f-rule);padding-bottom:var(--f-gutter-pair);margin-bottom:var(--f-gutter-scene)}

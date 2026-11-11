@@ -1,6 +1,7 @@
 import { posix } from 'node:path';
 import type { ChangeStructure, DependentsEntry, DependentsLayer } from '../contract.ts';
 import type { RaImportGraph } from '../sources/archaeology-lib.ts';
+import { relevantTargets, scopeTargets, type ScopeTarget } from './coverage-scope.ts';
 import { resolveRelative } from './imports.ts';
 
 /**
@@ -14,8 +15,10 @@ import { resolveRelative } from './imports.ts';
  *   `brokenFromBaseGraph`), in any language Repo Archaeology resolves. Without a base graph
  *   (`method: 'relative-scan'`), importers are the repo-wide `unresolved` entries whose relative specifier
  *   points at that path (`target-missing`), as with the fallback scanner.
- * - `coverage` is `partial` when any other import in the repository is unresolved: such a file could be an
- *   importer Gutter cannot see. Imports reported as broken imports are not counted.
+ * - `unresolved` counts every other unresolved import in the repository (imports reported as broken are not
+ *   counted). GU-32 (DECISIONS #21): `unresolved.relevant` are the ones that could resolve to one of the PR's
+ *   changed or removed files (`relevantTargets`), and `coverage` is `partial` only when there is one; an entry
+ *   whose file such an import could reach is `coverage: 'partial'` too.
  */
 const NON_CODE = new Set(['markdown', 'json', 'yaml', 'toml']);
 const MAX_UNRESOLVED_SAMPLES = 5;
@@ -178,6 +181,16 @@ function lost(e: Edge, head: ReadonlySet<string> | undefined, base: ReadonlySet<
   return !isAncestorInit(e.from, e.specifier, e.to);
 }
 
+const clip = (sample: string) => (sample.length > MAX_SAMPLE_LEN ? `${sample.slice(0, MAX_SAMPLE_LEN - 1)}…` : sample);
+
+/** An entry is reached when an import could reach its file; a Go entry stands for its package (its directory). */
+export function entryReached(file: string, reached: ReadonlySet<string>): boolean {
+  if (reached.has(file)) return true;
+  if (!file.endsWith('.go')) return false;
+  const dir = posix.dirname(file);
+  return [...reached].some((p) => p.endsWith('.go') && posix.dirname(p) === dir);
+}
+
 export function dependentsFromImportGraph(
   changes: ChangeStructure,
   graph: RaImportGraph,
@@ -185,6 +198,9 @@ export function dependentsFromImportGraph(
   baseGraph?: RaImportGraph,
   /** Files tracked at head (for the nearest tsconfig of a `paths` alias); optional. */
   trackedFiles?: Iterable<string>,
+  /** GU-32: the PR's changed and removed paths with their package context (`scopeTargets`), or a function that
+   * builds them; it is called only when the repository has an unresolved import to judge. */
+  targets: readonly ScopeTarget[] | (() => readonly ScopeTarget[]) = () => scopeTargets(changes),
 ): DependentsLayer {
   const changedPaths = new Set(changes.files.map((f) => f.path));
   const removed = new Set(removedPaths(changes));
@@ -278,6 +294,10 @@ export function dependentsFromImportGraph(
   let unresolvedCount = 0;
   const byReason: Record<string, number> = {};
   const samples = new Set<string>();
+  const relevant = { count: 0, byReason: {} as Record<string, number>, samples: new Set<string>() };
+  const reached = new Set<string>();
+  let scope: readonly ScopeTarget[] | undefined;
+  const scoped = () => (scope ??= typeof targets === 'function' ? targets() : targets);
   for (const u of repoGraph.unresolved) {
     // Imports reported as broken are not counted; nor, as before GU-31, is a relative specifier that points at a
     // removed path (only the relative scan names its importer, so `coverage` keeps one meaning in both modes).
@@ -290,8 +310,15 @@ export function dependentsFromImportGraph(
     unresolvedCount++;
     const reason = u.reasonCode ?? 'unknown';
     byReason[reason] = (byReason[reason] ?? 0) + 1;
-    const sample = `${u.from} → ${u.specifier}`;
-    samples.add(sample.length > MAX_SAMPLE_LEN ? `${sample.slice(0, MAX_SAMPLE_LEN - 1)}…` : sample);
+    const sample = clip(`${u.from} → ${u.specifier}`);
+    samples.add(sample);
+    const hits = relevantTargets(u, scoped());
+    if (hits.length) {
+      relevant.count++;
+      relevant.byReason[reason] = (relevant.byReason[reason] ?? 0) + 1;
+      relevant.samples.add(sample);
+      for (const h of hits) reached.add(h);
+    }
   }
 
   const entries: DependentsEntry[] = [];
@@ -304,6 +331,7 @@ export function dependentsFromImportGraph(
       deleted: removed.has(file),
       changedImporters: list.filter((p) => changedPaths.has(p)),
       untouchedImporters: list.filter((p) => !changedPaths.has(p)),
+      coverage: entryReached(file, reached) ? 'partial' : 'full',
     });
   }
   entries.sort((a, b) => Number(b.deleted) - Number(a.deleted) || b.untouchedImporters.length - a.untouchedImporters.length);
@@ -318,11 +346,16 @@ export function dependentsFromImportGraph(
     analyzers: ['ra-import-graph', ...[...vias].sort()],
     entries,
     unchecked,
-    coverage: unresolvedCount > 0 ? 'partial' : 'full',
+    coverage: relevant.count > 0 ? 'partial' : 'full',
     unresolved: {
       count: unresolvedCount,
       samples: [...samples].sort().slice(0, MAX_UNRESOLVED_SAMPLES),
       byReason,
+      relevant: {
+        count: relevant.count,
+        samples: [...relevant.samples].sort().slice(0, MAX_UNRESOLVED_SAMPLES),
+        byReason: relevant.byReason,
+      },
     },
     scannedFiles: typeof imports?.filesScanned === 'number' ? imports.filesScanned : repoGraph.files.length,
     ...(removed.size > 0 ? { method: useBase ? 'base-graph' : 'relative-scan' } : {}),

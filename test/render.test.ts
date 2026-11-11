@@ -121,7 +121,7 @@ test('panel 3 marks itself partial instead of claiming no dependents when alias 
   assert.equal(page.includes('No file outside this change imports what it changed'), false);
   assert.match(
     page,
-    /<span class="stamp">partial<\/span> No importers found through relative imports\. 1 import uses aliases or packages Gutter can&#39;t resolve yet, so some importers may be missing\./,
+    /<span class="stamp">partial<\/span> No importers found through relative imports\. 1 import that could reach this PR&#39;s files uses aliases or packages Gutter can&#39;t resolve yet \(for example <code class="path">src\/b\.ts → @\/a<\/code>\), so some importers may be missing\./,
   );
   assert.deepEqual(lintPage(page), []);
 
@@ -129,7 +129,7 @@ test('panel 3 marks itself partial instead of claiming no dependents when alias 
   assert.equal(md.includes('No file outside this change imports what it changed'), false);
   assert.match(
     md,
-    /<sub>No importers found through relative imports\. 1 import uses aliases or packages Gutter can't resolve yet, so some importers may be missing\.<\/sub>/,
+    /<sub>No importers found through relative imports\. 1 import that could reach this PR's files uses aliases or packages Gutter can't resolve yet \(for example `src\/b\.ts → @\/a`\), so some importers may be missing\.<\/sub>/,
   );
 
   // Saved legacy schemaVersion: 1 briefs (`unresolvedAliases` without `coverage` or `unresolved`)

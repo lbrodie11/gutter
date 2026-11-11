@@ -204,15 +204,17 @@ test('bench records: coverage, unresolvedByReason and uncheckedLanguages are pre
       assert.ok(Array.isArray(pr.uncheckedLanguages));
       const { brief } = await replayBriefWithMeta({ cwd: r.dir, base: pr.base, head: pr.head, noCalibration: true });
       assert.deepEqual(
-        { coverage: pr.coverage, unresolvedByReason: pr.unresolvedByReason, uncheckedLanguages: pr.uncheckedLanguages },
+        { coverage: pr.coverage, unresolvedByReason: pr.unresolvedByReason, relevantUnresolvedByReason: pr.relevantUnresolvedByReason, uncheckedLanguages: pr.uncheckedLanguages },
         coverageFields(brief),
         `${pr.id} matches its brief`,
       );
     }
     const first = model.prs.find((p) => p.prNumber === 1)!;
     assert.deepEqual(first.uncheckedLanguages, ['ruby'], 'the changed Ruby file has no analyzer');
-    assert.equal(first.coverage, 'partial', 'an alias that matches no file makes coverage partial');
+    // GU-32: `@/nope` is unresolved repository-wide, but cannot reach src/a.ts or lib/x.rb, so coverage is full.
+    assert.equal(first.coverage, 'full', 'an alias that matches no changed file leaves coverage full');
     assert.ok(Object.values(first.unresolvedByReason!).reduce((a, b) => a + b, 0) >= 1);
+    assert.deepEqual(first.relevantUnresolvedByReason, {});
   } finally {
     rmSync(out, { recursive: true, force: true });
   }

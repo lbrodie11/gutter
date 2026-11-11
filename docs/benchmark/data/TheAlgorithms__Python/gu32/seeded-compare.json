@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-seeded-compare",
+  "repo": "TheAlgorithms/Python",
+  "seed": 20261111,
+  "summaryMismatches": [
+    "reportedItems",
+    "confirmedItems",
+    "detected",
+    "recall"
+  ],
+  "records": {
+    "compared": 60,
+    "missing": [],
+    "scoreMismatches": [
+      "3dae007-delete-0",
+      "3dae007-delete-8",
+      "eb3776a-rename-1"
+    ],
+    "missReasonMoves": {
+      "missed→none": 3
+    },
+    "otherMissReasonChanges": [
+      "3dae007-delete-0",
+      "3dae007-delete-8",
+      "eb3776a-rename-1"
+    ],
+    "coverageMoves": {}
+  },
+  "baseline": {
+    "commit": "ffeb2b095b7e70a6906699a50deeae220b60cc85",
+    "summaryMismatches": [],
+    "records": {
+      "compared": 60,
+      "missing": [],
+      "scoreMismatches": []
+    }
+  }
+}

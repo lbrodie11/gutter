@@ -1,0 +1,860 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-results",
+  "repos": [
+    {
+      "repo": "honojs/hono",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 1594,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "target-missing": 344,
+        "unknown-package": 1250
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 282,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "remarkablemark/html-react-parser",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 2098,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "target-missing": 2000,
+        "unknown-package": 98
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 48,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "faastjs/faast.js",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 1600,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 1000,
+        "target-missing": 600
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "binance/binance-connector-js",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 19,
+      "shareBefore": 1,
+      "shareAfter": 0.095,
+      "unresolvedTotal": 82418,
+      "relevantTotal": 5173,
+      "unresolvedByReason": {
+        "unknown-package": 28235,
+        "target-missing": 54183
+      },
+      "relevantByReason": {
+        "target-missing": 5173
+      },
+      "entriesPartial": 28,
+      "entries": 958,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "allianz/ng-aquila",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 148,
+      "shareBefore": 1,
+      "shareAfter": 0.74,
+      "unresolvedTotal": 18815,
+      "relevantTotal": 530,
+      "unresolvedByReason": {
+        "unknown-package": 1599,
+        "not-exported": 16600,
+        "target-missing": 616
+      },
+      "relevantByReason": {
+        "not-exported": 496,
+        "unknown-package": 34
+      },
+      "entriesPartial": 205,
+      "entries": 714,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "matrix-org/matrix-appservice-bridge",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 104,
+      "shareBefore": 1,
+      "shareAfter": 0.52,
+      "unresolvedTotal": 4499,
+      "relevantTotal": 1373,
+      "unresolvedByReason": {
+        "target-missing": 4358,
+        "unknown-package": 141
+      },
+      "relevantByReason": {
+        "target-missing": 1373
+      },
+      "entriesPartial": 20,
+      "entries": 377,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "ChatGPTNextWeb/NextChat",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 720,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 720
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 573,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "DayuanJiang/next-ai-draw-io",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 79,
+      "partialAfter": 0,
+      "shareBefore": 0.395,
+      "shareAfter": 0,
+      "unresolvedTotal": 79,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 79
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 923,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "slymnoyann/hey.xyz",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 4,
+      "partialAfter": 0,
+      "shareBefore": 0.02,
+      "shareAfter": 0,
+      "unresolvedTotal": 4,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 833,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "lerna/lerna",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 8,
+      "shareBefore": 1,
+      "shareAfter": 0.04,
+      "unresolvedTotal": 4093,
+      "relevantTotal": 43,
+      "unresolvedByReason": {
+        "unsupported-config": 3200,
+        "unknown-package": 883,
+        "target-missing": 10
+      },
+      "relevantByReason": {
+        "unsupported-config": 15,
+        "unknown-package": 28
+      },
+      "entriesPartial": 0,
+      "entries": 383,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "vbenjs/vue-vben-admin",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 89,
+      "shareBefore": 1,
+      "shareAfter": 0.445,
+      "unresolvedTotal": 23403,
+      "relevantTotal": 1058,
+      "unresolvedByReason": {
+        "target-missing": 19841,
+        "unknown-package": 153,
+        "alias-unmatched": 3409
+      },
+      "relevantByReason": {
+        "target-missing": 1058
+      },
+      "entriesPartial": 311,
+      "entries": 982,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "hypit-ai/hypit",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 81,
+      "partialAfter": 0,
+      "shareBefore": 0.405,
+      "shareAfter": 0,
+      "unresolvedTotal": 165,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 165
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1518,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "ollama/ollama",
+      "language": "go",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 800,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 800
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 757,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "fatedier/frp",
+      "language": "go",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 0,
+      "partialAfter": 0,
+      "shareBefore": 0,
+      "shareAfter": 0,
+      "unresolvedTotal": 0,
+      "relevantTotal": 0,
+      "unresolvedByReason": {},
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 783,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "gin-gonic/gin",
+      "language": "go",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 0,
+      "partialAfter": 0,
+      "shareBefore": 0,
+      "shareAfter": 0,
+      "unresolvedTotal": 0,
+      "relevantTotal": 0,
+      "unresolvedByReason": {},
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 139,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 51,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "TheAlgorithms/Python",
+      "language": "python",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 0,
+      "partialAfter": 0,
+      "shareBefore": 0,
+      "shareAfter": 0,
+      "unresolvedTotal": 0,
+      "relevantTotal": 0,
+      "unresolvedByReason": {},
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 49,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [
+          "reportedItems",
+          "confirmedItems",
+          "detected",
+          "recall"
+        ],
+        "scoreMismatches": 3,
+        "missReasonMoves": {
+          "missed→none": 3
+        },
+        "otherMissReasonChanges": 3,
+        "baseline": {
+          "commit": "ffeb2b095b7e70a6906699a50deeae220b60cc85",
+          "compared": 60,
+          "scoreMismatches": 0,
+          "summaryMismatches": []
+        }
+      }
+    },
+    {
+      "repo": "yt-dlp/yt-dlp",
+      "language": "python",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 4,
+      "shareBefore": 1,
+      "shareAfter": 0.02,
+      "unresolvedTotal": 400,
+      "relevantTotal": 4,
+      "unresolvedByReason": {
+        "target-missing": 400
+      },
+      "relevantByReason": {
+        "target-missing": 4
+      },
+      "entriesPartial": 4,
+      "entries": 306,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "github/spec-kit",
+      "language": "python",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 1000,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unknown-package": 1000
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 308,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 2,
+        "missReasonMoves": {
+          "partial→missed": 4
+        },
+        "otherMissReasonChanges": 0,
+        "baseline": {
+          "commit": "ffeb2b095b7e70a6906699a50deeae220b60cc85",
+          "compared": 60,
+          "scoreMismatches": 0,
+          "summaryMismatches": []
+        }
+      }
+    },
+    {
+      "repo": "colbymchenry/codegraph",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 0,
+      "shareBefore": 1,
+      "shareAfter": 0,
+      "unresolvedTotal": 3672,
+      "relevantTotal": 0,
+      "unresolvedByReason": {
+        "unsupported-config": 400,
+        "target-missing": 3072,
+        "unknown-package": 200
+      },
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 493,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    },
+    {
+      "repo": "team-telnyx/telnyx-node",
+      "language": "typescript",
+      "measured": {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      },
+      "prs": 200,
+      "partialBefore": 200,
+      "partialAfter": 200,
+      "shareBefore": 1,
+      "shareAfter": 1,
+      "unresolvedTotal": 11058,
+      "relevantTotal": 2561,
+      "unresolvedByReason": {
+        "unknown-package": 103,
+        "target-missing": 4373,
+        "invalid-target": 6400,
+        "unsupported-config": 182
+      },
+      "relevantByReason": {
+        "target-missing": 2359,
+        "unknown-package": 20,
+        "unsupported-config": 182
+      },
+      "entriesPartial": 2785,
+      "entries": 2785,
+      "gu31": {
+        "compared": 200,
+        "missing": 0,
+        "salienceMismatches": 0,
+        "checklistKindMismatches": 0,
+        "beforeMismatches": 0
+      },
+      "seeded": {
+        "compared": 60,
+        "missing": 0,
+        "summaryMismatches": [],
+        "scoreMismatches": 0,
+        "missReasonMoves": {},
+        "otherMissReasonChanges": 0,
+        "baseline": null
+      }
+    }
+  ],
+  "summary": {
+    "measured": [
+      {
+        "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+        "repoArchaeology": "0.12.0"
+      }
+    ],
+    "repos": 20,
+    "missing": 0,
+    "prs": 4000,
+    "medianShareBefore": 1,
+    "medianShareAfter": 0,
+    "reposAllPartialBefore": 14,
+    "reposAllPartialAfter": 1,
+    "unresolvedTotal": 156418,
+    "relevantTotal": 10742,
+    "unresolvedByReason": {
+      "target-missing": 89797,
+      "unknown-package": 36430,
+      "not-exported": 16600,
+      "unsupported-config": 3782,
+      "alias-unmatched": 3409,
+      "invalid-target": 6400
+    },
+    "relevantByReason": {
+      "target-missing": 9967,
+      "not-exported": 496,
+      "unknown-package": 82,
+      "unsupported-config": 197
+    },
+    "gu31": {
+      "compared": 4000,
+      "missing": 0,
+      "salienceMismatches": 0,
+      "checklistKindMismatches": 0,
+      "beforeMismatches": 0
+    },
+    "seeded": {
+      "compared": 1179,
+      "missing": 0,
+      "reposWithSummaryMismatches": [
+        "TheAlgorithms/Python"
+      ],
+      "scoreMismatches": 5,
+      "missReasonMoves": {
+        "missed→none": 3,
+        "partial→missed": 4
+      },
+      "otherMissReasonChanges": 3,
+      "baseline": [
+        {
+          "repo": "TheAlgorithms/Python",
+          "commit": "ffeb2b095b7e70a6906699a50deeae220b60cc85",
+          "compared": 60,
+          "scoreMismatches": 0,
+          "summaryMismatches": []
+        },
+        {
+          "repo": "github/spec-kit",
+          "commit": "ffeb2b095b7e70a6906699a50deeae220b60cc85",
+          "compared": 60,
+          "scoreMismatches": 0,
+          "summaryMismatches": []
+        }
+      ]
+    }
+  }
+}

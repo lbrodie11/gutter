@@ -498,8 +498,9 @@
           }
         },
         "timestampAnomaly": { "type": "boolean" },
-        "coverage": { "enum": ["full", "partial"], "description": "GU-30, optional: the production brief's dependents.coverage." },
+        "coverage": { "enum": ["full", "partial"], "description": "GU-30, optional: the production brief's dependents.coverage (GU-32: partial only when an import that could reach the PR's files is unresolved; before, when any import in the repository was)." },
         "unresolvedByReason": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 }, "description": "GU-30, optional: dependents.unresolved.byReason." },
+        "relevantUnresolvedByReason": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 }, "description": "GU-32, optional: dependents.unresolved.relevant.byReason, the unresolved imports that could reach this PR's files. Since GU-32, coverage follows these." },
         "uncheckedLanguages": { "type": "array", "items": { "type": "string" }, "description": "GU-30, optional: languages of changed files in dependents.unchecked." },
         "history": { "enum": ["available", "unavailable"] },
         "mergeDiffers": { "type": "boolean" },

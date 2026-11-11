@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-seeded-compare",
+  "repo": "yt-dlp/yt-dlp",
+  "seed": 20261111,
+  "summaryMismatches": [],
+  "records": {
+    "compared": 60,
+    "missing": [],
+    "scoreMismatches": [],
+    "missReasonMoves": {},
+    "otherMissReasonChanges": [],
+    "coverageMoves": {
+      "partial→full": 60
+    }
+  }
+}

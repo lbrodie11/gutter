@@ -3,6 +3,7 @@ import { posix } from 'node:path';
 import type { ChangeStructure, DependentsEntry, DependentsLayer } from '../contract.ts';
 import type { SourceReader } from '../source/reader.ts';
 import { MAX_FILE_BYTES, WorkingTreeReader } from '../source/reader.ts';
+import { relevantTargets, scopeTargets } from './coverage-scope.ts';
 
 /**
  * Static dependents for TS/JS via relative-import scanning.
@@ -10,7 +11,10 @@ import { MAX_FILE_BYTES, WorkingTreeReader } from '../source/reader.ts';
  * Deliberately small and honest: it resolves relative specifiers only (no
  * tsconfig paths / package exports yet). Non-relative specifiers that are
  * aliases or repo-local / workspace packages mark `dependents.coverage` as
- * `'partial'` with sample `<file> → <specifier>` receipts. Changed files in
+ * unresolved, with sample `<file> → <specifier>` receipts. GU-32: only those
+ * that could reach the PR's files (`unresolved.relevant`, the rule in
+ * `coverage-scope.ts`: an alias by its last segment, a workspace package when it
+ * holds a changed file) make `dependents.coverage` `'partial'`. Changed files in
  * languages without an analyzer are listed as `unchecked`, never as "no
  * dependents".
  */
@@ -248,6 +252,10 @@ export function buildDependents(
   let scanned = 0;
   let unresolvedCount = 0;
   const unresolvedSamples = new Set<string>();
+  let scope: ReturnType<typeof scopeTargets> | undefined;
+  let relevantCount = 0;
+  const relevantSamples = new Set<string>();
+  const reached = new Set<string>();
 
   if (importersOf.size > 0) {
     for (const file of tracked.slice(0, MAX_FILES)) {
@@ -264,8 +272,18 @@ export function buildDependents(
         }
         if (classifyNonRelativeSpecifier(spec, declaredExternal, aliasPrefixes, workspacePackages) === 'unresolved') {
           unresolvedCount++;
-          const sample = `${file} → ${spec}`;
-          unresolvedSamples.add(sample.length > MAX_SAMPLE_LEN ? `${sample.slice(0, MAX_SAMPLE_LEN - 1)}…` : sample);
+          const raw = `${file} → ${spec}`;
+          const sample = raw.length > MAX_SAMPLE_LEN ? `${raw.slice(0, MAX_SAMPLE_LEN - 1)}…` : raw;
+          unresolvedSamples.add(sample);
+          // The scanner resolves neither aliases nor workspace packages: an alias is judged like Repo
+          // Archaeology's `alias-unmatched`, a workspace package like `unknown-package` (its package.json name).
+          const reasonCode = isAliasSpecifier(spec, aliasPrefixes) ? 'alias-unmatched' : 'unknown-package';
+          const hits = relevantTargets({ from: file, specifier: spec, reasonCode }, (scope ??= scopeTargets(changes, reader)));
+          if (hits.length) {
+            relevantCount++;
+            relevantSamples.add(sample);
+            for (const h of hits) reached.add(h);
+          }
         }
       }
     }
@@ -281,6 +299,7 @@ export function buildDependents(
       deleted: isDeleted,
       changedImporters: list.filter((p) => changedPaths.has(p)),
       untouchedImporters: list.filter((p) => !changedPaths.has(p)),
+      coverage: reached.has(file) ? 'partial' : 'full',
     };
     if (entry.changedImporters.length + entry.untouchedImporters.length > 0) entries.push(entry);
   }
@@ -296,10 +315,11 @@ export function buildDependents(
     analyzers: ['ts-js-relative-imports'],
     entries,
     unchecked,
-    coverage: unresolvedCount > 0 ? 'partial' : 'full',
+    coverage: relevantCount > 0 ? 'partial' : 'full',
     unresolved: {
       count: unresolvedCount,
       samples,
+      relevant: { count: relevantCount, samples: [...relevantSamples].sort().slice(0, MAX_UNRESOLVED_SAMPLES) },
     },
     scannedFiles: scanned,
     method: 'relative-scan',

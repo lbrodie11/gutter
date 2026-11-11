@@ -62,7 +62,7 @@ test('finds untouched importers, resolving the .js → .ts ESM convention, with 
   assert.ok(a);
   assert.deepEqual(a.untouchedImporters, ['src/a.test.ts', 'src/b.ts']);
   assert.equal(brief.dependents.coverage, 'full');
-  assert.deepEqual(brief.dependents.unresolved, { count: 0, samples: [] });
+  assert.deepEqual(brief.dependents.unresolved, { count: 0, samples: [], relevant: { count: 0, samples: [] } });
 });
 
 test('flags imports of deleted and renamed-away paths as broken', () => {

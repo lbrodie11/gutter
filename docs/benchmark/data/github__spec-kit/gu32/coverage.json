@@ -1,0 +1,3150 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gu32-coverage",
+  "repo": "github/spec-kit",
+  "headSha": "a227e38315cd38172b04f2fb8f06ce8b69b38331",
+  "measured": {
+    "gutterCommit": "f670be0a9f41f3a3e025fb8e2458737a26e7c7a4",
+    "repoArchaeology": "0.12.0"
+  },
+  "tools": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0"
+  },
+  "summary": {
+    "prs": 200,
+    "partialBefore": 200,
+    "partialAfter": 0,
+    "shareBefore": 1,
+    "shareAfter": 0,
+    "unresolvedByReason": {
+      "unknown-package": 1000
+    },
+    "relevantByReason": {},
+    "unresolvedTotal": 1000,
+    "relevantTotal": 0,
+    "entriesPartial": 0,
+    "entries": 308
+  },
+  "gu31": {
+    "compared": 200,
+    "missing": [],
+    "salienceMismatches": [],
+    "checklistKindMismatches": [],
+    "beforeMismatches": []
+  },
+  "replays": [
+    {
+      "pr": "#5230",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5231",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5229",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5228",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5226",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5218",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5225",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#5149",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5224",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5223",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5200",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5221",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5103",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5220",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5219",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5216",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5168",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5215",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5212",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5053",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 10
+    },
+    {
+      "pr": "#5214",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5201",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5209",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5171",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#5118",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5205",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5108",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5198",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#5211",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5116",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5197",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5196",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4912",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 6
+    },
+    {
+      "pr": "#5193",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5016",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5181",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5191",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5189",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5176",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5186",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5188",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5187",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5174",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5183",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5172",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5169",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5068",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5145",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#5167",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5166",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5165",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5164",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5161",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5163",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5115",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 8
+    },
+    {
+      "pr": "#5146",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5155",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5162",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5153",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5151",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5154",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5148",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5133",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5130",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5125",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5064",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5109",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5140",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5142",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5139",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5067",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 18
+    },
+    {
+      "pr": "#5131",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5129",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5132",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5119",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5114",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 9
+    },
+    {
+      "pr": "#4827",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#5128",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5127",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5126",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5106",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5101",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5102",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4960",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 5
+    },
+    {
+      "pr": "#5065",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5066",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5062",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4993",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5063",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5054",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5059",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5055",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#5020",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#5048",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5049",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4646",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5051",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4970",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5041",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#5043",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5034",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5030",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#5033",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5031",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5029",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5026",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5027",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5004",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5024",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5023",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5015",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#5010",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5017",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5011",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5009",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5012",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#5008",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4992",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4978",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4963",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4989",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4987",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5000",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#5001",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4999",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4995",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4985",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4977",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4996",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4976",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4982",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4980",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4975",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4964",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#4957",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 7
+    },
+    {
+      "pr": "#4974",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4973",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4969",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4768",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4971",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4962",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4956",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4909",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4911",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4910",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4950",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4939",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4948",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4949",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4946",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4931",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#4945",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4942",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 9
+    },
+    {
+      "pr": "#4941",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4936",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4934",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 18
+    },
+    {
+      "pr": "#4927",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4923",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4928",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#3917",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4932",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4929",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4919",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4905",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4908",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4902",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4907",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4903",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4904",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4900",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4844",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 14
+    },
+    {
+      "pr": "#4764",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 10
+    },
+    {
+      "pr": "#4895",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4894",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4896",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4873",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4893",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4897",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4898",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4862",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 46
+    },
+    {
+      "pr": "#4885",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4878",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4882",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#4879",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4880",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4881",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4877",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4872",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4871",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4867",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 4
+    },
+    {
+      "pr": "#4870",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4541",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4529",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4838",
+      "salience": "quiet",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 0
+    },
+    {
+      "pr": "#4542",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4833",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 3
+    },
+    {
+      "pr": "#4849",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 9
+    },
+    {
+      "pr": "#4532",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    },
+    {
+      "pr": "#4866",
+      "salience": "brief",
+      "kinds": [],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 2
+    },
+    {
+      "pr": "#4538",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "before": "partial",
+      "after": "full",
+      "unresolved": 5,
+      "unresolvedByReason": {
+        "unknown-package": 5
+      },
+      "relevant": 0,
+      "relevantByReason": {},
+      "entriesPartial": 0,
+      "entries": 1
+    }
+  ]
+}

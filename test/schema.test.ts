@@ -22,19 +22,22 @@ test('a real brief satisfies every required field, enum, and maxItems constraint
   check(root, brief, '$', problems);
   assert.deepEqual(problems, []);
   assert.equal(brief.dependents.coverage, 'full');
-  assert.deepEqual(brief.dependents.unresolved, { count: 0, samples: [] });
+  assert.deepEqual(brief.dependents.unresolved, { count: 0, samples: [], relevant: { count: 0, samples: [] } });
   assert.ok(brief.forgotten.families.length && brief.forgotten.items.length && brief.tests.length && brief.dependents.entries.length, 'fixture should exercise every layer');
 
   // Also check schema conformance when coverage is partial with >5 unresolved imports (capped to 5 samples).
+  // GU-32: the alias imports name the files this PR changes, so they are relevant (and capped) too.
   const imp = (s: string) => `imp${'ort'} '${s}';\n`;
+  const mods = [1, 2, 3, 4, 5, 6, 7];
   const partialRepo = new TempRepo()
     .write({
       'src/a.ts': 'export const a = 1;\n',
-      'src/b.ts': [1, 2, 3, 4, 5, 6, 7].map((i) => imp(`@/mod${i}`)).join(''),
+      'src/b.ts': mods.map((i) => imp(`@/mod${i}`)).join(''),
+      ...Object.fromEntries(mods.map((i) => [`src/mod${i}.ts`, 'export const m = 1;\n'])),
     })
     .commit('init')
     .branch('p')
-    .write({ 'src/a.ts': `export const a = 2;\n${lines(15)}` })
+    .write({ 'src/a.ts': `export const a = 2;\n${lines(15)}`, ...Object.fromEntries(mods.map((i) => [`src/mod${i}.ts`, 'export const m = 2;\n'])) })
     .commit('edit a');
   try {
     const partialBrief = buildBrief({ cwd: partialRepo.dir, base: 'main', noHistory: true });
@@ -44,6 +47,8 @@ test('a real brief satisfies every required field, enum, and maxItems constraint
     assert.equal(partialBrief.dependents.coverage, 'partial');
     assert.equal(partialBrief.dependents.unresolved.count, 7);
     assert.equal(partialBrief.dependents.unresolved.samples.length, 5);
+    assert.equal(partialBrief.dependents.unresolved.relevant?.count, 7);
+    assert.equal(partialBrief.dependents.unresolved.relevant?.samples.length, 5);
   } finally {
     partialRepo.cleanup();
   }

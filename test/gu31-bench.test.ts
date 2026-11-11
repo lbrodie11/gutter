@@ -63,7 +63,7 @@ const brief = (over: { removes?: boolean; method?: 'base-graph' | 'relative-scan
 
 test('gate replays: one record per PR with salience, kinds, coverage, removal, method and timings', () => {
   const r = replayRecord('#1', brief({ removes: true, method: 'base-graph', salience: 'brief', kinds: ['broken-import'] }), 1234.4, 400.6);
-  assert.deepEqual(r, { pr: '#1', salience: 'brief', kinds: ['broken-import'], coverage: 'partial', unresolvedByReason: { 'unknown-package': 1 }, uncheckedLanguages: [], method: 'base-graph', removes: true, ms: 1234, baseGraphMs: 401 });
+  assert.deepEqual(r, { pr: '#1', salience: 'brief', kinds: ['broken-import'], coverage: 'partial', unresolvedByReason: { 'unknown-package': 1 }, relevantUnresolvedByReason: {}, uncheckedLanguages: [], method: 'base-graph', removes: true, ms: 1234, baseGraphMs: 401 });
   assert.equal(replayRecord('#2', brief(), 10, 0).removes, false);
   assert.equal(replayRecord('#3', brief({ removes: true }), 10, 4, 7.6).msWithoutBaseGraph, 8);
 });
