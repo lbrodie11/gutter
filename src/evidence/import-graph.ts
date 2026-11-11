@@ -77,6 +77,8 @@ export function brokenFromBaseGraph(changes: ChangeStructure, removed: ReadonlyS
   const headAnalyzed = new Set(headGraph.files);
   const headTargets = new Map<string, Set<string>>();
   for (const e of headGraph.edges) {
+    // Defensive: a file resolving to itself replaces nothing (Repo Archaeology 0.10 emits no self-edges).
+    if (e.from === e.to) continue;
     const k = pairKey(e.from, e.specifier);
     let set = headTargets.get(k);
     if (!set) headTargets.set(k, (set = new Set()));

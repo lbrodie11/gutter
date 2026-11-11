@@ -159,6 +159,14 @@ test('Python: a module moved into a package of the same name still resolves (no 
   assert.deepEqual(broken(res.brief), {});
 });
 
+test('Python: `from . import mod` in the package __init__.py breaks when mod.py is renamed', async () => {
+  const res = await replay(
+    { 'pyproject.toml': '[project]\nname = "app"\n', 'src/app/__init__.py': '', 'src/app/ov/__init__.py': 'from . import prio\n', 'src/app/ov/prio.py': 'P = 1\n' },
+    (r) => r.mv('src/app/ov/prio.py', 'src/app/ov/prio_seeded_moved.py'),
+  );
+  assert.deepEqual(broken(res.brief), { 'src/app/ov/prio.py': ['src/app/ov/__init__.py'] });
+});
+
 test('isAncestorInit: only an __init__.py strictly above the named module', () => {
   assert.equal(isAncestorInit('use.py', 'app.sub.deep', 'app/sub/__init__.py'), true);
   assert.equal(isAncestorInit('use.py', 'app.sub', 'app/sub/__init__.py'), false);
