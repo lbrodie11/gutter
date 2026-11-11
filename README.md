@@ -4,7 +4,7 @@
 
 Gutter is a GitHub Action and CLI (`gutter-brief`, binary `gutter`) that posts a compact, evidence-backed change briefing on every pull request — what changed, what depends on it, what the tests show, and what the history says — with clickable commit receipts. You decide what matters.
 
-`Experimental · v0.4.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
+`Experimental · v0.5.0` · `Local-first` · `Deterministic (no AI / LLM)` · `MIT License`
 
 ```yaml
 # .github/workflows/gutter.yml
@@ -81,7 +81,7 @@ None of these is a verdict. The test row is a historical fact; whether this chan
 
 ### 2 · What lands in the pull request (sticky Markdown comment)
 
-GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.4.0 + repo-archaeology 0.10.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
+GitHub pull request comments cannot render custom CSS, so Gutter posts **one compact, updating Markdown comment** (and stays completely silent on small, unremarkable PRs in `auto` mode). Full source: [`docs/example/brief.md`](docs/example/brief.md) (generated with gutter 0.5.0 + repo-archaeology 0.10.0 as a library; see [`docs/example/README.md`](docs/example/README.md) to reproduce it).
 
 > ### Gutter · change briefing
 >
@@ -94,7 +94,7 @@ GitHub pull request comments cannot render custom CSS, so Gutter posts **one com
 >
 > *(Plus collapsed `<details>` sections: **Usually changes with** (history, not a prediction), **What it touches**, **Tests**, and **What changed**.)*
 >
-> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.4.0 + repo-archaeology 0.10.0</sub>
+> <sub>Replayed on the last 375 commits: when it flagged files, at least one really did change 73% of the time (8.4× better than guessing busy files), and 57% of all flagged files did. · No AI wrote this: every line comes from git history and the code · gutter 0.5.0 + repo-archaeology 0.10.0</sub>
 
 ### 3 · The full six-panel page (`gutter.html` artifact)
 
@@ -175,7 +175,7 @@ Full preregistered methodology and scoring rules: [`docs/benchmark/METHOD.md`](d
 
 ### Option 1 · GitHub Action (`lbrodie11/gutter@v0`)
 
-> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.4.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.4.0^{commit}`), never an unbuilt `main` branch commit SHA.
+> **SHA-pinning note:** `dist/` is gitignored on `main` and attached to release tag commits by `release.yml`. If you pin actions to a 40-character commit SHA instead of `@v0` / `@v0.5.0`, always pin to the **release tag's commit SHA** (`git rev-parse v0.5.0^{commit}`), never an unbuilt `main` branch commit SHA.
 
 | Input | Default | Behavior |
 |---|---|---|
