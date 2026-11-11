@@ -1,0 +1,15 @@
+<details><summary><b>What it touches</b> · 1 changed file with importers outside this PR</summary>
+
+- [`src/core/router.ts`](https://github.com/example/widgets/blob/cccccccccccccccccccccccccccccccccccccccc/src/core/router.ts) ← [`src/app.ts`](https://github.com/example/widgets/blob/cccccccccccccccccccccccccccccccccccccccc/src/app.ts)
+
+<sub>7 unresolved imports elsewhere in this repository can't reach this PR's files.</sub>
+
+</details>
+
+----- html -----
+<section class="panel area-touches" data-cut="C-03" aria-labelledby="p3">
+<h2 id="p3" class="cap"><span class="num">C-03</span> What it touches</h2>
+<ul class="deps"><li id="deps:src/core/router.ts"><a href="https://github.com/example/widgets/blob/cccccccccccccccccccccccccccccccccccccccc/src/core/router.ts"><code class="path">src/core/router.ts</code></a>
+<span class="small">imported by 1 untouched file</span>
+<span class="importers"><a href="https://github.com/example/widgets/blob/cccccccccccccccccccccccccccccccccccccccc/src/app.ts"><code class="path">src/app.ts</code></a></span></li></ul><p class="small">7 unresolved imports elsewhere in this repository can&#39;t reach this PR&#39;s files.</p>
+</section>

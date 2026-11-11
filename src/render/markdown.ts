@@ -1,6 +1,7 @@
 import type { GutterBrief } from '../contract.ts';
 import { assertEvidenceResolves } from '../brief.ts';
 import { commitUrl, fileUrl, mdCell, mdCode, mdText, safeBase, short } from './escape.ts';
+import { coverageWording } from './coverage.ts';
 import { receiptsFor } from './receipts.ts';
 import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, noPairsLine, unchangedTestRows } from './context.ts';
 
@@ -94,25 +95,23 @@ export function renderMarkdown(brief: GutterBrief, opts: MarkdownOptions = {}): 
 
   // What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted);
-  const uCount = brief.dependents.unresolved?.count ?? 0;
-  const isPartial = brief.dependents.coverage === 'partial' || uCount > 0;
-  // GU-05: Repo Archaeology's resolver handles aliases and workspaces, so what is left is plainly "unresolved".
-  const partialSentence = brief.dependents.analyzers.includes('ra-import-graph')
-    ? `${plural(uCount, 'import')} in this repository could not be resolved to a file, so some importers may be missing.`
-    : `${plural(uCount, 'import')} ${uCount === 1 ? 'uses' : 'use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
+  // GU-32: "partial" only when an import that could reach this PR's files is unresolved (older briefs: any).
+  const cov = coverageWording(brief.dependents);
   if (deps.length) {
-    out.push(`<details><summary><b>What it touches</b> · ${plural(deps.length, 'changed file')} with importers outside this PR${isPartial ? ' (partial)' : ''}</summary>`, '');
+    out.push(`<details><summary><b>What it touches</b> · ${plural(deps.length, 'changed file')} with importers outside this PR${cov.partial ? ' (partial)' : ''}</summary>`, '');
     for (const d of deps.slice(0, 8)) {
       const shown = d.untouchedImporters.length ? d.untouchedImporters : d.changedImporters;
       const list = shown.slice(0, 4).map(fileLink).join(', ');
       const extra = shown.length > 4 ? ` +${shown.length - 4} more` : '';
-      out.push(`- ${fileLink(d.file)}${d.deleted ? ' (removed)' : ''} ← ${list}${extra}`);
+      out.push(`- ${fileLink(d.file)}${d.deleted ? ' (removed)' : ''}${d.coverage === 'partial' ? ' (partial)' : ''} ← ${list}${extra}`);
     }
+    if (!cov.partial && cov.elsewhere) out.push('', `<sub>${cov.elsewhere}</sub>`);
     out.push('', '</details>', '');
   }
-  if (isPartial) {
-    const prefix = deps.length === 0 ? 'No importers found through relative imports. ' : '';
-    out.push(`<sub>${prefix}${partialSentence}</sub>`, '');
+  if (cov.partial) {
+    const prefix = deps.length === 0 ? cov.noneFound : '';
+    const sample = cov.sample ? ` (for example ${mdCode(cov.sample)})` : '';
+    out.push(`<sub>${prefix}${cov.before}${sample}${cov.after}${cov.elsewhere ? ` ${cov.elsewhere}` : ''}</sub>`, '');
   }
   if (brief.dependents.unchecked.length) {
     out.push(`<sub>Imports not analyzed for ${plural(brief.dependents.unchecked.length, 'file')} (language not supported yet).</sub>`, '');

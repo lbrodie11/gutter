@@ -3,6 +3,7 @@ import { assertEvidenceResolves } from '../brief.ts';
 import { pct } from '../stats/wilson.ts';
 import { commitUrl, fileUrl, html, short } from './escape.ts';
 import { FRAME12_TOKENS, TOKENS_ID } from './frame12-tokens.ts';
+import { coverageWording } from './coverage.ts';
 import { receiptsFor } from './receipts.ts';
 import { CONTEXT_SUBTITLE, CONTEXT_TITLE, TESTS_LEGEND, historyClause, noPairsLine, unchangedTestRows } from './context.ts';
 
@@ -76,31 +77,35 @@ export function renderComic(brief: GutterBrief): string {
 
   // C-03 · What it touches
   const deps = brief.dependents.entries.filter((d) => d.untouchedImporters.length || d.deleted).slice(0, 6);
-  const uCount = brief.dependents.unresolved?.count ?? 0;
-  const isPartial = brief.dependents.coverage === 'partial' || uCount > 0;
+  // GU-32: "partial" only when an import that could reach this PR's files is unresolved (older briefs: any).
+  const cov = coverageWording(brief.dependents);
+  const isPartial = cov.partial;
   const hasAnalyzedTargets = changes.files.some((f) => f.language === 'typescript' || f.language === 'javascript');
-  // GU-05: Repo Archaeology's resolver handles aliases and workspaces, so what is left is plainly "unresolved".
-  const partialSentence = brief.dependents.analyzers.includes('ra-import-graph')
-    ? `${uCount} import${uCount === 1 ? '' : 's'} in this repository could not be resolved to a file, so some importers may be missing.`
-    : `${uCount} import${uCount === 1 ? ' uses' : 's use'} aliases or packages Gutter can't resolve yet, so some importers may be missing.`;
+  const partialHtml =
+    html(cov.before) +
+    (cov.sample ? ` (for example <code class="path">${html(cov.sample)}</code>)` : '') +
+    html(cov.after) +
+    (cov.elsewhere ? ` ${html(cov.elsewhere)}` : '');
   const depBody = deps.length
     ? `<ul class="deps">${deps.map((d) => {
         const shown = d.untouchedImporters.length ? d.untouchedImporters : d.changedImporters;
         const label = d.untouchedImporters.length
           ? `imported by ${d.untouchedImporters.length} untouched file${d.untouchedImporters.length === 1 ? '' : 's'}`
           : `still imported by ${shown.length} changed file${shown.length === 1 ? '' : 's'}`;
-        return `<li id="${html(domId(d.id))}">${fileLink(d.file)}${d.deleted ? ' <span class="stamp">removed</span>' : ''}
+        return `<li id="${html(domId(d.id))}">${fileLink(d.file)}${d.deleted ? ' <span class="stamp">removed</span>' : ''}${d.coverage === 'partial' ? ' <span class="stamp">partial</span>' : ''}
         <span class="small">${label}</span>
         <span class="importers">${shown.slice(0, 3).map((p) => fileLink(p)).join(' ')}${shown.length > 3 ? ` <span class="small">+${shown.length - 3}</span>` : ''}</span></li>`;
       }).join('')}</ul>`
     : isPartial
-      ? `<p class="quiet-line"><span class="stamp">partial</span> No importers found through relative imports. ${html(partialSentence)}</p>`
+      ? `<p class="quiet-line"><span class="stamp">partial</span> ${html(cov.noneFound)}${partialHtml}</p>`
       : !hasAnalyzedTargets && brief.dependents.unchecked.length > 0
         ? ''
         : `<p class="quiet-line">No file outside this change imports what it changed.</p>`;
   const partialNote = deps.length && isPartial
-    ? `<p class="small"><span class="stamp">partial</span> ${html(partialSentence)}</p>`
-    : '';
+    ? `<p class="small"><span class="stamp">partial</span> ${partialHtml}</p>`
+    : !isPartial && cov.elsewhere
+      ? `<p class="small">${html(cov.elsewhere)}</p>`
+      : '';
   const unchecked = brief.dependents.unchecked.length
     ? `<p class="small">Imports not analyzed for ${brief.dependents.unchecked.length} file${brief.dependents.unchecked.length === 1 ? '' : 's'} (language not supported yet).</p>`
     : '';
