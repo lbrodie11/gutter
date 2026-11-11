@@ -1,0 +1,38 @@
+{
+  "repo": "DayuanJiang/next-ai-draw-io",
+  "pinnedSha": "c9dc5f5cc62e7e5a327a62b39027d80033e1548c",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 156
+    },
+    "gate": {
+      "status": "done",
+      "ms": 109615
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 37883
+    }
+  },
+  "timedMs": 147498,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 147657,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

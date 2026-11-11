@@ -1,0 +1,38 @@
+{
+  "repo": "matrix-org/matrix-appservice-bridge",
+  "pinnedSha": "6392ab0550e23fffa9f014411148c667ba2e77da",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 54
+    },
+    "gate": {
+      "status": "done",
+      "ms": 93442
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 26295
+    }
+  },
+  "timedMs": 119737,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 119793,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

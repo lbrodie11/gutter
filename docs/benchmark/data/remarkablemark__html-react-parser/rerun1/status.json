@@ -1,0 +1,38 @@
+{
+  "repo": "remarkablemark/html-react-parser",
+  "pinnedSha": "46e79e4cf4ef6cd7a5c280ed9c8885ac4fad6632",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 26
+    },
+    "gate": {
+      "status": "done",
+      "ms": 87134
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 24458
+    }
+  },
+  "timedMs": 111592,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 111619,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

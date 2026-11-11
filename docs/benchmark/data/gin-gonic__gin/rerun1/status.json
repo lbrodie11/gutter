@@ -1,0 +1,38 @@
+{
+  "repo": "gin-gonic/gin",
+  "pinnedSha": "0f09c3a9b4626d9fe9979cf4d0521d6ae32ab646",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 78
+    },
+    "gate": {
+      "status": "done",
+      "ms": 201312
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 58093
+    }
+  },
+  "timedMs": 259405,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 259486,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

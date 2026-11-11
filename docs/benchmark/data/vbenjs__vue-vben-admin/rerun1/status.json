@@ -1,0 +1,38 @@
+{
+  "repo": "vbenjs/vue-vben-admin",
+  "pinnedSha": "71dc5ac59dcd832e45df861a283746a3cd143125",
+  "steps": {
+    "clone": {
+      "status": "done",
+      "ms": 387
+    },
+    "gate": {
+      "status": "done",
+      "ms": 156546
+    },
+    "seeded": {
+      "status": "done",
+      "ms": 47570
+    }
+  },
+  "timedMs": 204116,
+  "stage": "rerun1",
+  "seed": 20261111,
+  "wallMs": 204504,
+  "completed": true,
+  "environment": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3",
+    "node": "v24.22.2",
+    "git": "2.39.5 (Apple Git-154)",
+    "machine": {
+      "platform": "darwin",
+      "release": "24.5.0",
+      "arch": "arm64",
+      "cpu": "Apple M2",
+      "cores": 8,
+      "memoryGb": 8
+    }
+  }
+}

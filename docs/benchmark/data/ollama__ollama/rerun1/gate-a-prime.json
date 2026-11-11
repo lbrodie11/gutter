@@ -1,0 +1,2983 @@
+{
+  "schemaVersion": 1,
+  "kind": "gutter-gate-a-prime",
+  "repo": "ollama/ollama",
+  "headSha": "e9fde36d75fea66579d84099956ce1430792737a",
+  "tools": {
+    "gutter": "0.4.0",
+    "repoArchaeology": "0.10.0",
+    "typescript": "6.0.3"
+  },
+  "prsEvaluated": 200,
+  "replayParity": {
+    "salienceMismatches": 0,
+    "checklistKindMismatches": 0
+  },
+  "a": {
+    "full": 0,
+    "evaluated": 200,
+    "share": 0,
+    "budget": 0.3333333333333333,
+    "met": true
+  },
+  "b": {
+    "brokenImport": {
+      "checked": 0,
+      "confirmed": 0,
+      "rate": null,
+      "failures": [],
+      "needs": 0.95,
+      "met": null
+    },
+    "untestedChange": {
+      "checked": 62,
+      "confirmed": 62,
+      "rate": 1,
+      "failures": [],
+      "needs": 1,
+      "met": true
+    },
+    "testHistory": {
+      "checked": 51,
+      "confirmed": 51,
+      "rate": 1,
+      "failures": [],
+      "needs": 1,
+      "met": true
+    }
+  },
+  "c": {
+    "pagesChecked": 200,
+    "ownWordingHits": [],
+    "rawHits": 0,
+    "met": true
+  },
+  "replays": [
+    {
+      "pr": "#19460",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 755,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19400",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 625,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19433",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 561,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19476",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 556,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19470",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 536,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19432",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 554,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19410",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 644,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19336",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 592,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19392",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 564,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19192",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 558,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19373",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 540,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19372",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 548,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19248",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 799,
+      "baseGraphMs": 474,
+      "msWithoutBaseGraph": 572
+    },
+    {
+      "pr": "#19360",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 557,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19344",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 868,
+      "baseGraphMs": 537,
+      "msWithoutBaseGraph": 607
+    },
+    {
+      "pr": "#19333",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 552,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19310",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 541,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19312",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 535,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19311",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 536,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19149",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 528,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19291",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 799,
+      "baseGraphMs": 473,
+      "msWithoutBaseGraph": 560
+    },
+    {
+      "pr": "#19247",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 530,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19242",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 541,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19234",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 544,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19250",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 559,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19173",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 580,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19193",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 539,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19228",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 532,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19241",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 614,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19227",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 539,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19223",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 552,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19225",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 530,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19098",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 721,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19216",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 726,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19166",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 582,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19220",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 562,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19119",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 515,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19200",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 533,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19196",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 569,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19188",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 533,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19194",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 547,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19185",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 512,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19181",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 516,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17956",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 752,
+      "baseGraphMs": 437,
+      "msWithoutBaseGraph": 541
+    },
+    {
+      "pr": "#19070",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 539,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19143",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 535,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19146",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 518,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19150",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 516,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19144",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 517,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19003",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 536,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19095",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 533,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19072",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 531,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19064",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 532,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19010",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 526,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19069",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 519,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19065",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 526,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19041",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 513,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19036",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 526,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18967",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 515,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18500",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 535,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19032",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 511,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19030",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 573,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19004",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 514,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#19007",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 743,
+      "baseGraphMs": 433,
+      "msWithoutBaseGraph": 509
+    },
+    {
+      "pr": "#19008",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 524,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18969",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 527,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18993",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 752,
+      "baseGraphMs": 447,
+      "msWithoutBaseGraph": 515
+    },
+    {
+      "pr": "#18986",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 740,
+      "baseGraphMs": 437,
+      "msWithoutBaseGraph": 541
+    },
+    {
+      "pr": "#18911",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 541,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@8718c2b",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 738,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18657",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 617,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18985",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 618,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18957",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 598,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18974",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 595,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18962",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 590,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18746",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 602,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18809",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 646,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18883",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 604,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18886",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 657,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18976",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 651,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18973",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 614,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@0473039",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 608,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18960",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 867,
+      "baseGraphMs": 499,
+      "msWithoutBaseGraph": 609
+    },
+    {
+      "pr": "#18828",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 600,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18956",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 597,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18887",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 582,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18955",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 590,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18947",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 603,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18908",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 607,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18878",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 592,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18879",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 587,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18855",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 923,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18874",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1016,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18739",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 703,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18854",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1077,
+      "baseGraphMs": 673,
+      "msWithoutBaseGraph": 666
+    },
+    {
+      "pr": "#18233",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 601,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18814",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 640,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18852",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 707,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18826",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 631,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18777",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 663,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18829",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 691,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18822",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 650,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18820",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 724,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18812",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 641,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18720",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 643,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18761",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 680,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@1970ce8",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 658,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18806",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 659,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18807",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 772,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18790",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 983,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@0fde06c",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1258,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18779",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1328,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18776",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1181,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18701",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1245,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@1c34579",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1398,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@eadb68a",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1185,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@eab3d8b",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1237,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "merge@47bbe1e",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1707,
+      "baseGraphMs": 1059,
+      "msWithoutBaseGraph": 1175
+    },
+    {
+      "pr": "#18627",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1039,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18626",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1072,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18598",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1068,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18622",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1464,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18596",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1266,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18611",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 867,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18501",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 868,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18550",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 840,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18603",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 972,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18576",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 802,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18577",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1097,
+      "baseGraphMs": 670,
+      "msWithoutBaseGraph": 742
+    },
+    {
+      "pr": "#18601",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 787,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18438",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 794,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18533",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 726,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18473",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 831,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18518",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 813,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18493",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 737,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17714",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 767,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18516",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 792,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18512",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 756,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18511",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 791,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18495",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 825,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18497",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 781,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18498",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 806,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18496",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 780,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18446",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 779,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18450",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1606,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18448",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 921,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18449",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 851,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#14969",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1491,
+      "baseGraphMs": 942,
+      "msWithoutBaseGraph": 1615
+    },
+    {
+      "pr": "#18440",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1056,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18377",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1099,
+      "baseGraphMs": 601,
+      "msWithoutBaseGraph": 735
+    },
+    {
+      "pr": "#18235",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 832,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18372",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 808,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18376",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1032,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18393",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1120,
+      "baseGraphMs": 604,
+      "msWithoutBaseGraph": 725
+    },
+    {
+      "pr": "#18374",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 725,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17858",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1352,
+      "baseGraphMs": 783,
+      "msWithoutBaseGraph": 714
+    },
+    {
+      "pr": "#18317",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 739,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18347",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 847,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18348",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1224,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18331",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1354,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18329",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1612,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18328",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1480,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18321",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1335,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18325",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1159,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18324",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1113,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18323",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1404,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18319",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1289,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18247",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1180,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18296",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 713,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18244",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1134,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18245",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 931,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18246",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 837,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18240",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 727,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18236",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1443,
+      "baseGraphMs": 1020,
+      "msWithoutBaseGraph": 763
+    },
+    {
+      "pr": "#18224",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 681,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18223",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 682,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18219",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1530,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18203",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 853,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18199",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 682,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17943",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 681,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17022",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 846,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18160",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 973,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18080",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "method": "base-graph",
+      "removes": true,
+      "ms": 1789,
+      "baseGraphMs": 1107,
+      "msWithoutBaseGraph": 1621
+    },
+    {
+      "pr": "#16471",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1161,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18161",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1991,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18159",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1627,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17579",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1105,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18081",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1937,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#17381",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1343,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18077",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1275,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18056",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1337,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18058",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2743,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18049",
+      "salience": "brief",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [
+        "css"
+      ],
+      "removes": false,
+      "ms": 1579,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18042",
+      "salience": "brief",
+      "kinds": [
+        "untested-change",
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2132,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18039",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2643,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18041",
+      "salience": "brief",
+      "kinds": [
+        "untested-change"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 2712,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18040",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1911,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18032",
+      "salience": "brief",
+      "kinds": [
+        "wide-surface"
+      ],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1533,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18006",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1611,
+      "baseGraphMs": 0
+    },
+    {
+      "pr": "#18004",
+      "salience": "quiet",
+      "kinds": [],
+      "coverage": "partial",
+      "unresolvedByReason": {
+        "unknown-package": 4
+      },
+      "uncheckedLanguages": [],
+      "removes": false,
+      "ms": 1650,
+      "baseGraphMs": 0
+    }
+  ]
+}
