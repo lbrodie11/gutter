@@ -557,7 +557,7 @@ for (const [name, make] of GOLDENS) {
       mkdirSync(GOLDEN_DIR, { recursive: true });
       writeFileSync(file, got);
     }
-    assert.equal(got, readFileSync(file, 'utf8'), `${file} (UPDATE_GOLDENS=1 to rewrite deliberately)`);
+    assert.equal(got, readFileSync(file, 'utf8').replace(/\r\n/g, '\n'), `${file} (UPDATE_GOLDENS=1 to rewrite deliberately)`);
   });
 }
 
