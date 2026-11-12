@@ -22,7 +22,7 @@ test('the vendored tokens are @frame12/tokens minus its @font-face metric fallba
   const version = (require('@frame12/tokens/package.json') as { version: string }).version;
   assert.equal(FRAME12_TOKENS, offlineTokenCss(cssText));
   assert.equal(FRAME12_TOKENS_VERSION, version);
-  assert.equal(readFileSync('src/render/frame12-tokens.ts', 'utf8'), frame12TokensModule(offlineTokenCss(cssText), version));
+  assert.equal(readFileSync('src/render/frame12-tokens.ts', 'utf8').replace(/\r\n/g, '\n'), frame12TokensModule(offlineTokenCss(cssText), version));
   // Offline pages never load the web fonts, so the metric fallbacks that mimic them are left out; nothing else is.
   assert.doesNotMatch(FRAME12_TOKENS, /@font-face|f12DisplayFallback\s*;|size-adjust/);
   assert.match(cssText, /@font-face/, 'the package still ships them');
